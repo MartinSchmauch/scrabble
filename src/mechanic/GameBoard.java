@@ -1,5 +1,6 @@
 package mechanic;
 
-public class GameBoard {
 
+public class GameBoard {
+	Field[][] fields;
 }
