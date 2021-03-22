@@ -1,2 +1,6 @@
 tespush nilbecke
+<<<<<<< HEAD
 testupdate 1
+=======
+testupdate 2
+>>>>>>> refs/heads/master
