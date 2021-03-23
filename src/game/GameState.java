@@ -8,7 +8,13 @@ public class GameState {
 
 	boolean isRunning;
 	Player currentPlayer;
-	Player [] allPlayers;
+	Player[] allPlayers;
+
+	public GameState(Player[] players) {
+		this.isRunning = true;
+		this.currentPlayer = players[0];
+		this.allPlayers = players;
+	}
 
 	public boolean getGameRunning() {
 		return this.isRunning;
@@ -21,7 +27,7 @@ public class GameState {
 	public Player getCurrentPlayer() {
 		return this.currentPlayer;
 	}
-	
+
 	public Player[] getAllPlayers() {
 		return allPlayers;
 
