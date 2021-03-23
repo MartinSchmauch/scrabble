@@ -3,7 +3,7 @@ package game;
 import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-// ** @author lurny
+// ** @author ldreyer
 
 public class Player {
   private final String playerId;
@@ -23,9 +23,22 @@ public class Player {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
 
+  public String getNickname() {
+    return nickname;
+  }
 
+  public void setNickname(String nickname) {
+    this.nickname = nickname;
+  }
 
+  public String getAvatar() {
+    return avatar;
+  }
+
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
   }
 
   public String getID() {
