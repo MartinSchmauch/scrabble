@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +27,7 @@ public class JSONHandler {
     this.objectMapper = new ObjectMapper();
   }
 
-  private Player loadPlayerProfile(String path) {
+  public Player loadPlayerProfile(String path) {
     BufferedReader br = null;
     Player player = null;
 
@@ -47,7 +48,7 @@ public class JSONHandler {
 
       JsonNode jsonNode = objectMapper.readTree(json.toString());
 
-      player = new Player(jsonNode.get("playerId").asText(), jsonNode.get("password").asText(),
+      player = new Player(jsonNode.get("id").asText(), jsonNode.get("password").asText(),
           jsonNode.get("nickname").asText(), jsonNode.get("avatar").asText(),
           jsonNode.get("volume").asInt());
     } catch (IOException e2) {
@@ -58,7 +59,7 @@ public class JSONHandler {
   }
 
 
-  private boolean savePlayerProfile(String path, Player player) {
+  public boolean savePlayerProfile(String path, Player player) {
     try {
       objectMapper.writeValue(new File(path), player);
     } catch (IOException e) {
@@ -69,7 +70,7 @@ public class JSONHandler {
     return true;
   }
 
-  private GameSettings loadGameSettings(String path) {
+  public GameSettings loadGameSettings(String path) {
     BufferedReader br = null;
     GameSettings settings = null;
 
@@ -91,20 +92,23 @@ public class JSONHandler {
       JsonNode jsonNode = objectMapper.readTree(json.toString());
       JsonNode letterNode;
 
-      HashMap<Letter, Integer> letters = new HashMap<Letter, Integer>();
-      while (jsonNode.get("letters").elements().hasNext()) {
-        letterNode = jsonNode.get("letters").elements().next();
-        letters.put(new Letter(letterNode.get("letter").asText().charAt(0),
-            letterNode.get("value").asInt()), letterNode.get("count").asInt());
+      HashMap<Character, Letter> letters = new HashMap<Character, Letter>();
+      Iterator<JsonNode> it = jsonNode.get("letters").elements();
+      while (it.hasNext()) {
+        letterNode = it.next();
+        letters.put(letterNode.get("letter").asText().charAt(0),
+            new Letter(letterNode.get("letter").asText().charAt(0), letterNode.get("value").asInt(),
+                letterNode.get("count").asInt()));
       }
       JsonNode fieldNode;
       int wordMultiplier, letterMultiplier;
       List<Field> specialFields = new ArrayList<Field>();
 
-      while (jsonNode.get("specialFields").elements().hasNext()) {
+      it = jsonNode.get("specialFields").elements();
+      while (it.hasNext()) {
         wordMultiplier = 1;
         letterMultiplier = 1;
-        fieldNode = jsonNode.get("specialFields").elements().next();
+        fieldNode = it.next();
 
         if (fieldNode.has("WordMultiplier")) {
           wordMultiplier = fieldNode.get("WordMultiplier").asInt();

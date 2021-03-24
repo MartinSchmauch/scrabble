@@ -3,14 +3,14 @@ package mechanic;
 // ** @author ldreyer
 
 public class Player {
-  private String playerId;
+  private String id;
   private String password;
   private String nickname;
   private String avatar;
   private int volume;
 
-  public Player(String playerId, String password, String nickname, String avatar, int volume) {
-    this.playerId = playerId;
+  public Player(String id, String password, String nickname, String avatar, int volume) {
+    this.id = id;
     this.password = password;
     this.nickname = nickname;
     this.avatar = avatar;
@@ -42,7 +42,7 @@ public class Player {
   }
 
   public String getID() {
-    return playerId;
+    return id;
   }
 
   public String getPassword() {
