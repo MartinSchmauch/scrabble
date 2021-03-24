@@ -5,12 +5,11 @@ package mechanic;
 public class Letter {
   private char letter;
   private int letterValue;
-  private int count;
+  private Field field;
 
-  public Letter(char letter, int letterValue, int count) {
+  public Letter(char letter, int letterValue) {
     this.letter = letter;
     this.letterValue = letterValue;
-    this.count = count;
   }
 
   public char getLetter() {
@@ -29,11 +28,11 @@ public class Letter {
     this.letterValue = letterValue;
   }
 
-  public int getCount() {
-    return count;
-  }
+public Field getField() {
+	return field;
+}
 
-  public void setCount(int count) {
-    this.count = count;
-  }
+public void setField(Field field) {
+	this.field = field;
+}
 }
