@@ -5,15 +5,14 @@ package mechanic;
 public class Field {
 
   private Letter letter;
-  private int letterMultiplierValue;
-  private int wordMultiplierValue;
+  private int letterMultiplier;
+  private int wordMultiplier;
   private int xCoordinate;
   private int yCoordinate;
 
-  public Field(int letterMultiplierValue, int wordMultiplierValue, int xCoordinate,
-      int yCoordinate) {
-    this.letterMultiplierValue = letterMultiplierValue;
-    this.wordMultiplierValue = wordMultiplierValue;
+  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
+    this.letterMultiplier = letterMultiplier;
+    this.wordMultiplier = wordMultiplier;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
   }
@@ -22,46 +21,46 @@ public class Field {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
   }
-  
+
   public Letter getLetter() {
-		return letter;
-	}
+    return letter;
+  }
 
-	public void setLetter(Letter letter) {
-		this.letter = letter;
-	}
+  public void setLetter(Letter letter) {
+    this.letter = letter;
+  }
 
-	public int getLetterMultiplierValue() {
-		return letterMultiplierValue;
-	}
+  public int getLetterMultiplier() {
+    return letterMultiplier;
+  }
 
-	public void setLetterMultiplierValue(int letterMultiplierValue) {
-		this.letterMultiplierValue = letterMultiplierValue;
-	}
+  public void setLetterMultiplier(int letterMultiplier) {
+    this.letterMultiplier = letterMultiplier;
+  }
 
-	public int getWordMultiplierValue() {
-		return wordMultiplierValue;
-	}
+  public int getWordMultiplier() {
+    return wordMultiplier;
+  }
 
-	public void setWordMultiplierValue(int wordMultiplierValue) {
-		this.wordMultiplierValue = wordMultiplierValue;
-	}
+  public void setWordMultiplier(int wordMultiplier) {
+    this.wordMultiplier = wordMultiplier;
+  }
 
-	public int getxCoordinate() {
-		return xCoordinate;
-	}
+  public int getxCoordinate() {
+    return xCoordinate;
+  }
 
-	public void setxCoordinate(int xCoordinate) {
-		this.xCoordinate = xCoordinate;
-	}
+  public void setxCoordinate(int xCoordinate) {
+    this.xCoordinate = xCoordinate;
+  }
 
-	public int getyCoordinate() {
-		return yCoordinate;
-	}
+  public int getyCoordinate() {
+    return yCoordinate;
+  }
 
-	public void setyCoordinate(int yCoordinate) {
-		this.yCoordinate = yCoordinate;
-	}
+  public void setyCoordinate(int yCoordinate) {
+    this.yCoordinate = yCoordinate;
+  }
 }
 
 
