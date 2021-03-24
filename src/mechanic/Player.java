@@ -1,28 +1,28 @@
-package game;
-
-import java.io.IOException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+package mechanic;
 
 // ** @author ldreyer
 
 public class Player {
-  private final String playerId;
+  private String playerId;
   private String password;
   private String nickname;
   private String avatar;
+  private int volume;
 
-  public Player(String playerId, String password, String config) {
+  public Player(String playerId, String password, String nickname, String avatar, int volume) {
     this.playerId = playerId;
     this.password = password;
+    this.nickname = nickname;
+    this.avatar = avatar;
+    this.volume = volume;
+  }
 
-    ObjectMapper objectMapper = new ObjectMapper();
-    try {
-      PlayerSettings settings = objectMapper.readValue(config, PlayerSettings.class);
-      this.nickname = settings.getNickname();
-      this.avatar = settings.getAvatar();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public int getVolume() {
+    return volume;
+  }
+
+  public void setVolume(int volume) {
+    this.volume = volume;
   }
 
   public String getNickname() {
