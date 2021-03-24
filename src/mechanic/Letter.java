@@ -9,9 +9,10 @@ public class Letter {
 
   private Field field;
 
-  public Letter(char letter, int letterValue) {
+  public Letter(char letter, int letterValue, int count) {
     this.letter = letter;
     this.letterValue = letterValue;
+    this.count = count;
   }
 
   public char getLetter() {
