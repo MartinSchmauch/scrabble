@@ -4,15 +4,14 @@ package mechanic;
 
 public class Field {
   Letter coveredBy;
-  int letterMultiplierValue;
-  int wordMultiplierValue;
+  int letterMultiplier;
+  int wordMultiplier;
   int xCoordinate;
   int yCoordinate;
 
-  public Field(int letterMultiplierValue, int wordMultiplierValue, int xCoordinate,
-      int yCoordinate) {
-    this.letterMultiplierValue = letterMultiplierValue;
-    this.wordMultiplierValue = wordMultiplierValue;
+  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
+    this.letterMultiplier = letterMultiplier;
+    this.wordMultiplier = wordMultiplier;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
   }
@@ -30,20 +29,20 @@ public class Field {
     this.coveredBy = coveredBy;
   }
 
-  public int getLetterMultiplierValue() {
-    return letterMultiplierValue;
+  public int getLetterMultiplier() {
+    return letterMultiplier;
   }
 
-  public int setLetterMultiplierValue() {
-    return letterMultiplierValue;
+  public int setLetterMultiplier() {
+    return letterMultiplier;
   }
 
-  public int getWordMultiplierValue() {
-    return wordMultiplierValue;
+  public int getWordMultiplier() {
+    return wordMultiplier;
   }
 
-  public int setWordMultiplierValue() {
-    return wordMultiplierValue;
+  public int setWordMultiplier() {
+    return wordMultiplier;
   }
 
   public int getxCoordinate() {

@@ -1,0 +1,22 @@
+{
+	"id": "0001",
+	"password": "12345",
+	"avatar": "resources/scrabbleBoard.svg",
+	"nickname": "ScrabbleGamer",
+	"volume": "60",
+	"theme": {
+		"name": "light",
+		"boardColor": "8FB492",
+		"boardGridColor": "FFFFFF",
+		"tileColor": "E2BDA0",
+		"tileBorderColor": "707070",
+		"DLSColor": "99F1F",
+		"TLSColor": "77AAFF",
+		"DWSColor": "F99BFF",
+		"TWSColor": "FF7A7A", 
+		"borderColor": "707070",
+		"bgColor": "FFFFFF",
+		"lightText": "FFFFFF",
+		"darkText": "707070"
+	}
+}
