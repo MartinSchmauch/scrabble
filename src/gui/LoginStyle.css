@@ -1,0 +1,16 @@
+
+
+#scrabble{
+	-fx-font-family: "Times New Roman", Times, serif;
+	-fx-font-size:100.0px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.8), 10.0, 0.0, 0.0, 0.0);
+}
+.root{
+	-fx-background-color: linear-gradient(to right, #218f33, #83d490);
+}
+
+#joinGame{
+	-fx-font-size:25px;
+	-fx-color: red;
+	-fx-background-color: radial-gradient(radius 150%, #fcfcfc,#015c1f);
+}
