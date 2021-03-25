@@ -24,7 +24,6 @@ public class LoginScreenFXML extends Application {
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setResizable(false);
 		stage.setTitle("Scrabble3");
 		stage.show();
 	}

@@ -1,6 +1,7 @@
 package gui.LoginScreen;
 
 /** @Author nilbecke **/
+
 import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +14,7 @@ public class OpenTutorial {
 
 	/**
 	 * Opens ScrabvleRulebook.pdf
-	 * Can be accessed staticly as the Rules don´t change
+	 * Can be accessed statically as the Rules don´t change
 	 */
 	
 	public static void open() {
