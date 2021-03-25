@@ -1,4 +1,4 @@
-package gui;
+package gui.LoginScreen;
 
 import java.util.Optional;
 
@@ -36,8 +36,11 @@ public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 				connection.setContentText("Connection to " + result);
 				connection.show();
 			}
-
-		} else {
+			
+		} else if(button.getText().equals("Exit")) {
+			System.exit(0);
+			
+		}else {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Too early");
 			alert.setHeaderText(null);
