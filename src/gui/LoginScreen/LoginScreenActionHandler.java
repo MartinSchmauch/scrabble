@@ -1,21 +1,28 @@
 package gui.LoginScreen;
 
+/** @Author nilbecke **/
+
 import java.util.Optional;
-
-//** @Author nilbecke
-
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.TextInputDialog;
-import javafx.stage.Stage;
+
+/**
+ * This Class is a Basic Handler for all the input options present in the Login
+ * Screen
+ **/
 
 public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 
+	/**
+	 * Handles the different Buttons in the Login Screen
+	 * 
+	 * @param Input event
+	 * @see Reaction to given input
+	 **/
 	@Override
 	public void handle(ActionEvent e) {
 		Button button = (Button) e.getSource();
@@ -36,7 +43,6 @@ public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 				connection.setHeaderText(null);
 				connection.setContentText("Connection to " + result);
 				connection.show();
-
 			}
 			break;
 		case "Exit":
@@ -44,14 +50,14 @@ public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 			break;
 
 		case "Tutorial":
-			new OpenTutorial().open();
+			OpenTutorial.open();
 			break;
-			
+
 		default:
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Too early");
 			alert.setHeaderText(null);
-			alert.setContentText("Not Yet Implemented :D");
+			alert.setContentText("Function for " + button.getText() + " Not Yet Implemented :D");
 			alert.show();
 		}
 	}
