@@ -21,26 +21,33 @@ public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 		Button button = (Button) e.getSource();
 		System.out.println(button.getText());
 
-		if (button.getText().equals("Join")) {
+		switch (button.getText()) {
+		case "Join":
 			TextInputDialog join = new TextInputDialog("");
 			join.setTitle("Join Game");
 			join.setHeaderText(null);
 			join.setContentText("Enter Link");
 
 			Optional<String> result = join.showAndWait();
-			
+
 			if (result.isPresent()) {
 				Alert connection = new Alert(AlertType.CONFIRMATION);
 				connection.setTitle("Connecting Game");
 				connection.setHeaderText(null);
 				connection.setContentText("Connection to " + result);
 				connection.show();
+
 			}
-			
-		} else if(button.getText().equals("Exit")) {
+			break;
+		case "Exit":
 			System.exit(0);
+			break;
+
+		case "Tutorial":
+			new OpenTutorial().open();
+			break;
 			
-		}else {
+		default:
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("Too early");
 			alert.setHeaderText(null);
@@ -48,5 +55,4 @@ public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 			alert.show();
 		}
 	}
-
 }
