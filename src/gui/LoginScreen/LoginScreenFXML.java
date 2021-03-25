@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -20,6 +21,7 @@ public class LoginScreenFXML extends Application {
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
 		Parent root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);

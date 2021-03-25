@@ -9,9 +9,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.paint.LinearGradient?>
-<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginScreen.LoginScreenActionHandler">
@@ -54,7 +51,7 @@
                </tooltip>
             </Button>
             <Label layoutX="81.0" layoutY="368.0" text="Settings" />
-            <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="57.0" layoutX="88.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="57.0" layoutX="88.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;;">
                <image>
                   <Image url="@../images/Settings.png" />
                </image>
@@ -64,7 +61,7 @@
                   <Tooltip text="Change Settings" />
                </tooltip></Button>
             <Label layoutX="214.0" layoutY="368.0" text="Statistics" />
-            <ImageView accessibleRole="BUTTON" fitHeight="32.0" fitWidth="43.0" layoutX="216.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView accessibleRole="BUTTON" fitHeight="32.0" fitWidth="43.0" layoutX="216.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;;">
                <image>
                   <Image url="@../images/statistics.png" />
                </image>
@@ -107,26 +104,10 @@
    <center>
       <AnchorPane prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="42.0" layoutY="207.0" rotate="-16.4" text="SCRABBLE" textAlignment="CENTER">
+            <Label layoutX="17.0" layoutY="212.0" rotate="-16.4" style="-fx-font-weight: bold;" text="scrabble" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
                <font>
-                  <Font name="Times New Roman Bold" size="35.0" />
+                  <Font name="ScrambleMixed" size="50.0" />
                </font>
-               <textFill>
-                  <LinearGradient endX="1.0" endY="1.0">
-                     <stops>
-                        <Stop>
-                           <color>
-                              <Color red="1.0" green="1.0" blue="1.0" />
-                           </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                           <color>
-                              <Color />
-                           </color>
-                        </Stop>
-                     </stops>
-                  </LinearGradient>
-               </textFill>
                <tooltip>
                   <Tooltip text="Best Scrabble in da whole world :D #scrabble3FTW">
                      <font>
@@ -135,18 +116,18 @@
                   </Tooltip>
                </tooltip>
             </Label>
-            <Label layoutX="24.0" layoutY="354.0" text="Eary Alpha Testphase" />
-            <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="9.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+            <Label layoutX="8.0" layoutY="368.0" text="Eary Alpha Testphase" />
+            <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="9.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;">
                <image>
                   <Image url="@../images/Questionmark.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="71.0" fitWidth="72.0" layoutX="89.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" rotate="-16.4">
+            <ImageView fitHeight="71.0" fitWidth="72.0" layoutX="85.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" rotate="-16.4">
                <image>
                   <Image url="@../images/logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="5.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" text="Tutorial">
+            <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" text="Tutorial">
                <tooltip>
                   <Tooltip text="Show Tutorial" />
                </tooltip>

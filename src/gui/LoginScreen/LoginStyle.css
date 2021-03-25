@@ -1,8 +1,15 @@
 
 
-#scrabble{
-	-fx-font-family: "Times New Roman", Times, serif;
-	-fx-font-size:100.0px;
+@font-face {
+    font-family:'Scrabble';
+    src: url('Scrabble.ttf');
+}
+
+
+
+.text{
+	-fx-font-family: "Scrabble";
+	-fx-font-size:35px;
 	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.8), 10.0, 0.0, 0.0, 0.0);
 }
 .root{
