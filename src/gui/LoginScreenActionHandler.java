@@ -21,7 +21,7 @@ public class LoginScreenActionHandler implements EventHandler<ActionEvent> {
 		Button button = (Button) e.getSource();
 		System.out.println(button.getText());
 
-		if (button.getText().equals("Join Game")) {
+		if (button.getText().equals("Join")) {
 			TextInputDialog join = new TextInputDialog("");
 			join.setTitle("Join Game");
 			join.setHeaderText(null);
