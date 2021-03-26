@@ -6,13 +6,13 @@ public class Letter {
   private char letter;
   private int letterValue;
   private int count;
-
   private Field field;
 
-  public Letter(char letter, int letterValue, int count) {
+  public Letter(char letter, int letterValue, int count, Field field) {
     this.letter = letter;
     this.letterValue = letterValue;
     this.count = count;
+    this.field = field;
   }
 
   public char getLetter() {

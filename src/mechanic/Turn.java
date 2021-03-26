@@ -14,37 +14,47 @@ public class Turn {
   private Letter[] laydDownLetters;
   private Word[] words; // Array, that contains all Words, that result from the lay down letters
   private int turnScore;
-  private static String baseDir = System.getProperty("user.dir")
+
+private static String baseDir = System.getProperty("user.dir")
       + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
 
   private static File file =
       new File(baseDir + "Collins Scrabble Words (2019) with definitions.txt");
+  
+  
+  public Turn(Letter[] laydDownLetters) {
+	  this.laydDownLetters = laydDownLetters;
+  }
+  
 
   // calculate all Words, that result from the lay down letters
   public void calculateWords() {
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
 
-      Pattern p = Pattern.compile("\\w");
-      String line;
-      while ((line = br.readLine()) != null) {
-        Matcher m = p.matcher(line);
-        m.find();
-        String s = line.substring(m.regionStart(), m.end());
-        System.out.println(s);
+        Pattern p = Pattern.compile("\\w*");
+        String line;
+        while ((line = br.readLine()) != null) {
+          Matcher m = p.matcher(line);
+          if(!line.isEmpty()) {
+  	        m.find();
+  	        String w = line.substring(m.regionStart(), m.end());
+  	        String explanation = line.substring(m.end()+1);
+  	        System.out.println(w + " " + explanation);
+          }
+        }
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
 
 
   // calculate the Score resulting from all emerging Words
-  public void calculateTurnScore(Turn turn) {
+  public void calculateTurnScore() {
 
     // calculate word score
-    for (Word w : words) {
+    for (Word w : this.words) {
       int localWordMultiplier = 1;
       int singleWordScore = 0;
       for (Letter l : w.getLetters()) {
@@ -52,7 +62,7 @@ public class Turn {
         localWordMultiplier = localWordMultiplier * l.getField().getWordMultiplier();
       }
       singleWordScore = singleWordScore * localWordMultiplier;
-      turn.turnScore = turn.turnScore + singleWordScore;
+      this.turnScore = this.turnScore + singleWordScore;
     }
 
     // set all multipliers to 1
@@ -64,18 +74,34 @@ public class Turn {
     }
   }
 
+	
+	  public void setLaydDownLetters(Letter[] laydDownLetters) {
+	    this.laydDownLetters = laydDownLetters;
+	  }
+	
+	  public Letter[] getLaydDownLetters() {
+	    return laydDownLetters;
+	  }
+	  
+	  public Word[] getWords() {
+		return words;
+	}
+		
+	
+	public void setWords(Word[] words) {
+		this.words = words;
+	}
+	public int getTurnScore() {
+		return turnScore;
+	}
+	
+	
+	public void setTurnScore(int turnScore) {
+		this.turnScore = turnScore;
+	}
 
-  public void setLaydDownLetters(Letter[] laydDownLetters) {
-    this.laydDownLetters = laydDownLetters;
-  }
 
-  public Letter[] getLaydDownLetters() {
-    return laydDownLetters;
-  }
-  /*
-   * Field l2, l3, l4, l5; Field l1 = new Field(1, 2, 1, 1); l2 = new Field(2, 1, 1, 1); l3 = new
-   * Field(1, 1, 1, 1); l4 = new Field(1, 1, 1, 1); l5 = new Field(1, 1, 1, 1);
-   */
+
 
 }
 
