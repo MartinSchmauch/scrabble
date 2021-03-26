@@ -3,49 +3,38 @@ package mechanic;
 // ** @author lurny
 
 public class Letter {
-  private char letter;
-  private int letterValue;
-  private int count;
-  private Field field;
+  private final char LETTER;
+  private final int VALUE;
+  private final int COUNT;
+  private int remaining;
 
-  public Letter(char letter, int letterValue, int count, Field field) {
-    this.letter = letter;
-    this.letterValue = letterValue;
-    this.count = count;
-    this.field = field;
+  public Letter(char letter, int letterValue, int count) {
+    this.LETTER = letter;
+    this.VALUE = letterValue;
+    this.COUNT = count;
+    this.remaining = count;
   }
 
   public char getLetter() {
-    return letter;
-  }
-
-  public void setLetter(char letter) {
-    this.letter = letter;
+    return LETTER;
   }
 
   public int getLetterValue() {
-    return letterValue;
-  }
-
-  public void setLetterValue(int letterValue) {
-    this.letterValue = letterValue;
-  }
-
-  public Field getField() {
-    return field;
-  }
-
-  public void setField(Field field) {
-    this.field = field;
+    return VALUE;
   }
 
   // ** @author ldreyer
   public int getCount() {
-    return count;
+    return COUNT;
   }
 
   // ** @author ldreyer
-  public void setCount(int count) {
-    this.count = count;
+  public int getRemaining() {
+    return this.remaining;
+  }
+
+  // ** @author ldreyer
+  public void setRemaining(int remaining) {
+    this.remaining = remaining;
   }
 }

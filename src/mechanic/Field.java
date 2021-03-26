@@ -4,46 +4,32 @@ package mechanic;
 
 public class Field {
 
-  private Letter letter;
-  private int letterMultiplier;
-  private int wordMultiplier;
+  private Tile tile;
   private int xCoordinate;
   private int yCoordinate;
+  private int letterMultiplier;
+  private int wordMultiplier;
 
   public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
-    this.letterMultiplier = letterMultiplier;
-    this.wordMultiplier = wordMultiplier;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
+    this.letterMultiplier = letterMultiplier;
+    this.wordMultiplier = wordMultiplier;
   }
 
   public Field(int xCoordinate, int yCoordinate) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
+    this.letterMultiplier = 1;
+    this.wordMultiplier = 1;
   }
 
-  public Letter getLetter() {
-    return letter;
+  public Tile getTile() {
+    return tile;
   }
 
-  public void setLetter(Letter letter) {
-    this.letter = letter;
-  }
-
-  public int getLetterMultiplier() {
-    return letterMultiplier;
-  }
-
-  public void setLetterMultiplier(int letterMultiplier) {
-    this.letterMultiplier = letterMultiplier;
-  }
-
-  public int getWordMultiplier() {
-    return wordMultiplier;
-  }
-
-  public void setWordMultiplier(int wordMultiplier) {
-    this.wordMultiplier = wordMultiplier;
+  public void setTile(Tile tile) {
+    this.tile = tile;
   }
 
   public int getxCoordinate() {
@@ -60,6 +46,22 @@ public class Field {
 
   public void setyCoordinate(int yCoordinate) {
     this.yCoordinate = yCoordinate;
+  }
+
+  public int getLetterMultiplier() {
+    return letterMultiplier;
+  }
+
+  public void setLetterMultiplier(int letterMultiplier) {
+    this.letterMultiplier = letterMultiplier;
+  }
+
+  public int getWordMultiplier() {
+    return wordMultiplier;
+  }
+
+  public void setWordMultiplier(int wordMultiplier) {
+    this.wordMultiplier = wordMultiplier;
   }
 }
 

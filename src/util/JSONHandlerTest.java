@@ -11,7 +11,6 @@ public class JSONHandlerTest {
 
   private JSONHandler jH;
   private Player p;
-  private GameSettings settings;
 
   @Before
   public void setUp() throws Exception {
@@ -34,10 +33,10 @@ public class JSONHandlerTest {
     assertEquals(p.getNickname(), "ScrabbleGamer");
     assertNotNull(p.getVolume());
 
-    this.settings = jH.loadGameSettings("resources/defaultGameSettings.json");
-    assertEquals(settings.getTimePerPlayer(), 1500);
-    assertEquals(settings.getLetters().get('A').getLetterValue(), 1);
-    assertEquals(settings.getSpecialFields().get(0).getWordMultiplier(), 2);
+    jH.loadGameSettings("resources/defaultGameSettings.json");
+    assertEquals(GameSettings.getTimePerPlayer(), 1500);
+    assertEquals(GameSettings.getLetters().get('A').getLetterValue(), 1);
+    assertEquals(GameSettings.getSpecialFields().get(0).getWordMultiplier(), 2);
   }
 
 }

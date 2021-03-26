@@ -121,11 +121,16 @@ public class JSONHandler {
             fieldNode.get("y").asInt()));
       }
 
-      settings = new GameSettings(jsonNode.get("timePerPlayer").asInt(),
-          jsonNode.get("maxOvertime").asInt(), jsonNode.get("maxScore").asInt(),
-          jsonNode.get("gameBoardSize").asInt(), jsonNode.get("dictionary").asText(),
-          jsonNode.get("AIdifficulty").asText(), jsonNode.get("gameCountdown").asInt(),
-          jsonNode.get("bingo").asInt(), letters, specialFields);
+      GameSettings.setTimePerPlayer(jsonNode.get("timePerPlayer").asInt());
+      GameSettings.setMaxOvertime(jsonNode.get("maxOvertime").asInt());
+      GameSettings.setMaxScore(jsonNode.get("maxScore").asInt());
+      GameSettings.setGameBoardSize(jsonNode.get("gameBoardSize").asInt());
+      GameSettings.setDictionary(jsonNode.get("dictionary").asText());
+      GameSettings.setAiDifficulty(jsonNode.get("AIdifficulty").asText());
+      GameSettings.setGameCountdown(jsonNode.get("gameCountdown").asInt());
+      GameSettings.setBingo(jsonNode.get("bingo").asInt());
+      GameSettings.setLetters(letters);
+      GameSettings.setSpecialFields(specialFields);
 
     } catch (IOException e2) {
       e2.printStackTrace();

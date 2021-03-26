@@ -3,21 +3,21 @@ package mechanic;
 // ** @author lurny
 
 public class Word {
-  private Letter[] letters;
+  private Tile[] tiles;
 
-  public Word(Letter[] letters) {
-    this.letters = letters;
+  public Word(Tile[] tiles) {
+    this.tiles = tiles;
   }
-  
+
   public void calculateTurnScore(Word word) {
-	  
+
   }
 
-  public Letter[] getLetters() {
-    return letters;
+  public Tile[] getTiles() {
+    return tiles;
   }
 
-  public void setLetters(Letter[] letters) {
-    this.letters = letters;
+  public void setTiles(Tile[] tiles) {
+    this.tiles = tiles;
   }
 }
