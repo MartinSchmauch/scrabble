@@ -1,4 +1,4 @@
-package gui.LoginScreen;
+package gui;
 
 //** @author nilbecke **//
 
@@ -13,6 +13,8 @@ import javafx.stage.StageStyle;
 /** This Class launches the Login Screen of the Scrabble Application **/
 
 public class LoginScreenFXML extends Application {
+	
+	private Parent root;
 
 	/**
 	 * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create
@@ -22,12 +24,20 @@ public class LoginScreenFXML extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
-		Parent root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
+		this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setTitle("Scrabble3");
 		stage.show();
+	}
+	
+	public Parent getParent() {
+		return this.root;
+	}
+	
+	public LoginScreenFXML getLoginScreen() {
+		return this;
 	}
 
 	public static void main(String[] args) {
