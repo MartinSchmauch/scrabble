@@ -68,7 +68,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			connection = new Alert(AlertType.ERROR);
 			connection.setTitle("Connection Error");
 			connection.setHeaderText(null);
-			connection.setContentText("Must enter a Link");
+			connection.setContentText("Must enter a Link ");
 			connection.show();
 		} else {
 			connection = new Alert(AlertType.CONFIRMATION);
