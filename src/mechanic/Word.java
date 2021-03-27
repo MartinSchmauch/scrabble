@@ -1,23 +1,25 @@
 package mechanic;
 
+import java.util.List;
+
 // ** @author lurny
 
 public class Word {
-  private Tile[] tiles;
+  private List<Tile> tiles;
 
-  public Word(Tile[] tiles) {
+  public Word(List<Tile> tiles) {
     this.tiles = tiles;
   }
 
-  public void calculateTurnScore(Word word) {
-
-  }
-
-  public Tile[] getTiles() {
+  public List<Tile> getTiles() {
     return tiles;
   }
-
-  public void setTiles(Tile[] tiles) {
-    this.tiles = tiles;
+  
+  public String toString() {
+		String wordString = "";
+		for(Tile t: this.tiles) {
+			wordString = wordString + t.getLetter().getChar();
+		}
+		return wordString;
   }
 }

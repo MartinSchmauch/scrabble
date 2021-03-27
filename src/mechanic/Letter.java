@@ -3,24 +3,24 @@ package mechanic;
 // ** @author lurny
 
 public class Letter {
-  private final char LETTER;
+  private final char CHAR;
   private final int VALUE;
   private final int COUNT;
   private int remaining;
 
   public Letter(char letter, int letterValue, int count) {
-    this.LETTER = letter;
+    this.CHAR = letter;
     this.VALUE = letterValue;
     this.COUNT = count;
     this.remaining = count;
   }
 
-  public char getLetter() {
-    return LETTER;
+  public char getChar() {
+    return this.CHAR;
   }
 
   public int getLetterValue() {
-    return VALUE;
+    return this.VALUE;
   }
 
   // ** @author ldreyer

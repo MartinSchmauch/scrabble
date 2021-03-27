@@ -6,18 +6,16 @@ import game.GameSettings;
 public class Tile {
 
   final boolean IS_JOKER;
-
   private Letter letter;
   private Field field;
-
-  boolean onGameBoard;
-  boolean onRack;
+  private boolean onGameBoard;
+  private boolean onRack;
 
 
   public Tile(Letter letter, Field field) {
     this.letter = letter;
     this.field = field;
-    this.IS_JOKER = (letter.getLetter() == '*');
+    this.IS_JOKER = (letter.getChar() == '*');
   }
 
   public Field getField() {
@@ -36,12 +34,101 @@ public class Tile {
     }
   }
 
-  public int getLetter() {
-    return this.letter.getLetter();
+  public Letter getLetter() {
+    return this.letter;
   }
 
   public void setLetter(Letter letter) {
     this.letter = letter;
   }
+
+    // ** @author lurny
+	public boolean isOnGameBoard() {
+		return onGameBoard;
+	}
+
+	// ** @author lurny
+	public void setOnGameBoard(boolean onGameBoard) {
+		this.onGameBoard = onGameBoard;
+	}
+	
+	// ** @author lurny
+	public boolean isOnRack() {
+		return onRack;
+	}
+	
+    // ** @author lurny
+	public void setOnRack(boolean onRack) {
+		this.onRack = onRack;
+	}
+	
+    // ** @author lurny
+	public Tile getTopTile() {
+		Field f = this.getField().getTop();
+		if(f.equals(null)) {
+			return null;
+		}
+		else {
+			Tile t = f.getTile();
+			if(t == null) {
+				return null;
+			}
+			else {
+				return t;
+			}	
+		}
+	}
+	
+    // ** @author lurny
+	public Tile getBottomTile() {
+		Field f = this.getField().getBottom();
+		if(f.equals(null)) {
+			return null;
+		}
+		else {
+			Tile t = f.getTile();
+			if(t== null) {
+				return null;
+			}
+			else {
+				return t;
+			}	
+		}	
+	}
+	
+    // ** @author lurny
+	public Tile getLeftTile() {
+		Field f = this.getField().getLeft();
+		if(f.equals(null)) {
+			return null;
+		}
+		else {
+			Tile t = f.getTile();
+			if(t== null) {
+				return null;
+			}
+			else {
+				return t;
+			}	
+		}	
+	}
+	
+    // ** @author lurny
+	public Tile getRightTile() {
+		Field f = this.getField().getRight();
+		if(f.equals(null)) {
+			return null;
+		}
+		else {
+			Tile t = f.getTile();
+			if(t== null) {
+				return null;
+			}
+			else {
+				return t;
+			}	
+		}	
+	}
+	
 
 }
