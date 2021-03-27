@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 /**
  * This Class is a Basic Handler for all the input options present in the Login
@@ -45,7 +46,10 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			case "Tutorial":
 				OpenTutorial.open();
 				break;
-
+				
+			case "Settings":
+				new SettingsScreen().start(new Stage());
+				break;
 			default:
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Too early");
