@@ -3,19 +3,34 @@ package mechanic;
 // ** @author ldreyer
 
 public class Player {
-  private String id;
-  private String password;
+  private final String ID;
   private String nickname;
   private String avatar;
   private int volume;
+  private Tile[] rack;
+  static final int RACK_FIELDS = 7;
 
-  public Player(String id, String password, String nickname, String avatar, int volume) {
-    this.id = id;
-    this.password = password;
+
+  public Player(String id, String nickname, String avatar, int volume) {
+    this.ID = id;
     this.nickname = nickname;
     this.avatar = avatar;
+
     this.volume = volume;
+
+    this.rack = new Tile[RACK_FIELDS];
   }
+
+
+  public Tile[] getRack() {
+    return rack;
+  }
+
+
+  public void setRack(Tile[] rack) {
+    this.rack = rack;
+  }
+
 
   public int getVolume() {
     return volume;
@@ -42,15 +57,7 @@ public class Player {
   }
 
   public String getID() {
-    return id;
-  }
-
-  public String getPassword() {
-    return password;
-  }
-
-  public void setPassword(String password) {
-    this.password = password;
+    return ID;
   }
 
 }
