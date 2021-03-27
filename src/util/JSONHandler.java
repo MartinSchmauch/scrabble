@@ -48,9 +48,8 @@ public class JSONHandler {
 
       JsonNode jsonNode = objectMapper.readTree(json.toString());
 
-      player = new Player(jsonNode.get("id").asText(), jsonNode.get("password").asText(),
-          jsonNode.get("nickname").asText(), jsonNode.get("avatar").asText(),
-          jsonNode.get("volume").asInt());
+      player = new Player(jsonNode.get("id").asText(), jsonNode.get("nickname").asText(),
+          jsonNode.get("avatar").asText(), jsonNode.get("volume").asInt());
     } catch (IOException e2) {
       e2.printStackTrace();
     }

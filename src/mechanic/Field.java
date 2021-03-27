@@ -11,8 +11,16 @@ public class Field {
   private int letterMultiplier;
   private int wordMultiplier;
 
-  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate, GameBoard gameBoard) {
-	this.gameBoard = gameBoard;
+  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate,
+      GameBoard gameBoard) {
+    this.gameBoard = gameBoard;
+    this.xCoordinate = xCoordinate;
+    this.yCoordinate = yCoordinate;
+    this.letterMultiplier = letterMultiplier;
+    this.wordMultiplier = wordMultiplier;
+  }
+
+  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.letterMultiplier = letterMultiplier;
@@ -20,7 +28,7 @@ public class Field {
   }
 
   public Field(int xCoordinate, int yCoordinate, GameBoard gameBoard) {
-	this.gameBoard = gameBoard;
+    this.gameBoard = gameBoard;
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.letterMultiplier = 1;
@@ -66,45 +74,45 @@ public class Field {
   public void setWordMultiplier(int wordMultiplier) {
     this.wordMultiplier = wordMultiplier;
   }
-  
+
+  public void setGameBoard(GameBoard gameBoard) {
+    this.gameBoard = gameBoard;
+  }
+
   // ** @author lurny
   public Field getLeft() {
-	  if(this.xCoordinate>0) {
-		  return this.gameBoard.getField(this.xCoordinate-1, this.yCoordinate);
-	  }
-	  else {
-		  return null;
-	  }
+    if (this.xCoordinate > 0) {
+      return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
+    } else {
+      return null;
+    }
   }
-  
+
   // ** @author lurny
   public Field getRight() {
-	  if(this.xCoordinate<=13) {
-		  return this.gameBoard.getField(this.xCoordinate+1, this.yCoordinate);
-	  }
-	  else {
-		  return null;
-	  }
+    if (this.xCoordinate <= 13) {
+      return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
+    } else {
+      return null;
+    }
   }
-  
+
   // ** @author lurny
   public Field getTop() {
-	  if(this.yCoordinate>0) {
-		  return this.gameBoard.getField(this.xCoordinate, this.yCoordinate-1);
-	  }
-	  else {
-		  return null;
-	  }
+    if (this.yCoordinate > 0) {
+      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
+    } else {
+      return null;
+    }
   }
-  
+
   // ** @author lurny
   public Field getBottom() {
-	  if(this.yCoordinate<=13) {
-		  return this.gameBoard.getField(this.xCoordinate, this.yCoordinate+1);
-	  }
-	  else {
-		  return null;
-	  }
+    if (this.yCoordinate <= 13) {
+      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
+    } else {
+      return null;
+    }
   }
 }
 
