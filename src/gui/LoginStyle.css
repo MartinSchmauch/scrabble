@@ -21,3 +21,6 @@
 	-fx-color: red;
 	-fx-background-color: radial-gradient(radius 150%, #fcfcfc,#015c1f);
 }
+
+.button{
+	-fx-border-radius: 12px;

@@ -15,12 +15,12 @@
    <right>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="342.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="409.0" fitWidth="910.0" layoutX="-303.0" layoutY="-240.0" opacity="0.1" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+            <ImageView fitHeight="409.0" fitWidth="910.0" layoutX="-305.0" layoutY="-231.0" opacity="0.1" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                <image>
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
             </ImageView>
-            <Button layoutX="240.0" layoutY="160.0" mnemonicParsing="false" onAction="#handle" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);" text="Join">
+            <Button layoutX="240.0" layoutY="160.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Join">
                <tooltip>
                   <Tooltip text="Join a Link" />
                </tooltip></Button>
@@ -32,7 +32,7 @@
                   <Tooltip text="Enter Link to Join Game" />
                </tooltip>
             </TextField>
-            <Button layoutX="65.0" layoutY="208.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="208.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);" text="Host Game">
+            <Button layoutX="65.0" layoutY="208.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="208.0" stylesheets="@Buttons.css" text="Host Game">
                <tooltip>
                   <Tooltip text="Host a new Game" />
                </tooltip>
@@ -127,7 +127,7 @@
                   <Image url="@images/logo.png" />
                </image>
             </ImageView>
-            <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" text="Tutorial">
+            <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" stylesheets="@Buttons.css" text="Tutorial">
                <tooltip>
                   <Tooltip text="Show Tutorial" />
                </tooltip>
