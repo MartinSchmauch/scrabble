@@ -1,14 +1,20 @@
 package gui;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 /** @author nilbecke **/
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.Slider;
 import javafx.stage.Stage;
 
 /** Handles user-inputs in the Gamesettings screen **/
@@ -17,6 +23,8 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 
 	@FXML
 	private MenuButton mb;
+	private Slider slider;
+	private Label durationLabel;
 
 	/**
 	 * Primary handling of user inputs. Redistributes inputs to sub-methods based on
@@ -32,7 +40,8 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 		case "MenuItem":
 			menuItem((MenuItem) e.getSource());
 			break;
-			
+		case "RadioButton":
+			radioButton((RadioButton) e.getSource());
 		default:
 			break;
 		}
@@ -52,6 +61,8 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 		case "Tutorial":
 			OpenTutorial.open();
 			break;
+		case "OK":
+			break;
 		default:
 			break;
 		}
@@ -64,6 +75,14 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 	 **/
 	public void menuItem(MenuItem item) {
 		System.out.println(item.getParentPopup().getId());
+	}
+
+	public void radioButton(RadioButton b) {
+		if (b.isSelected()) {
+			b.setText("On");
+		} else {
+			b.setText("Off");
+		}
 	}
 
 }
