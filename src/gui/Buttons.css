@@ -1,0 +1,23 @@
+.button{
+	-transition-duration: 1.5s;
+	-fx-border-color:  linear-gradient(to right, #218f33, #83d490);
+	-fx-border-radius: 24px;
+	-fx-background-color: transparent;
+}
+
+.button:hover{
+	-fx-background-radius: 24px;
+	-fx-background-color: linear-gradient(to right, #218f33, #83d490);
+	-fx-color: transparent;
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.button:active{
+	-fx-background-color:white;
+}
+
+.radio-button:selected .radio .dot {
+    -fx-background-color: linear-gradient(to right, #218f33, #83d490);
+    -fx-background-insets: 0;
+}
+	

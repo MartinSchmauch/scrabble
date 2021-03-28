@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginScreenActionHandler">
+   <right>
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="342.0" style="-fx-background-color: #f0f0f0;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="409.0" fitWidth="910.0" layoutX="-305.0" layoutY="-231.0" opacity="0.1" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+               <image>
+                  <Image url="@images/ScrabbleBoard.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="240.0" layoutY="160.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Join">
+               <tooltip>
+                  <Tooltip text="Join a Link" />
+               </tooltip></Button>
+            <TextField id="LinkField" fx:id="LinkField" layoutX="76.0" layoutY="159.0" onAction="#handle" promptText="Enter Link" style="-fx-border-color: linear-gradient(to right, #218f33, #83d490); -fx-border-width: 0px 0px 2px; -fx-background-color: transparent;">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+               <tooltip>
+                  <Tooltip text="Enter Link to Join Game" />
+               </tooltip>
+            </TextField>
+            <Button layoutX="65.0" layoutY="208.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="208.0" stylesheets="@Buttons.css" text="Host Game">
+               <tooltip>
+                  <Tooltip text="Host a new Game" />
+               </tooltip>
+               <font>
+                  <Font name="Century Gothic" size="12.0" />
+               </font></Button>
+            <Label accessibleRole="BUTTON" layoutX="118.0" layoutY="266.0" text="&lt;Username&gt;" />
+            <ImageView fitHeight="36.0" fitWidth="26.0" layoutX="201.0" layoutY="262.0" pickOnBounds="true" preserveRatio="true" style="-fx-opacity: 1;">
+               <image>
+                  <Image url="@images/avatar.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="114.0" layoutY="262.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: transparent;" text="Account">
+               <tooltip>
+                  <Tooltip text="View Personal Account" />
+               </tooltip>
+            </Button>
+            <Label layoutX="81.0" layoutY="368.0" text="Settings" />
+            <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="57.0" layoutX="88.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;;">
+               <image>
+                  <Image url="@images/Settings.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="86.0" layoutY="332.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="35.0" prefWidth="34.0" style="-fx-background-color: transparent;" text="Settings">
+               <tooltip>
+                  <Tooltip text="Change Settings" />
+               </tooltip></Button>
+            <Label layoutX="214.0" layoutY="368.0" text="Statistics" />
+            <ImageView accessibleRole="BUTTON" fitHeight="32.0" fitWidth="43.0" layoutX="216.0" layoutY="335.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;;">
+               <image>
+                  <Image url="@images/statistics.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="223.0" layoutY="334.0" minWidth="28.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="32.0" prefWidth="28.0" style="-fx-background-color: transparent;" text="Statistics">
+               <tooltip>
+                  <Tooltip text="Personal Statistics" />
+               </tooltip></Button>
+            <Label layoutX="159.0" layoutY="368.0" text="Info" />
+            <ImageView fitHeight="33.0" fitWidth="31.0" layoutX="155.0" layoutY="336.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/About.png" />
+               </image>
+            </ImageView>
+            <Button accessibleRole="IMAGE_VIEW" layoutX="150.0" layoutY="330.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="43.0" prefWidth="38.0" style="-fx-background-color: transparent;" text="Info">
+               <tooltip>
+                  <Tooltip text="About Scrabble3" />
+               </tooltip></Button>
+            <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="289.0" layoutY="19.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/Close.png" />
+               </image>
+               <effect>
+                  <ColorAdjust brightness="-1.0" contrast="-1.0" hue="0.1" saturation="0.17" />
+               </effect>
+            </ImageView>
+            <Button layoutX="290.0" layoutY="14.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="12.0" prefWidth="26.0" style="-fx-border-color: transparent;" text="Exit">
+               <tooltip>
+                  <Tooltip text="Exit Game" />
+               </tooltip>
+            </Button>
+            <Label layoutX="86.0" layoutY="89.0" text="Welcome Back!">
+               <font>
+                  <Font name="Century Gothic Bold" size="22.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </right>
+   <center>
+      <AnchorPane prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="17.0" layoutY="212.0" rotate="-16.4" style="-fx-font-weight: bold;" text="scrabble" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+               <font>
+                  <Font name="ScrambleMixed" size="50.0" />
+               </font>
+               <tooltip>
+                  <Tooltip text="Best Scrabble in da whole world :D #scrabble3FTW">
+                     <font>
+                        <Font name="Century Gothic" size="12.0" />
+                     </font>
+                  </Tooltip>
+               </tooltip>
+            </Label>
+            <Label layoutX="8.0" layoutY="368.0" text="Eary Alpha Testphase" />
+            <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="9.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;">
+               <image>
+                  <Image url="@images/Questionmark.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="71.0" fitWidth="72.0" layoutX="85.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" rotate="-16.4">
+               <image>
+                  <Image url="@images/logo.png" />
+               </image>
+            </ImageView>
+            <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" stylesheets="@Buttons.css" text="Tutorial">
+               <tooltip>
+                  <Tooltip text="Show Tutorial" />
+               </tooltip>
+            </Button>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
