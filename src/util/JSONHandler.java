@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import game.GameSettings;
@@ -26,33 +27,15 @@ public class JSONHandler {
 
   public JSONHandler() {
     this.objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
 
   public Player loadPlayerProfile(String path) {
-    BufferedReader br = null;
     Player player = null;
-
     try {
-      br = new BufferedReader(new InputStreamReader(new FileInputStream(path)));
-    } catch (FileNotFoundException e1) {
-      e1.printStackTrace();
-    }
-
-    StringBuffer json = new StringBuffer();
-    String line;
-
-    try {
-      while ((line = br.readLine()) != null) {
-        json.append(line);
-      }
-      br.close();
-
-      JsonNode jsonNode = objectMapper.readTree(json.toString());
-
-      player = new Player(jsonNode.get("nickname").asText(), jsonNode.get("avatar").asText(),
-          jsonNode.get("volume").asInt());
-    } catch (IOException e2) {
-      e2.printStackTrace();
+      player = objectMapper.readValue(new File(path), Player.class);
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     return player;

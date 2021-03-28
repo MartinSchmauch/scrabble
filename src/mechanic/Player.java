@@ -2,6 +2,9 @@ package mechanic;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** @author ldreyer */
 
@@ -12,6 +15,7 @@ public class Player {
   private String avatar;
   private int volume;
 
+  @JsonIgnore
   private Field[] rack;
   public String customGameSettings;
 
@@ -29,7 +33,9 @@ public class Player {
     }
   }
 
-  public Player(String nickname, String avatar, int volume) {
+  @JsonCreator
+  public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
+      @JsonProperty("volume") int volume) {
     this.ID = totalPlayerCount;
     totalPlayerCount++;
     this.nickname = nickname;
@@ -55,6 +61,7 @@ public class Player {
     this.rack[index].setTile(tile);
   }
 
+  @JsonIgnore
   public Field getFreeRackField() {
     int i = 0;
     while (rack[i].getTile() != null) {
@@ -76,6 +83,7 @@ public class Player {
     return tile;
   }
 
+  @JsonIgnore
   public List<Tile> getRackTiles() {
     List<Tile> tiles = new ArrayList<Tile>();
     for (int i = 0; i < rack.length; i++) {
@@ -86,6 +94,7 @@ public class Player {
     return tiles;
   }
 
+  @JsonIgnore
   public int getTileCountOnRack() {
     return this.getRackTiles().size();
   }
