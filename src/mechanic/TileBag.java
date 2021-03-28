@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import game.GameSettings;
 
-// ** @author ldreyer
+/** @author ldreyer */
 
 public class TileBag {
   private List<Tile> tiles;

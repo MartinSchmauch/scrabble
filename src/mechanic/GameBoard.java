@@ -1,6 +1,6 @@
 package mechanic;
 
-// ** @author ldreyer
+/** @author ldreyer */
 
 public class GameBoard {
   Field[][] fields;
@@ -9,7 +9,8 @@ public class GameBoard {
     this.fields = new Field[size][size];
     for (int i = 0; i < size; i++) {
       for (int j = 0; j < size; j++) {
-        this.fields[i][j] = new Field(i, j, this);
+        this.fields[i][j] = new Field(i, j);
+        this.fields[i][j].setGameBoard(this);
       }
     }
   }

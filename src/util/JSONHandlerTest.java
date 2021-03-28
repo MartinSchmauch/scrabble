@@ -7,6 +7,8 @@ import org.junit.Test;
 import game.GameSettings;
 import mechanic.Player;
 
+/** @author ldreyer */
+
 public class JSONHandlerTest {
 
   private JSONHandler jH;

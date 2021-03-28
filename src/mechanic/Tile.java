@@ -2,12 +2,14 @@ package mechanic;
 
 import game.GameSettings;
 
-// ** @author ldreyer
+/** @author ldreyer */
+
 public class Tile {
 
   final boolean IS_JOKER;
   private Letter letter;
   private Field field;
+  private boolean isPlayed;
   private boolean onGameBoard;
   private boolean onRack;
 
@@ -23,6 +25,7 @@ public class Tile {
   }
 
   public void setField(Field field) {
+    field.setTile(this);
     this.field = field;
   }
 
@@ -42,93 +45,92 @@ public class Tile {
     this.letter = letter;
   }
 
-    // ** @author lurny
-	public boolean isOnGameBoard() {
-		return onGameBoard;
-	}
+  public boolean isPlayed() {
+    return isPlayed;
+  }
 
-	// ** @author lurny
-	public void setOnGameBoard(boolean onGameBoard) {
-		this.onGameBoard = onGameBoard;
-	}
-	
-	// ** @author lurny
-	public boolean isOnRack() {
-		return onRack;
-	}
-	
-    // ** @author lurny
-	public void setOnRack(boolean onRack) {
-		this.onRack = onRack;
-	}
-	
-    // ** @author lurny
-	public Tile getTopTile() {
-		Field f = this.getField().getTop();
-		if(f.equals(null)) {
-			return null;
-		}
-		else {
-			Tile t = f.getTile();
-			if(t == null) {
-				return null;
-			}
-			else {
-				return t;
-			}	
-		}
-	}
-	
-    // ** @author lurny
-	public Tile getBottomTile() {
-		Field f = this.getField().getBottom();
-		if(f.equals(null)) {
-			return null;
-		}
-		else {
-			Tile t = f.getTile();
-			if(t== null) {
-				return null;
-			}
-			else {
-				return t;
-			}	
-		}	
-	}
-	
-    // ** @author lurny
-	public Tile getLeftTile() {
-		Field f = this.getField().getLeft();
-		if(f.equals(null)) {
-			return null;
-		}
-		else {
-			Tile t = f.getTile();
-			if(t== null) {
-				return null;
-			}
-			else {
-				return t;
-			}	
-		}	
-	}
-	
-    // ** @author lurny
-	public Tile getRightTile() {
-		Field f = this.getField().getRight();
-		if(f.equals(null)) {
-			return null;
-		}
-		else {
-			Tile t = f.getTile();
-			if(t== null) {
-				return null;
-			}
-			else {
-				return t;
-			}	
-		}	
-	}
-	
+  public void setPlayed(boolean played) {
+    this.isPlayed = played;
+  }
+
+  // ** @author lurny
+  public boolean isOnGameBoard() {
+    return onGameBoard;
+  }
+
+  // ** @author lurny
+  public void setOnGameBoard(boolean onGameBoard) {
+    this.onGameBoard = onGameBoard;
+  }
+
+  // ** @author lurny
+  public boolean isOnRack() {
+    return onRack;
+  }
+
+  // ** @author lurny
+  public void setOnRack(boolean onRack) {
+    this.onRack = onRack;
+  }
+
+  // ** @author lurny
+  public Tile getTopTile() {
+    Field f = this.getField().getTop();
+    if (f.equals(null)) {
+      return null;
+    } else {
+      Tile t = f.getTile();
+      if (t == null) {
+        return null;
+      } else {
+        return t;
+      }
+    }
+  }
+
+  // ** @author lurny
+  public Tile getBottomTile() {
+    Field f = this.getField().getBottom();
+    if (f.equals(null)) {
+      return null;
+    } else {
+      Tile t = f.getTile();
+      if (t == null) {
+        return null;
+      } else {
+        return t;
+      }
+    }
+  }
+
+  // ** @author lurny
+  public Tile getLeftTile() {
+    Field f = this.getField().getLeft();
+    if (f.equals(null)) {
+      return null;
+    } else {
+      Tile t = f.getTile();
+      if (t == null) {
+        return null;
+      } else {
+        return t;
+      }
+    }
+  }
+
+  // ** @author lurny
+  public Tile getRightTile() {
+    Field f = this.getField().getRight();
+    if (f.equals(null)) {
+      return null;
+    } else {
+      Tile t = f.getTile();
+      if (t == null) {
+        return null;
+      } else {
+        return t;
+      }
+    }
+  }
 
 }

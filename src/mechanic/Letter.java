@@ -1,6 +1,6 @@
 package mechanic;
 
-// ** @author ldreyer
+/** @author ldreyer */
 
 public class Letter {
   private final char CHAR;

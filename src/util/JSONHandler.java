@@ -18,7 +18,8 @@ import mechanic.Letter;
 import mechanic.Player;
 
 
-// ** @author ldreyer
+/** @author ldreyer */
+
 public class JSONHandler {
 
   private ObjectMapper objectMapper;
@@ -48,8 +49,8 @@ public class JSONHandler {
 
       JsonNode jsonNode = objectMapper.readTree(json.toString());
 
-      player = new Player(jsonNode.get("id").asText(), jsonNode.get("nickname").asText(),
-          jsonNode.get("avatar").asText(), jsonNode.get("volume").asInt());
+      player = new Player(jsonNode.get("nickname").asText(), jsonNode.get("avatar").asText(),
+          jsonNode.get("volume").asInt());
     } catch (IOException e2) {
       e2.printStackTrace();
     }

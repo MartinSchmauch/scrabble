@@ -1,26 +1,32 @@
-// ** @author lurny
 package game;
 
-import static org.junit.Assert.*;
-
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import mechanic.Player;
 
-import util.JSONHandler;
+
+/**
+ * @author lurny
+ * @author ldreyer
+ */
 
 public class GameControllerTest {
-	GameController gc;
-	@Before
-	public void before() {
-		 gc =  new GameController();
-		 JSONHandler jH = new JSONHandler();
-		 jH.loadGameSettings("resources/defaultGameSettings.json");
-	}
+  GameController gc;
+  GameState gS;
+  Player host;
 
-	@Test
-	public void setUpGameBoardTest() {
-		gc.setUpGameboard();
-		assertEquals(gc.getGameBoard().getField(7-1, 7-1).getLetterMultiplier(), 2);
-	}
+  @Before
+  public void before() {
+    host = new Player("Host");
+    gS = new GameState(host);
+    gc = new GameController(gS);
+
+  }
+
+  @Test
+  public void setUpGameBoardTest() {
+    assertEquals(gc.getGameBoard().getField(7 - 1, 7 - 1).getLetterMultiplier(), 2);
+  }
 
 }

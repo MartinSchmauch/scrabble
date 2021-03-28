@@ -1,6 +1,6 @@
 package mechanic;
 
-// ** @author ldreyer
+/** @author ldreyer */
 
 public class Field {
 
@@ -11,15 +11,6 @@ public class Field {
   private int letterMultiplier;
   private int wordMultiplier;
 
-  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate,
-      GameBoard gameBoard) {
-    this.gameBoard = gameBoard;
-    this.xCoordinate = xCoordinate;
-    this.yCoordinate = yCoordinate;
-    this.letterMultiplier = letterMultiplier;
-    this.wordMultiplier = wordMultiplier;
-  }
-
   public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
@@ -27,8 +18,7 @@ public class Field {
     this.wordMultiplier = wordMultiplier;
   }
 
-  public Field(int xCoordinate, int yCoordinate, GameBoard gameBoard) {
-    this.gameBoard = gameBoard;
+  public Field(int xCoordinate, int yCoordinate) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
     this.letterMultiplier = 1;
@@ -40,6 +30,7 @@ public class Field {
   }
 
   public void setTile(Tile tile) {
+    tile.setField(this);
     this.tile = tile;
   }
 

@@ -1,36 +1,85 @@
 package game;
 
-import mechanic.*;
+import java.util.ArrayList;
+import java.util.List;
+import mechanic.Player;
+import util.JSONHandler;
 
-//** @author nilbecke
+/**
+ * This class surveils the game's state.
+ * 
+ * @author nilbecke, ldreyer
+ */
 
 public class GameState {
 
-	boolean isRunning;
-	Player currentPlayer;
-	Player[] allPlayers;
+  boolean isRunning;
+  GameSettings gameSettings;
+  GameController gameController;
+  Player host;
+  Player currentPlayer;
+  List<Player> allPlayers;
 
-	public GameState(Player[] players) {
-		this.isRunning = true;
-		this.currentPlayer = players[0];
-		this.allPlayers = players;
-	}
+  public GameState(Player host) {
+    this.isRunning = false;
+    // this.gameSettings = new GameSettings();
+    this.host = host;
+    this.allPlayers = new ArrayList<Player>();
+    this.allPlayers.add(host);
 
-	public boolean getGameRunning() {
-		return this.isRunning;
-	}
+    JSONHandler jH = new JSONHandler();
+    if (host.getCustomGameSettings() != null) {
+      jH.loadGameSettings(host.getCustomGameSettings());
+    } else {
+      jH.loadGameSettings("resources/defaultGameSettings.json");
+    }
+  }
 
-	public void setRunning(boolean running) {
-		this.isRunning = running;
-	}
+  public boolean getGameRunning() {
+    return this.isRunning;
+  }
 
-	public Player getCurrentPlayer() {
-		return this.currentPlayer;
-	}
+  public void setRunning(boolean running) {
+    this.isRunning = running;
+  }
 
-	public Player[] getAllPlayers() {
-		return allPlayers;
+  public Player getCurrentPlayer() {
+    return this.currentPlayer;
+  }
 
-	}
+  public List<Player> getAllPlayers() {
+    return allPlayers;
+  }
+
+  public boolean joinGame(Player player) {
+    if (isRunning) {
+      return false;
+    }
+
+    this.allPlayers.add(player);
+    return true;
+  }
+
+  public boolean leaveGame(Player player) {
+    if (player.equals(host)) {
+      stopGame();
+    }
+
+    return allPlayers.remove(player);
+  }
+
+  public boolean startGame(Player player) {
+    if (player.equals(host)) {
+      this.gameController = new GameController(this);
+      this.isRunning = true;
+      return true;
+    }
+
+    return false;
+  }
+
+  public void stopGame() {
+    this.isRunning = false;
+  }
 
 }

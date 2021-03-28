@@ -5,7 +5,8 @@ import java.util.List;
 import mechanic.Field;
 import mechanic.Letter;
 
-// ** @author ldreyer
+/** @author ldreyer */
+
 public class GameSettings {
   private static int timePerPlayer;
   private static int maxOvertime;
