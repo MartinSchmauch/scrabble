@@ -1,14 +1,20 @@
 /** @author lurny */
 package network.messages;
 
-import network.messages.Message;
-import network.messages.MessageType;
+import mechanic.PlayerData;
 
-public class ConnectMessage extends Message{
-	private static final long serialVersionUID = 1L;
+public class ConnectMessage extends Message {
+  private static final long serialVersionUID = 1L;
 
-	public ConnectMessage(String name) {
-		super(MessageType.CONNECT, name);
-	}
-	
+  private PlayerData playerInfo;
+
+  public ConnectMessage(PlayerData playerInfo) {
+    super(MessageType.CONNECT, playerInfo.getNickname());
+    this.playerInfo = playerInfo;
+  }
+
+  public PlayerData getPlayerInfo() {
+    return this.playerInfo;
+  }
+
 }

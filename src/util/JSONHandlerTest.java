@@ -22,7 +22,6 @@ public class JSONHandlerTest {
   @Test
   public void test() {
     this.p = jH.loadPlayerProfile("resources/playerProfile.json");
-    assertNotNull(p.getID());
     assertNotNull(p.getAvatar());
     assertEquals(p.getNickname(), "ScrabbleGamer");
     assertNotNull(p.getVolume());
@@ -30,7 +29,6 @@ public class JSONHandlerTest {
     jH.savePlayerProfile("resources/playerProfileTest.json", p);
     this.p = jH.loadPlayerProfile("resources/playerProfileTest.json");
 
-    assertNotNull(p.getID());
     assertNotNull(p.getAvatar());
     assertEquals(p.getNickname(), "ScrabbleGamer");
     assertNotNull(p.getVolume());

@@ -1,5 +1,6 @@
 package mechanic;
 
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -9,10 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** @author ldreyer */
 
 public class Player {
-  private static int totalPlayerCount = 1;
-  private final int ID;
-  private String nickname;
-  private String avatar;
+
+  private PlayerData info;
   private int volume;
 
   @JsonIgnore
@@ -23,9 +22,7 @@ public class Player {
   static final int RACK_FIELDS = 12;
 
   public Player(String nickname) {
-    this.ID = totalPlayerCount;
-    totalPlayerCount++;
-    this.nickname = nickname;
+    this.info = new PlayerData(nickname);
 
     this.rack = new Field[RACK_FIELDS];
     for (int i = 0; i < RACK_FIELDS; i++) {
@@ -36,11 +33,8 @@ public class Player {
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    this.ID = totalPlayerCount;
-    totalPlayerCount++;
-    this.nickname = nickname;
-    this.avatar = avatar;
-
+    PlayerData info = new PlayerData(nickname);
+    info.setAvatar(avatar);
     this.volume = volume;
 
     this.rack = new Field[RACK_FIELDS];
@@ -48,6 +42,27 @@ public class Player {
       this.rack[i] = new Field(i, -1);
     }
   }
+
+  /*
+   * PLAYER INFO
+   */
+
+  public void setNickname(String nickname) {
+    this.info.setNickname(nickname);
+  }
+
+  public String getNickname() {
+    return this.info.getNickname();
+  }
+
+  public void setAvatar(String avatar) {
+    this.info.setAvatar(avatar);
+  }
+
+  public Image getAvatar() {
+    return this.info.getAvatar();
+  }
+
 
   /*
    * RACK METHODS
@@ -110,7 +125,7 @@ public class Player {
 
 
   /*
-   * VOLUME GETTER SETTER
+   * PLAYER SETTINGS
    */
 
   public int getVolume() {
@@ -121,26 +136,6 @@ public class Player {
     this.volume = volume;
   }
 
-  /*
-   * PROFILE ATTRIBUTES
-   */
-
-  public String getNickname() {
-    return nickname;
-  }
-
-  public void setNickname(String nickname) {
-    this.nickname = nickname;
-  }
-
-  public String getAvatar() {
-    return avatar;
-  }
-
-  public void setAvatar(String avatar) {
-    this.avatar = avatar;
-  }
-
   public String getCustomGameSettings() {
     return customGameSettings;
   }
@@ -149,9 +144,5 @@ public class Player {
     this.customGameSettings = customGameSettings;
   }
 
-
-  public int getID() {
-    return ID;
-  }
 
 }
