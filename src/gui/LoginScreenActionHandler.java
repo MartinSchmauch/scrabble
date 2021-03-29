@@ -33,8 +33,6 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			join();
 		} else {
 			Button button = (Button) e.getSource();
-			System.out.println(button.getText());
-
 			switch (button.getText()) {
 			case "Join":
 				join();
@@ -46,7 +44,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			case "Tutorial":
 				OpenTutorial.open();
 				break;
-				
+
 			case "Settings":
 				new SettingsScreen().start(new Stage());
 				break;

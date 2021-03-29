@@ -69,7 +69,7 @@
                         <ColorAdjust brightness="-1.0" contrast="-1.0" hue="0.1" saturation="0.17" />
                      </effect>
                   </ImageView>
-                  <Button layoutX="292.0" layoutY="18.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="12.0" prefWidth="26.0" style="-fx-border-color: transparent;" text="Exit">
+                  <Button fx:id="exit" layoutX="292.0" layoutY="18.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="12.0" prefWidth="26.0" style="-fx-border-color: transparent;" text="Exit">
                      <tooltip>
                         <Tooltip text="Exit Game" />
                      </tooltip>
@@ -81,16 +81,20 @@
                   </Label>
                   <Button fx:id="cu" layoutX="220.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="117.0" stylesheets="@Buttons.css" text="Change Username" />
                   <Label layoutX="24.0" layoutY="205.0" text="Username" />
-                  <Button fx:id="save" layoutX="264.0" layoutY="345.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Save" />
+                  <Button fx:id="save" layoutX="271.0" layoutY="359.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Save">
+                     <tooltip>
+                        <Tooltip text="Save changes and exit screen" />
+                     </tooltip></Button>
                   <TextField fx:id="namefield" layoutX="91.0" layoutY="200.0" opacity="0.0" prefHeight="27.0" prefWidth="112.0" style="-fx-border-color: linear-gradient(to right, #218f33, #83d490); -fx-background-color: transparent; -fx-border-width: 0px 0px 2px;" />
                   <Label layoutX="24.0" layoutY="256.0" text="Volume" />
                   <Slider fx:id="volbar" blockIncrement="5.0" layoutX="220.0" layoutY="257.0" onInputMethodTextChanged="#slider" onKeyPressed="#slider" onKeyReleased="#slider" onKeyTyped="#slider" onMouseReleased="#slider" prefHeight="14.0" prefWidth="117.0" stylesheets="@Buttons.css" />
                   <Label fx:id="vol" layoutX="272.0" layoutY="273.0" text="Label" />
-                  <ImageView fitHeight="75.0" fitWidth="77.0" layoutX="28.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="avatar" fitHeight="75.0" fitWidth="77.0" layoutX="28.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@images/avatar.png" />
                      </image>
                   </ImageView>
+                  <Label layoutX="24.0" layoutY="310.0" text="Avatar" />
                </children>
             </AnchorPane>
          </children>

@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
@@ -25,6 +26,8 @@ public class UserSettingsScreen extends Application {
 	private Label nickname, vol;
 	@FXML
 	private Slider volbar;
+	@FXML
+	private ImageView avatar;
 	
 
 	/**
@@ -36,9 +39,10 @@ public class UserSettingsScreen extends Application {
 	public void initialize() {
 		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
 		this.nickname.setText(this.player.getNickname());
-		System.out.println(this.player.getVolume());
 		this.volbar.setValue((double)this.player.getVolume());
 		this.vol.setText((int)this.volbar.getValue()+"");
+		//this.avatar.setImage(this.player.getAvatar());
+		
 	}
 
 	/**

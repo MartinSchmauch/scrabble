@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Stage;
 
 import java.util.Optional;
 
@@ -44,9 +45,12 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 				textfieldToLabel();
 			}
 			break;
-		
+		//Save changes and exit screen
 		case "save":
+		case "exit":
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
+			Stage s = (Stage) b.getScene().getWindow();
+			s.close();
 			break;
 		}
 	}
@@ -75,6 +79,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	public void textfieldToLabel() {
 		this.namefield.setOpacity(0);
 		this.nickname.setText(this.namefield.getText());
+		this.player.setNickname(this.nickname.getText());
 		cu.setText("Change Username");
 	}
 
@@ -93,10 +98,6 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 		dialog.setHeaderText(null);
 		dialog.setContentText(content);
 		Optional<String> result = dialog.showAndWait();
-
-		String newName = openInputDialog("Change Username", this.nickname.getText(), "Enter new Username here");
-		this.nickname.setText(newName);
-		this.player.setNickname(newName);
 
 		System.out.println(this.player.getNickname());
 		if (result.isPresent()) {
