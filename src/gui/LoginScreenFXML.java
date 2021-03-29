@@ -1,6 +1,6 @@
 package gui;
 
-//** @author nilbecke **//
+/** @author nilbecke **/
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,12 +13,12 @@ import javafx.stage.StageStyle;
 /** This Class launches the Login Screen of the Scrabble Application **/
 
 public class LoginScreenFXML extends Application {
-	
+
 	private Parent root;
 
 	/**
-	 * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create
-	 * the Login Screen
+	 * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to
+	 * create the Login Screen
 	 */
 
 	@Override
@@ -27,15 +27,15 @@ public class LoginScreenFXML extends Application {
 		this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		stage.initStyle(StageStyle.UNDECORATED);
+		//stage.initStyle(StageStyle.UNDECORATED);
 		stage.setTitle("Scrabble3");
 		stage.show();
 	}
-	
+
 	public Parent getParent() {
 		return this.root;
 	}
-	
+
 	public LoginScreenFXML getLoginScreen() {
 		return this;
 	}

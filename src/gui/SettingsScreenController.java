@@ -1,5 +1,8 @@
 package gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
@@ -8,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -19,7 +23,7 @@ import javafx.stage.Stage;
 
 /** Handles user-inputs in the Gamesettings screen **/
 
-public class SettingsScreenController extends SettingsScreen implements EventHandler<ActionEvent> {
+public class SettingsScreenController extends SettingsScreen implements EventHandler<ActionEvent>, ChangeListener<Number>{
 
 	@FXML
 	private MenuButton mb;
@@ -30,7 +34,7 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 	 * Primary handling of user inputs. Redistributes inputs to sub-methods based on
 	 * the input object
 	 **/
-	@Override
+	@Override @FXML
 	public void handle(ActionEvent e) {
 		System.out.println(e.getSource().getClass().getSimpleName());
 		switch (e.getSource().getClass().getSimpleName()) {
@@ -45,6 +49,12 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 		default:
 			break;
 		}
+	}
+	
+	@Override @FXML
+	public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+		durationLabel.textProperty().setValue(String.valueOf(newValue.intValue()));
+		
 	}
 
 	/**
@@ -62,7 +72,9 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 			OpenTutorial.open();
 			break;
 		case "OK":
-			break;
+			if(slider==null) {
+				System.out.println("Flag");
+			}
 		default:
 			break;
 		}

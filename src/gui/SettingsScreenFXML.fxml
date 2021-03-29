@@ -91,7 +91,7 @@
                   <Button layoutX="187.0" layoutY="215.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change Dictionary" />
                   <Button layoutX="187.0" layoutY="255.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="116.0" stylesheets="@Buttons.css" text="View Dictionary" />
                   <Label layoutX="52.0" layoutY="166.0" prefHeight="17.0" prefWidth="53.0" text="Duration" />
-                  <Slider id="slider" fx:id="slider" blockIncrement="5.0" layoutX="175.0" layoutY="168.0" max="120.0" min="15.0" prefHeight="14.0" prefWidth="94.0" stylesheets="@Buttons.css" value="30.0" />
+                  <Slider id="slider" fx:id="slider" blockIncrement="5.0" layoutX="175.0" layoutY="168.0" max="120.0" min="15.0" prefHeight="14.0" prefWidths="94.0" stylesheets="@Buttons.css" value="30.0" />
                   <Label id="durationLabel" layoutX="215.0" layoutY="183.0" text="30" />
                   <Button layoutX="277.0" layoutY="163.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="OK" />
                </children>
