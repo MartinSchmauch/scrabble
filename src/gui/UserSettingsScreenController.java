@@ -1,12 +1,16 @@
 package gui;
 
-/** @author nilbecke **/
+/** 
+ * @author nilbecke 
+ * Action-Handler of the User Setting Screen
+ * **/
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 
 import java.util.Optional;
@@ -19,21 +23,50 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 
 	@FXML
 	private Label nickname;
+	@FXML
+	private TextField namefield;
+	@FXML
+	private Button cu;
+
+	/** Main handling method of button based user inputs **/
 
 	@Override
 	public void handle(ActionEvent e) {
 		Button b = (Button) e.getSource();
 		switch (b.getId()) {
 		case "cu":
-			String newName = openInputDialog("Change Username", this.nickname.getText(), "Enter new Username here");
-			this.nickname.setText(newName);
-			this.player.setNickname(newName);
-			System.out.println(this.player.getNickname());
+			if (cu.getText().equals("Change Username")) {
+				labelToTextfield();
+			} else {
+				textfieldToLabel();
+			}
 			break;
 		case "save":
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
 			break;
 		}
+	}
+
+	/**
+	 * Allows the User to change his Username. This method deals with graphical
+	 * pleasure
+	 **/
+	public void labelToTextfield() {
+		this.namefield.setText(this.nickname.getText());
+		this.namefield.setOpacity(1);
+		this.nickname.setOpacity(0);
+		cu.setText("Save");
+	}
+
+	/**
+	 * Sets the Usename to a previous user input given in the labelToTextfield ethod
+	 **/
+
+	public void textfieldToLabel() {
+		this.namefield.setOpacity(0);
+		this.nickname.setText(this.namefield.getText());
+		this.nickname.setOpacity(1);
+		cu.setText("Change Username");
 	}
 
 	/**
@@ -51,6 +84,12 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 		dialog.setHeaderText(null);
 		dialog.setContentText(content);
 		Optional<String> result = dialog.showAndWait();
+
+		String newName = openInputDialog("Change Username", this.nickname.getText(), "Enter new Username here");
+		this.nickname.setText(newName);
+		this.player.setNickname(newName);
+
+		System.out.println(this.player.getNickname());
 		if (result.isPresent()) {
 			return result.get();
 		}
