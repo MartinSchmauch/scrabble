@@ -44,9 +44,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 				textfieldToLabel();
 			}
 			break;
-		case "volume":
-			this.player.setVolume((int)this.volbar.getValue());
-			break;
+		
 		case "save":
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
 			break;
@@ -57,6 +55,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 
 	public void slider() {
 		this.vol.setText((int) this.volbar.getValue() + "");
+		this.player.setVolume((int)this.volbar.getValue());
 	}
 
 	/**
@@ -66,7 +65,6 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	public void labelToTextfield() {
 		this.namefield.setText(this.nickname.getText());
 		this.namefield.setOpacity(1);
-		this.nickname.setOpacity(0);
 		cu.setText("Save");
 	}
 
@@ -77,7 +75,6 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	public void textfieldToLabel() {
 		this.namefield.setOpacity(0);
 		this.nickname.setText(this.namefield.getText());
-		this.nickname.setOpacity(1);
 		cu.setText("Change Username");
 	}
 
