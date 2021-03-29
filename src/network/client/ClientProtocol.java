@@ -12,21 +12,21 @@ import network.messages.*;
 
 public class ClientProtocol extends Thread {
 	private ClientUI cui;
-	private String username;
+	private String nickname;
 	private Socket clientSocket;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private boolean running = true;
 	
-	public ClientProtocol(String ip, int port, String username, ClientUI cui) {
+	public ClientProtocol(String ip, int port, String nickname, ClientUI cui) {
 		this.cui = cui;
 		try {
-			this.username = username;
+			this.nickname = nickname;
 			this.clientSocket = new Socket(ip, port);
 			this.out = new ObjectOutputStream(clientSocket.getOutputStream());
 			this.in = new ObjectInputStream(clientSocket.getInputStream());
 	
-			this.out.writeObject(new ConnectMessage(this.username));
+			this.out.writeObject(new ConnectMessage(this.nickname));
 			out.flush();
 			out.reset();
 			System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
@@ -48,10 +48,25 @@ public class ClientProtocol extends Thread {
 
 				switch (m.getMessageType()) {
 				/* ***  Aufgabenteil (a), (b), (c), (d) *** */
-				case UPDATE_TEXT:
-					UpdateMessage update = (UpdateMessage) m;
-					cui.updateWBTextObjectText(update.getID(), update.getNewText());
+				case CONNECTION_REFUSED: 
+					ConnectionRefusedMessage mRef = (ConnectionRefusedMessage)m;
+//					cui.showAlert("Connection refused: " + mRef.getReason());
+//					disconnect(); // und gui informieren (zurück zu login)
+//					cui.resetUI();
 					break;
+				case ID_CONFIRMED:
+					IDConfirmMessage idconMessage = (IDConfirmMessage)m;
+					int id = idconMessage.getID();
+					//id speichern
+					break;
+				case SHUTDOWN:
+//					cui.showAlert("Server is going down immediately");
+//					disconnect(); // Verbindung trennen 
+//					cui.resetUI(); // gui zuruecksetzen (zurück zu login)
+					break;
+				case UPDATE_GAMEBOARD:
+					UpdateGameboardMessage ugMessage = (UpdateGameboardMessage) m;
+					
 				case UPDATE_ALLOW:
 					UpdateRequestMessage updateAllow = (UpdateRequestMessage) m;
 					cui.triggerEdit(updateAllow.getID());
@@ -72,17 +87,6 @@ public class ClientProtocol extends Thread {
 				case SEND_ID:
 					IDConfirmMessage confirm = (IDConfirmMessage) m;
 					cui.updateWBObjectID(confirm.getID(), confirm.getTempID());
-					break;
-				case CONNECTION_REFUSED: 
-					ConnectionRefusedMessage mRef = (ConnectionRefusedMessage)m;
-					cui.showAlert("Connection refused: " + mRef.getReason());
-					disconnect(); // und gui informieren (zurück zu login)
-					cui.resetUI();
-					break;
-				case SERVERSHUTDOWN:
-					cui.showAlert("Server is going down immediately");
-					disconnect(); // Verbindung trennen 
-					cui.resetUI(); // gui zuruecksetzen (zurück zu login)
 					break;
 				default:
 					break;
