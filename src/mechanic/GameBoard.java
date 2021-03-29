@@ -3,7 +3,7 @@ package mechanic;
 /** @author ldreyer */
 
 public class GameBoard {
-  Field[][] fields;
+  private Field[][] fields;
 
   public GameBoard(int size) {
     this.fields = new Field[size][size];
@@ -16,7 +16,7 @@ public class GameBoard {
   }
 
   public Field getField(int xCoordinate, int yCoordinate) {
-    return fields[xCoordinate][yCoordinate];
+    return fields[xCoordinate - 1][yCoordinate - 1];
   }
 
 }
