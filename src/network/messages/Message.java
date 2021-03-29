@@ -1,4 +1,4 @@
-//** author lurny
+//** @author lurny
 package network.messages;
 
 import java.io.Serializable;
