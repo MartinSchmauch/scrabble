@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 
@@ -22,11 +23,13 @@ import util.JSONHandler;
 public class UserSettingsScreenController extends UserSettingsScreen implements EventHandler<ActionEvent> {
 
 	@FXML
-	private Label nickname;
+	private Label nickname, vol;
 	@FXML
 	private TextField namefield;
 	@FXML
 	private Button cu;
+	@FXML
+	private Slider volbar;
 
 	/** Main handling method of button based user inputs **/
 
@@ -41,10 +44,19 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 				textfieldToLabel();
 			}
 			break;
+		case "volume":
+			this.player.setVolume((int)this.volbar.getValue());
+			break;
 		case "save":
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
 			break;
 		}
+	}
+
+	/** Adds volume adaptions to volume label under volume bar **/
+
+	public void slider() {
+		this.vol.setText((int) this.volbar.getValue() + "");
 	}
 
 	/**
@@ -70,7 +82,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	}
 
 	/**
-	 * Opens a dialog window for user inputs
+	 * Opens a dialog window for user inputs (unused)
 	 * 
 	 * @param title     of the dialog window
 	 * @param oldValue: Old value now to be changed

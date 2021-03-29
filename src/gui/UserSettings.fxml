@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -82,6 +83,10 @@
                   <Label layoutX="30.0" layoutY="89.0" text="Username" />
                   <Button fx:id="save" layoutX="264.0" layoutY="345.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Save" />
                   <TextField fx:id="namefield" layoutX="93.0" layoutY="85.0" opacity="0.0" prefHeight="25.0" prefWidth="123.0" style="-fx-border-color: linear-gradient(to right, #218f33, #83d490); -fx-background-color: transparent; -fx-border-width: 0px 0px 2px;" />
+                  <Label layoutX="30.0" layoutY="144.0" text="Volume" />
+                  <Slider fx:id="volbar" layoutX="93.0" layoutY="146.0" onMouseReleased="#slider" prefHeight="14.0" prefWidth="120.0" stylesheets="@Buttons.css" />
+                  <Button fx:id="volume" layoutX="220.0" layoutY="139.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="117.0" stylesheets="@Buttons.css" text="Apply" />
+                  <Label fx:id="vol" layoutX="141.0" layoutY="166.0" text="Label" />
                </children>
             </AnchorPane>
          </children>

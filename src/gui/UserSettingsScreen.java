@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
@@ -21,7 +22,10 @@ public class UserSettingsScreen extends Application {
 	protected Player player;
 
 	@FXML
-	private Label nickname;
+	private Label nickname, vol;
+	@FXML
+	private Slider volbar;
+	
 
 	/**
 	 * initializes the user settings menu by reading json file of the local player
@@ -31,7 +35,10 @@ public class UserSettingsScreen extends Application {
 	@FXML
 	public void initialize() {
 		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
-		this.nickname.setText(player.getNickname());
+		this.nickname.setText(this.player.getNickname());
+		System.out.println(this.player.getVolume());
+		this.volbar.setValue((double)this.player.getVolume());
+		this.vol.setText((int)this.volbar.getValue()+"");
 	}
 
 	/**
