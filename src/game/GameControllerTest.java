@@ -19,14 +19,13 @@ public class GameControllerTest {
   @Before
   public void before() {
     host = new Player("Host");
-    gS = new GameState(host);
+    gS = new GameState(host.getPlayerInfo(), null);
     gc = new GameController(gS);
-
   }
 
   @Test
   public void setUpGameBoardTest() {
-    assertEquals(gc.getGameBoard().getField(7 - 1, 7 - 1).getLetterMultiplier(), 2);
+    assertEquals(gc.getGameBoard().getField(7, 7).getLetterMultiplier(), 2);
   }
 
 }

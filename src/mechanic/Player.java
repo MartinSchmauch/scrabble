@@ -1,14 +1,11 @@
 package mechanic;
 
 
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javafx.scene.image.Image;
 
 
 /** @author ldreyer */
@@ -51,6 +48,10 @@ public class Player {
    * PLAYER INFO
    */
 
+  public PlayerData getPlayerInfo() {
+    return this.info;
+  }
+
   public void setNickname(String nickname) {
     this.info.setNickname(nickname);
   }
@@ -62,14 +63,12 @@ public class Player {
   public void setAvatar(String avatar) {
     this.info.setAvatar(avatar);
   }
-  
+
   public String getAvatar() {
-	  return this.info.getAvatar();
+    return this.info.getAvatar();
   }
 
- 
-  
- 
+
 
   /*
    * RACK METHODS
