@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import gui.FileParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -14,7 +15,8 @@ import javafx.scene.image.WritableImage;
 public class PlayerData {
 	private int id;
 	private String nickname;
-	private Image avatar;
+	private String avatar;
+	
 	// private GameStatistic Statistic;
 
 	public PlayerData(String nickname) {
@@ -29,23 +31,21 @@ public class PlayerData {
 		this.nickname = nickname;
 	}
 
-	public Image getAvatar() {
-		return avatar;
+	public String getAvatar() {
+		
+		return this.avatar;
 	}
+
+	
 
 	/** @author nilbecke */
 	public void setAvatar(String input) {
-		try {
-			BufferedImage bi = ImageIO.read(new File(input));
-			avatar = convert(bi);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		
+		this.avatar = input;
 	}
 
 	/**
+	 * obsolete
 	 * @author nilbecke
 	 * @param input of type Buffered Image
 	 * @return A Java FX Image
@@ -61,11 +61,12 @@ public class PlayerData {
 				}
 			}
 		}
+
 		return (Image) wr;
 	}
 
 	public void setAvatar(Image input) {
-		this.avatar = input;
+		this.avatar = input.getUrl();
 	}
 
 	public int getID() {

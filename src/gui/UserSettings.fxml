@@ -31,7 +31,7 @@
                      </tooltip>
                   </Label>
                   <Label layoutX="8.0" layoutY="368.0" text="Eary Alpha Testphase" />
-                  <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="9.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;">
+                  <ImageView fx:id="question" accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="9.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;">
                      <image>
                         <Image url="@images/Questionmark.png" />
                      </image>
@@ -41,7 +41,7 @@
                         <Image url="@images/Settings.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" text="Tutorial">
+                  <Button fx:id="tut" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="36.0" prefWidth="38.0" style="-fx-background-color: transparent;" text="Tutorial">
                      <tooltip>
                         <Tooltip text="Show Tutorial" />
                      </tooltip>

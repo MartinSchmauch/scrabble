@@ -1,6 +1,7 @@
 package mechanic;
 
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,7 +37,7 @@ public class Player {
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    PlayerData info = new PlayerData(nickname);
+    info = new PlayerData(nickname);
     info.setAvatar(avatar);
     this.volume = volume;
 
@@ -61,11 +62,14 @@ public class Player {
   public void setAvatar(String avatar) {
     this.info.setAvatar(avatar);
   }
-
-  public Image getAvatar() {
-    return this.info.getAvatar();
+  
+  public String getAvatar() {
+	  return this.info.getAvatar();
   }
 
+ 
+  
+ 
 
   /*
    * RACK METHODS

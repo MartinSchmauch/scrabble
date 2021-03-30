@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.image.BufferedImage;
+
 /** 
  * @author nilbecke 
  * Opens the user settings menu
@@ -12,7 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
@@ -27,7 +32,7 @@ public class UserSettingsScreen extends Application {
 	@FXML
 	private Slider volbar;
 	@FXML
-	private ImageView avatar;
+	private ImageView avatar,question;
 	
 
 	/**
@@ -41,9 +46,9 @@ public class UserSettingsScreen extends Application {
 		this.nickname.setText(this.player.getNickname());
 		this.volbar.setValue((double)this.player.getVolume());
 		this.vol.setText((int)this.volbar.getValue()+"");
-		//this.avatar.setImage(this.player.getAvatar());
-		
+		this.avatar.setImage(new Image("file:"+FileParameters.datadir+this.player.getAvatar()));	
 	}
+	
 
 	/**
 	 * Reads the "UserSettingsScreen.fxml" file (@author nilbecke) to create the

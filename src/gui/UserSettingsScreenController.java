@@ -52,6 +52,9 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 			Stage s = (Stage) b.getScene().getWindow();
 			s.close();
 			break;
+		case "tut":
+			OpenTutorial.open();
+			break;
 		}
 	}
 
