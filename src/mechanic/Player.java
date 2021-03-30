@@ -1,11 +1,12 @@
 package mechanic;
 
-import java.awt.Image;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 /** @author ldreyer */
 
@@ -33,7 +34,7 @@ public class Player {
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    PlayerData info = new PlayerData(nickname);
+    info = new PlayerData(nickname);
     info.setAvatar(avatar);
     this.volume = volume;
 
@@ -47,6 +48,10 @@ public class Player {
    * PLAYER INFO
    */
 
+  public PlayerData getPlayerInfo() {
+    return this.info;
+  }
+
   public void setNickname(String nickname) {
     this.info.setNickname(nickname);
   }
@@ -59,9 +64,10 @@ public class Player {
     this.info.setAvatar(avatar);
   }
 
-  public Image getAvatar() {
+  public String getAvatar() {
     return this.info.getAvatar();
   }
+
 
 
   /*

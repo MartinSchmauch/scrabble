@@ -5,7 +5,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import game.GameState;
-import mechanic.PlayerData;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
 import network.messages.LobbyStatusMessage;
@@ -19,7 +18,7 @@ public class ServerProtocol extends Thread {
   private ObjectInputStream in;
   private ObjectOutputStream out;
   private Server server;
-  private PlayerData playerInfo;
+  private String clientName;
   private boolean running = true;
 
   ServerProtocol(Socket client, Server server) {
@@ -28,15 +27,15 @@ public class ServerProtocol extends Thread {
     try {
       out = new ObjectOutputStream(socket.getOutputStream());
       in = new ObjectInputStream(socket.getInputStream());
-      sendInitialGameState();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
   private void sendInitialGameState() throws IOException {
-    GameState gameState = null; // TODO
-    LobbyStatusMessage m = new LobbyStatusMessage(MessageType.LOBBY_STATUS, "host", gameState);
+    GameState gameState = server.getGameState();
+    LobbyStatusMessage m =
+        new LobbyStatusMessage(MessageType.LOBBY_STATUS, server.getHost(), gameState);
     sendToClient(m);
   }
 
@@ -62,23 +61,25 @@ public class ServerProtocol extends Thread {
       if (m.getMessageType() == MessageType.CONNECT) {
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
-        this.playerInfo = cm.getPlayerInfo();
+        this.clientName = cm.getPlayerInfo().getNickname();
         if (server.checkNickname(from)) {
-          Message rmsg = new ConnectionRefusedMessage(MessageType.CONNECTION_REFUSED, "host",
-              "Your nickname was already taken");
+          Message rmsg = new ConnectionRefusedMessage(MessageType.CONNECTION_REFUSED,
+              server.getHost(), "Your nickname was already taken");
           out.writeObject(rmsg);
           out.flush();
           out.reset();
           disconnect();
-        } else if (!from.equals(this.playerInfo.getNickname())) {
-          Message rmsg = new ConnectionRefusedMessage(MessageType.CONNECTION_REFUSED, "host",
-              "Your sender name did not match your nickname. Error.");
+        } else if (!from.equals(this.clientName)) {
+          Message rmsg = new ConnectionRefusedMessage(MessageType.CONNECTION_REFUSED,
+              server.getHost(), "Your sender name did not match your nickname. Error.");
           out.writeObject(rmsg);
           out.flush();
           out.reset();
           disconnect();
         } else {
-          server.addClient(playerInfo, this);
+          server.addClient(cm.getPlayerInfo(), this);
+          server.sendToAllBut(from, cm);
+          sendInitialGameState();
         }
       } else {
         disconnect();
@@ -100,7 +101,7 @@ public class ServerProtocol extends Thread {
     } catch (IOException e) {
       running = false;
       if (socket.isClosed()) {
-        System.out.println("Client: " + playerInfo.getNickname() + "disconnected");
+        System.out.println("Client: " + this.clientName + "disconnected");
       } else {
         try {
           socket.close();

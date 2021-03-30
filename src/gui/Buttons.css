@@ -20,4 +20,10 @@
     -fx-background-color: linear-gradient(to right, #218f33, #83d490);
     -fx-background-insets: 0;
 }
+.slider .track{
+     -fx-background-color: linear-gradient(to right, #218f33, #83d490);
+     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+
 	

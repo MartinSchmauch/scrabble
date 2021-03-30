@@ -1,8 +1,8 @@
 package game;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import mechanic.Player;
+import mechanic.PlayerData;
 import util.JSONHandler;
 
 /**
@@ -15,21 +15,19 @@ public class GameState {
 
   boolean isRunning;
   GameSettings gameSettings;
-  GameController gameController;
-  Player host;
-  Player currentPlayer;
-  List<Player> allPlayers;
+  PlayerData host;
+  String currentPlayer;
+  HashMap<String, PlayerData> allPlayers;
 
-  public GameState(Player host) {
+  public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
-    // this.gameSettings = new GameSettings();
     this.host = host;
-    this.allPlayers = new ArrayList<Player>();
-    this.allPlayers.add(host);
+    this.allPlayers = new HashMap<String, PlayerData>();
+    this.allPlayers.put(this.host.getNickname(), this.host);
 
     JSONHandler jH = new JSONHandler();
-    if (host.getCustomGameSettings() != null) {
-      jH.loadGameSettings(host.getCustomGameSettings());
+    if (customGameSettings != null) {
+      jH.loadGameSettings(customGameSettings);
     } else {
       jH.loadGameSettings("resources/defaultGameSettings.json");
     }
@@ -43,34 +41,33 @@ public class GameState {
     this.isRunning = running;
   }
 
-  public Player getCurrentPlayer() {
+  public String getCurrentPlayer() {
     return this.currentPlayer;
   }
 
-  public List<Player> getAllPlayers() {
-    return allPlayers;
+  public List<PlayerData> getAllPlayers() {
+    return (List<PlayerData>) this.allPlayers.values();
   }
 
-  public boolean joinGame(Player player) {
+  public boolean joinGame(PlayerData player) {
     if (isRunning) {
       return false;
     }
 
-    this.allPlayers.add(player);
+    this.allPlayers.put(player.getNickname(), player);
     return true;
   }
 
-  public boolean leaveGame(Player player) {
-    if (player.equals(host)) {
+  public boolean leaveGame(String player) {
+    if (player.equals(host.getNickname())) {
       stopGame();
     }
 
-    return allPlayers.remove(player);
+    return (allPlayers.remove(player) != null);
   }
 
-  public boolean startGame(Player player) {
-    if (player.equals(host)) {
-      this.gameController = new GameController(this);
+  public boolean startGame(String player) {
+    if (player.equals(host.getNickname())) {
       this.isRunning = true;
       return true;
     }

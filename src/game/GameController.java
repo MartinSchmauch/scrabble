@@ -48,7 +48,8 @@ public class GameController {
 
   public boolean layDownLetterFromRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {
-    if (!gS.currentPlayer.equals(player) || gb.getField(xCoordinate, yCoordinate).getTile() == null
+    if (!gS.currentPlayer.equals(player.getNickname())
+        || gb.getField(xCoordinate, yCoordinate).getTile() == null
         || player.getRackTile(rackFieldIndex) == null) {
       return false;
     }
@@ -65,7 +66,7 @@ public class GameController {
       int xCoordinateAfter, int yCoordinateAfter) {
     Field beforeField = gb.getField(xCoordinateBefore, yCoordinateBefore);
 
-    if (!gS.currentPlayer.equals(player) || beforeField == null
+    if (!gS.currentPlayer.equals(player.getNickname()) || beforeField == null
         || beforeField.getTile().isPlayed()) {
       return false;
     }
@@ -79,7 +80,7 @@ public class GameController {
   public boolean takeTileBackToRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {
     Field beforeField = gb.getField(xCoordinate, yCoordinate);
-    if (!gS.currentPlayer.equals(player) || beforeField == null
+    if (!gS.currentPlayer.equals(player.getNickname()) || beforeField == null
         || player.getRackTile(rackFieldIndex) == null || beforeField.getTile().isPlayed()) {
       return false;
     }
