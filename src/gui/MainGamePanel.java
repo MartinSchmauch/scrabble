@@ -3,12 +3,10 @@ package gui;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-/** @author mschmauc */
+public class MainGamePanel extends Application {
 
-public class ServerUI extends Application {
-
-  public ServerUI() {
-
+  public void createMainGamePanel() {
+    launch();
   }
 
   @Override
@@ -16,5 +14,4 @@ public class ServerUI extends Application {
     // TODO Auto-generated method stub
 
   }
-
 }
