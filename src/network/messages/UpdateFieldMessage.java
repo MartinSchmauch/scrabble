@@ -2,7 +2,6 @@
 package network.messages;
 
 import java.util.List;
-
 import mechanic.Field;
 
 public class UpdateFieldMessage extends Message {
@@ -11,14 +10,14 @@ public class UpdateFieldMessage extends Message {
   private List<Field> fields;
 
 
-  public UpdateFieldMessage(MessageType type, String from, List<Field> fields) {
-    super(type, from);
+  public UpdateFieldMessage(String from, List<Field> fields) {
+    super(MessageType.UPDATE_GAMEBOARD, from);
     this.fields = fields;
   }
 
 
-public List<Field> getFields() {
-	return fields;
-}
+  public List<Field> getFields() {
+    return fields;
+  }
 
 }

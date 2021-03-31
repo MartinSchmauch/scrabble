@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import network.client.ClientProtocol;
 
 /** @author mschmauc */
 
@@ -19,6 +20,8 @@ import javafx.stage.Stage;
 public class ClientUI extends Application { // implements sender?
   private Parent root;
   private static ClientUI instance;
+  private String username;
+  private ClientProtocol connection;
 
   public static void main(String[] args) {
     launch();
@@ -58,5 +61,21 @@ public class ClientUI extends Application { // implements sender?
     primaryStage.setScene(scene1);
     primaryStage.setTitle("Scrabble3");
     primaryStage.show();
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public ClientProtocol getConnection() {
+    return connection;
+  }
+
+  public void setConnection(ClientProtocol connection) {
+    this.connection = connection;
   }
 }

@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.IOException;
 import java.util.Date;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +8,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import mechanic.Field;
 import mechanic.Tile;
+import network.messages.Message;
+import network.messages.SendChatMessage;
 
 /** @author mschmauc */
 
@@ -34,8 +37,8 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @Override
   public void sendChatMessage(String message, Date timeStamp, String sender) {
-    // TODO Auto-generated method stub
-
+    Message m = new SendChatMessage(sender, message, timeStamp);
+    sendMessageToServer(m);
   }
 
   @Override
@@ -56,6 +59,15 @@ public class GamePanelController extends ClientUI implements Sender {
 
   }
 
+  public void sendMessageToServer(Message m) {
+    try {
+      if (getConnection() != null) {
+        getConnection().sendToServer(m);
+      }
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    }
+  }
 
 }
 
