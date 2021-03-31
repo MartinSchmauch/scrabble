@@ -76,7 +76,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	}
 
 	/**
-	 * Sets the Usename to a previous user input given in the labelToTextfield ethod
+	 * Sets the Usename to a previous user input given in the labelToTextfield method
 	 **/
 
 	public void textfieldToLabel() {

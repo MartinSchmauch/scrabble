@@ -15,6 +15,7 @@ import javafx.stage.StageStyle;
 public class LoginScreenFXML extends Application {
 
 	private Parent root;
+	public Stage stage;
 
 	/**
 	 * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to
@@ -29,12 +30,15 @@ public class LoginScreenFXML extends Application {
 		stage.setScene(scene);
 		//stage.initStyle(StageStyle.UNDECORATED);
 		stage.setTitle("Scrabble3");
+		this.stage=stage;
 		stage.show();
 	}
 
 	public Parent getParent() {
 		return this.root;
 	}
+	
+	
 
 	public LoginScreenFXML getLoginScreen() {
 		return this;
