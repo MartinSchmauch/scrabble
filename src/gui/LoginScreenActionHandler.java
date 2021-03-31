@@ -36,6 +36,8 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			switch (button.getText()) {
 			case "Join":
 				join();
+				Stage s = (Stage) button.getScene().getWindow();
+				s.close();
 				break;
 			case "Exit":
 				System.exit(0);
@@ -67,6 +69,13 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 * "Join" Button
 	 **/
 	public void join() {
+		try {
+			new ClientUI().start(new Stage());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		String gameID = LinkField.getText();
 		Alert connection;
 		if (gameID.length() == 0) {
