@@ -3,8 +3,8 @@ package gui;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /** @author mschmauc */
@@ -17,6 +17,7 @@ import javafx.stage.Stage;
  */
 
 public class ClientUI extends Application { // implements sender?
+  private Parent root;
   private static ClientUI instance;
 
   public static void main(String[] args) {
@@ -45,11 +46,17 @@ public class ClientUI extends Application { // implements sender?
 
   }
 
+  public Parent getParent() {
+    return this.root;
+  }
+
+
   @Override
   public void start(Stage primaryStage) throws Exception {
-    HBox box = FXMLLoader.load(new File(FileParameters.fxmlPath).toURI().toURL());
-    Scene scene1 = new Scene(box);
+    this.root = FXMLLoader.load(new File(FileParameters.fxmlPath).toURI().toURL());
+    Scene scene1 = new Scene(root);
     primaryStage.setScene(scene1);
+    primaryStage.setTitle("Scrabble3");
     primaryStage.show();
   }
 }
