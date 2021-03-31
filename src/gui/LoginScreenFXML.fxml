@@ -104,7 +104,7 @@
    <center>
       <AnchorPane prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="17.0" layoutY="212.0" rotate="-16.4" style="-fx-font-weight: bold;" text="scrabble" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="17.0" layoutY="212.0" rotate="-16.4" style="-fx-font-weight: bold;" text="scrabble" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
                <font>
                   <Font name="ScrambleMixed" size="50.0" />
                </font>

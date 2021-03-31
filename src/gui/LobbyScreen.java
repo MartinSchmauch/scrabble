@@ -28,7 +28,7 @@ public class LobbyScreen extends Application{
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			// stage.initStyle(StageStyle.UNDECORATED);
-			stage.setTitle("User Settings");
+			stage.setTitle("Lobby");
 			stage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

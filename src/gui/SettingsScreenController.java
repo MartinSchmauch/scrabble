@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-/** @author nilbecke **/
+
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -21,6 +21,7 @@ import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
 import javafx.stage.Stage;
 
+/** @author nilbecke **/
 /** Handles user-inputs in the Gamesettings screen **/
 
 public class SettingsScreenController extends SettingsScreen implements EventHandler<ActionEvent>, ChangeListener<Number>{

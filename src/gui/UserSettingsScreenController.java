@@ -48,6 +48,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 		//Save changes and exit screen
 		case "save":
 		case "exit":
+			this.player.setNickname(this.namefield.getText());
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
 			Stage s = (Stage) b.getScene().getWindow();
 			s.close();
