@@ -1,6 +1,7 @@
 package network.messages;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /** @author mschmauc */
 
@@ -10,8 +11,9 @@ public class UpdateChatMessage extends Message {
   private LocalDate dateTime;
   private String sender;
 
-  public UpdateChatMessage(String from, String content, LocalDate timeStamp) {
-    super(MessageType.UPDATE_CHAT_TEXT, from);
+
+  public UpdateChatMessage(String from, String content, Date timeSTamp) {
+    super(MessageType.UPDATE_CHAT, from);
     // TODO Auto-generated constructor stub
   }
 

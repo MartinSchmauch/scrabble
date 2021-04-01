@@ -10,7 +10,7 @@ public class GameStatisticMessage extends Message {
   private GameStatistic gameStatistic;
 
   public GameStatisticMessage(String from, GameStatistic gameStatistic) {
-    super(MessageType.GAME_STATISTICS, from);
+    super(MessageType.GAME_STATISTIC, from);
     this.gameStatistic = gameStatistic;
   }
 
