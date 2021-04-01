@@ -55,34 +55,53 @@ public class ClientProtocol extends Thread {
 
 				switch (m.getMessageType()) {
 				case CONNECTION_REFUSED: 
-					ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage)m;					
+					ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage)m;	
+					//tbImplemented
 					break;
 				case SHUTDOWN:
 					ShutdownMessage sMessage = (ShutdownMessage) m;
-//					cui.showAlert("Server is going down immediately");
-//					disconnect(); // Verbindung trennen 
-//					cui.resetUI(); // gui zuruecksetzen (zurück zu login)
+					//tbImplemented
 					break;
-				case UPDATE_FIELD:
-					UpdateFieldMessage ufMessage = (UpdateFieldMessage) m;
+				case ADD_TILE:
+					AddTileMessage atMessage = (AddTileMessage) m;
+					gpc.addTile(atMessage.getTile());
+					break;
+				case MOVE_TILE:
+					MoveTileMessage mtMessage = (MoveTileMessage) m;
+					gpc.moveTile(mtMessage.getTile(), mtMessage.getNewField());
+					break;
+				case REMOVE_TILE:
+					MoveTileMessage rtMessage = (MoveTileMessage) m;
+					gpc.removeTile(rtMessage.getTile());
 					break;
 				case TILE_RESPONSE:
 					TileResponseMessage trMessage = (TileResponseMessage) m;
+					gpc.addTile(trMessage.getTile());
 					break;
 				case TURN_RESPONSE:
 					TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
+					if(turnrMessage.getIsValid()) {
+						gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
+					}
+					else {
+						gpc.indicateInvalidTurn(turnrMessage.getFrom());
+					}
 					break;
 				case LOBBY_STATUS:
 					LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
+					//tbImplemented
 					break;
 				case START_GAME:
 					StartGameMessage sgMessage = (StartGameMessage) m;
+					//tbImplemented
 					break;
 				case GAME_STATISTIC:
 					GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+					//tbImplemented
 					break;
 				case UPDATE_CHAT:
 					UpdateChatMessage ucMessage = (UpdateChatMessage) m;
+					gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
 					break;
 				default:
 					break;
@@ -93,9 +112,8 @@ public class ClientProtocol extends Thread {
 		}
 	}
 	
-	/*
-	 * Client abmelden  sowie
-	 * Stroeme und Socket schliessen.
+	/* Disconnect client
+	 * Shutdown streams and sockets
 	 */
 	public void disconnect(){
 		running = false;

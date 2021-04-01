@@ -79,6 +79,10 @@ public class GamePanelController extends ClientUI implements Sender {
   public void removeTile(Tile tile) {
 
   }
+  
+  public void indicateInvalidTurn(String nickname) {
+	  
+  }
 
   public void updateScore(String nickName, int turnScore) {
 
