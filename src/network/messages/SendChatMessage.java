@@ -1,16 +1,16 @@
 package network.messages;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /** @author mschmauc */
 
 public class SendChatMessage extends Message {
   private static final long serialVersionUID = 1L;
   private String text;
-  private Date dateTime;
+  private LocalDate dateTime;
   private String sender;
 
-  public SendChatMessage(String from, String content, Date timeStamp) {
+  public SendChatMessage(String from, String content, LocalDate timeStamp) {
     super(MessageType.SEND_CHAT_TEXT, from);
     this.setText(content);
     this.setDateTime(timeStamp);
@@ -25,11 +25,11 @@ public class SendChatMessage extends Message {
     this.text = text;
   }
 
-  public Date getDateTime() {
+  public LocalDate getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(Date dateTime) {
+  public void setDateTime(LocalDate dateTime) {
     this.dateTime = dateTime;
   }
 

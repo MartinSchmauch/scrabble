@@ -1,8 +1,9 @@
 package gui;
 
+import java.time.LocalDate;
+
 /** @autor mschmauch */
 
-import java.util.Date;
 import mechanic.Field;
 import mechanic.Tile;
 
@@ -13,7 +14,7 @@ public interface Sender {
    * from a local client to the server
    */
 
-  void sendChatMessage(String message, Date timeStamp, String sender);
+  void sendChatMessage(String sender, String message, LocalDate timeStamp);
 
   void sendTileMove(Tile tile, Field field);
 

@@ -1,7 +1,8 @@
 package gui;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
@@ -32,9 +33,16 @@ public class GamePanelController extends ClientUI implements Sender {
     textFieldToTextArea();
   }
 
+  /** puts a message from the textField to the textArea */
   public void textFieldToTextArea() {
-    this.tA.textProperty().setValue(this.tF.textProperty().getValue());
+    toTextArea(this.tF.textProperty().getValue());
     this.tF.textProperty().setValue("");
+  }
+
+  /** puts a String from param in a new row in the TextArea */
+  public void toTextArea(String message) {
+    String chatHistory = this.tA.textProperty().getValue();
+    this.tA.textProperty().setValue(chatHistory + "\n" + message);
   }
 
   /**
@@ -43,8 +51,17 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    */
 
-  public void updateChat(String message, Date timeStamp, String sender) {
-
+  /**
+   * builds a ChatMessage as string containing timeStamp, sender and message and puts them to the
+   * textArea as new row
+   */
+  public void updateChat(String message, LocalDate timeStamp, String sender) {
+    String newChatMessage = "";
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+    newChatMessage = newChatMessage + sender + ", ";
+    newChatMessage = newChatMessage + timeStamp.format(dtf) + ": ";
+    newChatMessage = newChatMessage + message;
+    toTextArea(newChatMessage);
   }
 
   public void indicatePlayerTurn(String nickName) {
@@ -74,7 +91,7 @@ public class GamePanelController extends ClientUI implements Sender {
    */
 
   @Override
-  public void sendChatMessage(String message, Date timeStamp, String sender) {
+  public void sendChatMessage(String sender, String message, LocalDate timeStamp) {
     Message m = new SendChatMessage(sender, message, timeStamp);
     sendMessageToServer(m);
   }
