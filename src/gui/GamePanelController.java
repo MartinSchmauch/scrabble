@@ -39,6 +39,36 @@ public class GamePanelController extends ClientUI implements Sender {
 
   /**
    * 
+   * Methods to be used by the ClientProtocol to change the UI of the Client
+   * 
+   */
+
+  public void updateChat(String message, Date timeStamp, String sender) {
+
+  }
+
+  public void indicatePlayerTurn(String nickName) {
+
+  }
+
+  public void addTile(Tile tile) {
+
+  }
+
+  public void moveTile(Tile tile, Field newField) {
+
+  }
+
+  public void removeTile(Tile tile) {
+
+  }
+
+  public void updateScore(String nickName, int turnScore) {
+
+  }
+
+  /**
+   * 
    * Methods to override sender interface methods
    * 
    */
