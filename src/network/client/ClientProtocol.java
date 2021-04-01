@@ -8,25 +8,32 @@ import java.net.Socket;
 
 //import general.IDGenerator;
 import gui.ClientUI;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
+import mechanic.PlayerData;
 import network.messages.*;
 
 public class ClientProtocol extends Thread {
 	private ClientUI cui;
-	private String nickname;
+	private GamePanelController gpc;
+	private LobbyScreenController lpc;
+	private PlayerData playerData;
 	private Socket clientSocket;
 	private ObjectOutputStream out;
 	private ObjectInputStream in;
 	private boolean running = true;
 	
-	public ClientProtocol(String ip, int port, String nickname, ClientUI cui) {
+	public ClientProtocol(String ip, int port, PlayerData playerData, ClientUI cui, GamePanelController gpc, LobbyScreenController lpc) {
 		this.cui = cui;
 		try {
-			this.nickname = nickname;
+			this.gpc = gpc;
+			this.lpc = lpc;
+			this.playerData = playerData;
 			this.clientSocket = new Socket(ip, port);
 			this.out = new ObjectOutputStream(clientSocket.getOutputStream());
 			this.in = new ObjectInputStream(clientSocket.getInputStream());
 	
-			this.out.writeObject(new ConnectMessage(this.nickname));
+			this.out.writeObject(new ConnectMessage(this.playerData));
 			out.flush();
 			out.reset();
 			System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
@@ -47,46 +54,35 @@ public class ClientProtocol extends Thread {
 				Message m = (Message) in.readObject(); // read message from server
 
 				switch (m.getMessageType()) {
-				/* ***  Aufgabenteil (a), (b), (c), (d) *** */
 				case CONNECTION_REFUSED: 
-					ConnectionRefusedMessage mRef = (ConnectionRefusedMessage)m;
-//					cui.showAlert("Connection refused: " + mRef.getReason());
-//					disconnect(); // und gui informieren (zurück zu login)
-//					cui.resetUI();
-					break;
-				case ID_CONFIRMED:
-					IDConfirmMessage idconMessage = (IDConfirmMessage)m;
-					int id = idconMessage.getID();
-					//id speichern
+					ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage)m;					
 					break;
 				case SHUTDOWN:
+					ShutdownMessage sMessage = (ShutdownMessage) m;
 //					cui.showAlert("Server is going down immediately");
 //					disconnect(); // Verbindung trennen 
 //					cui.resetUI(); // gui zuruecksetzen (zurück zu login)
 					break;
-				case UPDATE_GAMEBOARD:
-					UpdateGameboardMessage ugMessage = (UpdateGameboardMessage) m;
-					
-				case UPDATE_ALLOW:
-					UpdateRequestMessage updateAllow = (UpdateRequestMessage) m;
-					cui.triggerEdit(updateAllow.getID());
+				case UPDATE_FIELD:
+					UpdateFieldMessage ufMessage = (UpdateFieldMessage) m;
 					break;
-				case REMOVE_OBJECT:
-					RemoveMessage remove = (RemoveMessage) m;
-					cui.removeWBTextObject(remove.getID());
-					cui.removeWBShapeObject(remove.getID());
+				case TILE_RESPONSE:
+					TileResponseMessage trMessage = (TileResponseMessage) m;
 					break;
-				case SEND_TEXT:
-					TextMessage text = (TextMessage) m;
-					cui.addWBTextObject(text.getID(), text.getText(), text.getX(), text.getY());
+				case TURN_RESPONSE:
+					TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
 					break;
-				case SEND_SHAPE:
-					ShapeMessage shape = (ShapeMessage) m;
-					cui.addWBShapeObject(shape.getID(), shape.getShape());
+				case LOBBY_STATUS:
+					LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
 					break;
-				case SEND_ID:
-					IDConfirmMessage confirm = (IDConfirmMessage) m;
-					cui.updateWBObjectID(confirm.getID(), confirm.getTempID());
+				case START_GAME:
+					StartGameMessage sgMessage = (StartGameMessage) m;
+					break;
+				case GAME_STATISTIC:
+					GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+					break;
+				case UPDATE_CHAT:
+					UpdateChatMessage ucMessage = (UpdateChatMessage) m;
 					break;
 				default:
 					break;
@@ -105,7 +101,7 @@ public class ClientProtocol extends Thread {
 		running = false;
 		try {
 			if (!clientSocket.isClosed()){
-				this.out.writeObject(new DisconnectMessage(this.username));
+				this.out.writeObject(new DisconnectMessage(this.playerData.getNickname()));
 				clientSocket.close(); // close streams and socket
 			}
 		} catch (IOException e){

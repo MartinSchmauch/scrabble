@@ -126,7 +126,7 @@ public class Server {
 
   public void stopServer() {
     running = false;
-    sendToAll(new ShutdownMessage(MessageType.SHUTDOWN, "Server closed session."));
+    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {
       try {
