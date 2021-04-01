@@ -8,6 +8,9 @@ import mechanic.Tile;
 
 
 /**
+ * The GameController is responsible to evaluate and verify all steps taken in the game and respond
+ * accordingly.
+ * 
  * @author ldreyer
  * @author lurny
  */
@@ -46,6 +49,11 @@ public class GameController {
   }
 
 
+  /**
+   * This method validates the move of a tile from a player's rack to the game board. If allowed,
+   * the method updates the game board.
+   */
+
   public boolean layDownLetterFromRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {
     if (!gS.currentPlayer.equals(player.getNickname())
@@ -62,6 +70,11 @@ public class GameController {
     return true;
   }
 
+  /**
+   * This method validates the move of a tile from a field on the game board to another field on the
+   * game board. If allowed, the method updates the game board.
+   */
+
   public boolean moveTileOnGameBoard(Player player, int xCoordinateBefore, int yCoordinateBefore,
       int xCoordinateAfter, int yCoordinateAfter) {
     Field beforeField = gb.getField(xCoordinateBefore, yCoordinateBefore);
@@ -76,6 +89,11 @@ public class GameController {
 
     return true;
   }
+
+  /**
+   * This method validates the move of a tile from a field on the game board back to the player's
+   * rack. If allowed, the method updates the game board.
+   */
 
   public boolean takeTileBackToRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {

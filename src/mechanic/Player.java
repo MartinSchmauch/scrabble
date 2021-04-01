@@ -8,7 +8,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
-/** @author ldreyer */
+/**
+ * The Player Class includes PlayerData, containing nickname and avatar. Local GameSettings that
+ * should be loaded automatically like volume settings are Player attributes. Also a player's rack
+ * is kept local and managed with attributes and methods of this class. A player object can be read
+ * from and stored to a JSON file, ignoring the rack methods and attributes.
+ * 
+ * @author ldreyer
+ */
 
 public class Player {
 
@@ -30,6 +37,11 @@ public class Player {
       this.rack[i] = new Field(i, -1);
     }
   }
+
+  /**
+   * This constructor is used for initializing a Player Object with an ObjectMapper from a JSON
+   * file.
+   */
 
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
@@ -82,6 +94,12 @@ public class Player {
     this.rack[index].setTile(tile);
   }
 
+  /**
+   * This method searches the rack for the first field, that is not covered by a tile.
+   * 
+   * @return emptyField
+   */
+
   @JsonIgnore
   public Field getFreeRackField() {
     int i = 0;
@@ -92,9 +110,13 @@ public class Player {
     return rack[i];
   }
 
-  public void addTileToRack(Tile t) {
-    t.setField(getFreeRackField());
-    t.setOnRack(true);
+  /**
+   * This method takes a tile and puts it on a free field on the player's rack.
+   * 
+   */
+  public void addTileToRack(Tile tile) {
+    tile.setField(getFreeRackField());
+    tile.setOnRack(true);
   }
 
   public Tile removeRackTile(int index) {
@@ -103,6 +125,12 @@ public class Player {
 
     return tile;
   }
+
+  /**
+   * This method creates a list of all tiles on the rack, ignoring empty fields.
+   * 
+   * @return List<Tile>
+   */
 
   @JsonIgnore
   public List<Tile> getRackTiles() {
@@ -119,6 +147,16 @@ public class Player {
   public int getTileCountOnRack() {
     return this.getRackTiles().size();
   }
+
+  /**
+   * 
+   * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
+   * If the operation was successful the method returns true.
+   * 
+   * @param indexBefore
+   * @param indexAfter
+   * @return success
+   */
 
   public boolean reorganizeRackTile(int indexBefore, int indexAfter) {
     if (rack[indexAfter].getTile() != null) {

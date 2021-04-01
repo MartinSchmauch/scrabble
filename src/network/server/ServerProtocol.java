@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import game.GameState;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
 import network.messages.LobbyStatusMessage;
@@ -12,7 +11,14 @@ import network.messages.Message;
 import network.messages.MessageType;
 
 
-/** @author ldreyer */
+/**
+ * The ServerProtocol processes all messages from the client and forwards them to the Server class.
+ * This class is run as a thread and is created for every connected client. The first message has to
+ * be a CONNECT_MESSAGE. If the nickname exists on the server already, the client is rejected.
+ * 
+ * @author ldreyer
+ */
+
 public class ServerProtocol extends Thread {
   private Socket socket;
   private ObjectInputStream in;
@@ -32,11 +38,14 @@ public class ServerProtocol extends Thread {
     }
   }
 
+  /** Sends the initialGameState to the client who uses this protocol */
+
   private void sendInitialGameState() throws IOException {
-    LobbyStatusMessage m =
-        new LobbyStatusMessage(server.getHost(), server.getGameState());
+    LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
     sendToClient(m);
   }
+
+  /** Sends message to the client who uses this protocol */
 
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
@@ -53,6 +62,11 @@ public class ServerProtocol extends Thread {
     }
   }
 
+  /**
+   * Client messages are handled in this run method. First, the server awaits a CONNECT_MESSAGE with
+   * client information.
+   */
+
   public void run() {
     Message m;
     try {
@@ -62,13 +76,15 @@ public class ServerProtocol extends Thread {
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
         if (server.checkNickname(from)) {
-          Message rmsg = new ConnectionRefusedMessage(server.getHost(), "Your nickname was already taken");
+          Message rmsg =
+              new ConnectionRefusedMessage(server.getHost(), "Your nickname was already taken");
           out.writeObject(rmsg);
           out.flush();
           out.reset();
           disconnect();
         } else if (!from.equals(this.clientName)) {
-          Message rmsg = new ConnectionRefusedMessage(server.getHost(), "Your sender name did not match your nickname. Error.");
+          Message rmsg = new ConnectionRefusedMessage(server.getHost(),
+              "Your sender name did not match your nickname. Error.");
           out.writeObject(rmsg);
           out.flush();
           out.reset();

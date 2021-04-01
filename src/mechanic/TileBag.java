@@ -4,7 +4,12 @@ import java.util.Iterator;
 import java.util.List;
 import game.GameSettings;
 
-/** @author ldreyer */
+/**
+ * The TileBag creates Tile objects for all letters specified in the GameSettings. If the TileBag is
+ * empty the isEmpty flag is set to true.
+ * 
+ * @author ldreyer
+ */
 
 public class TileBag {
   private List<Tile> tiles;
@@ -25,6 +30,8 @@ public class TileBag {
     this.remaining = tiles.size();
     this.isEmpty = tiles.isEmpty();
   }
+
+  /** @return a random Tile from the TileBag */
 
   public Tile drawTile() {
     Tile tile = tiles.remove((int) (remaining * Math.random()) - 1);

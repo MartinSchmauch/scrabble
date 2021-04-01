@@ -1,6 +1,14 @@
 package mechanic;
 
-/** @author ldreyer */
+/**
+ * The Field class is essential part of the domain model. It has a Tile attribute that refers to the
+ * tile covering the field or is null if the field is free. The other way around, every tile has an
+ * attribute knowing on which field it lies. This double-linked relation is automatically
+ * established when setting a tile to a field. The word and letter multiplier values are one by
+ * default and higher if the field is a special field.
+ * 
+ * @author ldreyer
+ */
 
 public class Field {
 

@@ -1,6 +1,12 @@
 package mechanic;
 
-/** @author ldreyer */
+/**
+ * The GameBoard class contains all GameBoard fields in a two-dimensional array. The arrays start at
+ * zero while the general coordinate system is implemented starting at one. This is respected in the
+ * getter-method.
+ * 
+ * @author ldreyer
+ */
 
 public class GameBoard {
   private Field[][] fields;
