@@ -11,7 +11,7 @@ public class UpdateChatMessage extends Message {
   private String sender;
 
   public UpdateChatMessage(String from, String content, Date timeSTamp) {
-    super(MessageType.UPDATE_CHAT_TEXT, from);
+    super(MessageType.UPDATE_CHAT, from);
     // TODO Auto-generated constructor stub
   }
 

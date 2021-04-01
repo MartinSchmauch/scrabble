@@ -33,9 +33,8 @@ public class ServerProtocol extends Thread {
   }
 
   private void sendInitialGameState() throws IOException {
-    GameState gameState = server.getGameState();
     LobbyStatusMessage m =
-        new LobbyStatusMessage(MessageType.LOBBY_STATUS, server.getHost(), gameState);
+        new LobbyStatusMessage(server.getHost(), server.getGameState());
     sendToClient(m);
   }
 
@@ -63,15 +62,13 @@ public class ServerProtocol extends Thread {
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
         if (server.checkNickname(from)) {
-          Message rmsg = new ConnectionRefusedMessage(MessageType.CONNECTION_REFUSED,
-              server.getHost(), "Your nickname was already taken");
+          Message rmsg = new ConnectionRefusedMessage(server.getHost(), "Your nickname was already taken");
           out.writeObject(rmsg);
           out.flush();
           out.reset();
           disconnect();
         } else if (!from.equals(this.clientName)) {
-          Message rmsg = new ConnectionRefusedMessage(MessageType.CONNECTION_REFUSED,
-              server.getHost(), "Your sender name did not match your nickname. Error.");
+          Message rmsg = new ConnectionRefusedMessage(server.getHost(), "Your sender name did not match your nickname. Error.");
           out.writeObject(rmsg);
           out.flush();
           out.reset();
