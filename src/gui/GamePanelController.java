@@ -8,6 +8,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import mechanic.Field;
 import mechanic.Tile;
+import network.messages.CommitTurnMessage;
+import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.SendChatMessage;
 
@@ -35,6 +37,12 @@ public class GamePanelController extends ClientUI implements Sender {
     this.tF.textProperty().setValue("");
   }
 
+  /**
+   * 
+   * Methods to override sender interface methods
+   * 
+   */
+
   @Override
   public void sendChatMessage(String message, Date timeStamp, String sender) {
     Message m = new SendChatMessage(sender, message, timeStamp);
@@ -43,21 +51,27 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @Override
   public void sendTileMove(Tile tile, Field field) {
-    // TODO Auto-generated method stub
-
+    // Message m = new TileRequestMessage(tile, field);
+    // sendMessageToServer(m);
   }
 
   @Override
-  public Boolean sendCommitTurn() {
-    // TODO Auto-generated method stub
-    return null;
+  public void sendCommitTurn(String nickName) {
+    Message m = new CommitTurnMessage(nickName);
+    sendMessageToServer(m);
   }
 
   @Override
-  public void sendDisconnectMessage(String playerID) {
-    // TODO Auto-generated method stub
-
+  public void sendDisconnectMessage(String nickName) {
+    Message m = new DisconnectMessage(nickName);
+    sendMessageToServer(m);
   }
+
+  /**
+   * Method to send a Message to the server instance, using a Client Protocoll instance
+   * 
+   * @param m
+   */
 
   public void sendMessageToServer(Message m) {
     try {

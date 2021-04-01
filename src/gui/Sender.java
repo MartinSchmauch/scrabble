@@ -17,7 +17,7 @@ public interface Sender {
 
   void sendTileMove(Tile tile, Field field);
 
-  Boolean sendCommitTurn();
+  void sendCommitTurn(String nickName);
 
   void sendDisconnectMessage(String playerID);
 }
