@@ -1,6 +1,7 @@
 package mechanic;
 
 
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -18,6 +19,9 @@ public class Player {
   @JsonIgnore
   private Field[] rack;
   public String customGameSettings;
+  private boolean isHost;
+  private Player host;
+  private InetAddress gameLocation;
 
   static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 12;
@@ -149,6 +153,27 @@ public class Player {
   public void setCustomGameSettings(String customGameSettings) {
     this.customGameSettings = customGameSettings;
   }
-
-
+  
+  public boolean getIsHost() {
+	  return this.isHost;
+  }
+  
+  public void setIsHost(boolean host) {
+	  this.isHost=host;
+  }
+  
+  public Player getHost() {
+	  return host;
+  }
+  
+  public void setHost(Player host) {
+	  this.host=host;
+  }
+  
+  public InetAddress getLocation() {
+	  return this.gameLocation;
+  }
+  public void setLocation(InetAddress location) {
+	  this.gameLocation=location;
+  }
 }

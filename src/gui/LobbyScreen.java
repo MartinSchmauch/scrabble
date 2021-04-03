@@ -1,7 +1,5 @@
 package gui;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /** 
  * @author nilbecke
@@ -14,32 +12,29 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import mechanic.Player;
 
 public class LobbyScreen extends Application {
 
 	private Parent root;
-	private boolean isHost;
-	private static LobbyScreen current;
+	private static Player player;
 
 	@FXML
 	private Label ip;
 	
-	
-	public LobbyScreen(boolean host) {
-		this.isHost=host;
-		current=this;
+	public LobbyScreen(Player current) {
+		player = current;
 	}
 	
-	
-	
-
 	/**
 	 * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby
 	 **/
 	@Override
 	public void start(Stage stage) {
 		try {
+			Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
 			this.root = FXMLLoader.load(getClass().getResource("Lobby.fxml"));
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -51,15 +46,8 @@ public class LobbyScreen extends Application {
 		}
 
 	}
-
-	public boolean getHost() {
-		return this.isHost;
+	public static Player getPlayer() {
+		return player;
 	}
 
-	public void setHost(boolean host) {
-		this.isHost = host;
-	}
-	public static LobbyScreen getLobby() {
-		return current;
-	}
 }

@@ -10,6 +10,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mechanic.Player;
+import util.JSONHandler;
 
 /**
  * This Class is a Basic Handler for all the input options present in the Login
@@ -17,6 +19,8 @@ import javafx.stage.Stage;
  **/
 
 public class LoginScreenActionHandler extends LoginScreenFXML implements EventHandler<ActionEvent> {
+	
+	private Player player;
 
 	@FXML
 	private TextField LinkField;
@@ -29,18 +33,22 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 **/
 	@Override
 	public void handle(ActionEvent e) {
+		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
 		if (e.getSource().getClass() != Button.class) {
 			join();
 		} else {
 			Button button = (Button) e.getSource();
 			switch (button.getText()) {
 			case "Join":
-				startLobby(false);
+				this.player.setIsHost(false);
+				startLobby();
 				Stage s = (Stage) button.getScene().getWindow();
 				s.close();
 				break;
 			case "Host Game":
-				startLobby(true);
+				this.player.setIsHost(true);
+				this.player.setHost(this.player);
+				startLobby();
 				s = (Stage) button.getScene().getWindow();
 				s.close();
 				break;
@@ -73,8 +81,8 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 * @param isHost: defines if the player who is joining is the host or not
 	 */
 	
-	public void startLobby(boolean isHost) {
-		new LobbyScreen(isHost).start(new Stage());
+	public void startLobby() {
+		new LobbyScreen(this.player).start(new Stage());
 		
 	}
 	
