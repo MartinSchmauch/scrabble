@@ -35,8 +35,13 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			Button button = (Button) e.getSource();
 			switch (button.getText()) {
 			case "Join":
-				join();
+				startLobby(false);
 				Stage s = (Stage) button.getScene().getWindow();
+				s.close();
+				break;
+			case "Host Game":
+				startLobby(true);
+				s = (Stage) button.getScene().getWindow();
 				s.close();
 				break;
 			case "Exit":
@@ -62,7 +67,17 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			}
 		}
 	}
-
+	
+	
+	/**Opens Lobby as Host or Player
+	 * @param isHost: defines if the player who is joining is the host or not
+	 */
+	
+	public void startLobby(boolean isHost) {
+		new LobbyScreen(isHost).start(new Stage());
+		
+	}
+	
 	/**
 	 * Handles the process when a player is trying to join a game via link. It can
 	 * be accessed via "enter" after an input in the LinkField or via a press on the
@@ -70,7 +85,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 **/
 	public void join() {
 
-		new LobbyScreen().start(new Stage());
+		
 
 		String gameID = LinkField.getText();
 		Alert connection;
