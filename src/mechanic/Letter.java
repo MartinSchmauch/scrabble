@@ -1,6 +1,12 @@
 package mechanic;
 
-/** @author ldreyer */
+/**
+ * This class is used for storing all available letters and how many tiles of the respective letter
+ * are generated for the TileBag. The letter object is an attribute of every tile, defining its
+ * identity. All attributes are final. Letters are generated from the GameSettings.
+ * 
+ * @author ldreyer
+ */
 
 public class Letter {
   private final char CHAR;

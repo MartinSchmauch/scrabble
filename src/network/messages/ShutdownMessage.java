@@ -1,9 +1,18 @@
 package network.messages;
 
-public class ShutdownMessage extends Message {
+/** @author lurny */
 
-  public ShutdownMessage(MessageType type, String from) {
-    super(type, from);
+public class ShutdownMessage extends Message {
+  private static final long serialVersionUID = 1L;
+  private String reason;
+
+  public ShutdownMessage(String from, String reason) {
+    super(MessageType.SHUTDOWN, from);
+    this.reason = reason;
   }
+
+public String getReason() {
+	return reason;
+}
 
 }

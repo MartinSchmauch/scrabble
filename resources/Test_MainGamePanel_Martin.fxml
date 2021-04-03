@@ -9,9 +9,9 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="450.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
    <children>
-      <Pane prefHeight="400.0" prefWidth="300.0">
+      <Pane prefHeight="400.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox prefHeight="400.0" prefWidth="300.0">
                <children>
@@ -35,12 +35,13 @@
                                                       <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
                                                          <children>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                                               <image>
+                                                                  <Image url="@creeper.png" />
+                                                               </image>
                                                                <HBox.margin>
                                                                   <Insets left="10.0" right="10.0" />
                                                                </HBox.margin>
-                                                               <image>
-                                                                  <Image url="@creeper.png" />
-                                                               </image></ImageView>
+                                                            </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
                                                                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
@@ -198,34 +199,36 @@
                                  </HBox.margin>
                               </VBox>
                               <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="120.0">
-                                 <HBox.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
-                                 </HBox.margin>
                                  <children>
-                                    <TextArea prefHeight="200.0" prefWidth="120.0" promptText="Welcome to the chat!">
+                                    <TextArea fx:id="tA" prefHeight="200.0" prefWidth="120.0" promptText="Welcome to the chat!">
                                        <font>
                                           <Font size="8.0" />
-                                       </font></TextArea>
+                                       </font>
+                                    </TextArea>
                                     <HBox alignment="CENTER" prefHeight="30.0" prefWidth="120.0">
                                        <children>
-                                          <TextField alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="90.0" promptText="Message...">
-                                             <HBox.margin>
-                                                <Insets bottom="2.0" right="2.0" top="2.0" />
-                                             </HBox.margin>
+                                          <TextField fx:id="tF" alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="90.0" promptText="Message...">
                                              <font>
                                                 <Font size="6.0" />
                                              </font>
+                                             <HBox.margin>
+                                                <Insets bottom="2.0" right="2.0" top="2.0" />
+                                             </HBox.margin>
                                           </TextField>
-                                          <Button alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" prefHeight="8.0" prefWidth="26.0" text="Send" textAlignment="CENTER">
+                                          <Button alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#testMessage" prefHeight="8.0" prefWidth="26.0" text="Send" textAlignment="CENTER">
+                                             <font>
+                                                <Font size="6.0" />
+                                             </font>
                                              <HBox.margin>
                                                 <Insets left="2.0" right="2.0" top="12.0" />
                                              </HBox.margin>
-                                             <font>
-                                                <Font size="6.0" />
-                                             </font></Button>
+                                          </Button>
                                        </children>
                                     </HBox>
                                  </children>
+                                 <HBox.margin>
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="10.0" />
+                                 </HBox.margin>
                               </VBox>
                            </children>
                         </HBox>
@@ -234,9 +237,6 @@
                   <VBox prefHeight="150.0" prefWidth="100.0">
                      <children>
                         <TilePane prefColumns="6" prefHeight="200.0" prefRows="2" prefWidth="200.0">
-                           <VBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
-                           </VBox.margin>
                            <children>
                               <Rectangle fill="#ffffff00" height="30.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
@@ -251,44 +251,57 @@
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="52.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="90.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="128.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="166.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="204.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="14.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="52.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="90.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="128.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                               <Rectangle fill="#ffffff00" height="30.0" layoutX="166.0" layoutY="52.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.5" width="30.0">
                                  <TilePane.margin>
                                     <Insets bottom="8.0" right="8.0" />
-                                 </TilePane.margin></Rectangle>
+                                 </TilePane.margin>
+                              </Rectangle>
                            </children>
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="30.0" top="10.0" />
+                           </VBox.margin>
                         </TilePane>
                         <HBox prefHeight="18.0" prefWidth="200.0">
                            <children>
@@ -322,7 +335,7 @@
             </VBox>
          </children>
       </Pane>
-      <Pane prefHeight="400.0" prefWidth="400.0">
+      <Pane prefHeight="400.0" prefWidth="400.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <TilePane hgap="5.0" layoutX="10.0" layoutY="10.0" prefColumns="15" prefHeight="380.0" prefRows="1" prefTileHeight="20.0" prefTileWidth="380.0" prefWidth="380.0" vgap="5.0">
                <children>
@@ -616,4 +629,4 @@
          </children>
       </Pane>
    </children>
-</HBox>
+</AnchorPane>

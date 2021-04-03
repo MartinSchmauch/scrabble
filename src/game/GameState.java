@@ -6,7 +6,9 @@ import mechanic.PlayerData;
 import util.JSONHandler;
 
 /**
- * This class surveils the game's state.
+ * This class keeps track whether the game is running or in lobby state. It refers to the
+ * GameSettings and holds the player data (including avatars) of all players in the lobby or in the
+ * game.
  * 
  * @author nilbecke, ldreyer
  */

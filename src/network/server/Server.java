@@ -12,9 +12,15 @@ import game.GameSettings;
 import game.GameState;
 import mechanic.PlayerData;
 import network.messages.Message;
-import network.messages.MessageType;
 import network.messages.ShutdownMessage;
 
+/**
+ * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
+ * sending the defined messages to connected clients. It is also responsible for updating the UI of
+ * the game's host.
+ * 
+ * author @ldreyer
+ */
 
 public class Server {
 
@@ -32,6 +38,10 @@ public class Server {
     this.gameController = new GameController(this.gameState);
   }
 
+  /**
+   * Thread method that continuously checks for new clients trying to connect. When a new clients
+   * connects, a new instance of ServerProtocol is created, moderating the client-server connection
+   */
 
   public void listen() {
     running = true;
@@ -87,6 +97,8 @@ public class Server {
     return new ArrayList<String>(clientNames);
   }
 
+  /** sends a message to a list of clients */
+
   private synchronized void sendTo(List<String> clientNames, Message m) {
     List<String> fails = new ArrayList<String>();
     for (String nickname : clientNames) {
@@ -105,11 +117,13 @@ public class Server {
     updateServerUI(m);
   }
 
+  /** sends a message to all connected clients */
 
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
   }
 
+  /** sends a message to all connected clients, except the one client who was given as parameter */
 
   public void sendToAllBut(String name, Message m) {
     synchronized (this.clients) {
@@ -126,7 +140,7 @@ public class Server {
 
   public void stopServer() {
     running = false;
-    sendToAll(new ShutdownMessage(MessageType.SHUTDOWN, "Server closed session."));
+    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {
       try {

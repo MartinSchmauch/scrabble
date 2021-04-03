@@ -1,6 +1,6 @@
 package gui;
 
-// ** @author mschmauc
+// ** @author mschmauc */
 
 /**
  * This class supposed to ensure full file path functionality across all devices by using the

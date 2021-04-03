@@ -1,5 +1,6 @@
-/** @author lurny */
 package network.messages;
+
+/** @author lurny */
 
 import mechanic.PlayerData;
 

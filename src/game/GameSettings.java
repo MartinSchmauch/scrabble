@@ -5,7 +5,12 @@ import java.util.List;
 import mechanic.Field;
 import mechanic.Letter;
 
-/** @author ldreyer */
+/**
+ * This class is static and holds all current game settings. It can be updated with a Json file and
+ * the loadGameSettings method of the JSONHandler class.
+ * 
+ * @author ldreyer
+ */
 
 public class GameSettings {
   private static int timePerPlayer;

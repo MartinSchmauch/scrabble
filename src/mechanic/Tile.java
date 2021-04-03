@@ -2,7 +2,15 @@ package mechanic;
 
 import game.GameSettings;
 
-/** @author ldreyer */
+/**
+ * The Tile class is essential part of the domain model. It has a Field attribute that refers to the
+ * field that is covered by the tile or is null if the tile is not covering any field. The other way
+ * around, every field has an attribute knowing which tile covers it. This double-linked relation is
+ * automatically established when setting a field for a tile. If the Tile is a joker Tile it has the
+ * boolean flag set true.
+ * 
+ * @author ldreyer
+ */
 
 public class Tile {
 
@@ -28,6 +36,8 @@ public class Tile {
     field.setTile(this);
     this.field = field;
   }
+
+  /** If the tile is a joker tile, the value for joker tiles is returned from the GameSettings. */
 
   public int getValue() {
     if (!IS_JOKER) {

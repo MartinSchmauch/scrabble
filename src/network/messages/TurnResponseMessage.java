@@ -1,15 +1,25 @@
 package network.messages;
 
-import mechanic.Turn;
+/** @author lurny */
 
 public class TurnResponseMessage extends Message {
 
   private static final long serialVersionUID = 1L;
-  Turn turn;
+  private boolean isValid;
+  private int calculatedTurnScore;
 
-  public TurnResponseMessage(MessageType type, String from, Turn turn) {
-    super(type, from);
-    this.turn = turn;
+  public TurnResponseMessage(String from, boolean isValid, int calculatedTurnScore) {
+    super(MessageType.TURN_RESPONSE, from);
+    this.isValid = isValid;
+    this.calculatedTurnScore = calculatedTurnScore;
   }
+
+public boolean getIsValid() {
+	return isValid;
+}
+
+public int getCalculatedTurnScore() {
+	return calculatedTurnScore;
+}
 
 }
