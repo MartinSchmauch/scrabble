@@ -1,18 +1,11 @@
 package gui;
 
 
-import network.messages.*;
-import util.JSONHandler;
 
+import network.messages.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.GregorianCalendar;
-
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -80,10 +73,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 			break;
 		case "send":
 		case "sendText":
-			updateChat(this.input.getText(), this.player.getNickname(), LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+			updateChat(this.input.getText(), this.player.getNickname());
+			this.input.setText("");
 			break;
 		case "start":
 			startGame();
+			Stage st = (Stage) ((Button)e.getSource()).getScene().getWindow();
+			st.close();
 		}
 	}
 	
@@ -91,9 +87,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 	 * Starts the countdown before the game launches
 	 */
 	public void startGame() {
-		new StartGameMessage(MessageType.START_GAME,this.player.getNickname(),10);
+		new StartGameMessage(this.player.getNickname(),10);
 		try {
-			//new TestGamePanelWithFXML().start(new Stage());
+			new ClientUI().start(new Stage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -114,11 +110,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 	 * @param sender is the player sending the message
 	 * @param time represents the time when the given message was sent 
 	 */
-	public void updateChat(String message, String sender, String time) {
+	public void updateChat(String message, String sender) {
 		if(message.length()==0) {
 			return;
 		}
-		
+		Message m = new SendChatMessage(message, sender, LocalDate.now());
 	}
 
 }
