@@ -200,14 +200,14 @@
                               </VBox>
                               <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="120.0">
                                  <children>
-                                    <TextArea fx:id="tA" prefHeight="200.0" prefWidth="120.0" promptText="Welcome to the chat!">
+                                    <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="120.0" promptText="Welcome to the chat!">
                                        <font>
                                           <Font size="8.0" />
                                        </font>
                                     </TextArea>
                                     <HBox alignment="CENTER" prefHeight="30.0" prefWidth="120.0">
                                        <children>
-                                          <TextField fx:id="tF" alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="90.0" promptText="Message...">
+                                          <TextField fx:id="textField" alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="90.0" promptText="Message...">
                                              <font>
                                                 <Font size="6.0" />
                                              </font>
@@ -215,7 +215,7 @@
                                                 <Insets bottom="2.0" right="2.0" top="2.0" />
                                              </HBox.margin>
                                           </TextField>
-                                          <Button alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#testMessage" prefHeight="8.0" prefWidth="26.0" text="Send" textAlignment="CENTER">
+                                          <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#testMessage" prefHeight="8.0" prefWidth="26.0" text="Send" textAlignment="CENTER">
                                              <font>
                                                 <Font size="6.0" />
                                              </font>
@@ -305,7 +305,7 @@
                         </TilePane>
                         <HBox prefHeight="18.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="15.0" prefWidth="80.0" text="Skip &amp; Change">
+                              <Button fx:id="skipAndChange" mnemonicParsing="false" prefHeight="15.0" prefWidth="80.0" text="Skip &amp; Change">
                                  <font>
                                     <Font size="8.0" />
                                  </font>
@@ -313,7 +313,7 @@
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="15.0" prefWidth="80.0" text="Done">
+                              <Button fx:id="doneButton" mnemonicParsing="false" onAction="#completeTurn" prefHeight="15.0" prefWidth="80.0" text="Done">
                                  <font>
                                     <Font size="8.0" />
                                  </font>
