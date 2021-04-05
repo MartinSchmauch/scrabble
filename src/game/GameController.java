@@ -30,6 +30,7 @@ public class GameController {
    * @author lurny
    */
   public void setUpGameboard() {
+	
     this.gb = new GameBoard(GameSettings.getGameBoardSize());
     List<Field> specialFields = GameSettings.getSpecialFields();
     for (Field f : specialFields) {

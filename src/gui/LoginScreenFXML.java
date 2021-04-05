@@ -52,7 +52,7 @@ public class LoginScreenFXML extends Application {
 		this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
-		//stage.initStyle(StageStyle.UNDECORATED);
+		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setTitle("Scrabble3");
 		stage.show();
 	}

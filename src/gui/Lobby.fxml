@@ -59,7 +59,7 @@
             </AnchorPane>
             <AnchorPane fx:id="leave" layoutX="261.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="356.0">
                <children>
-                  <Button fx:id="leavelobby" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Leave Lobby" />
+                  <Button fx:id="leavelobby" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="90.0" stylesheets="@Buttons.css" text="Leave Lobby" />
                   <Button fx:id="start" layoutX="276.0" layoutY="362.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Start" />
                   <TextArea fx:id="chat" disable="true" layoutX="23.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0">
                      <font>
@@ -113,6 +113,7 @@
                         </GridPane>
                      </children>
                   </VBox>
+                  <Button fx:id="settings" layoutX="149.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="78.0" stylesheets="@Buttons.css" text="Settings" />
                </children>
             </AnchorPane>
          </children>

@@ -67,6 +67,7 @@ public class JSONHandler {
    */
 
   public GameSettings loadGameSettings(String path) {
+	 
     BufferedReader br = null;
     GameSettings settings = null;
 

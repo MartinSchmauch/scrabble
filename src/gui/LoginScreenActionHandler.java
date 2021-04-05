@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mechanic.Player;
@@ -19,12 +20,16 @@ import util.JSONHandler;
  **/
 
 public class LoginScreenActionHandler extends LoginScreenFXML implements EventHandler<ActionEvent> {
-	
+
 	private Player player;
+	private static LoginScreenActionHandler instance;
 
 	@FXML
 	private TextField LinkField;
+	@FXML
+	private Label username;
 
+	
 	/**
 	 * Handles the different Buttons in the Login Screen
 	 * 
@@ -33,6 +38,9 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 **/
 	@Override
 	public void handle(ActionEvent e) {
+		if(instance == null) {
+			instance = this;
+		}
 		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
 		if (e.getSource().getClass() != Button.class) {
 			join();
@@ -75,25 +83,38 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			}
 		}
 	}
-	
-	
-	/**Opens Lobby as Host or Player
+
+	/**
+	 * Opens Lobby as Host or Player
+	 * 
 	 * @param isHost: defines if the player who is joining is the host or not
 	 */
-	
+
 	public void startLobby() {
 		new LobbyScreen(this.player).start(new Stage());
-		
+
 	}
-	
+	/**
+	 * Access the current instane of the LognScreenController
+	 * @return current instance of the controller
+	 */
+	public static LoginScreenActionHandler getInstance() {
+		return instance;
+	}
+	/**
+	 * Change the text of the username label
+	 * @param input
+	 */
+	public void setUsername(String input) {
+		this.username.setText(input);
+	}
+
 	/**
 	 * Handles the process when a player is trying to join a game via link. It can
 	 * be accessed via "enter" after an input in the LinkField or via a press on the
 	 * "Join" Button
 	 **/
 	public void join() {
-
-		
 
 		String gameID = LinkField.getText();
 		Alert connection;

@@ -50,6 +50,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 		case "exit":
 			this.player.setNickname(this.namefield.getText());
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
+			LoginScreenActionHandler.getInstance().setUsername(this.player.getNickname());
 			Stage s = (Stage) b.getScene().getWindow();
 			s.close();
 			break;
