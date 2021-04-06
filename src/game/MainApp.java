@@ -1,11 +1,22 @@
 package game;
 
+import gui.LoginScreenFXML;
+import javafx.stage.Stage;
+
+/** @author nilbecke
+ * 
+ * 
+ *This class launches the application
+ */
+
 public class MainApp {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("Testnachricht von Martin: Issue 22");
-
+		try {
+			new LoginScreenFXML().start(new Stage());
+		} catch (Exception e) {
+				System.out.println("It is doomed");
+		}
 	}
 
 }

@@ -1,0 +1,26 @@
+
+
+@font-face {
+    font-family:'Scrabble';
+    src: url('Scrabble.ttf');
+}
+
+
+
+.text{
+	-fx-font-family: "Scrabble";
+	-fx-font-size:35px;
+	-fx-effect: dropshadow(three-pass-box, rgba(0.0,0.0,0.0,0.8), 10.0, 0.0, 0.0, 0.0);
+}
+.root{
+	-fx-background-color: linear-gradient(to right, #218f33, #83d490);
+}
+
+#joinGame{
+	-fx-font-size:25px;
+	-fx-color: red;
+	-fx-background-color: radial-gradient(radius 150%, #fcfcfc,#015c1f);
+}
+
+.button{
+	-fx-border-radius: 12px;

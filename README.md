@@ -1,3 +1,3 @@
 # SCRABBLE3
-
-## play scrabble remotly
+## play scrabble remotely
+Group 3
