@@ -107,7 +107,15 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void indicatePlayerTurn(String nickName) {
-
+    if (player1.getText().equals(nickName)) {
+      // Effekt für player 1
+    } else if (player2.getText().equals(nickName)) {
+      // Effekt für player 2
+    } else if (player3.getText().equals(nickName)) {
+      // Effekt für player 3
+    } else if (player4.getText().equals(nickName)) {
+      // Effekt für player 4
+    }
   }
 
   public void addTile(Tile tile) {
@@ -122,8 +130,16 @@ public class GamePanelController extends ClientUI implements Sender {
 
   }
 
-  public void indicateInvalidTurn(String nickname) {
-
+  public void indicateInvalidTurn(String nickName) {
+    if (player1.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    } else if (player2.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    } else if (player3.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    } else if (player4.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    }
   }
 
   /**
