@@ -54,7 +54,7 @@
                         <Image url="@images/Settings.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="86.0" layoutY="332.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="35.0" prefWidth="34.0" style="-fx-background-color: transparent;" text="Settings">
+                  <Button disable="true" layoutX="86.0" layoutY="332.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="35.0" prefWidth="34.0" style="-fx-background-color: transparent;" text="Settings">
                      <tooltip>
                         <Tooltip text="Change Settings" />
                      </tooltip>
@@ -99,6 +99,11 @@
                         <Font name="Century Gothic Bold" size="22.0" />
                      </font>
                   </Label>
+                  <Button disable="true" layoutX="96.0" layoutY="342.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="35.0" prefWidth="34.0" style="-fx-background-color: transparent;" text="Settings">
+                     <tooltip>
+                        <Tooltip text="Change Settings" />
+                     </tooltip>
+                  </Button>
                </children>
             </AnchorPane>
             <AnchorPane layoutX="-175.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);">

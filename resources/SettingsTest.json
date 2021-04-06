@@ -1,0 +1,11 @@
+{"timePerPlayer":"5",
+"maxOvertime":"1",
+"maxScore":"100",
+"gameBoardSize":"15",
+"dicitonary":"C:\Users\Nils Becker\SE2021\scrabble3\resources",
+"aiDifficulty":"easy",
+"GameCountdown":"10",
+"bingo":"5",
+"letters":"null",
+"specialFields":"null",
+"port":"5678"}

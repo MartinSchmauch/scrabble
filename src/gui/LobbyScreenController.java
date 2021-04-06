@@ -65,9 +65,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		// Initialize Client/ Host
+		// Initialize Host/Client
 		if (this.player.getIsHost()) {
-			//this.server = new Server(this.player.getPlayerInfo(),"");
+			//this.server = new Server(this.player.getPlayerInfo(),"C:/Users/Nils Becker/SE2021/scrabble3/resources/SettingsTest.json");
 			try {
 				this.host = new ServerProtocol(new Socket(this.address,5678),this.server);
 			} catch (IOException e) {
@@ -97,7 +97,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		case "send":
 		case "sendText":
 
-			// Reset the
+			// Reset the Textlabel
 			this.input.setText("");
 			break;
 		case "start":
@@ -135,6 +135,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			return;
 		}
 		Message m = new SendChatMessage(sender, message, timeStamp);
+		sendMessage(m);
 
 	}
 
@@ -147,6 +148,21 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	@Override
 	public void sendDisconnectMessage(String playerID) {
 		Message m = new DisconnectMessage(playerID);
+		sendMessage(m);
+	}
+	
+	public boolean sendMessage(Message m) {
+		try {
+			if(this.player.getIsHost()) {
+				this.host.sendToClient(m);
+			} else {
+				this.client.sendToServer(m);
+			}
+			return true;
+		} catch(IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	/**

@@ -28,6 +28,7 @@ public class GameState {
     this.allPlayers.put(this.host.getNickname(), this.host);
 
     JSONHandler jH = new JSONHandler();
+   System.out.println(customGameSettings);
     if (customGameSettings != null) {
       jH.loadGameSettings(customGameSettings);
     } else {
