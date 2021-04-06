@@ -44,12 +44,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                                                  <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerOnePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -73,12 +73,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+                                                                  <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerTwoPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -102,12 +102,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
+                                                                  <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerThreePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -131,12 +131,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
+                                                                  <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerFourPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>

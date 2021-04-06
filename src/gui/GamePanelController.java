@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import mechanic.Field;
 import mechanic.Tile;
 import network.messages.CommitTurnMessage;
@@ -31,6 +32,23 @@ public class GamePanelController extends ClientUI implements Sender {
   private Button sendButton;
   @FXML
   private Button skipAndChange;
+  @FXML
+  private Text playerOnePoints;
+  @FXML
+  private Text playerTwoPoints;
+  @FXML
+  private Text playerThreePoints;
+  @FXML
+  private Text playerFourPoints;
+  @FXML
+  private Text player1;
+  @FXML
+  private Text player2;
+  @FXML
+  private Text player3;
+  @FXML
+  private Text player4;
+
 
   /**
    * 
@@ -42,6 +60,12 @@ public class GamePanelController extends ClientUI implements Sender {
   public void testMessage(ActionEvent event) {
     System.out.println("Test Message from 'Send' Button \n");
     textFieldToTextArea();
+    try {
+      updateScore("Player 2", 1);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
 
   @FXML
@@ -49,6 +73,7 @@ public class GamePanelController extends ClientUI implements Sender {
     String userName = "Martin";
     sendCommitTurn(userName);
   }
+
 
   /** puts a message from the textField to the textArea */
   public void textFieldToTextArea() {
@@ -101,7 +126,32 @@ public class GamePanelController extends ClientUI implements Sender {
 
   }
 
-  public void updateScore(String nickName, int turnScore) {
+  /**
+   * this method updates the score of an Player
+   * 
+   * @param nickName
+   * @param turnScore
+   * @throws Exception
+   */
+  public void updateScore(String nickName, int turnScore) throws Exception {
+    String newScore;
+    if (turnScore != 1) {
+      newScore = turnScore + " Points";
+    } else {
+      newScore = turnScore + " Point";
+    }
+
+    if (player1.getText().equals(nickName)) {
+      this.playerOnePoints.setText(newScore);
+    } else if (player2.getText().equals(nickName)) {
+      this.playerTwoPoints.setText(newScore);
+    } else if (player3.getText().equals(nickName)) {
+      this.playerThreePoints.setText(newScore);
+    } else if (player4.getText().equals(nickName)) {
+      this.playerFourPoints.setText(newScore);
+    } else {
+      throw new Exception("Player " + nickName + "is not part of the GameBoard");
+    }
 
   }
 
@@ -109,6 +159,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    * Methods to override sender interface methods
    * 
+   * TODO: Sollte man die Methoden nicht doch lieber in ClientUi auslagern?
    */
 
   @Override
