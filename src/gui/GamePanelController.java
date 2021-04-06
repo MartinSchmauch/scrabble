@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import mechanic.Field;
 import mechanic.Tile;
 import network.messages.CommitTurnMessage;
@@ -19,30 +21,70 @@ import network.messages.SendChatMessage;
 public class GamePanelController extends ClientUI implements Sender {
 
   public GamePanelController() {
-    System.out.println("Controller erzeugt");
+    System.out.println("Controller erzeugt \n");
   }
 
   @FXML
-  private TextArea tA;
+  private TextArea textArea;
   @FXML
-  private TextField tF;
+  private TextField textField;
+  @FXML
+  private Button sendButton;
+  @FXML
+  private Button skipAndChange;
+  @FXML
+  private Text playerOnePoints;
+  @FXML
+  private Text playerTwoPoints;
+  @FXML
+  private Text playerThreePoints;
+  @FXML
+  private Text playerFourPoints;
+  @FXML
+  private Text player1;
+  @FXML
+  private Text player2;
+  @FXML
+  private Text player3;
+  @FXML
+  private Text player4;
+
+
+  /**
+   * 
+   * Listener methods that are executed upon Player UI Interaction
+   * 
+   */
 
   @FXML
   public void testMessage(ActionEvent event) {
-    System.out.println("Test Message from 'Send' Button");
+    System.out.println("Test Message from 'Send' Button \n");
     textFieldToTextArea();
+    try {
+      updateScore("Player 2", 1);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
   }
+
+  @FXML
+  public void completeTurn(ActionEvent event) {
+    String userName = "Martin";
+    sendCommitTurn(userName);
+  }
+
 
   /** puts a message from the textField to the textArea */
   public void textFieldToTextArea() {
-    toTextArea(this.tF.textProperty().getValue());
-    this.tF.textProperty().setValue("");
+    toTextArea(this.textField.textProperty().getValue());
+    this.textField.textProperty().setValue("");
   }
 
   /** puts a String from param in a new row in the TextArea */
   public void toTextArea(String message) {
-    String chatHistory = this.tA.textProperty().getValue();
-    this.tA.textProperty().setValue(chatHistory + "\n" + message);
+    String chatHistory = this.textArea.textProperty().getValue();
+    this.textArea.textProperty().setValue(chatHistory + "\n" + message);
   }
 
   /**
@@ -65,7 +107,15 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void indicatePlayerTurn(String nickName) {
-
+    if (player1.getText().equals(nickName)) {
+      // Effekt für player 1
+    } else if (player2.getText().equals(nickName)) {
+      // Effekt für player 2
+    } else if (player3.getText().equals(nickName)) {
+      // Effekt für player 3
+    } else if (player4.getText().equals(nickName)) {
+      // Effekt für player 4
+    }
   }
 
   public void addTile(Tile tile) {
@@ -79,12 +129,45 @@ public class GamePanelController extends ClientUI implements Sender {
   public void removeTile(Tile tile) {
 
   }
-  
-  public void indicateInvalidTurn(String nickname) {
-	  
+
+  public void indicateInvalidTurn(String nickName) {
+    if (player1.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    } else if (player2.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    } else if (player3.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    } else if (player4.getText().equals(nickName)) {
+      // TODO: zug rückgängig machen
+    }
   }
 
-  public void updateScore(String nickName, int turnScore) {
+  /**
+   * this method updates the score of an Player
+   * 
+   * @param nickName
+   * @param turnScore
+   * @throws Exception
+   */
+  public void updateScore(String nickName, int turnScore) throws Exception {
+    String newScore;
+    if (turnScore != 1) {
+      newScore = turnScore + " Points";
+    } else {
+      newScore = turnScore + " Point";
+    }
+
+    if (player1.getText().equals(nickName)) {
+      this.playerOnePoints.setText(newScore);
+    } else if (player2.getText().equals(nickName)) {
+      this.playerTwoPoints.setText(newScore);
+    } else if (player3.getText().equals(nickName)) {
+      this.playerThreePoints.setText(newScore);
+    } else if (player4.getText().equals(nickName)) {
+      this.playerFourPoints.setText(newScore);
+    } else {
+      throw new Exception("Player " + nickName + "is not part of the GameBoard");
+    }
 
   }
 
@@ -92,6 +175,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    * Methods to override sender interface methods
    * 
+   * TODO: Sollte man die Methoden nicht doch lieber in ClientUi auslagern?
    */
 
   @Override
@@ -108,6 +192,7 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @Override
   public void sendCommitTurn(String nickName) {
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgelöst von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessageToServer(m);
   }

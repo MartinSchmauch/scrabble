@@ -32,7 +32,7 @@
                                              <children>
                                                 <VBox prefHeight="200.0" prefWidth="100.0">
                                                    <children>
-                                                      <HBox alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
+                                                      <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
                                                          <children>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -44,12 +44,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                                                  <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerOnePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -61,7 +61,7 @@
                                                             <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
                                                          </VBox.margin>
                                                       </HBox>
-                                                      <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
+                                                      <HBox fx:id="player2Box" alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
                                                          <children>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -73,12 +73,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+                                                                  <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerTwoPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -90,7 +90,7 @@
                                                             <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
                                                          </VBox.margin>
                                                       </HBox>
-                                                      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
+                                                      <HBox fx:id="player3Box" alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
                                                          <children>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -102,12 +102,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
+                                                                  <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerThreePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -119,7 +119,7 @@
                                                             <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
                                                          </VBox.margin>
                                                       </HBox>
-                                                      <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
+                                                      <HBox fx:id="player4Box" alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="20.0" prefWidth="100.0">
                                                          <children>
                                                             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
@@ -131,12 +131,12 @@
                                                             </ImageView>
                                                             <VBox prefHeight="200.0" prefWidth="100.0">
                                                                <children>
-                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
+                                                                  <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
                                                                      <font>
                                                                         <Font size="6.0" />
                                                                      </font>
                                                                   </Text>
-                                                                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
+                                                                  <Text fx:id="playerFourPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="5 Points">
                                                                      <font>
                                                                         <Font name="System Bold" size="7.0" />
                                                                      </font>
@@ -200,14 +200,14 @@
                               </VBox>
                               <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="120.0">
                                  <children>
-                                    <TextArea fx:id="tA" prefHeight="200.0" prefWidth="120.0" promptText="Welcome to the chat!">
+                                    <TextArea fx:id="textArea" prefHeight="200.0" prefWidth="120.0" promptText="Welcome to the chat!">
                                        <font>
                                           <Font size="8.0" />
                                        </font>
                                     </TextArea>
                                     <HBox alignment="CENTER" prefHeight="30.0" prefWidth="120.0">
                                        <children>
-                                          <TextField fx:id="tF" alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="90.0" promptText="Message...">
+                                          <TextField fx:id="textField" alignment="BOTTOM_LEFT" prefHeight="30.0" prefWidth="90.0" promptText="Message...">
                                              <font>
                                                 <Font size="6.0" />
                                              </font>
@@ -215,7 +215,7 @@
                                                 <Insets bottom="2.0" right="2.0" top="2.0" />
                                              </HBox.margin>
                                           </TextField>
-                                          <Button alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#testMessage" prefHeight="8.0" prefWidth="26.0" text="Send" textAlignment="CENTER">
+                                          <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#testMessage" prefHeight="8.0" prefWidth="26.0" text="Send" textAlignment="CENTER">
                                              <font>
                                                 <Font size="6.0" />
                                              </font>
@@ -305,7 +305,7 @@
                         </TilePane>
                         <HBox prefHeight="18.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" prefHeight="15.0" prefWidth="80.0" text="Skip &amp; Change">
+                              <Button fx:id="skipAndChange" mnemonicParsing="false" prefHeight="15.0" prefWidth="80.0" text="Skip &amp; Change">
                                  <font>
                                     <Font size="8.0" />
                                  </font>
@@ -313,7 +313,7 @@
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefHeight="15.0" prefWidth="80.0" text="Done">
+                              <Button fx:id="doneButton" mnemonicParsing="false" onAction="#completeTurn" prefHeight="15.0" prefWidth="80.0" text="Done">
                                  <font>
                                     <Font size="8.0" />
                                  </font>
