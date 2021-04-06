@@ -54,6 +54,7 @@ public class LoginScreenFXML extends Application {
 		stage.setScene(scene);
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setTitle("Scrabble3");
+		
 		stage.show();
 	}
 	
@@ -61,6 +62,8 @@ public class LoginScreenFXML extends Application {
 	public Parent getParent() {
 		return this.root;
 	}
+	
+	
 
 	public LoginScreenFXML getLoginScreen() {
 		return this;

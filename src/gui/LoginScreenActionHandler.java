@@ -48,6 +48,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			Button button = (Button) e.getSource();
 			switch (button.getText()) {
 			case "Join":
+
 				this.player.setIsHost(false);
 				startLobby();
 				Stage s = (Stage) button.getScene().getWindow();
@@ -58,8 +59,6 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 				this.player.setHost(this.player);
 				startLobby();
 				s = (Stage) button.getScene().getWindow();
-				s.close();
-				break;
 			case "Exit":
 				System.exit(0);
 				break;
