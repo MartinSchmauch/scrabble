@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -58,6 +56,22 @@ public class Wordlist {
    * @return the words
    */
   public HashSet<WordOnList> getWords() {
+    return words;
+  }
+  
+  /**
+   * @param length
+   * @return words, which are length long
+   */
+  public HashSet<WordOnList> getWordsWithLength(int length) {
+    HashSet<WordOnList> result = new HashSet<WordOnList>() ;
+    for (WordOnList word : this.words) {
+      if (word.getWordString().length() == length) {
+        result.add(word);
+        System.out.println(word.toString());
+      }
+    }
+    System.out.println("\n### -------------- ###\n");
     return words;
   }
 

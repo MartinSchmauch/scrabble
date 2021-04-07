@@ -125,7 +125,7 @@ public class Turn {
 
 
   // calculate the Score resulting from all emerging Words
-  public void calculateTurnScore() {
+  public int calculateTurnScore() {
 
     // calculate word score
     for (Word w : this.words) {
@@ -147,6 +147,7 @@ public class Turn {
         t.getField().setWordMultiplier(1);
       }
     }
+    return this.turnScore;
   }
   
   //Methods checks, if a new Word already exists in the List Turn.words

@@ -37,7 +37,7 @@ public class AIplayerTest {
     // }
     // }
     //
-    aiplayer = new AIplayer("test");
+    aiplayer = new AIplayer("test", 10);
     // int[][] res = new int[15][15];
     //
     // for (int j = 0; j < res.length; j++) {
