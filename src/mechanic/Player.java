@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
+
 /**
  * The Player Class includes PlayerData, containing nickname and avatar. Local GameSettings that
  * should be loaded automatically like volume settings are Player attributes. Also a player's rack

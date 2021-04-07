@@ -25,4 +25,27 @@ public class GameBoard {
     return fields[xCoordinate - 1][yCoordinate - 1];
   }
 
+  /**
+   * @author pkoenig
+   * @return fields
+   */
+  public Field[][] getFields() {
+    return fields;
+  }
+
+  /**
+   * @author pkoenig
+   * @return rowStrings
+   */
+  public String[] getRowsAsStrings() {
+    String[] res = new String[15];
+    for (int j = 0; j < this.fields.length; j++) {
+      res[j] = "";
+      for (int i = 0; i < this.fields.length; i++) {
+        res[j] = res[j] + this.fields[i][j].getTile().getLetter().getChar();
+      }
+    }
+    return res;
+  }
+
 }

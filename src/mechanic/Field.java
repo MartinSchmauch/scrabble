@@ -38,7 +38,9 @@ public class Field {
   }
 
   public void setTile(Tile tile) {
-    tile.setField(this);
+    if (tile.getField() != this) {
+      tile.setField(this);
+    }
     this.tile = tile;
   }
 
@@ -81,7 +83,7 @@ public class Field {
   // ** @author lurny
   public Field getLeft() {
     if (this.xCoordinate > 0) {
-      return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
+      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
     } else {
       return null;
     }
@@ -90,7 +92,7 @@ public class Field {
   // ** @author lurny
   public Field getRight() {
     if (this.xCoordinate <= 13) {
-      return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
+      return this.gameBoard.getField(this.xCoordinate + 2, this.yCoordinate + 1);
     } else {
       return null;
     }
@@ -99,7 +101,7 @@ public class Field {
   // ** @author lurny
   public Field getTop() {
     if (this.yCoordinate > 0) {
-      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
+      return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
     } else {
       return null;
     }
@@ -108,11 +110,19 @@ public class Field {
   // ** @author lurny
   public Field getBottom() {
     if (this.yCoordinate <= 13) {
-      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
+      return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate + 2);
     } else {
       return null;
     }
   }
+  /**
+   * @author pkoenig
+   */
+  @Override
+  public String toString() {
+    return "(x, y): = (" + this.xCoordinate + ", " + this.yCoordinate + ")";
+  }
+  
 }
 
 
