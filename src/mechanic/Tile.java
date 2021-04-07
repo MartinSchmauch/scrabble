@@ -33,7 +33,9 @@ public class Tile {
   }
 
   public void setField(Field field) {
-    field.setTile(this);
+    if (field.getTile() != this) {
+      field.setTile(this);
+    }
     this.field = field;
   }
 
