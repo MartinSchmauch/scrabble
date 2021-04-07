@@ -42,5 +42,11 @@ public class WordOnList {
   public void setDefinition(String definition) {
     this.definition = definition;
   }
+  
+  @Override
+  public String toString() {
+    // TODO Auto-generated method stub
+    return "Word: " + this.wordString + "\n Definition: " + this.definition + "\n";
+  }
 
 }

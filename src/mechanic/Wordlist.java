@@ -4,25 +4,31 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileNotFoundException;
 
+/**
+ * 
+ * @author pkoenig
+ *
+ */
 public class Wordlist {
-  
-  HashSet<WordOnList> words;
-  
+
+  private HashSet<WordOnList> words;
+  private File wordlistFile;
+
   public Wordlist(File file) {
     words = new HashSet<WordOnList>();
-    String currentString;
+    String currentLine;
     String[] currentSplittedString;
     WordOnList currentWord;
     BufferedReader br;
     try {
       br = new BufferedReader(new FileReader(file));
-      while ((currentString = br.readLine()) != null) {
-        System.out.println(currentString);
-        currentSplittedString = currentString.split("^\\S*");
-        System.out.println(currentSplittedString);
+      while ((currentLine = br.readLine()) != null) {
+        currentSplittedString = currentLine.split("\\W", 2);
         currentWord = new WordOnList(currentSplittedString[0], currentSplittedString[1]);
         words.add(currentWord);
       }
@@ -31,10 +37,48 @@ public class Wordlist {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    this.wordlistFile = file;
   }
-  
+
+  /**
+   * @return the wordlistFile
+   */
+  public File getWordlistFile() {
+    return wordlistFile;
+  }
+
+  /**
+   * @param wordlistFile the wordlistFile to set
+   */
+  public void setWordlistFile(File wordlistFile) {
+    this.wordlistFile = wordlistFile;
+  }
+
+  /**
+   * @return the words
+   */
+  public HashSet<WordOnList> getWords() {
+    return words;
+  }
+
+  /**
+   * @param words the words to set
+   */
+  public void setWords(HashSet<WordOnList> words) {
+    this.words = words;
+  }
+
+  public void addWordToMemory(String word, String definition) {
+    this.words.add(new WordOnList(word, definition));
+  }
+
+  public void addWordToMemoryAndToWordFile(String word, String definition) {
+    // TODO not yet implemented
+  }
+
   public static void main(String[] args) {
-    //File file = new File(".." + File.separator + ".." + File.separator + "resources" + File.separator + "CollinsScrabbleWords.txt");
+    // File file = new File(".." + File.separator + ".." + File.separator + "resources" +
+    // File.separator + "CollinsScrabbleWords.txt");
     File file = new File("resources" + File.separator + "CollinsScrabbleWords.txt");
     Wordlist wordlist = new Wordlist(file);
   }
