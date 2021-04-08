@@ -18,7 +18,11 @@ import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.SendChatMessage;
 
-/** @author mschmauc */
+/**
+ * @author mschmauc
+ * 
+ *         This class is the Controller Class for the Main Gamel Panel UI for the Client
+ */
 
 public class GamePanelController extends ClientUI implements Sender {
 
@@ -92,15 +96,22 @@ public class GamePanelController extends ClientUI implements Sender {
     this.textArea.textProperty().setValue(chatHistory + "\n" + message);
   }
 
+
   /**
    * 
    * Methods to be used by the ClientProtocol to change the UI of the Client
    * 
    */
 
+
   /**
-   * builds a ChatMessage as string containing timeStamp, sender and message and puts them to the
-   * textArea as new row
+   * This method updates the TextArea in the Client UI and puts the newest Chat message from the
+   * method parameter in the TextArea including timestamp and sender. Hereby a ChatMessage is built
+   * as string containing timeStamp, sender and message and puts them to the textArea as new row
+   * 
+   * @param sender
+   * @param message
+   * @param timeStamp
    */
   public void updateChat(String message, LocalDate timeStamp, String sender) {
     String newChatMessage = "";
@@ -111,6 +122,12 @@ public class GamePanelController extends ClientUI implements Sender {
     toTextArea(newChatMessage);
   }
 
+  /**
+   * This method highlights the player that is playing his turn at the moment by visually
+   * emphasizing the players nickname on the game panel.
+   * 
+   * @param nickName
+   */
   public void indicatePlayerTurn(String nickName) {
     if (player1.getText().equals(nickName)) {
       // Effekt für player 1
@@ -123,23 +140,47 @@ public class GamePanelController extends ClientUI implements Sender {
     }
   }
 
+  /**
+   * This method adds a tile at a location at the game panel for instance when a player gets new
+   * tiles after he has put some tiles on the game board.
+   * 
+   * @param tile
+   */
   public void addTile(Tile tile) {
     char letter = tile.getLetter().getChar();
     int tileValue = tile.getValue();
     int column = tile.getField().getxCoordinate();
     int row = tile.getField().getyCoordinate();
     grid.add(tile1, column, row);
-
   }
 
+  /**
+   * This method updates a Tile on the UI by putting the tile on a new position provided by the
+   * newField parameter and removing it from the last position.
+   * 
+   * @param tile
+   * @param newField
+   */
   public void moveTile(Tile tile, Field newField) {
 
   }
 
+  /**
+   * This method removes a tile on the UI. This might be the case when another player removes a tile
+   * during his turn.
+   * 
+   * @param tile
+   */
   public void removeTile(Tile tile) {
 
   }
 
+  /**
+   * This method is getting returned to the UI after the sendTileMove method has been triggered from
+   * the UI. A visual confirmation for a valid turn is shown in the UI.
+   * 
+   * @param nickName
+   */
   public void indicateInvalidTurn(String nickName) {
     if (player1.getText().equals(nickName)) {
       // TODO: zug rückgängig machen
@@ -153,7 +194,7 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   /**
-   * this method updates the score of an Player
+   * this method updates the score of an Player and shows the new score in the UI
    * 
    * @param nickName
    * @param turnScore
@@ -183,7 +224,7 @@ public class GamePanelController extends ClientUI implements Sender {
 
   /**
    * 
-   * Methods to override sender interface methods
+   * Methods to override sender interface methods; documentation in interface
    * 
    * TODO: Sollte man die Methoden nicht doch lieber in ClientUi auslagern?
    */
