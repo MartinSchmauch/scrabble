@@ -2,7 +2,11 @@ package network.messages;
 
 import java.time.LocalDate;
 
-/** @author mschmauc */
+/**
+ * This message is send, when a player writes a sends a message via the chat.
+ * 
+ * @author mschmauc
+ */
 
 public class SendChatMessage extends Message {
   private static final long serialVersionUID = 1L;

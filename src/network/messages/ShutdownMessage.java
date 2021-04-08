@@ -1,6 +1,10 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * This message indicates a server shutdown.
+ * 
+ * @author lurny
+ */
 
 public class ShutdownMessage extends Message {
   private static final long serialVersionUID = 1L;
@@ -11,8 +15,8 @@ public class ShutdownMessage extends Message {
     this.reason = reason;
   }
 
-public String getReason() {
-	return reason;
-}
+  public String getReason() {
+    return reason;
+  }
 
 }

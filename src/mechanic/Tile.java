@@ -85,7 +85,12 @@ public class Tile {
     this.onRack = onRack;
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the top tile, which lies next to the current tile. If the top field or top
+   * tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getTopTile() {
     Field f = this.getField().getTop();
     if (f.equals(null)) {
@@ -100,7 +105,12 @@ public class Tile {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the top bottom, which lies next to the current tile. If the bottom field or
+   * bottom tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getBottomTile() {
     Field f = this.getField().getBottom();
     if (f.equals(null)) {
@@ -115,7 +125,12 @@ public class Tile {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the left tile, which lies next to the current tile. If the left field or
+   * left tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getLeftTile() {
     Field f = this.getField().getLeft();
     if (f.equals(null)) {
@@ -130,7 +145,12 @@ public class Tile {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the right tile, which lies next to the current tile. If the right field or
+   * right tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getRightTile() {
     Field f = this.getField().getRight();
     if (f.equals(null)) {

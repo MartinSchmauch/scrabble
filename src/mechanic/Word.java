@@ -2,7 +2,12 @@ package mechanic;
 
 import java.util.List;
 
-// ** @author lurny
+/**
+ * The word class is a help class for the turn. It is used to represent a word and consists of a
+ * tile list.
+ * 
+ * @author lurny
+ */
 
 public class Word {
   private List<Tile> tiles;
@@ -14,12 +19,13 @@ public class Word {
   public List<Tile> getTiles() {
     return tiles;
   }
-  
+
+  /** The to String method returns the Word as a String */
   public String toString() {
-		String wordString = "";
-		for(Tile t: this.tiles) {
-			wordString = wordString + t.getLetter().getChar();
-		}
-		return wordString;
+    String wordString = "";
+    for (Tile t : this.tiles) {
+      wordString = wordString + t.getLetter().getChar();
+    }
+    return wordString;
   }
 }

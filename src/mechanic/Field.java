@@ -80,7 +80,12 @@ public class Field {
     this.gameBoard = gameBoard;
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the left field, which lies next to the current field. If the field does not
+   * exist, the method returns null.
+   * 
+   * @author lurny
+   */
   public Field getLeft() {
     if (this.xCoordinate > 0) {
       return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
@@ -89,7 +94,12 @@ public class Field {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the right field, which lies next to the current field. If the field does
+   * not exist, the method returns null.
+   * 
+   * @author lurny
+   */
   public Field getRight() {
     if (this.xCoordinate <= 13) {
       return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
@@ -98,7 +108,12 @@ public class Field {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the top field, which lies next to the current field. If the field does not
+   * exist, the method returns null.
+   * 
+   * @author lurny
+   */
   public Field getTop() {
     if (this.yCoordinate > 0) {
       return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
@@ -107,7 +122,12 @@ public class Field {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the bottom field, which lies next to the current field. If the field does
+   * not exist, the method returns null.
+   * 
+   * @author lurny
+   */
   public Field getBottom() {
     if (this.yCoordinate <= 13) {
       return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);

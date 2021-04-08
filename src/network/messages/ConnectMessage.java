@@ -1,6 +1,11 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * This Message is used, when a client first tries to connect to a Server. The Server uses the
+ * playerData to identify the Player.
+ * 
+ * @author lurny
+ */
 
 import mechanic.PlayerData;
 

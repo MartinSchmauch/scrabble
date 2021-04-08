@@ -1,6 +1,10 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * The StartGameMessage indicates a start of the game and initiates a countdown.
+ * 
+ * @author lurny
+ */
 
 public class StartGameMessage extends Message {
   private static final long serialVersionUID = 1L;

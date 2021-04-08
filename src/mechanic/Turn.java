@@ -1,6 +1,11 @@
-// ** @author lurny
-
 package mechanic;
+
+/**
+ * An object of this class is used for each player turn. It is used to find all words that emerge
+ * from the layd down tiles, to verfy those words and to calculate the turn score.
+ * 
+ * @author lurny
+ */
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,105 +33,112 @@ public class Turn {
   }
 
 
-  // calculate all Words, that result from the layed down letters
+  /**
+   * The calculateWords() method is used to find all words, that emerge from the layd down tiles
+   * after a turn is commited. After all words are found, every word is verified with Collins
+   * Scrabble Words. If one word does not exists the method returns false.
+   */
   public boolean calculateWords() {
-	//wordTiles describes the Tiles that build the word
-	List<Tile> wordTiles = new ArrayList<Tile>();
-	
-	for(Tile t: this.laydDownTiles) {
-		//find Top Letter
-		while(t.getTopTile() != null) {
-			t= t.getTopTile();
-		}
-		//Go from Top to Bottom to build word
-		wordTiles.add(t);
-		while(t.getBottomTile() != null) {
-			t = t.getBottomTile();
-			wordTiles.add(t);
-		}
-		
-		//Check if Word is larger than two characters
-		if(wordTiles.size()>=2) {
-			if(this.checkIfWordAlreadyExists(wordTiles) == false) {
-				//Make Deep Copy of ArrayList wordTiles
-				List<Tile> helpList =  new ArrayList<Tile>();
-				for(Tile element: wordTiles) {
-					helpList.add(element);
-				}
-				this.words.add(new Word(helpList));
-			}
-		}
-		wordTiles.clear();
-	}
-	
-	wordTiles.clear();
-	for(Tile t: this.laydDownTiles) { 
-		
-		//find leftest Letter
-		while(t.getLeftTile() != null) {
-			t= t.getLeftTile();
-		}
-		//Go from left to right to build word
-		wordTiles.add(t);
-		while(t.getRightTile() != null) {
-			t = t.getRightTile();
-			wordTiles.add(t);
-		}
-		if(wordTiles.size()>=2) {
-			if(this.checkIfWordAlreadyExists(wordTiles) == false) {
-				//Make Deep Copy of ArrayList wordTiles
-				List<Tile> helpList =  new ArrayList<Tile>();
-				for(Tile element: wordTiles) {
-					helpList.add(element);
-				}
-				this.words.add(new Word(helpList));
-			}
-		}	
-		wordTiles.clear();
-	}
-	
-	
-	
-	//veryfy words
-	boolean help2=false;
-	if(words != null) {
-		for(Word tileList: this.words) {
-			
-			//String representation of the ArrayList "tileList"
-			String wordString = tileList.toString();
-			
-		    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-		      Pattern p = Pattern.compile("\\w*");
-		      String line;
-		      while ((line = br.readLine()) != null) {
-		        Matcher m = p.matcher(line);
-		        if (!line.isEmpty()) {
-		          m.find();
-		          String w = line.substring(m.regionStart(), m.end());
-		          if(wordString.equalsIgnoreCase(w)) {
-		        	  help2 = true;
-		          }
-		        }
-		      }
-		    } catch (FileNotFoundException e) {
-		      e.printStackTrace();
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    }
-		    if(help2 == false) {
-		    	return help2;
-		    }
-		    
-		}
-		return true;
-	}
-	return false;
+    // wordTiles describes the Tiles that build the word
+    List<Tile> wordTiles = new ArrayList<Tile>();
+
+    for (Tile t : this.laydDownTiles) {
+      // find Top Letter
+      while (t.getTopTile() != null) {
+        t = t.getTopTile();
+      }
+      // Go from Top to Bottom to build word
+      wordTiles.add(t);
+      while (t.getBottomTile() != null) {
+        t = t.getBottomTile();
+        wordTiles.add(t);
+      }
+
+      // Check if Word is larger than two characters
+      if (wordTiles.size() >= 2) {
+        if (this.checkIfWordAlreadyExists(wordTiles) == false) {
+          // Make Deep Copy of ArrayList wordTiles
+          List<Tile> helpList = new ArrayList<Tile>();
+          for (Tile element : wordTiles) {
+            helpList.add(element);
+          }
+          this.words.add(new Word(helpList));
+        }
+      }
+      wordTiles.clear();
+    }
+
+    wordTiles.clear();
+    for (Tile t : this.laydDownTiles) {
+
+      // find leftest Letter
+      while (t.getLeftTile() != null) {
+        t = t.getLeftTile();
+      }
+      // Go from left to right to build word
+      wordTiles.add(t);
+      while (t.getRightTile() != null) {
+        t = t.getRightTile();
+        wordTiles.add(t);
+      }
+      if (wordTiles.size() >= 2) {
+        if (this.checkIfWordAlreadyExists(wordTiles) == false) {
+          // Make Deep Copy of ArrayList wordTiles
+          List<Tile> helpList = new ArrayList<Tile>();
+          for (Tile element : wordTiles) {
+            helpList.add(element);
+          }
+          this.words.add(new Word(helpList));
+        }
+      }
+      wordTiles.clear();
+    }
+
+
+
+    // veryfy words
+    boolean help2 = false;
+    if (words != null) {
+      for (Word tileList : this.words) {
+
+        // String representation of the ArrayList "tileList"
+        String wordString = tileList.toString();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+          Pattern p = Pattern.compile("\\w*");
+          String line;
+          while ((line = br.readLine()) != null) {
+            Matcher m = p.matcher(line);
+            if (!line.isEmpty()) {
+              m.find();
+              String w = line.substring(m.regionStart(), m.end());
+              if (wordString.equalsIgnoreCase(w)) {
+                help2 = true;
+              }
+            }
+          }
+        } catch (FileNotFoundException e) {
+          e.printStackTrace();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        if (help2 == false) {
+          return help2;
+        }
+
+      }
+      return true;
+    }
+    return false;
   }
 
 
-  // calculate the Score resulting from all emerging Words
+  /**
+   * This method is used to calculate the turn score resulting from all emerging Words. It is
+   * called, if the method calculateWords returns true. After the score is calculated relevant
+   * special fields become normal fields with the multiplier 1.
+   */
   public void calculateTurnScore() {
-
     // calculate word score
     for (Word w : this.words) {
       int localWordMultiplier = 1;
@@ -148,28 +160,29 @@ public class Turn {
       }
     }
   }
-  
-  //Methods checks, if a new Word already exists in the List Turn.words
+
+  /** Methods checks, if a new Word already exists in the List Turn.words */
   public boolean checkIfWordAlreadyExists(List<Tile> wordTiles) {
-	  boolean check = false;
-	  for(Word w: this.words) {
-		  if(w.getTiles().size() == wordTiles.size()) {
-			  check = true;
-			  for(int i=0; i<wordTiles.size(); i++) {
-				  if(w.getTiles().get(i).getField().getxCoordinate() == wordTiles.get(i).getField().getxCoordinate()
-					&& w.getTiles().get(i).getField().getyCoordinate() == wordTiles.get(i).getField().getyCoordinate()) {
-					  check = check & true;
-				  }
-				  else {
-					  check = false;
-				  }
-			  }
-			  if(check) {
-				  return check;
-			  }
-		  }
-	  }
-	  return check;
+    boolean check = false;
+    for (Word w : this.words) {
+      if (w.getTiles().size() == wordTiles.size()) {
+        check = true;
+        for (int i = 0; i < wordTiles.size(); i++) {
+          if (w.getTiles().get(i).getField().getxCoordinate() == wordTiles.get(i).getField()
+              .getxCoordinate()
+              && w.getTiles().get(i).getField().getyCoordinate() == wordTiles.get(i).getField()
+                  .getyCoordinate()) {
+            check = check & true;
+          } else {
+            check = false;
+          }
+        }
+        if (check) {
+          return check;
+        }
+      }
+    }
+    return check;
   }
 
 

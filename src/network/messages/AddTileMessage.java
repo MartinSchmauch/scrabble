@@ -2,21 +2,25 @@ package network.messages;
 
 import mechanic.Tile;
 
-/**@author lurny*/
+/**
+ * This message is used, when a client adds a tile to the Gameboard.
+ * 
+ * @author lurny
+ */
 
-public class AddTileMessage extends Message{
+public class AddTileMessage extends Message {
 
-	  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-	  private Tile tile;
+  private Tile tile;
 
-	  public AddTileMessage(String from, Tile tile) {
-	    super(MessageType.ADD_TILE, from);
-	    this.tile = tile;
-	  }
+  public AddTileMessage(String from, Tile tile) {
+    super(MessageType.ADD_TILE, from);
+    this.tile = tile;
+  }
 
-	  public Tile getTile() {
-	    return this.tile;
-	  }
+  public Tile getTile() {
+    return this.tile;
+  }
 
 }
