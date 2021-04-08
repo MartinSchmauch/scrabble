@@ -1,5 +1,6 @@
 package game;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import mechanic.PlayerData;
@@ -13,8 +14,8 @@ import util.JSONHandler;
  * @author nilbecke, ldreyer
  */
 
-public class GameState {
-
+public class GameState implements Serializable {
+  private static final long serialVersionUID = 1L;
   boolean isRunning;
   GameSettings gameSettings;
   PlayerData host;
@@ -28,7 +29,7 @@ public class GameState {
     this.allPlayers.put(this.host.getNickname(), this.host);
 
     JSONHandler jH = new JSONHandler();
-   System.out.println(customGameSettings);
+    System.out.println(customGameSettings);
     if (customGameSettings != null) {
       jH.loadGameSettings(customGameSettings);
     } else {

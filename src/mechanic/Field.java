@@ -1,5 +1,7 @@
 package mechanic;
 
+import java.io.Serializable;
+
 /**
  * The Field class is essential part of the domain model. It has a Tile attribute that refers to the
  * tile covering the field or is null if the field is free. The other way around, every tile has an
@@ -10,8 +12,9 @@ package mechanic;
  * @author ldreyer
  */
 
-public class Field {
+public class Field implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private GameBoard gameBoard;
   private Tile tile;
   private int xCoordinate;

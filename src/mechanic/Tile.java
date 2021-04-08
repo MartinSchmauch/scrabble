@@ -1,5 +1,6 @@
 package mechanic;
 
+import java.io.Serializable;
 import game.GameSettings;
 
 /**
@@ -12,8 +13,8 @@ import game.GameSettings;
  * @author ldreyer
  */
 
-public class Tile {
-
+public class Tile implements Serializable {
+  private static final long serialVersionUID = 1L;
   final boolean IS_JOKER;
   private Letter letter;
   private Field field;

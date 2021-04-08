@@ -12,12 +12,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Turn {
+public class Turn implements Serializable {
+  private static final long serialVersionUID = 1L;
   private List<Tile> laydDownTiles;
   private List<Word> words; // Array, that contains all words, that result from the lay down letters
   private int turnScore;
