@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import mechanic.Field;
 import mechanic.Tile;
@@ -48,7 +50,10 @@ public class GamePanelController extends ClientUI implements Sender {
   private Text player3;
   @FXML
   private Text player4;
-
+  @FXML
+  private Rectangle tile1;
+  @FXML
+  private GridPane grid;
 
   /**
    * 
@@ -119,6 +124,11 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void addTile(Tile tile) {
+    char letter = tile.getLetter().getChar();
+    int tileValue = tile.getValue();
+    int column = tile.getField().getxCoordinate();
+    int row = tile.getField().getyCoordinate();
+    grid.add(tile1, column, row);
 
   }
 

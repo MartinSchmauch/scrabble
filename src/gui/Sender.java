@@ -14,6 +14,12 @@ public interface Sender {
    * from a local client to the server
    */
 
+  /**
+   * 
+   * @param sender
+   * @param message
+   * @param timeStamp
+   */
   void sendChatMessage(String sender, String message, LocalDate timeStamp);
 
   void sendTileMove(Tile tile, Field field);
