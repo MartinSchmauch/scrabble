@@ -43,7 +43,7 @@ public class Server {
    * connects, a new instance of ServerProtocol is created, moderating the client-server connection
    */
 
-  public void listen() {
+  public synchronized void listen() {
     running = true;
     try {
       serverSocket = new ServerSocket(GameSettings.port);
@@ -51,7 +51,6 @@ public class Server {
 
       while (running) {
         Socket clientSocket = serverSocket.accept();
-
         ServerProtocol serverThread = new ServerProtocol(clientSocket, this);
         serverThread.start();
       }

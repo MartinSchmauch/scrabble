@@ -59,6 +59,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 				this.player.setHost(this.player);
 				startLobby();
 				s = (Stage) button.getScene().getWindow();
+				break;
 			case "Exit":
 				System.exit(0);
 				break;

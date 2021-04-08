@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.time.LocalDate;
 
+import game.GameSettings;
 import game.GameState;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,7 +37,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	private Player player;
 	private ClientProtocol client = null;
 	private ServerProtocol host = null;
-	private Server server=null;
+	private Server server = null;
 	private InetAddress address;
 
 	@FXML
@@ -56,7 +57,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	 * Set up labels etc before launching the lobby screen
 	 */
 	@FXML
-	public void initialize() {
+	public synchronized void initialize() {
 		this.player = LobbyScreen.getPlayer();
 		address = null;
 		try {
@@ -67,15 +68,21 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		}
 		// Initialize Host/Client
 		if (this.player.getIsHost()) {
-			//this.server = new Server(this.player.getPlayerInfo(),"C:/Users/Nils Becker/SE2021/scrabble3/resources/SettingsTest.json");
-			try {
-				this.host = new ServerProtocol(new Socket(this.address,5678),this.server);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			this.server = new Server(this.player.getPlayerInfo(), null);
+			Runnable r = new Runnable() {
+				public void run() {
+					server.listen();
+				}
+			};
+			new Thread(r).start();
 			this.ip.setText("Link:  " + address.getHostAddress());
 		} else {
-			this.client = new ClientProtocol(address + "", 5678, this.player.getPlayerInfo(), null, null, this);
+			this.client = new ClientProtocol("127.0.0.1", GameSettings.port, this.player.getPlayerInfo(), null, null,
+					this);
+			if(this.client.isOK()) {
+				this.client.start();
+			}
+			
 			this.start.setOpacity(0.4);
 			this.start.setDisable(true);
 			this.ip.setOpacity(0);
@@ -150,16 +157,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		Message m = new DisconnectMessage(playerID);
 		sendMessage(m);
 	}
-	
+
 	public boolean sendMessage(Message m) {
 		try {
-			if(this.player.getIsHost()) {
+			if (this.player.getIsHost()) {
 				this.host.sendToClient(m);
 			} else {
 				this.client.sendToServer(m);
 			}
 			return true;
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}

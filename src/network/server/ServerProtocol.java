@@ -40,7 +40,7 @@ public class ServerProtocol extends Thread {
 
 	/** Sends the initialGameState to the client who uses this protocol */
 
-	private void sendInitialGameState() throws IOException {
+	public void sendInitialGameState() throws IOException {
 		LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
 		sendToClient(m);
 	}
@@ -68,6 +68,7 @@ public class ServerProtocol extends Thread {
 	 */
 
 	public void run() {
+		System.out.println("2");
 		Message m;
 		try {
 			m = (Message) in.readObject();
