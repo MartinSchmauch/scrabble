@@ -40,11 +40,19 @@ public class Field implements Serializable {
     return tile;
   }
 
+  /**
+   * This method and the method setFieldOneDirection are used to automatically set the double linked
+   * object connection
+   * 
+   * @author lurny
+   * @param tile
+   */
   public void setTile(Tile tile) {
     tile.setFieldOneDirection(this);
     this.tile = tile;
   }
 
+  /** @author lurny */
   public void setTileOneDirection(Tile t) {
     this.tile = t;
   }
