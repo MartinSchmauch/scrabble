@@ -34,9 +34,11 @@ public class Tile implements Serializable {
   }
 
   public void setField(Field field) {
-    if (field.getTile() != this) {
-      field.setTile(this);
-    }
+    this.field = field;
+    field.setTileOneDirection(this);
+  }
+
+  public void setFieldOneDirection(Field field) {
     this.field = field;
   }
 
@@ -94,7 +96,7 @@ public class Tile implements Serializable {
    */
   public Tile getTopTile() {
     Field f = this.getField().getTop();
-    if (f.equals(null)) {
+    if (f == null) {
       return null;
     } else {
       Tile t = f.getTile();
@@ -114,7 +116,7 @@ public class Tile implements Serializable {
    */
   public Tile getBottomTile() {
     Field f = this.getField().getBottom();
-    if (f.equals(null)) {
+    if (f == null) {
       return null;
     } else {
       Tile t = f.getTile();
@@ -134,7 +136,7 @@ public class Tile implements Serializable {
    */
   public Tile getLeftTile() {
     Field f = this.getField().getLeft();
-    if (f.equals(null)) {
+    if (f == null) {
       return null;
     } else {
       Tile t = f.getTile();
@@ -154,7 +156,7 @@ public class Tile implements Serializable {
    */
   public Tile getRightTile() {
     Field f = this.getField().getRight();
-    if (f.equals(null)) {
+    if (f == null) {
       return null;
     } else {
       Tile t = f.getTile();

@@ -41,10 +41,12 @@ public class Field implements Serializable {
   }
 
   public void setTile(Tile tile) {
-    if (tile.getField() != this) {
-      tile.setField(this);
-    }
+    tile.setFieldOneDirection(this);
     this.tile = tile;
+  }
+
+  public void setTileOneDirection(Tile t) {
+    this.tile = t;
   }
 
   public int getxCoordinate() {
@@ -90,7 +92,7 @@ public class Field implements Serializable {
    * @author lurny
    */
   public Field getLeft() {
-    if (this.xCoordinate > 0) {
+    if (this.xCoordinate > 1) {
       return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
     } else {
       return null;
@@ -104,7 +106,7 @@ public class Field implements Serializable {
    * @author lurny
    */
   public Field getRight() {
-    if (this.xCoordinate <= 13) {
+    if (this.xCoordinate <= 14) {
       return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
     } else {
       return null;
@@ -118,7 +120,7 @@ public class Field implements Serializable {
    * @author lurny
    */
   public Field getTop() {
-    if (this.yCoordinate > 0) {
+    if (this.yCoordinate > 1) {
       return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
     } else {
       return null;
@@ -132,7 +134,7 @@ public class Field implements Serializable {
    * @author lurny
    */
   public Field getBottom() {
-    if (this.yCoordinate <= 13) {
+    if (this.yCoordinate <= 14) {
       return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
     } else {
       return null;
