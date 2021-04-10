@@ -38,9 +38,13 @@ public class Field {
   }
 
   public void setTile(Tile tile) {
-    if (tile.getField() != this) {
+    this.tile = tile;
+    if (!tile.getField().equals(this)) {
       tile.setField(this);
     }
+  }
+  
+  public void setOnlyTile(Tile tile) {
     this.tile = tile;
   }
 

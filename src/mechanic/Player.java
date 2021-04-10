@@ -32,7 +32,7 @@ public class Player {
   private InetAddress gameLocation;
 
   static final int TILE_COUNT_PER_PLAY = 7;
-  static final int RACK_FIELDS = 12;
+  static final int RACK_FIELDS = 7;
 
   public Player(String nickname) {
     this.info = new PlayerData(nickname);
@@ -120,7 +120,9 @@ public class Player {
    * 
    */
   public void addTileToRack(Tile tile) {
-    tile.setField(getFreeRackField());
+    Field f = getFreeRackField();
+    f.setTile(tile);
+    tile.setField(f);
     tile.setOnRack(true);
   }
 
@@ -192,27 +194,28 @@ public class Player {
   public void setCustomGameSettings(String customGameSettings) {
     this.customGameSettings = customGameSettings;
   }
-  
+
   public boolean getIsHost() {
-	  return this.isHost;
+    return this.isHost;
   }
-  
+
   public void setIsHost(boolean host) {
-	  this.isHost=host;
+    this.isHost = host;
   }
-  
+
   public Player getHost() {
-	  return host;
+    return host;
   }
-  
+
   public void setHost(Player host) {
-	  this.host=host;
+    this.host = host;
   }
-  
+
   public InetAddress getLocation() {
-	  return this.gameLocation;
+    return this.gameLocation;
   }
+
   public void setLocation(InetAddress location) {
-	  this.gameLocation=location;
+    this.gameLocation = location;
   }
 }

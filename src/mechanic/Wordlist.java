@@ -68,11 +68,11 @@ public class Wordlist {
     for (WordOnList word : this.words) {
       if (word.getWordString().length() == length) {
         result.add(word);
-        System.out.println(word.toString());
+        //System.out.println(word.toString());
       }
     }
-    System.out.println("\n### -------------- ###\n");
-    return words;
+    //System.out.println("\n### -------------- ###\n");
+    return result;
   }
 
   /**
