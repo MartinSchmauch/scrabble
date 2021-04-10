@@ -106,6 +106,7 @@ public class Server {
         ServerProtocol c = clients.get(nickname);
         c.sendToClient((Message) (m));
       } catch (IOException e) {
+        e.printStackTrace();
         fails.add(nickname);
         continue;
       }
