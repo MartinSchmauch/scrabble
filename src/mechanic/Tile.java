@@ -29,6 +29,11 @@ public class Tile implements Serializable {
     this.IS_JOKER = (letter.getChar() == '*');
   }
 
+  public Tile(Letter letter) {
+    this.letter = letter;
+    this.IS_JOKER = (letter.getChar() == '*');
+  }
+
   public Field getField() {
     return this.field;
   }

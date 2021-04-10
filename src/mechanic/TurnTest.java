@@ -1,5 +1,12 @@
 package mechanic;
 
+/**
+ * This class test the Turn class which is used to find verify and words to calculate the turn
+ * score.
+ * 
+ * @author lurny
+ */
+
 import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +17,13 @@ import org.junit.Test;
 public class TurnTest {
   private Field l1, l2, l3, l4, l5;
   private Tile tile1, tile2, tile3, tile4, tile5;
-  private Turn turn;
+  private Turn turn, turn2;
 
-  private Field fF, fA, fR, fM, fS, fH, fO, fN, fO2, fB, fP, fA2, fT, fE;
   private Tile f, a, r, m, s, h, o, n, o2, b, p, a2, t1, e;
 
   @Before
   public void before() {
-
+    // Test 1
     tile1 = new Tile(new Letter('C', 1, 1), l1);
     tile2 = new Tile(new Letter('L', 1, 1), l2);
     tile3 = new Tile(new Letter('O', 1, 1), l3);
@@ -62,10 +68,46 @@ public class TurnTest {
 
     turn = new Turn(laydDownTileList);
 
+    // Test 2
+    f = new Tile(new Letter('F', 1, 1));
+    a = new Tile(new Letter('A', 1, 1));
+    r = new Tile(new Letter('R', 1, 1));
+    m = new Tile(new Letter('M', 1, 1));
+    s = new Tile(new Letter('S', 1, 1));
+    h = new Tile(new Letter('H', 1, 1));
+    o = new Tile(new Letter('O', 1, 1));
+    n = new Tile(new Letter('N', 1, 1));
+    o2 = new Tile(new Letter('O', 1, 1));
+    b = new Tile(new Letter('B', 1, 1));
+    p = new Tile(new Letter('P', 1, 1));
+    a2 = new Tile(new Letter('A', 1, 1));
+    t1 = new Tile(new Letter('T', 1, 1));
+    e = new Tile(new Letter('E', 1, 1));
 
+    GameBoard gb2 = new GameBoard(15);
+    gb2.getField(1, 3).setTile(h);
+    gb2.getField(2, 3).setTile(o);
+    gb2.getField(3, 3).setTile(r);
+    gb2.getField(4, 3).setTile(n);
+    gb2.getField(3, 1).setTile(f);
+    gb2.getField(3, 2).setTile(a);
+    gb2.getField(3, 4).setTile(m);
+    gb2.getField(4, 4).setTile(o2);
+    gb2.getField(5, 4).setTile(b);
+    gb2.getField(1, 5).setTile(p);
+    gb2.getField(2, 5).setTile(a2);
+    gb2.getField(3, 5).setTile(s);
+    gb2.getField(4, 5).setTile(t1);
+    gb2.getField(5, 5).setTile(e);
 
+    List<Tile> laydDownTileList2 = new ArrayList<Tile>();
+    laydDownTileList2.add(o2);
+    laydDownTileList2.add(b);
+
+    turn2 = new Turn(laydDownTileList2);
   }
 
+  /** The first two methods are testing the word "close". */
   @Test
   public void calculateWordsTest() {
     assertEquals(true, turn.calculateWords());
@@ -76,6 +118,23 @@ public class TurnTest {
     turn.calculateWords();
     turn.calculateTurnScore();
     assertEquals(12, turn.getTurnScore());
+  }
+
+  /**
+   * calculateWordsTest2() and calculateWordScoreTest2() test the algorithm for turn 4 of
+   * https://boardgames.stackexchange.com/questions/44841/limits-on-using-new-words-in-scrabble
+   * assuming every letter has the value one and special fields do not exist.
+   */
+  @Test
+  public void calculateWordsTest2() {
+    assertEquals(true, turn2.calculateWords());
+  }
+
+  @Test
+  public void calculateWordScoreTest2() {
+    turn2.calculateWords();
+    turn2.calculateTurnScore();
+    assertEquals(8, turn2.getTurnScore());
   }
 
 
