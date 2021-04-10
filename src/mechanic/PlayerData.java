@@ -1,6 +1,7 @@
 package mechanic;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -12,8 +13,9 @@ import javafx.scene.image.WritableImage;
  * @author ldreyer
  */
 
-public class PlayerData {
-  private int id;
+public class PlayerData implements Serializable {
+
+  private static final long serialVersionUID = 1L;
   private String nickname;
   private String avatar;
 
@@ -70,11 +72,29 @@ public class PlayerData {
     this.avatar = input.getUrl();
   }
 
-  public int getID() {
-    return id;
+  @Override
+  public String toString() {
+    return nickname;
   }
 
-  public void setID(int id) {
-    this.id = id;
+  @Override
+  public boolean equals(Object other) {
+    boolean equals;
+    PlayerData p;
+
+    if (other == null || other.getClass() != getClass()) {
+      return false;
+    } else {
+      p = (PlayerData) other;
+      equals = this.nickname.equals(p.getNickname());
+
+      if (this.avatar == null) {
+        equals = equals && (p.getAvatar() == null);
+      } else {
+        equals = equals && (this.avatar.equals(p.getAvatar()));
+      }
+
+      return equals;
+    }
   }
 }
