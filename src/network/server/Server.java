@@ -10,7 +10,10 @@ import java.util.Set;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.PlayerData;
+import network.messages.ConnectMessage;
 import network.messages.Message;
 import network.messages.ShutdownMessage;
 
@@ -27,6 +30,10 @@ public class Server {
   private ServerSocket serverSocket;
   private GameState gameState;
   private GameController gameController;
+
+  private GamePanelController gpc;
+  private LobbyScreenController lsc;
+
   private boolean running;
 
   private String host;
@@ -136,7 +143,18 @@ public class Server {
   }
 
   public void updateServerUI(Message m) {
-    // TODO Server UI updates
+    if (!this.gameState.getGameRunning()) {
+      if (this.lsc == null) {
+        lsc = LobbyScreenController.getInstance();
+      }
+
+      switch (m.getMessageType()) {
+        case CONNECT:
+          ConnectMessage connect = (ConnectMessage) m;
+          lsc.updateJoinedPlayer(connect.getPlayerInfo());
+          break;
+      }
+    }
   }
 
   public void stopServer() {
