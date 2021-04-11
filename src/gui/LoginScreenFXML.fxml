@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginScreenActionHandler">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoginScreenActionHandler">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" BorderPane.alignment="CENTER">
          <children>
@@ -43,7 +43,7 @@
                         <Image url="@images/avatar.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="114.0" layoutY="262.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: transparent;" text="Account">
+                  <Button layoutX="110.0" layoutY="258.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="38.0" prefWidth="119.0" style="-fx-background-color: transparent;" text="Account">
                      <tooltip>
                         <Tooltip text="View Personal Account" />
                      </tooltip>
@@ -143,7 +143,7 @@
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
             </ImageView>
-            <Label fx:id="username" accessibleRole="BUTTON" layoutX="201.0" layoutY="266.0" text="&lt;Username&gt;" />
+            <Label fx:id="username" accessibleRole="BUTTON" layoutX="202.0" layoutY="273.0" text="&lt;Username&gt;" />
          </children>
       </AnchorPane>
    </center>

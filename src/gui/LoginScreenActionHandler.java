@@ -74,7 +74,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 				break;
 
 			case "Settings":
-				new SettingsScreen().start(new Stage());
+				//new SettingsScreen().start(new Stage());
 				break;
 			case "Account":
 				new UserSettingsScreen().start(new Stage());

@@ -3,10 +3,9 @@ package gui;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import game.GameSettings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-
-
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,28 +27,37 @@ import mechanic.Player;
 /** @author nilbecke **/
 /** Handles user-inputs in the Gamesettings screen **/
 
-public class SettingsScreenController extends SettingsScreen implements EventHandler<ActionEvent> {
-	
+public class SettingsScreenController implements EventHandler<ActionEvent> {
+
 	private Player currentPlayer;
 	private static SettingsScreenController instance;
-	
+	private static GameSettings settings;
+
 	@FXML
-	private Label username;
+	private Label username, time, overtime, score, size, bingo, ai;
 	@FXML
 	private ImageView avatar;
 	@FXML
 	private Button user;
-	
+
 	/**
-	 * Initialize the Settings Screen with username and avatar
+	 * Initialize the Settings Screen with username, avatar and all current settings
 	 */
-	
+
 	@FXML
 	public void initialize() {
 		instance = this;
-		this.currentPlayer= LobbyScreen.getPlayer();
+		this.currentPlayer = LobbyScreen.getPlayer();
 		this.username.setText(currentPlayer.getNickname());
-		this.avatar.setImage(new Image("file:"+FileParameters.datadir+this.currentPlayer.getAvatar()));
+		this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
+		settings = SettingsScreen.getSettings();
+		time.setText(settings.getTimePerPlayer() + "");
+		overtime.setText(settings.getMaxOvertime()+"");
+		score.setText(settings.getMaxScore()+"");
+		size.setText(settings.getGameBoardSize()+"");
+		bingo.setText(settings.getBingo()+"");
+		ai.setText(settings.getAiDifficulty().substring(0,1).toUpperCase()+settings.getAiDifficulty().substring(1));
+
 	}
 
 	/**
@@ -59,23 +67,26 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 	public void handle(ActionEvent e) {
 		String s = ((Node) e.getSource()).getId();
 		System.out.println(s);
-		switch (s) 	{
+		switch (s) {
 		case "user":
 			new UserSettingsScreen().start(new Stage());
 			break;
 		}
 	}
-	
+
 	/**
 	 * Get a reference on the current Game settings controller
-	 * @return: Current instance of the settings controller if present, null otherwise
+	 * 
+	 * @return: Current instance of the settings controller if present, null
+	 *          otherwise
 	 */
 	public static SettingsScreenController getInstance() {
 		return instance;
 	}
-	
+
 	/**
 	 * Updates the displayed username
+	 * 
 	 * @param newName: updated username
 	 */
 	public void setUserLabel(String newName) {

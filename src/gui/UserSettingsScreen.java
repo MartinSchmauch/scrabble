@@ -2,10 +2,6 @@ package gui;
 
 import java.awt.image.BufferedImage;
 
-/** 
- * @author nilbecke 
- * Opens the user settings menu
- * **/
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -22,6 +18,13 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
+
+
+
+/** 
+ * @author nilbecke 
+ * Opens the user settings menu
+ * **/
 
 public class UserSettingsScreen extends Application {
 

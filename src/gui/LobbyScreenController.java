@@ -4,6 +4,7 @@ import network.client.ClientProtocol;
 import network.messages.*;
 import network.server.Server;
 import network.server.ServerProtocol;
+import util.JSONHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -41,6 +42,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	private Server server = null;
 	private InetAddress address;
 	private static LobbyScreenController instance;
+	private GameSettings gS;
 
 	@FXML
 	private Label countdown;
@@ -54,7 +56,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	private Button start;
 	@FXML
 	private Button settings;
-	
 
 	/**
 	 * Set up labels etc before launching the lobby screen
@@ -64,6 +65,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		this.player = LobbyScreen.getPlayer();
 		address = null;
 		instance = this;
+		JSONHandler jH = new JSONHandler();
+		if (this.player.getCustomGameSettings() != null && !this.player.getCustomGameSettings().equals("")) {
+			this.gS = jH.loadGameSettings(this.player.getCustomGameSettings());
+		} else {
+			this.gS = jH.loadGameSettings("resources/defaultGameSettings.json");
+		}
 		try {
 			address = InetAddress.getLocalHost();
 			this.player.setLocation(address);
@@ -83,10 +90,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		} else {
 			this.client = new ClientProtocol("127.0.0.1", GameSettings.port, this.player.getPlayerInfo(), null, null,
 					this);
-			if(this.client.isOK()) {
+			if (this.client.isOK()) {
 				this.client.start();
 			}
-			
+
 			this.start.setOpacity(0.4);
 			this.start.setDisable(true);
 			this.ip.setOpacity(0);
@@ -116,7 +123,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			st.close();
 			break;
 		case "settings":
-			new SettingsScreen().start(new Stage());
+			new SettingsScreen(this.gS).start(new Stage());
 		}
 	}
 
@@ -160,7 +167,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		Message m = new DisconnectMessage(playerID);
 		sendMessage(m);
 	}
-
+	/**
+	 * Sends a given message to all players
+	 * @param m: The Message to be sent
+	 * @return true if message was sent, false otherwise
+	 */
 	public boolean sendMessage(Message m) {
 		try {
 			if (this.player.getIsHost()) {
@@ -174,40 +185,51 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Getter Method for the current Instance of the controller 
+	 * Getter Method for the current Instance of the controller
 	 *
 	 * @return Current Instance of the contoller
 	 */
 	public static LobbyScreenController getLobbyInstance() {
 		return instance;
 	}
+
 	/**
 	 * Lets a player disconnect or connect
+	 * 
 	 * @param player: Playerdata of the player to be (dis-)connecting
 	 */
 	public void updateJoinedPlayers(PlayerData player) {
-		
+
 	}
-	
+
 	/**
 	 * Reads updated game settings and distributes them to all players
+	 * 
 	 * @param: new Instance of game settings
 	 */
-	public void updategameSettings(GameSettings settings) { 
-		
+	public void updategameSettings(GameSettings settings) {
+
 	}
-	
+
 	/**
 	 * Get the current Server
+	 * 
 	 * @return: Current instance of the server if present else null
 	 */
 	public Server getServer() {
 		return server;
 	}
 	
-		
+	/**
+	 * Get a reference onto the game settings currently used
+	 * @return: currently used game settings
+	 */
+	public GameSettings getSettings() {
+		return this.gS;
+	}
+
 	/**
 	 * Obsolete Methods from the Sender Interface
 	 */
