@@ -24,7 +24,9 @@ public class GameSettings {
 
   private static HashMap<Character, Letter> letters;
   private static List<Field> specialFields;
-  public static int port = 8421;
+
+  public static int port=8421;
+
 
 
   public static int getTimePerPlayer() {

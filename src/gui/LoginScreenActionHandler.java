@@ -23,13 +23,12 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 
 	private Player player;
 	private static LoginScreenActionHandler instance;
-
+	
 	@FXML
 	private TextField LinkField;
 	@FXML
 	private Label username;
 
-	
 	/**
 	 * Handles the different Buttons in the Login Screen
 	 * 
@@ -38,7 +37,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 **/
 	@Override
 	public void handle(ActionEvent e) {
-		if(instance == null) {
+		if (instance == null) {
 			instance = this;
 		}
 		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
@@ -46,12 +45,12 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			join();
 		} else {
 			Button button = (Button) e.getSource();
+			Stage s;
 			switch (button.getText()) {
 			case "Join":
-
 				this.player.setIsHost(false);
 				startLobby();
-				Stage s = (Stage) button.getScene().getWindow();
+				s = (Stage) button.getScene().getWindow();
 				s.close();
 				break;
 			case "Host Game":
@@ -59,6 +58,8 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 				this.player.setHost(this.player);
 				startLobby();
 				s = (Stage) button.getScene().getWindow();
+				s.close();
+				break;
 			case "Exit":
 				System.exit(0);
 				break;
@@ -93,16 +94,20 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 		new LobbyScreen(this.player).start(new Stage());
 
 	}
+
 	/**
 	 * Access the current instane of the LognScreenController
+	 * 
 	 * @return current instance of the controller
 	 */
 	public static LoginScreenActionHandler getInstance() {
 		return instance;
 	}
+
 	/**
 	 * Change the text of the username label
-	 * @param input
+	 * 
+	 * @param input: Nickname of current player
 	 */
 	public void setUsername(String input) {
 		this.username.setText(input);
