@@ -63,6 +63,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 			this.player.setNickname(this.namefield.getText());
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
 			LoginScreenActionHandler.getInstance().setUsername(this.player.getNickname());
+			LoginScreenActionHandler.getInstance().setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
 			if (SettingsScreenController.getInstance() != null) {
 				SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
 			}
@@ -133,7 +134,6 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 			}
 		}
 		this.player.setAvatar("/avatar" + this.currentAvatar + ".png");
-		System.out.println(this.currentAvatar);
 		this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
 	}
 

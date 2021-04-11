@@ -12,6 +12,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
@@ -30,7 +32,9 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	private TextField LinkField;
 	@FXML
 	private Label username;
-
+	@FXML
+	private ImageView avatar;
+	
 	/**
 	 * Handles the different Buttons in the Login Screen
 	 * 
@@ -112,6 +116,14 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 */
 	public void setUsername(String input) {
 		this.username.setText(input);
+	}
+	
+	/**
+	 * Updates the avatar image of the current player
+	 * @param avatar: String to the location of the new avatar
+	 */
+	public void setAvatar(String avatar) {
+		this.avatar.setImage(new Image(avatar));
 	}
 
 	/**
