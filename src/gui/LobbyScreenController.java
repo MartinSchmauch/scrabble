@@ -195,7 +195,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	 * Reads updated game settings and distributes them to all players
 	 * @param: new Instance of game settings
 	 */
-	public void updategameSettings(GameSettings settings) {
+	public void updategameSettings(GameSettings settings) { 
 		
 	}
 	/**
