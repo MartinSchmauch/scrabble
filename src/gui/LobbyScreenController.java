@@ -63,33 +63,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
     instance = this;
     try {
       address = InetAddress.getLocalHost();
-      this.player.setLocation(address);
     } catch (UnknownHostException e) {
       e.printStackTrace();
     }
-    // Initialize Host/Client
-    if (this.player.getIsHost()) {
-      this.server = new Server(this.player.getPlayerInfo(), null);
-      Runnable r = new Runnable() {
-        public void run() {
-          server.listen();
-        }
-      };
-      new Thread(r).start();
-      this.ip.setText("Link:  " + address.getHostAddress());
-    } else {
-      this.client = new ClientProtocol("127.0.0.1", GameSettings.port, this.player.getPlayerInfo(),
-          null, null, this);
-      if (this.client.isOK()) {
-        this.client.start();
-      }
 
-      this.start.setOpacity(0.4);
-      this.start.setDisable(true);
-      this.ip.setOpacity(0);
-      this.settings.setOpacity(0.4);
-      this.settings.setDisable(true);
-    }
+    this.ip.setText("Link:  " + address.getHostAddress());
+    this.start.setOpacity(0.4);
+    this.start.setDisable(true);
+    this.ip.setOpacity(0);
+    this.settings.setOpacity(0.4);
+    this.settings.setDisable(true);
   }
 
   /**
@@ -161,7 +144,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 
   public boolean sendMessage(Message m) {
     try {
-      if (this.player.getIsHost()) {
+      if (this.player.isHost()) {
         this.host.sendToClient(m);
       } else {
         this.client.sendToServer(m);

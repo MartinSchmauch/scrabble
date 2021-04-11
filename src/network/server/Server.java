@@ -1,6 +1,7 @@
 package network.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -93,6 +94,11 @@ public class Server {
     return this.host;
   }
 
+  public InetAddress getInetAddress() {
+    return this.serverSocket.getInetAddress();
+  }
+
+
   public boolean checkNickname(String nickname) {
     return this.clients.keySet().contains(nickname);
   }
@@ -166,8 +172,7 @@ public class Server {
           lsc.addJoinedPlayer(cm.getPlayerInfo());
           break;
         case DISCONNECT:
-          DisconnectMessage dm = (DisconnectMessage) m;
-          lsc.removeJoinedPlayer(dm.getFrom());
+          lsc.removeJoinedPlayer(m.getFrom());
         case SEND_CHAT_TEXT:
           SendChatMessage scm = (SendChatMessage) m;
           lsc.updateChat(scm.getText(), scm.getSender(), scm.getDateTime());
