@@ -104,7 +104,7 @@
                         <Image url="@images/avatar.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="171.0" layoutY="15.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: transparent;" text="Account">
+                  <Button fx:id="user" layoutX="171.0" layoutY="15.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="26.0" prefWidth="113.0" style="-fx-background-color: transparent;" text="Account">
                      <tooltip>
                         <Tooltip text="View Personal Account" />
                      </tooltip>

@@ -54,6 +54,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	private Button start;
 	@FXML
 	private Button settings;
+	
 
 	/**
 	 * Set up labels etc before launching the lobby screen
@@ -106,7 +107,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			break;
 		case "send":
 		case "sendText":
-
 			// Reset the Textlabel
 			this.input.setText("");
 			break;
@@ -207,6 +207,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		return server;
 	}
 	
+		
 	/**
 	 * Obsolete Methods from the Sender Interface
 	 */

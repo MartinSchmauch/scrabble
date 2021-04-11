@@ -31,11 +31,14 @@ import mechanic.Player;
 public class SettingsScreenController extends SettingsScreen implements EventHandler<ActionEvent> {
 	
 	private Player currentPlayer;
-
+	private static SettingsScreenController instance;
+	
 	@FXML
 	private Label username;
 	@FXML
 	private ImageView avatar;
+	@FXML
+	private Button user;
 	
 	/**
 	 * Initialize the Settings Screen with username and avatar
@@ -43,20 +46,39 @@ public class SettingsScreenController extends SettingsScreen implements EventHan
 	
 	@FXML
 	public void initialize() {
+		instance = this;
 		this.currentPlayer= LobbyScreen.getPlayer();
 		this.username.setText(currentPlayer.getNickname());
 		this.avatar.setImage(new Image("file:"+FileParameters.datadir+this.currentPlayer.getAvatar()));
 	}
+
 	/**
 	 * Handles all user inputs
 	 */
 	@Override
 	public void handle(ActionEvent e) {
 		String s = ((Node) e.getSource()).getId();
+		System.out.println(s);
 		switch (s) 	{
 		case "user":
 			new UserSettingsScreen().start(new Stage());
 			break;
 		}
+	}
+	
+	/**
+	 * Get a reference on the current Game settings controller
+	 * @return: Current instance of the settings controller if present, null otherwise
+	 */
+	public static SettingsScreenController getInstance() {
+		return instance;
+	}
+	
+	/**
+	 * Updates the displayed username
+	 * @param newName: updated username
+	 */
+	public void setUserLabel(String newName) {
+		this.username.setText(newName);
 	}
 }
