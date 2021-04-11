@@ -39,6 +39,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	private ServerProtocol host = null;
 	private Server server = null;
 	private InetAddress address;
+	private static LobbyScreenController instance;
 
 	@FXML
 	private Label countdown;
@@ -60,6 +61,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	public synchronized void initialize() {
 		this.player = LobbyScreen.getPlayer();
 		address = null;
+		instance = this;
 		try {
 			address = InetAddress.getLocalHost();
 			this.player.setLocation(address);
@@ -171,7 +173,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			return false;
 		}
 	}
-
+	
+	/**
+	 * Getter Method for the current Instance of the controller 
+	 * @return 
+	 * @return Current Instance of the contoller
+	 */
+	public static LobbyScreenController getLobbyInstance() {
+		return instance;
+	}
 	/**
 	 * Obsolete Methods from the Sender Interface
 	 */
