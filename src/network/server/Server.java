@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +96,12 @@ public class Server {
   }
 
   public InetAddress getInetAddress() {
-    return this.serverSocket.getInetAddress();
+	  try {
+		return InetAddress.getLocalHost();
+	} catch (UnknownHostException e) {
+		e.printStackTrace();
+		return null;
+	}
   }
 
 
@@ -224,8 +230,9 @@ public class Server {
 
   public void stopServer() {
     running = false;
-    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
-
+    //TODO remove comment
+    //sendToAll(new ShutdownMessage(this.host, "Server closed session."));
+    
     if (!serverSocket.isClosed()) {
       try {
         serverSocket.close();

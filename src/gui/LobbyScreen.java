@@ -36,6 +36,7 @@ public class LobbyScreen extends Application {
 		try {
 			Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14); 
 			this.root = FXMLLoader.load(getClass().getResource("Lobby.fxml"));
+			stage.setOnCloseRequest(e -> close());
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			// stage.initStyle(StageStyle.UNDECORATED);
@@ -46,6 +47,17 @@ public class LobbyScreen extends Application {
 		}
 
 	}
+	/**
+	 * Closes the Lobby and stops the server
+	 */
+	public void close() {
+		LobbyScreenController.getLobbyInstance().getServer().stopServer();
+		new LoginScreenFXML().start(new Stage());
+	}
+	/**
+	 *  Passes on the instance of local current player
+	 * @return: Instance of current player
+	 */
 	public static Player getPlayer() {
 		return player;
 	}

@@ -231,11 +231,15 @@ public class Player {
   public void setGameBoard(GameBoard gameBoard) {
     this.gameBoard = gameBoard;
   }
-
+  
+  public Server getServer() {
+	  return this.server;
+  }
 
   /** @author nilbecke */
 
   public void host() {
+	  
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this.info, null);
     Runnable r = new Runnable() {

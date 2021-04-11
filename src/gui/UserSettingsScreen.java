@@ -2,10 +2,6 @@ package gui;
 
 import java.awt.image.BufferedImage;
 
-/** 
- * @author nilbecke 
- * Opens the user settings menu
- * **/
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -14,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -21,6 +18,13 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
+
+
+
+/** 
+ * @author nilbecke 
+ * Opens the user settings menu
+ * **/
 
 public class UserSettingsScreen extends Application {
 
@@ -33,6 +37,8 @@ public class UserSettingsScreen extends Application {
 	private Slider volbar;
 	@FXML
 	private ImageView avatar,question;
+	@FXML
+	private TextField namefield;
 	
 
 	/**
@@ -47,6 +53,7 @@ public class UserSettingsScreen extends Application {
 		this.volbar.setValue((double)this.player.getVolume());
 		this.vol.setText((int)this.volbar.getValue()+"");
 		this.avatar.setImage(new Image("file:"+FileParameters.datadir+this.player.getAvatar()));	
+		this.namefield.setText(this.player.getNickname());
 	}
 	
 
