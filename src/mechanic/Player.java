@@ -7,6 +7,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import game.GameSettings;
+import game.GameState;
+import network.client.ClientProtocol;
+import network.server.Server;
 
 
 /**
@@ -23,13 +27,18 @@ public class Player {
   private PlayerData info;
   private int volume;
   private GameBoard gameBoard;
+  private String customGameSettings;
 
   @JsonIgnore
   private Field[] rack;
-  public String customGameSettings;
-  private boolean isHost;
-  private Player host;
+  @JsonIgnore
+  private ClientProtocol client = null;
+  @JsonIgnore
   private InetAddress gameLocation;
+  @JsonIgnore
+  private Server server = null;
+  @JsonIgnore
+  private GameState gS = null;
 
   static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 12;
@@ -153,6 +162,7 @@ public class Player {
     return this.getRackTiles().size();
   }
 
+
   /**
    * 
    * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
@@ -193,25 +203,22 @@ public class Player {
     this.customGameSettings = customGameSettings;
   }
 
-  public boolean getIsHost() {
-    return this.isHost;
+  /*
+   * NETWORK
+   */
+
+  public boolean isHost() {
+    return this.info.isHost();
   }
 
-  public void setIsHost(boolean host) {
-    this.isHost = host;
-  }
-
-  public Player getHost() {
-    return host;
-  }
-
-  public void setHost(Player host) {
-    this.host = host;
+  public void setHost(boolean host) {
+    this.info.setHost(host);
   }
 
   public InetAddress getLocation() {
     return this.gameLocation;
   }
+
 
   public void setLocation(InetAddress location) {
     this.gameLocation = location;
@@ -224,4 +231,34 @@ public class Player {
   public void setGameBoard(GameBoard gameBoard) {
     this.gameBoard = gameBoard;
   }
+
+
+  /** @author nilbecke */
+
+  public void host() {
+    this.getPlayerInfo().setHost(true);
+    this.server = new Server(this.info, null);
+    Runnable r = new Runnable() {
+      public void run() {
+        server.listen();
+      }
+    };
+    new Thread(r).start();
+
+    this.gameLocation = this.server.getInetAddress();
+  }
+
+  /** @author nilbecke */
+
+  public void connect(InetAddress inetAddress) {
+    this.getPlayerInfo().setHost(false);
+    this.gameLocation = inetAddress;
+    this.client = new ClientProtocol(this.gameLocation.toString(), GameSettings.port, this.info,
+        null, null, null);
+
+    if (this.client.isOK()) {
+      this.client.start();
+    }
+  }
+
 }

@@ -1,7 +1,7 @@
 package gui;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,6 +62,18 @@ public class GamePanelController extends ClientUI implements Sender {
   @FXML
   private GridPane grid;
 
+
+
+  private static GamePanelController instance;
+
+  public static GamePanelController getInstance() {
+    if (instance == null) {
+      instance = new GamePanelController();
+    }
+    return instance;
+  }
+
+
   /**
    * 
    * Listener methods that are executed upon Player UI Interaction
@@ -106,6 +118,16 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    */
 
+     /**
+      * Lets a player disconnect
+      * 
+      * @param nickname of the player disconnecting
+      */
+
+  public void removeJoinedPlayer(String nickname) {
+    // TODO
+  }
+
 
   /**
    * This method updates the TextArea in the Client UI and puts the newest Chat message from the
@@ -114,13 +136,13 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    * @param sender
    * @param message
-   * @param timeStamp
+   * @param dateTime
    */
-  public void updateChat(String message, LocalDate timeStamp, String sender) {
+  public void updateChat(String message, LocalDateTime dateTime, String sender) {
     String newChatMessage = "";
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     newChatMessage = newChatMessage + sender + ", ";
-    newChatMessage = newChatMessage + timeStamp.format(dtf) + ": ";
+    newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
     newChatMessage = newChatMessage + message;
     toTextArea(newChatMessage);
   }
@@ -233,8 +255,8 @@ public class GamePanelController extends ClientUI implements Sender {
    */
 
   @Override
-  public void sendChatMessage(String sender, String message, LocalDate timeStamp) {
-    Message m = new SendChatMessage(sender, message, timeStamp);
+  public void sendChatMessage(String sender, String message) {
+    Message m = new SendChatMessage(sender, message, LocalDateTime.now());
     sendMessageToServer(m);
   }
 

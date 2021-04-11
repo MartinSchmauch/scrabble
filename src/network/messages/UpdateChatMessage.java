@@ -1,6 +1,6 @@
 package network.messages;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * After the server recieved the sendChatMessage, he sends the UpdateChatMessage to all players to
@@ -12,10 +12,10 @@ import java.time.LocalDate;
 public class UpdateChatMessage extends Message {
   private static final long serialVersionUID = 1L;
   private String text;
-  private LocalDate dateTime;
+  private LocalDateTime dateTime;
 
 
-  public UpdateChatMessage(String from, String content, LocalDate timeStamp) {
+  public UpdateChatMessage(String from, String content, LocalDateTime timeStamp) {
     super(MessageType.UPDATE_CHAT, from);
     this.text = content;
     this.dateTime = timeStamp;
@@ -25,7 +25,7 @@ public class UpdateChatMessage extends Message {
     return text;
   }
 
-  public LocalDate getDateTime() {
+  public LocalDateTime getDateTime() {
     return dateTime;
   }
 
