@@ -19,6 +19,7 @@ import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TileResponseMessage;
@@ -88,6 +89,8 @@ public class ClientProtocol extends Thread {
               break;
             case ADD_TILE:
               AddTileMessage atMessage = (AddTileMessage) m;
+              atMessage.getTile().setField(gpc.getPlayer().getGameBoard()
+                  .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
               gpc.addTile(atMessage.getTile());
               break;
             case MOVE_TILE:
@@ -96,7 +99,9 @@ public class ClientProtocol extends Thread {
                   mtMessage.getNewYCoordinate());
               break;
             case REMOVE_TILE:
-              MoveTileMessage rtMessage = (MoveTileMessage) m;
+              RemoveTileMessage rtMessage = (RemoveTileMessage) m;
+              rtMessage.getTile().setField(gpc.getPlayer().getGameBoard()
+                  .getField(rtMessage.getxCoordinate(), rtMessage.getyCoordinate()));
               gpc.removeTile(rtMessage.getTile());
               break;
             case TILE_RESPONSE:

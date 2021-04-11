@@ -22,6 +22,7 @@ public class Player {
 
   private PlayerData info;
   private int volume;
+  private GameBoard gameBoard;
 
   @JsonIgnore
   private Field[] rack;
@@ -191,27 +192,36 @@ public class Player {
   public void setCustomGameSettings(String customGameSettings) {
     this.customGameSettings = customGameSettings;
   }
-  
+
   public boolean getIsHost() {
-	  return this.isHost;
+    return this.isHost;
   }
-  
+
   public void setIsHost(boolean host) {
-	  this.isHost=host;
+    this.isHost = host;
   }
-  
+
   public Player getHost() {
-	  return host;
+    return host;
   }
-  
+
   public void setHost(Player host) {
-	  this.host=host;
+    this.host = host;
   }
-  
+
   public InetAddress getLocation() {
-	  return this.gameLocation;
+    return this.gameLocation;
   }
+
   public void setLocation(InetAddress location) {
-	  this.gameLocation=location;
+    this.gameLocation = location;
+  }
+
+  public GameBoard getGameBoard() {
+    return gameBoard;
+  }
+
+  public void setGameBoard(GameBoard gameBoard) {
+    this.gameBoard = gameBoard;
   }
 }

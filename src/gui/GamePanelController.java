@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import mechanic.Field;
+import mechanic.Player;
 import mechanic.Tile;
 import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
@@ -29,6 +30,8 @@ public class GamePanelController extends ClientUI implements Sender {
   public GamePanelController() {
     System.out.println("Controller erzeugt \n");
   }
+
+  private Player player;
 
   @FXML
   private TextArea textArea;
@@ -268,6 +271,10 @@ public class GamePanelController extends ClientUI implements Sender {
     } catch (IOException e1) {
       e1.printStackTrace();
     }
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
 }
