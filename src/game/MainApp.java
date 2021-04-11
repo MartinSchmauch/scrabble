@@ -15,7 +15,7 @@ public class MainApp {
 		try {
 			new LoginScreenFXML().start(new Stage());
 		} catch (Exception e) {
-				System.out.println("It is doomed");
+				System.out.println("It is doomed"); 
 		}
 	}
 
