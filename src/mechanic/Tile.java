@@ -81,6 +81,27 @@ public class Tile implements Serializable {
     this.isPlayed = played;
   }
 
+  /**
+   * @author lurny
+   */
+  @Override
+  public boolean equals(Object other) {
+    Tile t;
+
+    if (other == null || other.getClass() != getClass()) {
+      return false;
+    } else {
+      t = (Tile) other;
+      if (t.isPlayed == this.isPlayed && t.field.equals(this.field)
+          && t.onGameBoard == this.onGameBoard && t.onRack == this.onRack
+          && t.letter.equals(this.letter)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   // ** @author lurny
   public boolean isOnGameBoard() {
     return onGameBoard;

@@ -1,6 +1,5 @@
 package network.messages;
 
-import mechanic.Field;
 import mechanic.Tile;
 
 /**
@@ -14,20 +13,25 @@ public class MoveTileMessage extends Message {
   private static final long serialVersionUID = 1L;
 
   private Tile tile;
-  private Field newField;
+  private int newXCoordinate, newYCoordinate;
 
-  public MoveTileMessage(String from, Tile tile, Field newField) {
+  public MoveTileMessage(String from, Tile tile, int newXCoordinate, int newYCoordinate) {
     super(MessageType.MOVE_TILE, from);
     this.tile = tile;
-    this.newField = newField;
+    this.newXCoordinate = newXCoordinate;
+    this.newYCoordinate = newYCoordinate;
   }
 
   public Tile getTile() {
     return this.tile;
   }
 
-  public Field getNewField() {
-    return newField;
+  public int getNewXCoordinate() {
+    return newXCoordinate;
+  }
+
+  public int getNewYCoordinate() {
+    return newYCoordinate;
   }
 
 }

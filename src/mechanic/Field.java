@@ -148,6 +148,27 @@ public class Field implements Serializable {
       return null;
     }
   }
+
+  /**
+   * @author lurny
+   */
+  @Override
+  public boolean equals(Object other) {
+    Field t;
+
+    if (other == null || other.getClass() != getClass()) {
+      return false;
+    } else {
+      t = (Field) other;
+      if (t.gameBoard.equals(this.gameBoard) && t.letterMultiplier == this.letterMultiplier
+          && t.tile.equals(this.tile) && t.wordMultiplier == this.wordMultiplier
+          && t.xCoordinate == this.xCoordinate && t.yCoordinate == this.yCoordinate) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }
 
 

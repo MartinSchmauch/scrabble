@@ -130,13 +130,13 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   public void indicatePlayerTurn(String nickName) {
     if (player1.getText().equals(nickName)) {
-      // Effekt für player 1
+      // Effekt fï¿½r player 1
     } else if (player2.getText().equals(nickName)) {
-      // Effekt für player 2
+      // Effekt fï¿½r player 2
     } else if (player3.getText().equals(nickName)) {
-      // Effekt für player 3
+      // Effekt fï¿½r player 3
     } else if (player4.getText().equals(nickName)) {
-      // Effekt für player 4
+      // Effekt fï¿½r player 4
     }
   }
 
@@ -161,7 +161,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * @param tile
    * @param newField
    */
-  public void moveTile(Tile tile, Field newField) {
+  public void moveTile(Tile tile, int newXCoordinate, int newYCoordinate) {
 
   }
 
@@ -183,13 +183,13 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   public void indicateInvalidTurn(String nickName) {
     if (player1.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
+      // TODO: zug rï¿½ckgï¿½ngig machen
     } else if (player2.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
+      // TODO: zug rï¿½ckgï¿½ngig machen
     } else if (player3.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
+      // TODO: zug rï¿½ckgï¿½ngig machen
     } else if (player4.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
+      // TODO: zug rï¿½ckgï¿½ngig machen
     }
   }
 
@@ -243,7 +243,7 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out.println("method sendCommitTurn wurde aufgerufen, ausgelöst von " + nickName + "\n");
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgelï¿½st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessageToServer(m);
   }

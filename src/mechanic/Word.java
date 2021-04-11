@@ -21,6 +21,7 @@ public class Word {
   }
 
   /** The to String method returns the Word as a String */
+  @Override
   public String toString() {
     String wordString = "";
     for (Tile t : this.tiles) {
