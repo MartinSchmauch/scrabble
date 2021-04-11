@@ -1,6 +1,5 @@
 package gui;
 
-import java.time.LocalDate;
 import mechanic.Field;
 import mechanic.Tile;
 
@@ -22,7 +21,7 @@ public interface Sender {
    * @param message
    * @param timeStamp
    */
-  void sendChatMessage(String sender, String message, LocalDate timeStamp);
+  void sendChatMessage(String sender, String message);
 
   /**
    * This method creates a new TileRequestMessage that is supposed to inform the server that a

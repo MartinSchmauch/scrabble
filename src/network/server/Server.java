@@ -14,7 +14,9 @@ import gui.GamePanelController;
 import gui.LobbyScreenController;
 import mechanic.PlayerData;
 import network.messages.ConnectMessage;
+import network.messages.DisconnectMessage;
 import network.messages.Message;
+import network.messages.SendChatMessage;
 import network.messages.ShutdownMessage;
 
 /**
@@ -145,13 +147,21 @@ public class Server {
   public void updateServerUI(Message m) {
     if (!this.gameState.getGameRunning()) {
       if (this.lsc == null) {
-        lsc = LobbyScreenController.getInstance();
+        lsc = LobbyScreenController.getLobbyInstance();
       }
 
       switch (m.getMessageType()) {
         case CONNECT:
-          ConnectMessage connect = (ConnectMessage) m;
-          lsc.updateJoinedPlayer(connect.getPlayerInfo());
+          ConnectMessage cm = (ConnectMessage) m;
+          lsc.addJoinedPlayer(cm.getPlayerInfo());
+          break;
+        case DISCONNECT:
+          DisconnectMessage dm = (DisconnectMessage) m;
+          lsc.removeJoinedPlayer(dm.getFrom());
+        case SEND_CHAT_TEXT:
+          SendChatMessage scm = (SendChatMessage) m;
+          lsc.updateChat(scm.getText(), scm.getSender(), scm.getDateTime());
+        default:
           break;
       }
     }
