@@ -140,8 +140,9 @@ public class Server {
 
   public void stopServer() {
     running = false;
-    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
-
+    //TODO remove comment
+    //sendToAll(new ShutdownMessage(this.host, "Server closed session."));
+    
     if (!serverSocket.isClosed()) {
       try {
         serverSocket.close();

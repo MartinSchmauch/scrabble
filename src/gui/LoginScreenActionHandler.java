@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.application.Platform;
+
 /** @Author nilbecke **/
 
 import javafx.event.ActionEvent;
@@ -23,7 +25,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 
 	private Player player;
 	private static LoginScreenActionHandler instance;
-	
+
 	@FXML
 	private TextField LinkField;
 	@FXML
@@ -63,7 +65,6 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			case "Exit":
 				System.exit(0);
 				break;
-
 			case "Tutorial":
 				OpenTutorial.open();
 				break;

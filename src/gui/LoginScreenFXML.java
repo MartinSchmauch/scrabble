@@ -1,8 +1,11 @@
 package gui;
 
+import java.io.IOException;
+
 /** @author nilbecke **/
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,23 +25,21 @@ public class LoginScreenFXML extends Application {
 
 	private Parent root;
 	private Player currentPlayer;
-	
-	
-	@FXML 
+
+	@FXML
 	private ImageView avatar;
 	@FXML
 	private Label username;
-	
-	
+
 	/**
 	 * Set up the avatar picture before loginscreen is visible
 	 */
-	
+
 	@FXML
 	public void initialize() {
 		this.currentPlayer = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
 		this.username.setText(this.currentPlayer.getNickname());
-		this.avatar.setImage(new Image("file:"+FileParameters.datadir+this.currentPlayer.getAvatar()));
+		this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
 	}
 
 	/**
@@ -47,23 +48,24 @@ public class LoginScreenFXML extends Application {
 	 */
 
 	@Override
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
 		Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
-		this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
+		try {
+			this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.setTitle("Scrabble3");
-		
+
 		stage.show();
 	}
-	
-	
+
 	public Parent getParent() {
 		return this.root;
 	}
-	
-	
 
 	public LoginScreenFXML getLoginScreen() {
 		return this;

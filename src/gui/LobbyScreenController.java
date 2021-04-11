@@ -198,6 +198,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	public void updategameSettings(GameSettings settings) { 
 		
 	}
+	
+	/**
+	 * Get the current Server
+	 * @return: Current instance of the server if present else null
+	 */
+	public Server getServer() {
+		return server;
+	}
+	
 	/**
 	 * Obsolete Methods from the Sender Interface
 	 */
