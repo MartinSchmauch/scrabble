@@ -194,7 +194,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   /**
    * Lets a player disconnect
    * 
-   * @param player: nickname of the player disconnecting
+   * @param nickname of the player disconnecting
    */
 
   public void removeJoinedPlayer(String nickname) {

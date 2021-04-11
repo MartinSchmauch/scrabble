@@ -13,11 +13,17 @@ import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
 import mechanic.PlayerData;
+import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
+import network.messages.GameStatisticMessage;
 import network.messages.Message;
+import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.ShutdownMessage;
+import network.messages.StartGameMessage;
+import network.messages.TurnResponseMessage;
 
 /**
  * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
@@ -124,7 +130,11 @@ public class Server {
       System.out.println("Client " + c + " removed (message delivery failed).");
       removeClient(c);
     }
-    updateServerUI(m);
+    try {
+      updateServerUI(m);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /** sends a message to all connected clients */
@@ -144,7 +154,7 @@ public class Server {
 
   }
 
-  public void updateServerUI(Message m) {
+  public void updateServerUI(Message m) throws Exception {
     if (!this.gameState.getGameRunning()) {
       if (this.lsc == null) {
         lsc = LobbyScreenController.getLobbyInstance();
@@ -161,6 +171,46 @@ public class Server {
         case SEND_CHAT_TEXT:
           SendChatMessage scm = (SendChatMessage) m;
           lsc.updateChat(scm.getText(), scm.getSender(), scm.getDateTime());
+        case START_GAME:
+          StartGameMessage sgm = (StartGameMessage) m;
+          lsc.startGame();
+        case GAME_STATISTIC:
+          GameStatisticMessage gsm = (GameStatisticMessage) m;
+          // TODO
+        default:
+          break;
+      }
+    } else {
+
+      if (this.gpc == null) {
+        gpc = GamePanelController.getInstance();
+      }
+
+      switch (m.getMessageType()) {
+        case DISCONNECT:
+          DisconnectMessage dm = (DisconnectMessage) m;
+          gpc.removeJoinedPlayer(dm.getFrom());
+        case SEND_CHAT_TEXT:
+          SendChatMessage scm = (SendChatMessage) m;
+          gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
+        case ADD_TILE:
+          AddTileMessage atm = (AddTileMessage) m;
+          gpc.addTile(atm.getTile());
+        case REMOVE_TILE:
+          RemoveTileMessage rtm = (RemoveTileMessage) m;
+          gpc.removeTile(rtm.getTile());
+        case MOVE_TILE:
+          MoveTileMessage mtm = (MoveTileMessage) m;
+          gpc.moveTile(mtm.getTile(), mtm.getNewField());
+        case TURN_RESPONSE:
+          TurnResponseMessage trm = (TurnResponseMessage) m;
+          if (!trm.getIsValid()) {
+            gpc.indicateInvalidTurn(trm.getFrom());
+          } else {
+            gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+            this.gameState.setCurrentPlayer(trm.getNextPlayer());
+            gpc.indicatePlayerTurn(trm.getNextPlayer());
+          }
         default:
           break;
       }

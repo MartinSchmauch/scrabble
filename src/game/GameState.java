@@ -52,6 +52,10 @@ public class GameState implements Serializable {
     return this.currentPlayer;
   }
 
+  public void setCurrentPlayer(String nextPlayer) {
+    this.currentPlayer = nextPlayer;
+  }
+
   public List<PlayerData> getAllPlayers() {
     return new ArrayList<PlayerData>(this.allPlayers.values());
   }

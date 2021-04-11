@@ -59,6 +59,18 @@ public class GamePanelController extends ClientUI implements Sender {
   @FXML
   private GridPane grid;
 
+
+
+  private static GamePanelController instance;
+
+  public static GamePanelController getInstance() {
+    if (instance == null) {
+      instance = new GamePanelController();
+    }
+    return instance;
+  }
+
+
   /**
    * 
    * Listener methods that are executed upon Player UI Interaction
@@ -102,6 +114,16 @@ public class GamePanelController extends ClientUI implements Sender {
    * Methods to be used by the ClientProtocol to change the UI of the Client
    * 
    */
+
+     /**
+      * Lets a player disconnect
+      * 
+      * @param nickname of the player disconnecting
+      */
+
+  public void removeJoinedPlayer(String nickname) {
+    // TODO
+  }
 
 
   /**
