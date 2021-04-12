@@ -14,6 +14,7 @@ import game.GameSettings;
 import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
+import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
@@ -23,7 +24,6 @@ import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
-import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TurnResponseMessage;
 
@@ -40,6 +40,8 @@ public class Server {
   private ServerSocket serverSocket;
   private GameState gameState;
   private GameController gameController;
+  private Player player;
+  private ServerProtocol serverProtocol;
 
   private GamePanelController gpc;
   private LobbyScreenController lsc;
@@ -69,8 +71,8 @@ public class Server {
       while (running) {
         Socket clientSocket = serverSocket.accept();
 
-        ServerProtocol serverThread = new ServerProtocol(clientSocket, this);
-        serverThread.start();
+        this.serverProtocol = new ServerProtocol(clientSocket, this);
+        this.serverProtocol.start();
       }
 
     } catch (IOException e) {
@@ -96,12 +98,12 @@ public class Server {
   }
 
   public InetAddress getInetAddress() {
-	  try {
-		return InetAddress.getLocalHost();
-	} catch (UnknownHostException e) {
-		e.printStackTrace();
-		return null;
-	}
+    try {
+      return InetAddress.getLocalHost();
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
 
@@ -212,7 +214,7 @@ public class Server {
           gpc.removeTile(rtm.getTile());
         case MOVE_TILE:
           MoveTileMessage mtm = (MoveTileMessage) m;
-          gpc.moveTile(mtm.getTile(), mtm.getNewField());
+          gpc.moveTile(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
           if (!trm.getIsValid()) {
@@ -230,9 +232,9 @@ public class Server {
 
   public void stopServer() {
     running = false;
-    //TODO remove comment
-    //sendToAll(new ShutdownMessage(this.host, "Server closed session."));
-    
+    // TODO remove comment
+    // sendToAll(new ShutdownMessage(this.host, "Server closed session."));
+
     if (!serverSocket.isClosed()) {
       try {
         serverSocket.close();
@@ -241,5 +243,17 @@ public class Server {
         System.exit(0);
       }
     }
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  public ServerProtocol getServerProtocol() {
+    return this.serverProtocol;
   }
 }

@@ -1,10 +1,9 @@
 package game;
 
-import java.util.List;
 import mechanic.Field;
-import mechanic.GameBoard;
 import mechanic.Player;
 import mechanic.Tile;
+import mechanic.Turn;
 
 
 /**
@@ -16,38 +15,13 @@ import mechanic.Tile;
  */
 
 public class GameController {
-  private GameBoard gb;
   private GameState gS;
+  private Turn turn;
 
   public GameController(GameState gameState) {
     this.gS = gameState;
-    setUpGameboard();
   }
 
-  /**
-   * setUp Gameboard with special Fields
-   * 
-   * @author lurny
-   */
-  public void setUpGameboard() {
-	
-    this.gb = new GameBoard(GameSettings.getGameBoardSize());
-    List<Field> specialFields = GameSettings.getSpecialFields();
-      for (Field f : specialFields) {
-      this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
-          .setLetterMultiplier(f.getLetterMultiplier());
-      this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
-          .setWordMultiplier(f.getWordMultiplier());
-    }
-  }
-
-  public GameBoard getGameBoard() {
-    return this.gb;
-  }
-
-  public GameState getGameState() {
-    return this.gS;
-  }
 
 
   /**
@@ -57,7 +31,7 @@ public class GameController {
 
   public boolean layDownLetterFromRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {
-    if (!gS.currentPlayer.equals(player.getNickname())
+    if (!gS.getCurrentPlayer().equals(player.getNickname())
         || gb.getField(xCoordinate, yCoordinate).getTile() == null
         || player.getRackTile(rackFieldIndex) == null) {
       return false;
@@ -111,5 +85,13 @@ public class GameController {
     player.setRackTile(rackFieldIndex, tile);
 
     return true;
+  }
+
+  public Turn getTurn() {
+    return turn;
+  }
+
+  public void setTurn(Turn turn) {
+    this.turn = turn;
   }
 }
