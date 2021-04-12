@@ -99,7 +99,8 @@ public class AIplayer extends Player {
         currentLocations = getRowLocations(possibleLocations, j);
         currentDictionary = gb.getWordlist().getWordsWithLength(k);
         for (Field[] location : currentLocations) {
-          rack = this.getRackTiles().toArray(rack);
+          System.arraycopy(rack, 0, this.getRackTiles().toArray(rack), 0, 7);
+          //rack = this.getRackTiles().toArray(rack);
           layedDownTileList = generateWord(gb, location, currentDictionary, rack);
           if (layedDownTileList != null) {
             currentTurn = new Turn(layedDownTileList);
@@ -114,7 +115,8 @@ public class AIplayer extends Player {
         currentLocations = getColLocations(possibleLocations, i);
         currentDictionary = gb.getWordlist().getWordsWithLength(k);
         for (Field[] location : currentLocations) {
-          rack = this.getRackTiles().toArray(rack);
+          System.arraycopy(rack, 0, this.getRackTiles().toArray(rack), 0, 7);
+          // rack = this.getRackTiles().toArray(rack);
           layedDownTileList = generateWord(gb, location, currentDictionary, rack);
           currentTurn = new Turn(layedDownTileList);
           if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
@@ -225,11 +227,14 @@ public class AIplayer extends Player {
           if (currentLocation[wordIndex].getTile() == null) {
             for (int i = 0; i < rack.length; i++) {
               if (rack[i] != null && word.getWordString().charAt(wordIndex) == rack[i].getLetter().getChar()) {
-                currentLocation[wordIndex].setOnlyTile(rack[i]);
-                currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
-                currentLocation[wordIndex].getTile().setOnGameBoard(true);
-                currentLocation[wordIndex].getTile().setOnRack(false);
-                currentLocation[wordIndex].getTile().setPlayed(true);
+//                currentLocation[wordIndex].setOnlyTile(rack[i]);
+//                currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
+//                currentLocation[wordIndex].getTile().setOnGameBoard(true);
+//                currentLocation[wordIndex].getTile().setOnRack(false);
+//                currentLocation[wordIndex].getTile().setPlayed(true);
+//                t = new Tile(new Letter(word.getWordString().charAt(wordIndex), rack[i].getLetter().getLetterValue(), rack[i].getLetter().getCount()), )
+//                result.add(new Tile())
+                currentLocation[wordIndex].setTile(rack[i]);
                 result.add(currentLocation[wordIndex].getTile());
                 rack[i] = null;
                 break;
