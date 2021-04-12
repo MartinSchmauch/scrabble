@@ -32,13 +32,13 @@ public class GameController {
   public boolean layDownLetterFromRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {
     if (!gS.getCurrentPlayer().equals(player.getNickname())
-        || gb.getField(xCoordinate, yCoordinate).getTile() == null
+        || gS.getGameBoard().getField(xCoordinate, yCoordinate).getTile() == null
         || player.getRackTile(rackFieldIndex) == null) {
       return false;
     }
 
     Tile t = player.removeRackTile(rackFieldIndex);
-    t.setField(gb.getField(xCoordinate, yCoordinate));
+    t.setField(gS.getGameBoard().getField(xCoordinate, yCoordinate));
     t.setOnRack(false);
     t.setOnGameBoard(true);
 
@@ -52,14 +52,14 @@ public class GameController {
 
   public boolean moveTileOnGameBoard(Player player, int xCoordinateBefore, int yCoordinateBefore,
       int xCoordinateAfter, int yCoordinateAfter) {
-    Field beforeField = gb.getField(xCoordinateBefore, yCoordinateBefore);
+    Field beforeField = gS.getGameBoard().getField(xCoordinateBefore, yCoordinateBefore);
 
-    if (!gS.currentPlayer.equals(player.getNickname()) || beforeField == null
+    if (!gS.getCurrentPlayer().equals(player.getNickname()) || beforeField == null
         || beforeField.getTile().isPlayed()) {
       return false;
     }
 
-    Field afterField = gb.getField(xCoordinateAfter, yCoordinateAfter);
+    Field afterField = gS.getGameBoard().getField(xCoordinateAfter, yCoordinateAfter);
     beforeField.getTile().setField(afterField);
 
     return true;
@@ -72,8 +72,8 @@ public class GameController {
 
   public boolean takeTileBackToRack(Player player, int rackFieldIndex, int xCoordinate,
       int yCoordinate) {
-    Field beforeField = gb.getField(xCoordinate, yCoordinate);
-    if (!gS.currentPlayer.equals(player.getNickname()) || beforeField == null
+    Field beforeField = gS.getGameBoard().getField(xCoordinate, yCoordinate);
+    if (!gS.getCurrentPlayer().equals(player.getNickname()) || beforeField == null
         || player.getRackTile(rackFieldIndex) == null || beforeField.getTile().isPlayed()) {
       return false;
     }
