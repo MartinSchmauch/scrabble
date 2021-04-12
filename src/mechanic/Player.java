@@ -115,7 +115,7 @@ public class Player {
    */
 
   @JsonIgnore
-  public Field getFreeRackField() {
+  public Field getFreeRackField() { // rack koordinate fortlaufen in xCoordinate
     int i = 0;
     while (rack[i].getTile() != null) {
       i++;
@@ -231,15 +231,15 @@ public class Player {
   public void setGameBoard(GameBoard gameBoard) {
     this.gameBoard = gameBoard;
   }
-  
+
   public Server getServer() {
-	  return this.server;
+    return this.server;
   }
 
   /** @author nilbecke */
 
   public void host() {
-	  
+
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this.info, null);
     Runnable r = new Runnable() {

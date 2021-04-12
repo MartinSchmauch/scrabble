@@ -9,9 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import mechanic.Field;
+import mechanic.Letter;
 import mechanic.Player;
 import mechanic.Tile;
 import network.messages.CommitTurnMessage;
@@ -60,7 +65,9 @@ public class GamePanelController extends ClientUI implements Sender {
   @FXML
   private Rectangle tile1;
   @FXML
-  private GridPane grid;
+  private GridPane grid; // Main Game Panel
+  @FXML
+  private GridPane rack;
 
 
 
@@ -90,6 +97,7 @@ public class GamePanelController extends ClientUI implements Sender {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    addTile(new Tile(new Letter('C', 3, 5), new Field(3, 5, 7, 0)));
   }
 
   @FXML
@@ -175,8 +183,27 @@ public class GamePanelController extends ClientUI implements Sender {
     char letter = tile.getLetter().getChar();
     int tileValue = tile.getValue();
     int column = tile.getField().getxCoordinate();
-    int row = tile.getField().getyCoordinate();
-    grid.add(tile1, column, row);
+    int row = 0;
+    if (column > 5) { // case: tile is in the second row of the rack
+      row = 1;
+      column = column - 5;
+    }
+    StackPane sP = new StackPane();
+    Rectangle r1 = new Rectangle();
+    r1.setHeight(26);
+    r1.setWidth(26);
+    r1.setArcHeight(10);
+    r1.setArcWidth(10);
+    Paint rectangle = Color.web("BLUE");
+    r1.setFill(rectangle);
+    Text t1 = new Text(25, 27, Character.toString(letter));
+    Text t2 = new Text(0, 0, String.valueOf(tileValue));
+    t2.setFont(new Font(7));
+    sP.getChildren().add(r1);
+    sP.getChildren().add(t1);
+    sP.getChildren().add(t2);
+
+    rack.add(sP, column, row);
   }
 
   /**
@@ -268,7 +295,8 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out
+        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessageToServer(m);
   }
