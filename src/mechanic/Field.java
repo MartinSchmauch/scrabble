@@ -45,6 +45,9 @@ public class Field {
   }
   
   public void setOnlyTile(Tile tile) {
+    if (tile.getField() != this) {
+      tile.setField(this);
+    }
     this.tile = tile;
   }
 

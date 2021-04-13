@@ -25,7 +25,12 @@ public class AIplayer extends Player {
       @JsonProperty("volume") int volume) {
     super(nickname, avatar, volume);
   }
-
+  /**
+   * 
+   * @param gb
+   * @param wordlength
+   * @return
+   */
   public ArrayList<Field[]> getValidWordPositionsForWordLength(GameBoard gb, int wordlength) {
     if (wordlength <= 0) {
       return null;

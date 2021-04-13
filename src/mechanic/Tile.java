@@ -40,6 +40,9 @@ public class Tile {
   }
   
   public void setOnlyField(Field field) {
+    if (field.getTile() != this) {
+      field.setTile(this);
+    }
     this.field = field;
   }
 
