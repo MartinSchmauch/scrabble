@@ -31,7 +31,7 @@ public class GameController {
     }
 
     this.turn.calculateTurnScore();
-    this.turn.getPlayer();
+    gS.addScore(this.turn.getPlayer(), this.turn.getTurnScore());
 
     return this.turn.getTurnScore();
   }
