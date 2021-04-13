@@ -36,20 +36,22 @@ public class Turn implements Serializable {
   }
 
   public boolean addTileToTurn(Tile t) {
-    // TODO
-
+    if (!t.equals(null)) {
+      this.laydDownTiles.add(t);
+      return true;
+    }
     return false;
   };
 
   public boolean removeTileFromTurn(Tile t) {
-    // TODO
-
-    return false;
+    return this.laydDownTiles.remove(t);
   };
 
   public boolean moveTileInTurn(Tile t, Field newField) {
-    // TODO
-
+    if (!t.equals(null) && !newField.equals(null)) {
+      t.setField(newField);
+      return true;
+    }
     return false;
   };
 
