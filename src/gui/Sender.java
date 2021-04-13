@@ -1,6 +1,5 @@
 package gui;
 
-import mechanic.Field;
 import mechanic.Tile;
 
 /**
@@ -29,10 +28,12 @@ public interface Sender {
    * Therefore the new message is send to the server, using the sendMessageToServer() method; the
    * confirmation of the move is handled in ClientProtocol
    * 
+   * @param nickName
    * @param tile
-   * @param field
+   * @param newX
+   * @param newY
    */
-  void sendTileMove(Tile tile, Field field);
+  void sendTileMove(String nickName, Tile tile, int newX, int newY);
 
   /**
    * This method creates a new CommitTurnMessage that is supposed to inform the server that a client

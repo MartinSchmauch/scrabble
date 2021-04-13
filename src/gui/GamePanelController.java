@@ -5,9 +5,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -22,6 +28,7 @@ import mechanic.Tile;
 import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
+import network.messages.MoveTileMessage;
 import network.messages.SendChatMessage;
 
 /**
@@ -98,6 +105,38 @@ public class GamePanelController extends ClientUI implements Sender {
       e.printStackTrace();
     }
     addTile(new Tile(new Letter('C', 3, 5), new Field(3, 5, 7, 0)));
+  }
+
+  @FXML
+  public void rackClicked(MouseEvent event) {
+    System.out.println("rackClicked wird aufgerufen");
+    int[] coordinates = new int[2];
+    Node node = (Node) event.getSource();
+    Integer columnIndex = GridPane.getColumnIndex(node);
+    Integer rowIndex = GridPane.getRowIndex(node);
+    coordinates[0] = columnIndex.intValue();
+    coordinates[1] = rowIndex.intValue();
+    System.out.println("column: " + columnIndex + " row: " + rowIndex);
+  }
+
+  @FXML
+  public void rackPaneDragged(DragEvent event) {
+    System.out.println("rackPanelDragged Methode wurde aufgerufen");
+  }
+
+  @FXML
+  public void rackPaneDropped(DragEvent event) {
+    System.out.println("rackPanelDropped Methode wurde aufgerufen");
+  }
+
+  @FXML
+  public void gamePanelDragged(DragEvent event) {
+    System.out.println("gamePanelDragged Methode wurde aufgerufen");
+  }
+
+  @FXML
+  public void gamePanelDropped(DragEvent event) {
+    System.out.println("gamePanelDropped Methode wurde aufgerufen");
   }
 
   @FXML
@@ -194,6 +233,17 @@ public class GamePanelController extends ClientUI implements Sender {
     r1.setWidth(26);
     r1.setArcHeight(10);
     r1.setArcWidth(10);
+    r1.setOnDragDetected((MouseEvent event) -> {
+      // We want the textArea to be dragged. Could also be copied.
+      Dragboard db = textArea.startDragAndDrop(TransferMode.MOVE);
+      // Put a string on a dragboard as an identifier
+      ClipboardContent content = new ClipboardContent();
+      content.putString(textArea.getId());
+      db.setContent(content);
+      // Consume the event
+      event.consume();
+    });
+    // MouseControlUtil.makeDraggable(r1);
     Paint rectangle = Color.web("BLUE");
     r1.setFill(rectangle);
     Text t1 = new Text(25, 27, Character.toString(letter));
@@ -202,9 +252,9 @@ public class GamePanelController extends ClientUI implements Sender {
     sP.getChildren().add(r1);
     sP.getChildren().add(t1);
     sP.getChildren().add(t2);
-
     rack.add(sP, column, row);
   }
+
 
   /**
    * This method updates a Tile on the UI by putting the tile on a new position provided by the
@@ -288,9 +338,11 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   @Override
-  public void sendTileMove(Tile tile, Field field) {
-    // Message m = new TileRequestMessage(tile, field);
-    // sendMessageToServer(m);
+  public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
+    int oldX = tile.getField().getxCoordinate();
+    int oldY = tile.getField().getyCoordinate();
+    Message m = new MoveTileMessage(nickName, tile, oldX, oldY, newX, newY);
+    sendMessageToServer(m);
   }
 
   @Override

@@ -30,10 +30,10 @@ public class GameController {
    * @author lurny
    */
   public void setUpGameboard() {
-	
+
     this.gb = new GameBoard(GameSettings.getGameBoardSize());
     List<Field> specialFields = GameSettings.getSpecialFields();
-      for (Field f : specialFields) {
+    for (Field f : specialFields) {
       this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
           .setLetterMultiplier(f.getLetterMultiplier());
       this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
