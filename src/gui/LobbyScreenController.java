@@ -68,7 +68,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	 */
 	@FXML
 	public synchronized void initialize() {
-		this.player = LobbyScreen.getPlayer();
+		this.player = LobbyScreen.getInstance().getPlayer();
 		address = null;
 		instance = this;
 		try {
@@ -97,7 +97,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		if (this.player.isHost()) {
 			this.players = this.player.getServer().getGameState().getAllPlayers();
 		} else {
-			
+			//TODO get Server as client
 		}
 	}
 
@@ -188,6 +188,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		Message m = (Message) new DisconnectMessage(playerID);
 		sendMessage(m);
 	}
+	
 
 	/**
 	 * Getter Method for the current Instance of the controller

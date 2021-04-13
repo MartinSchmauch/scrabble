@@ -47,8 +47,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 	@FXML
 	public void initialize() {
 		instance = this;
-		this.currentPlayer = LobbyScreen.getPlayer();
-		this.username.setText(currentPlayer.getNickname());
+		this.currentPlayer = LobbyScreen.getInstance().getPlayer();
+		this.username.setText(this.currentPlayer.getNickname());
 		this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
 		settings = SettingsScreen.getSettings();
 		time.setText(settings.getTimePerPlayer() + "");

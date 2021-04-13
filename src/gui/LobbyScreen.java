@@ -18,13 +18,15 @@ import mechanic.Player;
 public class LobbyScreen extends Application {
 
 	private Parent root;
-	private static Player player;
+	private Player player;
+	private static LobbyScreen instance;
 
 	@FXML
 	private Label ip;
 
 	public LobbyScreen(Player current) {
-		player = current;
+		instance = this;
+		this.player = current;
 	}
 
 	/**
@@ -62,8 +64,16 @@ public class LobbyScreen extends Application {
 	 * 
 	 * @return: Instance of current player
 	 */
-	public static Player getPlayer() {
-		return player;
+	public Player getPlayer() {
+		return this.player;
+	}
+	
+	/**
+	 * Reference to the current lobby
+	 * @return Instance of Lobby
+	 */
+	public static LobbyScreen getInstance() {
+		return instance;
 	}
 
 }
