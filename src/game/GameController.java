@@ -1,7 +1,6 @@
 package game;
 
 import mechanic.Field;
-import mechanic.Player;
 import mechanic.Tile;
 import mechanic.Turn;
 
@@ -22,6 +21,20 @@ public class GameController {
     this.gS = gameState;
   }
 
+  public void newTurn() {
+    this.turn = new Turn(gS.getCurrentPlayer());
+  }
+
+  public int endTurn() {
+    if (!this.turn.calculateWords()) {
+      return -1;
+    }
+
+    this.turn.calculateTurnScore();
+    this.turn.getPlayer();
+
+    return this.turn.getTurnScore();
+  }
 
 
   /**
@@ -29,18 +42,16 @@ public class GameController {
    * the method updates the game board.
    */
 
-  public boolean layDownLetterFromRack(Player player, int rackFieldIndex, int xCoordinate,
-      int yCoordinate) {
-    if (!gS.getCurrentPlayer().equals(player.getNickname())
-        || gS.getGameBoard().getField(xCoordinate, yCoordinate).getTile() == null
-        || player.getRackTile(rackFieldIndex) == null) {
+  public boolean addTileToGameBoard(String player, Tile t, int xCoordinate, int yCoordinate) {
+    if (!gS.getCurrentPlayer().equals(player)
+        || gS.getGameBoard().getField(xCoordinate, yCoordinate).getTile() != null) {
       return false;
     }
 
-    Tile t = player.removeRackTile(rackFieldIndex);
     t.setField(gS.getGameBoard().getField(xCoordinate, yCoordinate));
     t.setOnRack(false);
     t.setOnGameBoard(true);
+    this.turn.addTileToTurn(t);
 
     return true;
   }
@@ -50,16 +61,17 @@ public class GameController {
    * game board. If allowed, the method updates the game board.
    */
 
-  public boolean moveTileOnGameBoard(Player player, int xCoordinateBefore, int yCoordinateBefore,
+  public boolean moveTileOnGameBoard(String player, int xCoordinateBefore, int yCoordinateBefore,
       int xCoordinateAfter, int yCoordinateAfter) {
     Field beforeField = gS.getGameBoard().getField(xCoordinateBefore, yCoordinateBefore);
+    Field afterField = gS.getGameBoard().getField(xCoordinateAfter, yCoordinateAfter);
 
-    if (!gS.getCurrentPlayer().equals(player.getNickname()) || beforeField == null
-        || beforeField.getTile().isPlayed()) {
+    if (!gS.getCurrentPlayer().equals(player) || beforeField == null
+        || beforeField.getTile().isPlayed() || afterField.getTile() != null) {
       return false;
     }
 
-    Field afterField = gS.getGameBoard().getField(xCoordinateAfter, yCoordinateAfter);
+    this.turn.moveTileInTurn(beforeField.getTile(), afterField);
     beforeField.getTile().setField(afterField);
 
     return true;
@@ -70,28 +82,16 @@ public class GameController {
    * rack. If allowed, the method updates the game board.
    */
 
-  public boolean takeTileBackToRack(Player player, int rackFieldIndex, int xCoordinate,
-      int yCoordinate) {
+  public boolean removeTileFromGameBoard(String player, int xCoordinate, int yCoordinate) {
     Field beforeField = gS.getGameBoard().getField(xCoordinate, yCoordinate);
-    if (!gS.getCurrentPlayer().equals(player.getNickname()) || beforeField == null
-        || player.getRackTile(rackFieldIndex) == null || beforeField.getTile().isPlayed()) {
+    if (!gS.getCurrentPlayer().equals(player) || beforeField == null
+        || beforeField.getTile().isPlayed()) {
       return false;
     }
 
-    Tile tile = beforeField.getTile();
-    tile.setField(null);
-    tile.setOnRack(true);
-    tile.setOnGameBoard(false);
-    player.setRackTile(rackFieldIndex, tile);
+    this.turn.removeTileFromTurn(beforeField.getTile());
+    beforeField.setTile(null);
 
     return true;
-  }
-
-  public Turn getTurn() {
-    return turn;
-  }
-
-  public void setTurn(Turn turn) {
-    this.turn = turn;
   }
 }

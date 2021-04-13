@@ -8,8 +8,6 @@ package mechanic;
  */
 
 import static org.junit.Assert.assertEquals;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,16 +55,13 @@ public class TurnTest {
     tile4.setField(gb.getField(4, 1));
     tile5.setField(gb.getField(5, 1));
 
+    turn = new Turn("TestPlayer");
 
-    List<Tile> laydDownTileList = new ArrayList<Tile>();
-    laydDownTileList.add(tile1);
-    laydDownTileList.add(tile2);
-    laydDownTileList.add(tile3);
-    laydDownTileList.add(tile4);
-    laydDownTileList.add(tile5);
-
-
-    turn = new Turn(laydDownTileList);
+    turn.addTileToTurn(tile1);
+    turn.addTileToTurn(tile2);
+    turn.addTileToTurn(tile3);
+    turn.addTileToTurn(tile4);
+    turn.addTileToTurn(tile5);
 
     // Test 2
     f = new Tile(new Letter('F', 1, 1));
@@ -100,11 +95,10 @@ public class TurnTest {
     gb2.getField(4, 5).setTile(t1);
     gb2.getField(5, 5).setTile(e);
 
-    List<Tile> laydDownTileList2 = new ArrayList<Tile>();
-    laydDownTileList2.add(o2);
-    laydDownTileList2.add(b);
+    turn2 = new Turn("TestPlayer2");
+    turn2.addTileToTurn(o2);
+    turn2.addTileToTurn(b);
 
-    turn2 = new Turn(laydDownTileList2);
   }
 
   /** The first two methods are testing the word "close". */

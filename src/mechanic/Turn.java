@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 public class Turn implements Serializable {
   private static final long serialVersionUID = 1L;
+  String player;
   private List<Tile> laydDownTiles;
   private List<Word> words; // Array, that contains all words, that result from the lay down letters
   private int turnScore;
@@ -29,10 +30,28 @@ public class Turn implements Serializable {
       new File(baseDir + "Collins Scrabble Words (2019) with definitions.txt");
 
 
-  public Turn(List<Tile> laydDownTiles) {
-    this.laydDownTiles = laydDownTiles;
+  public Turn(String player) {
+    this.player = player;
     this.words = new ArrayList<Word>();
   }
+
+  public boolean addTileToTurn(Tile t) {
+    // TODO
+
+    return false;
+  };
+
+  public boolean removeTileFromTurn(Tile t) {
+    // TODO
+
+    return false;
+  };
+
+  public boolean moveTileInTurn(Tile t, Field newField) {
+    // TODO
+
+    return false;
+  };
 
 
   /**
@@ -200,16 +219,17 @@ public class Turn implements Serializable {
     return words;
   }
 
-
   public int getTurnScore() {
     return turnScore;
   }
-
 
   public void setTurnScore(int turnScore) {
     this.turnScore = turnScore;
   }
 
+  public String getPlayer() {
+    return player;
+  }
 
 
 }

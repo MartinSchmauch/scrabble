@@ -25,6 +25,7 @@ public class GameState implements Serializable {
   private PlayerData host;
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
+  private HashMap<String, Integer> scores;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -58,8 +59,6 @@ public class GameState implements Serializable {
     }
   }
 
-
-
   public boolean getGameRunning() {
     return this.isRunning;
   }
@@ -92,6 +91,7 @@ public class GameState implements Serializable {
     }
 
     this.allPlayers.put(player.getNickname(), player);
+    this.scores.put(player.getNickname(), 0);
     return true;
   }
 
@@ -122,6 +122,11 @@ public class GameState implements Serializable {
 
   public void setGameBoard(GameBoard gameBoard) {
     this.gb = gameBoard;
+  }
+
+  public boolean addScore(String player, int turnScore) {
+    int oldScore = this.scores.get(player);
+    return this.scores.replace(player, oldScore, oldScore + turnScore);
   }
 
 }
