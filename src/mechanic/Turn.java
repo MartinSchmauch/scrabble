@@ -33,10 +33,11 @@ public class Turn implements Serializable {
   public Turn(String player) {
     this.player = player;
     this.words = new ArrayList<Word>();
+    this.laydDownTiles = new ArrayList<Tile>();
   }
 
   public boolean addTileToTurn(Tile t) {
-    if (!t.equals(null)) {
+    if (!this.laydDownTiles.contains(t)) {
       this.laydDownTiles.add(t);
       return true;
     }
@@ -48,11 +49,9 @@ public class Turn implements Serializable {
   };
 
   public boolean moveTileInTurn(Tile t, Field newField) {
-    if (!t.equals(null) && !newField.equals(null)) {
-      t.setField(newField);
-      return true;
-    }
-    return false;
+    this.laydDownTiles.remove(t);
+    t.setField(newField);
+    return this.laydDownTiles.add(t);
   };
 
 
