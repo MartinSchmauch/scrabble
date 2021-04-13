@@ -1,6 +1,5 @@
 package gui;
 
-
 /** 
  * @author nilbecke
  * Launch the Lobby GUI
@@ -23,18 +22,18 @@ public class LobbyScreen extends Application {
 
 	@FXML
 	private Label ip;
-	
+
 	public LobbyScreen(Player current) {
 		player = current;
 	}
-	
+
 	/**
 	 * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby
 	 **/
 	@Override
 	public void start(Stage stage) {
 		try {
-			Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14); 
+			Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
 			this.root = FXMLLoader.load(getClass().getResource("Lobby.fxml"));
 			stage.setOnCloseRequest(e -> close());
 			Scene scene = new Scene(root);
@@ -47,15 +46,20 @@ public class LobbyScreen extends Application {
 		}
 
 	}
+
 	/**
 	 * Closes the Lobby and stops the server
 	 */
-	public void close() {
-		LobbyScreenController.getLobbyInstance().getServer().stopServer();
+	public static void close() {
+		if (LobbyScreenController.getLobbyInstance().getServer() != null) {
+			LobbyScreenController.getLobbyInstance().getServer().stopServer();
+		}
 		new LoginScreenFXML().start(new Stage());
 	}
+
 	/**
-	 *  Passes on the instance of local current player
+	 * Passes on the instance of local current player
+	 * 
 	 * @return: Instance of current player
 	 */
 	public static Player getPlayer() {

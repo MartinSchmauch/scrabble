@@ -129,6 +129,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 * @return the input for the inet adress
 	 */
 	public String getConnection() {
+		System.out.println(this.LinkField.getText());
 		return this.LinkField.getText();
 	}
 

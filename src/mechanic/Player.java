@@ -232,8 +232,16 @@ public class Player {
     this.gameBoard = gameBoard;
   }
   
+  public void setServer(Server s) {
+	  this.server=s;
+  }
+  
   public Server getServer() {
 	  return this.server;
+  }
+  
+  public ClientProtocol getClientProtocol() {
+	  return this.client;
   }
 
   /** @author nilbecke */
@@ -257,7 +265,7 @@ public class Player {
   public void connect(InetAddress inetAddress) {
     this.getPlayerInfo().setHost(false);
     this.gameLocation = inetAddress;
-    this.client = new ClientProtocol(this.gameLocation.toString(), GameSettings.port, this.info,
+    this.client = new ClientProtocol(this.gameLocation.getHostAddress(), GameSettings.port, this.info,
         null, null, null);
 
     if (this.client.isOK()) {

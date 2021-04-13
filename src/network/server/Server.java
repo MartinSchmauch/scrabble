@@ -97,7 +97,9 @@ public class Server {
 
   public InetAddress getInetAddress() {
 	  try {
+		  System.out.println(InetAddress.getLocalHost());
 		return InetAddress.getLocalHost();
+		
 	} catch (UnknownHostException e) {
 		e.printStackTrace();
 		return null;
@@ -179,12 +181,15 @@ public class Server {
           break;
         case DISCONNECT:
           lsc.removeJoinedPlayer(m.getFrom());
+          break;
         case SEND_CHAT_TEXT:
           SendChatMessage scm = (SendChatMessage) m;
           lsc.updateChat(scm.getText(), scm.getSender(), scm.getDateTime());
+          break;
         case START_GAME:
           StartGameMessage sgm = (StartGameMessage) m;
           lsc.startGame();
+          break;
         case GAME_STATISTIC:
           GameStatisticMessage gsm = (GameStatisticMessage) m;
           // TODO
@@ -212,7 +217,7 @@ public class Server {
           gpc.removeTile(rtm.getTile());
         case MOVE_TILE:
           MoveTileMessage mtm = (MoveTileMessage) m;
-          gpc.moveTile(mtm.getTile(), mtm.getNewField());
+          //TODO remove later gpc.moveTile(mtm.getTile(), mtm.getNewField());
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
           if (!trm.getIsValid()) {
