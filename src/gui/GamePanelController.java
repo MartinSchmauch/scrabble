@@ -110,13 +110,22 @@ public class GamePanelController extends ClientUI implements Sender {
   @FXML
   public void rackClicked(MouseEvent event) {
     System.out.println("rackClicked wird aufgerufen");
-    int[] coordinates = new int[2];
     Node node = (Node) event.getSource();
+    int x;
+    int y;
     Integer columnIndex = GridPane.getColumnIndex(node);
     Integer rowIndex = GridPane.getRowIndex(node);
-    coordinates[0] = columnIndex.intValue();
-    coordinates[1] = rowIndex.intValue();
-    System.out.println("column: " + columnIndex + " row: " + rowIndex);
+    if (columnIndex == null) {
+      x = 0;
+    } else {
+      x = columnIndex.intValue();
+    }
+    if (rowIndex == null) {
+      y = 0;
+    } else {
+      y = rowIndex.intValue();
+    }
+    System.out.println("column: " + x + " row: " + y);
   }
 
   @FXML
