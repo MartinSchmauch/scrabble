@@ -2,7 +2,11 @@ package gui;
 
 
 
-// ** @author mschmauc
+/**
+ * Deprecated!
+ * 
+ * @author mschmauc
+ */
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
