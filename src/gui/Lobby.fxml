@@ -24,7 +24,7 @@
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="199.0" rotate="-16.4" style="-fx-font-weight: bold;" text="lobby" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
                      <font>
-                        <Font size="50.0" />
+                         <Font name="ScrambleMixed" size="50.0" />
                      </font>
                      <tooltip>
                         <Tooltip text="Best Scrabble in da whole world :D #scrabble3FTW">

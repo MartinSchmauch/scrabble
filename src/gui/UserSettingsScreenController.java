@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.util.Optional;
@@ -30,12 +32,22 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	@FXML
 	private Button cu;
 	@FXML
+	private Button next;
+	@FXML
+	private Button back;
+	@FXML
 	private Slider volbar;
+	@FXML
+	private ImageView avatar;
+
+	// Holds which of the 10 avatars is currently selected
+	private int currentAvatar;
 
 	/** Main handling method of button based user inputs **/
 
 	@Override
 	public void handle(ActionEvent e) {
+
 		Button b = (Button) e.getSource();
 		switch (b.getId()) {
 		case "cu":
@@ -45,17 +57,27 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 				textfieldToLabel();
 			}
 			break;
-		//Save changes and exit screen
+		// Save changes and exit screen
 		case "save":
 		case "exit":
 			this.player.setNickname(this.namefield.getText());
 			new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
 			LoginScreenActionHandler.getInstance().setUsername(this.player.getNickname());
+			LoginScreenActionHandler.getInstance().setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
+			if (SettingsScreenController.getInstance() != null) {
+				SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
+			}
 			Stage s = (Stage) b.getScene().getWindow();
 			s.close();
 			break;
 		case "tut":
 			OpenTutorial.open();
+			break;
+		case "next":
+			updateAvatar(true);
+			break;
+		case "back":
+			updateAvatar(false);
 			break;
 		}
 	}
@@ -64,7 +86,7 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 
 	public void slider() {
 		this.vol.setText((int) this.volbar.getValue() + "");
-		this.player.setVolume((int)this.volbar.getValue());
+		this.player.setVolume((int) this.volbar.getValue());
 	}
 
 	/**
@@ -78,7 +100,8 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 	}
 
 	/**
-	 * Sets the Usename to a previous user input given in the labelToTextfield method
+	 * Sets the Usename to a previous user input given in the labelToTextfield
+	 * method
 	 **/
 
 	public void textfieldToLabel() {
@@ -86,6 +109,32 @@ public class UserSettingsScreenController extends UserSettingsScreen implements 
 		this.nickname.setText(this.namefield.getText());
 		this.player.setNickname(this.nickname.getText());
 		cu.setText("Change Username");
+	}
+
+	/**
+	 * Updates the avatar picture of the current player
+	 * 
+	 * @param increment: true if picture is to be incremented, false if it should be
+	 *                   decremented
+	 */
+	public void updateAvatar(boolean increment) {
+		this.currentAvatar = Character
+				.getNumericValue(this.player.getAvatar().charAt(this.player.getAvatar().length() - 5));
+		if (increment) {
+			if (this.currentAvatar < 9) {
+				this.currentAvatar++;
+			} else {
+				this.currentAvatar = 0;
+			}
+		} else {
+			if (this.currentAvatar > 0) {
+				this.currentAvatar--;
+			} else {
+				this.currentAvatar = 9;
+			}
+		}
+		this.player.setAvatar("/avatar" + this.currentAvatar + ".png");
+		this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
 	}
 
 	/**

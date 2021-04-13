@@ -1,5 +1,6 @@
 package mechanic;
 
+import java.io.Serializable;
 import game.GameSettings;
 
 /**
@@ -12,8 +13,8 @@ import game.GameSettings;
  * @author ldreyer
  */
 
-public class Tile {
-
+public class Tile implements Serializable {
+  private static final long serialVersionUID = 1L;
   final boolean IS_JOKER;
   private Letter letter;
   private Field field;
@@ -28,21 +29,35 @@ public class Tile {
     this.IS_JOKER = (letter.getChar() == '*');
   }
 
+  public Tile(Letter letter) {
+    this.letter = letter;
+    this.IS_JOKER = (letter.getChar() == '*');
+  }
+
   public Field getField() {
     return this.field;
   }
 
+  /**
+   * This method and the method setTileOneDirection are used to automatically set the double linked
+   * object connection
+   * 
+   * @author lurny
+   * @param tile
+   */
   public void setField(Field field) {
     this.field = field;
-    if (!field.getTile().equals(this)) {
-      field.setTile(this);
-    }
+    field.setTileOneDirection(this);
   }
-  
+
   public void setOnlyField(Field field) {
     if (field.getTile() != this) {
       field.setTile(this);
     }
+  }
+
+  /** @author lurny */
+  public void setFieldOneDirection(Field field) {
     this.field = field;
   }
 
@@ -72,6 +87,27 @@ public class Tile {
     this.isPlayed = played;
   }
 
+  /**
+   * @author lurny
+   */
+  @Override
+  public boolean equals(Object other) {
+    Tile t;
+
+    if (other == null || other.getClass() != getClass()) {
+      return false;
+    } else {
+      t = (Tile) other;
+      if (t.isPlayed == this.isPlayed && t.field.equals(this.field)
+          && t.onGameBoard == this.onGameBoard && t.onRack == this.onRack
+          && t.letter.equals(this.letter)) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   // ** @author lurny
   public boolean isOnGameBoard() {
     return onGameBoard;
@@ -92,7 +128,12 @@ public class Tile {
     this.onRack = onRack;
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the top tile, which lies next to the current tile. If the top field or top
+   * tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getTopTile() {
     Field f = this.getField().getTop();
     if (f == null) {
@@ -107,7 +148,12 @@ public class Tile {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the top bottom, which lies next to the current tile. If the bottom field or
+   * bottom tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getBottomTile() {
     Field f = this.getField().getBottom();
     if (f == null) {
@@ -122,7 +168,12 @@ public class Tile {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the left tile, which lies next to the current tile. If the left field or
+   * left tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getLeftTile() {
     Field f = this.getField().getLeft();
     if (f == null) {
@@ -137,7 +188,12 @@ public class Tile {
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the right tile, which lies next to the current tile. If the right field or
+   * right tile does not exists the method returns null.
+   * 
+   * @author lurny
+   */
   public Tile getRightTile() {
     Field f = this.getField().getRight();
     if (f == null) {
@@ -151,7 +207,7 @@ public class Tile {
       }
     }
   }
-  
+
   @Override
   public String toString() {
     return "Tile at Field " + this.field.toString() + " with Char " + this.letter.getChar();

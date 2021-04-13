@@ -1,6 +1,10 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * The server sends a tile to to client who requested a tile via the TileRequestMessage.
+ * 
+ * @author lurny
+ */
 
 import mechanic.Tile;
 

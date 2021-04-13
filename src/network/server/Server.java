@@ -1,8 +1,10 @@
 package network.server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,9 +12,20 @@ import java.util.Set;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
+import mechanic.Player;
 import mechanic.PlayerData;
+import network.messages.AddTileMessage;
+import network.messages.ConnectMessage;
+import network.messages.DisconnectMessage;
+import network.messages.GameStatisticMessage;
 import network.messages.Message;
-import network.messages.ShutdownMessage;
+import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
+import network.messages.SendChatMessage;
+import network.messages.StartGameMessage;
+import network.messages.TurnResponseMessage;
 
 /**
  * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
@@ -27,6 +40,12 @@ public class Server {
   private ServerSocket serverSocket;
   private GameState gameState;
   private GameController gameController;
+  private Player player;
+  private ServerProtocol serverProtocol;
+
+  private GamePanelController gpc;
+  private LobbyScreenController lsc;
+
   private boolean running;
 
   private String host;
@@ -52,8 +71,8 @@ public class Server {
       while (running) {
         Socket clientSocket = serverSocket.accept();
 
-        ServerProtocol serverThread = new ServerProtocol(clientSocket, this);
-        serverThread.start();
+        this.serverProtocol = new ServerProtocol(clientSocket, this);
+        this.serverProtocol.start();
       }
 
     } catch (IOException e) {
@@ -77,6 +96,16 @@ public class Server {
   public String getHost() {
     return this.host;
   }
+
+  public InetAddress getInetAddress() {
+    try {
+      return InetAddress.getLocalHost();
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
 
   public boolean checkNickname(String nickname) {
     return this.clients.keySet().contains(nickname);
@@ -106,6 +135,7 @@ public class Server {
         ServerProtocol c = clients.get(nickname);
         c.sendToClient((Message) (m));
       } catch (IOException e) {
+        e.printStackTrace();
         fails.add(nickname);
         continue;
       }
@@ -114,7 +144,11 @@ public class Server {
       System.out.println("Client " + c + " removed (message delivery failed).");
       removeClient(c);
     }
-    updateServerUI(m);
+    try {
+      updateServerUI(m);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /** sends a message to all connected clients */
@@ -134,13 +168,72 @@ public class Server {
 
   }
 
-  public void updateServerUI(Message m) {
-    // TODO Server UI updates
+  public void updateServerUI(Message m) throws Exception {
+    if (!this.gameState.getGameRunning()) {
+      if (this.lsc == null) {
+        lsc = LobbyScreenController.getLobbyInstance();
+      }
+
+      switch (m.getMessageType()) {
+        case CONNECT:
+          ConnectMessage cm = (ConnectMessage) m;
+          lsc.addJoinedPlayer(cm.getPlayerInfo());
+          break;
+        case DISCONNECT:
+          lsc.removeJoinedPlayer(m.getFrom());
+        case SEND_CHAT_TEXT:
+          SendChatMessage scm = (SendChatMessage) m;
+          lsc.updateChat(scm.getText(), scm.getSender(), scm.getDateTime());
+        case START_GAME:
+          StartGameMessage sgm = (StartGameMessage) m;
+          lsc.startGame();
+        case GAME_STATISTIC:
+          GameStatisticMessage gsm = (GameStatisticMessage) m;
+          // TODO
+        default:
+          break;
+      }
+    } else {
+
+      if (this.gpc == null) {
+        gpc = GamePanelController.getInstance();
+      }
+
+      switch (m.getMessageType()) {
+        case DISCONNECT:
+          DisconnectMessage dm = (DisconnectMessage) m;
+          gpc.removeJoinedPlayer(dm.getFrom());
+        case SEND_CHAT_TEXT:
+          SendChatMessage scm = (SendChatMessage) m;
+          gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
+        case ADD_TILE:
+          AddTileMessage atm = (AddTileMessage) m;
+          gpc.addTile(atm.getTile());
+        case REMOVE_TILE:
+          RemoveTileMessage rtm = (RemoveTileMessage) m;
+          gpc.removeTile(rtm.getTile());
+        case MOVE_TILE:
+          MoveTileMessage mtm = (MoveTileMessage) m;
+          gpc.moveTile(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
+        case TURN_RESPONSE:
+          TurnResponseMessage trm = (TurnResponseMessage) m;
+          if (!trm.getIsValid()) {
+            gpc.indicateInvalidTurn(trm.getFrom());
+          } else {
+            gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+            this.gameState.setCurrentPlayer(trm.getNextPlayer());
+            gpc.indicatePlayerTurn(trm.getNextPlayer());
+          }
+        default:
+          break;
+      }
+    }
   }
 
   public void stopServer() {
     running = false;
-    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
+    // TODO remove comment
+    // sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {
       try {
@@ -150,5 +243,17 @@ public class Server {
         System.exit(0);
       }
     }
+  }
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
+
+  public ServerProtocol getServerProtocol() {
+    return this.serverProtocol;
   }
 }

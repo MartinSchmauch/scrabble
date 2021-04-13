@@ -1,6 +1,11 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * This message is used to frequently update the Lobbyscreen, which is shown before the start of the
+ * game.
+ * 
+ * @author lurny
+ */
 
 import game.GameState;
 

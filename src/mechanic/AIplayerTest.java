@@ -60,9 +60,9 @@ public class AIplayerTest {
 
     Tile a = new Tile(new Letter('a', 1, 1), gb.getField(8, 8));
     gb.getField(8, 8).setTile(a);
-    
+
     ArrayList<Field[]> results = new ArrayList<Field[]>();
-    
+
     // generate words for "Top Field"
     Field[] fields = new Field[2]; // wordlength 2
     fields[0] = gb.getField(7, 7);
@@ -149,25 +149,26 @@ public class AIplayerTest {
     fields[0] = gb.getField(8, 9);
     fields[1] = gb.getField(8, 10);
     results.add(fields);
-    
-//    System.out.println("\n EXPECTED");
-//    for (int i = 0; i < results.size(); i++) {
-//      System.out.println("\n" + results.get(i));
-//      for (Field f : results.get(i)) {
-//        System.out.println(f.toString());
-//      }
-//      
-//    }
 
-    assertArrayEquals(results.toArray(), aiplayer.getValidWordPositionsForWordLength(gb, 2).toArray());
-    
-//    aiplayer.getValidWordPositionsForWordLength(gb, 5);
-//    
-//    Tile b = new Tile(new Letter('b', 1, 1), gb.getField(8, 8));
-//    gb.getField(8, 8).setTile(b);
-//    
-//    aiplayer.getValidWordPositionsForWordLength(gb, 5);
-    
+    // System.out.println("\n EXPECTED");
+    // for (int i = 0; i < results.size(); i++) {
+    // System.out.println("\n" + results.get(i));
+    // for (Field f : results.get(i)) {
+    // System.out.println(f.toString());
+    // }
+    //
+    // }
+
+    assertArrayEquals(results.toArray(),
+        aiplayer.getValidWordPositionsForWordLength(gb, 2).toArray());
+
+    // aiplayer.getValidWordPositionsForWordLength(gb, 5);
+    //
+    // Tile b = new Tile(new Letter('b', 1, 1), gb.getField(8, 8));
+    // gb.getField(8, 8).setTile(b);
+    //
+    // aiplayer.getValidWordPositionsForWordLength(gb, 5);
+
     // res[6][7] = 1;
     // res[7][5] = 1;
     // res[9][7] = 1;
@@ -182,12 +183,12 @@ public class AIplayerTest {
     // assertArrayEquals(res, aiplayer.getValidPositionsForWordLength(fields, 2));
 
   }
-  
+
   @Test
   public void testgenerateLayedDownTiles() {
     gb = new GameBoard(15);
     aiplayer = new AIplayer("test", 10);
-    
+
     // BIRTHDAY
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(4, 8));
     gb.getField(4, 8).setTile(b);
@@ -205,8 +206,8 @@ public class AIplayerTest {
     gb.getField(10, 8).setTile(a);
     Tile y = new Tile(new Letter('Y', 1, 1), gb.getField(11, 8));
     gb.getField(11, 8).setTile(y);
-    
-    
+
+
     // TIGER
     t = new Tile(new Letter('T', 1, 1), gb.getField(5, 7));
     gb.getField(5, 7).setTile(t);
@@ -218,7 +219,7 @@ public class AIplayerTest {
     gb.getField(5, 10).setTile(e);
     r = new Tile(new Letter('R', 1, 1), gb.getField(5, 11));
     gb.getField(5, 11).setTile(r);
-    
+
     // TEACHER
     t = new Tile(new Letter('T', 1, 1), gb.getField(7, 8));
     gb.getField(7, 8).setTile(t);
@@ -234,7 +235,7 @@ public class AIplayerTest {
     gb.getField(7, 13).setTile(e);
     r = new Tile(new Letter('R', 1, 1), gb.getField(7, 14));
     gb.getField(7, 14).setTile(r);
-    
+
     // RACK
     r = new Tile(new Letter('R', 1, 1), gb.getField(5, 11));
     gb.getField(5, 11).setTile(r);
@@ -244,16 +245,16 @@ public class AIplayerTest {
     gb.getField(7, 11).setTile(c);
     Tile k = new Tile(new Letter('K', 1, 1), gb.getField(8, 11));
     gb.getField(8, 11).setTile(k);
-    
+
     for (char cOnRack = 'A'; cOnRack != 'G'; cOnRack++) {
       aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
     }
-    
-    List<Tile> results= aiplayer.generateLayedDownTiles(gb);
+
+    List<Tile> results = aiplayer.generateLayedDownFields(gb);
     for (Tile result : results) {
       System.out.println(result.toString());
     }
-    
+
   }
 
 }

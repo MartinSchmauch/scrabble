@@ -1,16 +1,20 @@
 package network.messages;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-/** @author mschmauc */
+/**
+ * This message is send, when a player writes a sends a message via the chat.
+ * 
+ * @author mschmauc
+ */
 
 public class SendChatMessage extends Message {
   private static final long serialVersionUID = 1L;
   private String text;
-  private LocalDate dateTime;
+  private LocalDateTime dateTime;
   private String sender;
 
-  public SendChatMessage(String from, String content, LocalDate timeStamp) {
+  public SendChatMessage(String from, String content, LocalDateTime timeStamp) {
     super(MessageType.SEND_CHAT_TEXT, from);
     this.setText(content);
     this.setDateTime(timeStamp);
@@ -25,11 +29,11 @@ public class SendChatMessage extends Message {
     this.text = text;
   }
 
-  public LocalDate getDateTime() {
+  public LocalDateTime getDateTime() {
     return dateTime;
   }
 
-  public void setDateTime(LocalDate dateTime) {
+  public void setDateTime(LocalDateTime dateTime) {
     this.dateTime = dateTime;
   }
 

@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-// import general.IDGenerator;
-import gui.ClientUI;
+import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
-import mechanic.PlayerData;
+import mechanic.Player;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
@@ -17,7 +16,9 @@ import network.messages.DisconnectMessage;
 import network.messages.GameStatisticMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
+import network.messages.MessageType;
 import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TileResponseMessage;
@@ -25,32 +26,30 @@ import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
 public class ClientProtocol extends Thread {
-  private ClientUI cui;
+  private GameState gameState;
   private GamePanelController gpc;
   private LobbyScreenController lpc;
-  private PlayerData playerData;
+  private Player player;
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
   private boolean running = true;
 
-  public ClientProtocol(String ip, int port, PlayerData playerData, ClientUI cui,
-      GamePanelController gpc, LobbyScreenController lpc) {
-    this.cui = cui;
+  public ClientProtocol(String ip, int port, Player player, GamePanelController gpc,
+      LobbyScreenController lpc) {
     try {
       this.gpc = gpc;
       this.lpc = lpc;
-      this.playerData = playerData;
+      this.player = player;
       this.clientSocket = new Socket(ip, port);
       this.out = new ObjectOutputStream(clientSocket.getOutputStream());
       this.in = new ObjectInputStream(clientSocket.getInputStream());
-
-      this.out.writeObject(new ConnectMessage(this.playerData));
+      this.out.writeObject(new ConnectMessage(this.player.getPlayerInfo()));
       out.flush();
       out.reset();
       System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
     } catch (IOException e) {
-      System.out.println(e.getMessage());
+      e.printStackTrace();
       System.out.println("Could not establish connection to " + ip + ":" + port);
     }
   }
@@ -61,68 +60,86 @@ public class ClientProtocol extends Thread {
 
   // Verarbeitung der vom Server empfangenen Nachrichten
   public void run() {
-    while (running) {
-      try {
-        Message m = (Message) in.readObject(); // read message from server
+    Message m;
+    try {
+      m = (Message) in.readObject();
 
-        switch (m.getMessageType()) {
-          case CONNECTION_REFUSED:
-            ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
-            // tbImplemented
-            break;
-          case SHUTDOWN:
-            ShutdownMessage sMessage = (ShutdownMessage) m;
-            // tbImplemented
-            break;
-          case ADD_TILE:
-            AddTileMessage atMessage = (AddTileMessage) m;
-            gpc.addTile(atMessage.getTile());
-            break;
-          case MOVE_TILE:
-            MoveTileMessage mtMessage = (MoveTileMessage) m;
-            gpc.moveTile(mtMessage.getTile(), mtMessage.getNewField());
-            break;
-          case REMOVE_TILE:
-            MoveTileMessage rtMessage = (MoveTileMessage) m;
-            gpc.removeTile(rtMessage.getTile());
-            break;
-          case TILE_RESPONSE:
-            TileResponseMessage trMessage = (TileResponseMessage) m;
-            gpc.addTile(trMessage.getTile());
-            break;
-          case TURN_RESPONSE:
-            TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
-            if (turnrMessage.getIsValid()) {
-              gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
-            } else {
-              gpc.indicateInvalidTurn(turnrMessage.getFrom());
-            }
-            break;
-          case LOBBY_STATUS:
-            LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
-            // tbImplemented
-            break;
-          case START_GAME:
-            StartGameMessage sgMessage = (StartGameMessage) m;
-            // tbImplemented
-            break;
-          case GAME_STATISTIC:
-            GameStatisticMessage gsMessage = (GameStatisticMessage) m;
-            // tbImplemented
-            break;
-          case UPDATE_CHAT:
-            UpdateChatMessage ucMessage = (UpdateChatMessage) m;
-            gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
-            break;
-          default:
-            break;
-        }
-      } catch (ClassNotFoundException | IOException e) {
-        break;
-      } catch (Exception e) {
-        // TODO Auto-generated catch block from updateScore() method in GamePanelController
-        e.printStackTrace();
+      if (m.getMessageType() == MessageType.CONNECT) {
+        ConnectMessage cm = (ConnectMessage) m;
+        this.player.setNickname(cm.getPlayerInfo().getNickname());
+        System.out.println("New username: " + player.getNickname());
+      } else {
+        disconnect();
       }
+
+      while (running) {
+        try {
+          m = (Message) in.readObject(); // read message from server
+
+          switch (m.getMessageType()) {
+            case CONNECTION_REFUSED:
+              ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
+              // tbImplemented
+              break;
+            case SHUTDOWN:
+              ShutdownMessage sMessage = (ShutdownMessage) m;
+              // tbImplemented
+              break;
+            case ADD_TILE:
+              AddTileMessage atMessage = (AddTileMessage) m;
+              atMessage.getTile().setField(gameState.getGameBoard()
+                  .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
+              gpc.addTile(atMessage.getTile());
+              break;
+            case MOVE_TILE:
+              MoveTileMessage mtMessage = (MoveTileMessage) m;
+              gpc.moveTile(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
+                  mtMessage.getNewYCoordinate());
+              break;
+            case REMOVE_TILE:
+              RemoveTileMessage rtMessage = (RemoveTileMessage) m;
+              rtMessage.getTile().setField(gameState.getGameBoard()
+                  .getField(rtMessage.getxCoordinate(), rtMessage.getyCoordinate()));
+              gpc.removeTile(rtMessage.getTile());
+              break;
+            case TILE_RESPONSE:
+              TileResponseMessage trMessage = (TileResponseMessage) m;
+              gpc.addTile(trMessage.getTile());
+              break;
+            case TURN_RESPONSE:
+              TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
+              if (turnrMessage.getIsValid()) {
+                gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
+                turnrMessage.getNextPlayer();
+              } else {
+                gpc.indicateInvalidTurn(turnrMessage.getFrom());
+              }
+              break;
+            case LOBBY_STATUS:
+              LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
+              this.setGameState(lsMessage.getGameState());
+              break;
+            case START_GAME:
+              StartGameMessage sgMessage = (StartGameMessage) m;
+              // tbImplemented
+              break;
+            case GAME_STATISTIC:
+              GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+              // tbImplemented
+              break;
+            case UPDATE_CHAT:
+              UpdateChatMessage ucMessage = (UpdateChatMessage) m;
+              gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
+              break;
+            default:
+              break;
+          }
+        } catch (ClassNotFoundException | IOException e) {
+          break;
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -133,7 +150,7 @@ public class ClientProtocol extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(this.playerData.getNickname()));
+        this.out.writeObject(new DisconnectMessage(this.player.getNickname()));
         clientSocket.close(); // close streams and socket
       }
     } catch (IOException e) {
@@ -145,5 +162,13 @@ public class ClientProtocol extends Thread {
     this.out.writeObject(message);
     out.flush();
     out.reset();
+  }
+
+  public GameState getGameState() {
+    return gameState;
+  }
+
+  public void setGameState(GameState gameState) {
+    this.gameState = gameState;
   }
 }

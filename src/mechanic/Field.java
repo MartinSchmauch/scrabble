@@ -1,5 +1,7 @@
 package mechanic;
 
+import java.io.Serializable;
+
 /**
  * The Field class is essential part of the domain model. It has a Tile attribute that refers to the
  * tile covering the field or is null if the field is free. The other way around, every tile has an
@@ -10,12 +12,13 @@ package mechanic;
  * @author ldreyer
  */
 
-public class Field {
+public class Field implements Serializable {
 
+  private static final long serialVersionUID = 1L;
   private GameBoard gameBoard;
   private Tile tile;
-  private int xCoordinate;
-  private int yCoordinate;
+  private int xCoordinate; // starting at 1
+  private int yCoordinate; // starting at 1
   private int letterMultiplier;
   private int wordMultiplier;
 
@@ -37,18 +40,28 @@ public class Field {
     return tile;
   }
 
+  /**
+   * This method and the method setFieldOneDirection are used to automatically set the double linked
+   * object connection
+   * 
+   * @author lurny
+   * @param tile
+   */
   public void setTile(Tile tile) {
     this.tile = tile;
-    if (!tile.getField().equals(this)) {
-      tile.setField(this);
-    }
+    tile.setFieldOneDirection(this);
   }
-  
+
   public void setOnlyTile(Tile tile) {
     if (tile.getField() != this) {
       tile.setField(this);
     }
     this.tile = tile;
+  }
+
+  /** @author lurny */
+  public void setTileOneDirection(Tile t) {
+    this.tile = t;
   }
 
   public int getxCoordinate() {
@@ -87,41 +100,62 @@ public class Field {
     this.gameBoard = gameBoard;
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the left field, which lies next to the current field. If the field does not
+   * exist, the method returns null.
+   * 
+   * @author lurny
+   */
   public Field getLeft() {
-    if (this.xCoordinate > 0) {
-      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
+    if (this.xCoordinate > 1) {
+      return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
     } else {
       return null;
     }
   }
 
-  // ** @author lurny
+  /**
+   * This method returns the right field, which lies next to the current field. If the field does
+   * not exist, the method returns null.
+   * 
+   * @author lurny
+   */
   public Field getRight() {
-    if (this.xCoordinate <= 13) {
-      return this.gameBoard.getField(this.xCoordinate + 2, this.yCoordinate + 1);
-    } else {
-      return null;
-    }
-  }
-
-  // ** @author lurny
-  public Field getTop() {
-    if (this.yCoordinate > 0) {
+    if (this.xCoordinate <= 14) {
       return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
     } else {
       return null;
     }
   }
 
-  // ** @author lurny
-  public Field getBottom() {
-    if (this.yCoordinate <= 13) {
-      return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate + 2);
+  /**
+   * This method returns the top field, which lies next to the current field. If the field does not
+   * exist, the method returns null.
+   * 
+   * @author lurny
+   */
+  public Field getTop() {
+    if (this.yCoordinate > 1) {
+      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
     } else {
       return null;
     }
   }
+
+  /**
+   * This method returns the bottom field, which lies next to the current field. If the field does
+   * not exist, the method returns null.
+   * 
+   * @author lurny
+   */
+  public Field getBottom() {
+    if (this.yCoordinate <= 14) {
+      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
+    } else {
+      return null;
+    }
+  }
+
   /**
    * @author pkoenig
    */
@@ -129,7 +163,27 @@ public class Field {
   public String toString() {
     return "(x, y): = (" + this.xCoordinate + ", " + this.yCoordinate + ")";
   }
-  
+
+  /**
+   * @author lurny
+   */
+  @Override
+  public boolean equals(Object other) {
+    Field t;
+
+    if (other == null || other.getClass() != getClass()) {
+      return false;
+    } else {
+      t = (Field) other;
+      if (t.gameBoard.equals(this.gameBoard) && t.letterMultiplier == this.letterMultiplier
+          && t.wordMultiplier == this.wordMultiplier && t.xCoordinate == this.xCoordinate
+          && t.yCoordinate == this.yCoordinate) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 }
 
 

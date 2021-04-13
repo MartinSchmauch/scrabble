@@ -7,6 +7,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import game.GameSettings;
+import network.client.ClientProtocol;
+import network.server.Server;
 
 
 
@@ -23,13 +26,15 @@ public class Player {
 
   private PlayerData info;
   private int volume;
+  private String customGameSettings;
 
   @JsonIgnore
   private Field[] rack;
-  public String customGameSettings;
-  private boolean isHost;
-  private Player host;
-  private InetAddress gameLocation;
+  @JsonIgnore
+  private ClientProtocol client = null;
+  @JsonIgnore
+  private Server server = null;
+
 
   static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 7;
@@ -61,7 +66,7 @@ public class Player {
     }
   }
 
-  /*
+  /**
    * PLAYER INFO
    */
 
@@ -87,7 +92,7 @@ public class Player {
 
 
 
-  /*
+  /**
    * RACK METHODS
    */
 
@@ -99,6 +104,10 @@ public class Player {
     this.rack[index].setTile(tile);
   }
 
+  public void setRackTileToNone(int index) {
+    this.rack[index].setTileOneDirection(null);
+  }
+
   /**
    * This method searches the rack for the first field, that is not covered by a tile.
    * 
@@ -106,7 +115,7 @@ public class Player {
    */
 
   @JsonIgnore
-  public Field getFreeRackField() {
+  public Field getFreeRackField() { // rack koordinate fortlaufen in xCoordinate
     int i = 0;
     while (rack[i].getTile() != null) {
       i++;
@@ -155,6 +164,7 @@ public class Player {
     return this.getRackTiles().size();
   }
 
+
   /**
    * 
    * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
@@ -194,28 +204,44 @@ public class Player {
   public void setCustomGameSettings(String customGameSettings) {
     this.customGameSettings = customGameSettings;
   }
+  /*
+   * NETWORK
+   */
 
-  public boolean getIsHost() {
-    return this.isHost;
+  public boolean isHost() {
+    return this.info.isHost();
   }
 
-  public void setIsHost(boolean host) {
-    this.isHost = host;
+  public void setHost(boolean host) {
+    this.info.setHost(host);
   }
 
-  public Player getHost() {
-    return host;
+  public Server getServer() {
+    return this.server;
   }
 
-  public void setHost(Player host) {
-    this.host = host;
+  /** @author nilbecke */
+
+  public void host() {
+
+    this.getPlayerInfo().setHost(true);
+    this.server = new Server(this.info, null);
+    Runnable r = new Runnable() {
+      public void run() {
+        server.listen();
+      }
+    };
+    new Thread(r).start();
   }
 
-  public InetAddress getLocation() {
-    return this.gameLocation;
-  }
+  /** @author nilbecke */
 
-  public void setLocation(InetAddress location) {
-    this.gameLocation = location;
+  public void connect(InetAddress inetAddress) {
+    this.getPlayerInfo().setHost(false);
+    this.client = new ClientProtocol(inetAddress.toString(), GameSettings.port, this, null, null);
+
+    if (this.client.isOK()) {
+      this.client.start();
+    }
   }
 }

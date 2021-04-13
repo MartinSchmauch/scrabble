@@ -1,6 +1,10 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * This message is used to indicate that the clients connection request is refused by the server.
+ * 
+ * @author lurny
+ */
 
 public class ConnectionRefusedMessage extends Message {
 
@@ -16,5 +20,10 @@ public class ConnectionRefusedMessage extends Message {
   public String getReason() {
     return this.reason;
   }
+
+  public void geta() {
+    System.out.println("hi");
+  }
+
 
 }

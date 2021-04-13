@@ -1,5 +1,7 @@
 package gui;
 
+import javafx.application.Platform;
+
 /** @Author nilbecke **/
 
 import javafx.event.ActionEvent;
@@ -10,6 +12,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
 import util.JSONHandler;
@@ -28,7 +32,8 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	private TextField LinkField;
 	@FXML
 	private Label username;
-
+	@FXML
+	private ImageView avatar;
 	
 	/**
 	 * Handles the different Buttons in the Login Screen
@@ -38,7 +43,7 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 	 **/
 	@Override
 	public void handle(ActionEvent e) {
-		if(instance == null) {
+		if (instance == null) {
 			instance = this;
 		}
 		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
@@ -46,29 +51,29 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 			join();
 		} else {
 			Button button = (Button) e.getSource();
+			Stage s;
 			switch (button.getText()) {
 			case "Join":
-
-				this.player.setIsHost(false);
+				this.player.setHost(false);
 				startLobby();
-				Stage s = (Stage) button.getScene().getWindow();
+				s = (Stage) button.getScene().getWindow();
 				s.close();
 				break;
 			case "Host Game":
-				this.player.setIsHost(true);
-				this.player.setHost(this.player);
+				this.player.setHost(true);
 				startLobby();
 				s = (Stage) button.getScene().getWindow();
+				s.close();
+				break;
 			case "Exit":
 				System.exit(0);
 				break;
-
 			case "Tutorial":
 				OpenTutorial.open();
 				break;
 
 			case "Settings":
-				new SettingsScreen().start(new Stage());
+				//new SettingsScreen().start(new Stage());
 				break;
 			case "Account":
 				new UserSettingsScreen().start(new Stage());
@@ -91,21 +96,40 @@ public class LoginScreenActionHandler extends LoginScreenFXML implements EventHa
 
 	public void startLobby() {
 		new LobbyScreen(this.player).start(new Stage());
-
 	}
+
 	/**
 	 * Access the current instane of the LognScreenController
+	 * 
 	 * @return current instance of the controller
 	 */
 	public static LoginScreenActionHandler getInstance() {
 		return instance;
 	}
+
 	/**
 	 * Change the text of the username label
-	 * @param input
+	 * 
+	 * @param input: Nickname of current player
 	 */
 	public void setUsername(String input) {
 		this.username.setText(input);
+	}
+	
+	/**
+	 * Updates the avatar image of the current player
+	 * @param avatar: String to the location of the new avatar
+	 */
+	public void setAvatar(String avatar) {
+		this.avatar.setImage(new Image(avatar));
+	}
+	
+	/**
+	 * Get the inet address to be connected to as client
+	 * @return the input for the inet adress
+	 */
+	public String getConnection() {
+		return this.LinkField.getText();
 	}
 
 	/**

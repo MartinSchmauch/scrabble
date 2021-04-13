@@ -25,7 +25,7 @@ public class GameControllerTest {
 
   @Test
   public void setUpGameBoardTest() {
-    assertEquals(gc.getGameBoard().getField(7, 7).getLetterMultiplier(), 2);
+    assertEquals(gS.getGameBoard().getField(7, 7).getLetterMultiplier(), 2);
   }
 
 }

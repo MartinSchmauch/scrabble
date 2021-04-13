@@ -25,6 +25,7 @@ public class AIplayer extends Player {
       @JsonProperty("volume") int volume) {
     super(nickname, avatar, volume);
   }
+
   /**
    * 
    * @param gb
@@ -89,7 +90,7 @@ public class AIplayer extends Player {
    * @param axis
    * @return list of tiles
    */
-  public List<Tile> generateLayedDownTiles(GameBoard gb) {
+  public List<Tile> generateLayedDownFields(GameBoard gb) {
     ArrayList<Field[]> possibleLocations;
     ArrayList<Field[]> currentLocations;
     HashSet<WordOnList> currentDictionary;
@@ -97,21 +98,29 @@ public class AIplayer extends Player {
     Turn currentTurn;
     int maximumScore = 0;
     List<Tile> layedDownTileListWithMaximumScore = null;
-    Tile[] rack = new Tile[7];
+    Field[] layedDownFieldsWithMaximumScore = null;
+    // List<Tile> rack = new ArrayList<Tile>();
     for (int k = 2; k <= this.maximumWordlength; k++) {
       possibleLocations = getValidWordPositionsForWordLength(gb, k);
       for (int j = 1; j <= gb.getFields().length; j++) {
         currentLocations = getRowLocations(possibleLocations, j);
         currentDictionary = gb.getWordlist().getWordsWithLength(k);
         for (Field[] location : currentLocations) {
-          System.arraycopy(rack, 0, this.getRackTiles().toArray(rack), 0, 7);
-          //rack = this.getRackTiles().toArray(rack);
-          layedDownTileList = generateWord(gb, location, currentDictionary, rack);
+          // System.arraycopy(rack, 0, this.getRackTiles().toArray(rack), 0, 7);
+          // rack = this.getRackTiles();
+          // rack = this.getRackTiles().toArray(rack);
+          layedDownTileList = generateWord(gb, location, currentDictionary);
+          System.out.println("############## Neuer Turn ###############");
           if (layedDownTileList != null) {
-            currentTurn = new Turn(layedDownTileList);
+            currentTurn = new Turn(this.getNickname());
+            currentTurn.setLaydDownTiles(layedDownTileList);
             if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
               maximumScore = currentTurn.getTurnScore();
               layedDownTileListWithMaximumScore = layedDownTileList;
+              layedDownFieldsWithMaximumScore = location;
+            }
+            if (layedDownTileList != null) {
+              this.cleanupGameboard(layedDownTileList);
             }
           }
         }
@@ -120,18 +129,36 @@ public class AIplayer extends Player {
         currentLocations = getColLocations(possibleLocations, i);
         currentDictionary = gb.getWordlist().getWordsWithLength(k);
         for (Field[] location : currentLocations) {
-          System.arraycopy(rack, 0, this.getRackTiles().toArray(rack), 0, 7);
+          // System.arraycopy(rack, 0, this.getRackTiles().toArray(rack), 0, 7);
+          // rack = this.getRackTiles();
           // rack = this.getRackTiles().toArray(rack);
-          layedDownTileList = generateWord(gb, location, currentDictionary, rack);
-          currentTurn = new Turn(layedDownTileList);
+          layedDownTileList = generateWord(gb, location, currentDictionary);
+          currentTurn = new Turn(this.getNickname());
           if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
             maximumScore = currentTurn.getTurnScore();
             layedDownTileListWithMaximumScore = layedDownTileList;
+            layedDownFieldsWithMaximumScore = location;
+          }
+          if (layedDownTileList != null) {
+            this.cleanupGameboard(layedDownTileList);
           }
         }
       }
     }
+    System.out.println("Maximum score: " + maximumScore);
+    for (Field f : layedDownFieldsWithMaximumScore) {
+      System.out.println("Field newly layed down: " + f);
+    }
     return layedDownTileListWithMaximumScore;
+
+  }
+
+  private void cleanupGameboard(List<Tile> layedDownTileList) {
+    for (Tile t : layedDownTileList) {
+      t.getField().setTileOneDirection(null);;
+      this.getFreeRackField().setTile(t);
+      // t.setFieldOneDirection(null);
+    }
 
   }
 
@@ -189,12 +216,12 @@ public class AIplayer extends Player {
    * @return
    */
   private List<Tile> generateWord(GameBoard gb, Field[] currentLocation,
-      HashSet<WordOnList> currentDictionary, Tile[] rack) {
+      HashSet<WordOnList> currentDictionary) {
     List<Tile> result = new ArrayList<Tile>();
     boolean isValid;
     boolean atLeastOneRackTileNeeded = false;
     Tile t;
-    
+
     // check if all fields already have tiles on gameboard
     for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
       if (currentLocation[wordIndex].getTile() == null) {
@@ -204,20 +231,20 @@ public class AIplayer extends Player {
     if (!atLeastOneRackTileNeeded) {
       return null;
     }
-    
+
     for (WordOnList word : currentDictionary) {
       isValid = true;
       for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
         if ((t = currentLocation[wordIndex].getTile()) != null) {
-          if ( !(t.getLetter().getChar() == word.getWordString().charAt(wordIndex))) {
+          if (!(t.getLetter().getChar() == word.getWordString().charAt(wordIndex))) {
             isValid = false;
             break;
           }
-        }
-        else {
+        } else {
           isValid = false; // will be set to true by for-loop if char is found in rack
-          for (int i = 0; i < rack.length; i++) {
-            if (rack[i] != null && word.getWordString().charAt(wordIndex) == rack[i].getLetter().getChar()) {
+          for (int i = 0; i < this.getRackTiles().size(); i++) {
+            if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
+                .getRackTile(i).getLetter().getChar()) {
               isValid = true;
               break;
             }
@@ -230,24 +257,31 @@ public class AIplayer extends Player {
       if (isValid) {
         for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
           if (currentLocation[wordIndex].getTile() == null) {
-            for (int i = 0; i < rack.length; i++) {
-              if (rack[i] != null && word.getWordString().charAt(wordIndex) == rack[i].getLetter().getChar()) {
-//                currentLocation[wordIndex].setOnlyTile(rack[i]);
-//                currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
-//                currentLocation[wordIndex].getTile().setOnGameBoard(true);
-//                currentLocation[wordIndex].getTile().setOnRack(false);
-//                currentLocation[wordIndex].getTile().setPlayed(true);
-//                t = new Tile(new Letter(word.getWordString().charAt(wordIndex), rack[i].getLetter().getLetterValue(), rack[i].getLetter().getCount()), )
-//                result.add(new Tile())
-                currentLocation[wordIndex].setTile(rack[i]);
+            for (int i = 0; i < this.getRackTiles().size(); i++) {
+              if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
+                  .getRackTile(i).getLetter().getChar()) {
+                // currentLocation[wordIndex].setOnlyTile(rack[i]);
+                // currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
+                // currentLocation[wordIndex].getTile().setOnGameBoard(true);
+                // currentLocation[wordIndex].getTile().setOnRack(false);
+                // currentLocation[wordIndex].getTile().setPlayed(true);
+                // t = new Tile(new Letter(word.getWordString().charAt(wordIndex),
+                // rack[i].getLetter().getLetterValue(), rack[i].getLetter().getCount()), )
+                // result.add(new Tile())
+                currentLocation[wordIndex].setTile(this.getRackTile(i));
                 result.add(currentLocation[wordIndex].getTile());
-                rack[i] = null;
+
+                System.out.println("Neuer Buchstabe");
+                System.out.println(this.getRackTile(i));
+                System.out.println(currentLocation[wordIndex]);
+                System.out.println("------------");
+
+                this.setRackTileToNone(i);
                 break;
               }
             }
-          }
-          else {
-            result.add(currentLocation[wordIndex].getTile());
+          } else {
+            // result.add(currentLocation[wordIndex].getTile());
           }
         }
         return result;
@@ -263,7 +297,7 @@ public class AIplayer extends Player {
     for (Field[] possibleLocation : possibleLocations) {
       inRow = true;
       for (Field field : possibleLocation) {
-        if (field.getxCoordinate() != i) {
+        if (field.getxCoordinate() != i - 1) {
           inRow = false;
           break;
         }
@@ -281,7 +315,7 @@ public class AIplayer extends Player {
     for (Field[] possibleLocation : possibleLocations) {
       inRow = true;
       for (Field field : possibleLocation) {
-        if (field.getyCoordinate() != j) {
+        if (field.getyCoordinate() != j - 1) {
           inRow = false;
           break;
         }

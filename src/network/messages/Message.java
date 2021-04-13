@@ -1,5 +1,12 @@
-/** @author lurny */
 package network.messages;
+
+/**
+ * Every Messageclass extends this abstract class. If a Messsage is send, you can use the
+ * getMessageType() Method to find out the Message type and cast the Object onto the correct Message
+ * Class.
+ * 
+ * @author lurny
+ */
 
 import java.io.Serializable;
 

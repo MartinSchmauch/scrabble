@@ -1,7 +1,11 @@
 package game;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import mechanic.Field;
+import mechanic.GameBoard;
 import mechanic.PlayerData;
 import util.JSONHandler;
 
@@ -13,13 +17,15 @@ import util.JSONHandler;
  * @author nilbecke, ldreyer
  */
 
-public class GameState {
+public class GameState implements Serializable {
 
-  boolean isRunning;
-  GameSettings gameSettings;
-  PlayerData host;
-  String currentPlayer;
-  HashMap<String, PlayerData> allPlayers;
+  private static final long serialVersionUID = 1L;
+  private boolean isRunning;
+  private GameBoard gb;
+  private PlayerData host;
+  private String currentPlayer;
+  private HashMap<String, PlayerData> allPlayers;
+  private HashMap<String, Integer> scores;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -28,11 +34,28 @@ public class GameState {
     this.allPlayers.put(this.host.getNickname(), this.host);
 
     JSONHandler jH = new JSONHandler();
-   System.out.println(customGameSettings);
+
     if (customGameSettings != null) {
       jH.loadGameSettings(customGameSettings);
     } else {
       jH.loadGameSettings("resources/defaultGameSettings.json");
+    }
+  }
+
+  /**
+   * setUp Gameboard with special Fields
+   * 
+   * @author lurny
+   */
+  public void setUpGameboard() {
+
+    this.gb = new GameBoard(GameSettings.getGameBoardSize());
+    List<Field> specialFields = GameSettings.getSpecialFields();
+    for (Field f : specialFields) {
+      this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
+          .setLetterMultiplier(f.getLetterMultiplier());
+      this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
+          .setWordMultiplier(f.getWordMultiplier());
     }
   }
 
@@ -48,8 +71,18 @@ public class GameState {
     return this.currentPlayer;
   }
 
+
+  public void setCurrentPlayer(String nextPlayer) {
+    this.currentPlayer = nextPlayer;
+  }
+
   public List<PlayerData> getAllPlayers() {
-    return (List<PlayerData>) this.allPlayers.values();
+    return new ArrayList<PlayerData>(this.allPlayers.values());
+  }
+
+
+  public PlayerData getPlayerData(String nickname) {
+    return this.allPlayers.get(nickname);
   }
 
   public boolean joinGame(PlayerData player) {
@@ -58,6 +91,7 @@ public class GameState {
     }
 
     this.allPlayers.put(player.getNickname(), player);
+    this.scores.put(player.getNickname(), 0);
     return true;
   }
 
@@ -80,6 +114,19 @@ public class GameState {
 
   public void stopGame() {
     this.isRunning = false;
+  }
+
+  public GameBoard getGameBoard() {
+    return gb;
+  }
+
+  public void setGameBoard(GameBoard gameBoard) {
+    this.gb = gameBoard;
+  }
+
+  public boolean addScore(String player, int turnScore) {
+    int oldScore = this.scores.get(player);
+    return this.scores.replace(player, oldScore, oldScore + turnScore);
   }
 
 }

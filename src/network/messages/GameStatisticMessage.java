@@ -1,6 +1,10 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * This Message sends relevant statistcs from the played and finished game to every player.
+ * 
+ * @author lurny
+ */
 
 import game.GameStatistic;
 
