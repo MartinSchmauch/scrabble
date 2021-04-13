@@ -28,147 +28,151 @@ import network.messages.StartGameMessage;
 import network.messages.TurnResponseMessage;
 
 /**
- * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
- * sending the defined messages to connected clients. It is also responsible for updating the UI of
- * the game's host.
+ * Manages network Scrabble game, by keeping track of GameState, addressing the
+ * GameController and sending the defined messages to connected clients. It is
+ * also responsible for updating the UI of the game's host.
  * 
  * author @ldreyer
  */
 
 public class Server {
 
-  private ServerSocket serverSocket;
-  private GameState gameState;
-  private GameController gameController;
-  private Player player;
-  private ServerProtocol serverProtocol;
+	private ServerSocket serverSocket;
+	private GameState gameState;
+	private GameController gameController;
+	private Player player;
+	private ServerProtocol serverProtocol;
 
-  private GamePanelController gpc;
-  private LobbyScreenController lsc;
+	private GamePanelController gpc;
+	private LobbyScreenController lsc;
 
-  private boolean running;
+	private boolean running;
 
-  private String host;
-  private HashMap<String, ServerProtocol> clients = new HashMap<>();
+	private String host;
+	private HashMap<String, ServerProtocol> clients = new HashMap<>();
 
-  public Server(PlayerData host, String customGameSettings) {
-    this.host = host.getNickname();
-    this.gameState = new GameState(host, customGameSettings);
-    this.gameController = new GameController(this.gameState);
-  }
+	public Server(PlayerData host, String customGameSettings) {
+		this.host = host.getNickname();
+		this.gameState = new GameState(host, customGameSettings);
+		this.gameController = new GameController(this.gameState);
+	}
 
-  /**
-   * Thread method that continuously checks for new clients trying to connect. When a new clients
-   * connects, a new instance of ServerProtocol is created, moderating the client-server connection
-   */
+	/**
+	 * Thread method that continuously checks for new clients trying to connect.
+	 * When a new clients connects, a new instance of ServerProtocol is created,
+	 * moderating the client-server connection
+	 */
 
-  public void listen() {
-    running = true;
-    try {
-      serverSocket = new ServerSocket(GameSettings.port);
-      System.out.println("Server runs");
+	public void listen() {
+		running = true;
+		try {
+			serverSocket = new ServerSocket(GameSettings.port);
+			System.out.println("Server runs");
 
-      while (running) {
-        Socket clientSocket = serverSocket.accept();
+			while (running) {
+				Socket clientSocket = serverSocket.accept();
 
-        this.serverProtocol = new ServerProtocol(clientSocket, this);
-        this.serverProtocol.start();
-      }
+				this.serverProtocol = new ServerProtocol(clientSocket, this);
+				this.serverProtocol.start();
+			}
 
-    } catch (IOException e) {
-      if (serverSocket != null && serverSocket.isClosed()) {
-        System.out.println("Server stopped.");
-      } else {
-        e.printStackTrace();
-      }
-    }
-  }
+		} catch (IOException e) {
+			if (serverSocket != null && serverSocket.isClosed()) {
+				System.out.println("Server stopped.");
+			} else {
+				e.printStackTrace();
+			}
+		}
+	}
 
-  public GameState getGameState() {
-    return this.gameState;
-  }
+	public GameState getGameState() {
+		return this.gameState;
+	}
 
-  // TODO split in relevant getter/setter methods
-  public GameController getGameController() {
-    return this.gameController;
-  }
+	// TODO split in relevant getter/setter methods
+	public GameController getGameController() {
+		return this.gameController;
+	}
 
-  public String getHost() {
-    return this.host;
-  }
+	public String getHost() {
+		return this.host;
+	}
 
-  public InetAddress getInetAddress() {
-    try {
-      return InetAddress.getLocalHost();
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
+	public InetAddress getInetAddress() {
 
+		try {
+			return InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-  public boolean checkNickname(String nickname) {
-    return this.clients.keySet().contains(nickname);
-  }
+	public boolean checkNickname(String nickname) {
+		return this.clients.keySet().contains(nickname);
+	}
 
-  public void addClient(PlayerData player, ServerProtocol serverProtocol) {
-    this.gameState.joinGame(player);
-    this.clients.put(player.getNickname(), serverProtocol);
-  }
+	public void addClient(PlayerData player, ServerProtocol serverProtocol) {
+		this.gameState.joinGame(player);
+		this.clients.put(player.getNickname(), serverProtocol);
+	}
 
-  public void removeClient(String player) {
-    this.gameState.leaveGame(player);
-    this.clients.remove(player);
-  }
+	public void removeClient(String player) {
+		this.gameState.leaveGame(player);
+		this.clients.remove(player);
+	}
 
-  public synchronized List<String> getClientNames() {
-    Set<String> clientNames = this.clients.keySet();
-    return new ArrayList<String>(clientNames);
-  }
+	public synchronized List<String> getClientNames() {
+		Set<String> clientNames = this.clients.keySet();
+		return new ArrayList<String>(clientNames);
+	}
 
-  /** sends a message to a list of clients */
+	/** sends a message to a list of clients */
 
-  private synchronized void sendTo(List<String> clientNames, Message m) {
-    List<String> fails = new ArrayList<String>();
-    for (String nickname : clientNames) {
-      try {
-        ServerProtocol c = clients.get(nickname);
-        c.sendToClient((Message) (m));
-      } catch (IOException e) {
-        e.printStackTrace();
-        fails.add(nickname);
-        continue;
-      }
-    }
-    for (String c : fails) {
-      System.out.println("Client " + c + " removed (message delivery failed).");
-      removeClient(c);
-    }
-    try {
-      updateServerUI(m);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+	private synchronized void sendTo(List<String> clientNames, Message m) {
+		List<String> fails = new ArrayList<String>();
+		for (String nickname : clientNames) {
+			try {
+				ServerProtocol c = clients.get(nickname);
+				c.sendToClient((Message) (m));
+			} catch (IOException e) {
+				e.printStackTrace();
+				fails.add(nickname);
+				continue;
+			}
+		}
+		for (String c : fails) {
+			System.out.println("Client " + c + " removed (message delivery failed).");
+			removeClient(c);
+		}
+		try {
+			updateServerUI(m);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-  /** sends a message to all connected clients */
+	/** sends a message to all connected clients */
 
-  public void sendToAll(Message m) {
-    sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
-  }
+	public void sendToAll(Message m) {
+		sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
+	}
 
-  /** sends a message to all connected clients, except the one client who was given as parameter */
+	/**
+	 * sends a message to all connected clients, except the one client who was given
+	 * as parameter
+	 */
 
-  public void sendToAllBut(String name, Message m) {
-    synchronized (this.clients) {
-      List<String> senderList = getClientNames();
-      senderList.remove(name);
-      sendTo(senderList, m);
-    }
+	public void sendToAllBut(String name, Message m) {
+		synchronized (this.clients) {
+			List<String> senderList = getClientNames();
+			senderList.remove(name);
+			sendTo(senderList, m);
+		}
 
-  }
+	}
 
-  public void updateServerUI(Message m) throws Exception {
+	public void updateServerUI(Message m) throws Exception {
     if (!this.gameState.getGameRunning()) {
       if (this.lsc == null) {
         lsc = LobbyScreenController.getLobbyInstance();
@@ -181,12 +185,15 @@ public class Server {
           break;
         case DISCONNECT:
           lsc.removeJoinedPlayer(m.getFrom());
+          break;
         case SEND_CHAT_TEXT:
           SendChatMessage scm = (SendChatMessage) m;
           lsc.updateChat(scm.getText(), scm.getSender(), scm.getDateTime());
+          break;
         case START_GAME:
           StartGameMessage sgm = (StartGameMessage) m;
           lsc.startGame();
+          break;
         case GAME_STATISTIC:
           GameStatisticMessage gsm = (GameStatisticMessage) m;
           // TODO
@@ -214,7 +221,9 @@ public class Server {
           gpc.removeTile(rtm.getTile());
         case MOVE_TILE:
           MoveTileMessage mtm = (MoveTileMessage) m;
+
           gpc.moveTile(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
+
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
           if (!trm.getIsValid()) {
@@ -230,30 +239,30 @@ public class Server {
     }
   }
 
-  public void stopServer() {
-    running = false;
-    // TODO remove comment
-    // sendToAll(new ShutdownMessage(this.host, "Server closed session."));
+	public void stopServer() {
+		running = false;
+		// TODO remove comment
+		// sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
-    if (!serverSocket.isClosed()) {
-      try {
-        serverSocket.close();
-      } catch (IOException e) {
-        e.printStackTrace();
-        System.exit(0);
-      }
-    }
-  }
+		if (!serverSocket.isClosed()) {
+			try {
+				serverSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(0);
+			}
+		}
+	}
 
-  public Player getPlayer() {
-    return player;
-  }
+	public Player getPlayer() {
+		return player;
+	}
 
-  public void setPlayer(Player player) {
-    this.player = player;
-  }
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 
-  public ServerProtocol getServerProtocol() {
-    return this.serverProtocol;
-  }
+	public ServerProtocol getServerProtocol() {
+		return this.serverProtocol;
+	}
 }
