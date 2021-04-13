@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
-import game.GameState;
 import network.client.ClientProtocol;
 import network.server.Server;
 
@@ -26,7 +25,6 @@ public class Player {
 
   private PlayerData info;
   private int volume;
-  private GameBoard gameBoard;
   private String customGameSettings;
 
   @JsonIgnore
@@ -34,11 +32,8 @@ public class Player {
   @JsonIgnore
   private ClientProtocol client = null;
   @JsonIgnore
-  private InetAddress gameLocation;
-  @JsonIgnore
   private Server server = null;
-  @JsonIgnore
-  private GameState gS = null;
+
 
   static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 12;
@@ -215,23 +210,6 @@ public class Player {
     this.info.setHost(host);
   }
 
-  public InetAddress getLocation() {
-    return this.gameLocation;
-  }
-
-
-  public void setLocation(InetAddress location) {
-    this.gameLocation = location;
-  }
-
-  public GameBoard getGameBoard() {
-    return gameBoard;
-  }
-
-  public void setGameBoard(GameBoard gameBoard) {
-    this.gameBoard = gameBoard;
-  }
-
   public Server getServer() {
     return this.server;
   }
@@ -248,17 +226,13 @@ public class Player {
       }
     };
     new Thread(r).start();
-
-    this.gameLocation = this.server.getInetAddress();
   }
 
   /** @author nilbecke */
 
   public void connect(InetAddress inetAddress) {
     this.getPlayerInfo().setHost(false);
-    this.gameLocation = inetAddress;
-    this.client = new ClientProtocol(this.gameLocation.toString(), GameSettings.port, this.info,
-        null, null, null);
+    this.client = new ClientProtocol(inetAddress.toString(), GameSettings.port, this, null, null);
 
     if (this.client.isOK()) {
       this.client.start();

@@ -161,8 +161,8 @@ public class Field implements Serializable {
     } else {
       t = (Field) other;
       if (t.gameBoard.equals(this.gameBoard) && t.letterMultiplier == this.letterMultiplier
-          && t.tile.equals(this.tile) && t.wordMultiplier == this.wordMultiplier
-          && t.xCoordinate == this.xCoordinate && t.yCoordinate == this.yCoordinate) {
+          && t.wordMultiplier == this.wordMultiplier && t.xCoordinate == this.xCoordinate
+          && t.yCoordinate == this.yCoordinate) {
         return true;
       } else {
         return false;

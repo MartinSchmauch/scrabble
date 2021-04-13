@@ -7,7 +7,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import game.GameSettings;
-import gui.ClientUI;
 import mechanic.Player;
 import network.client.ClientProtocol;
 import network.messages.ConnectMessage;
@@ -48,8 +47,7 @@ public class ServerTest {
 
     new Thread(r).start();
 
-    this.connection = new ClientProtocol("127.0.0.1", GameSettings.port, player.getPlayerInfo(),
-        new ClientUI(), null, null);
+    this.connection = new ClientProtocol("127.0.0.1", GameSettings.port, player, null, null);
 
     if (this.connection.isOK()) {
       this.connection.start();
@@ -68,8 +66,7 @@ public class ServerTest {
     System.out.println(server.getGameState().getAllPlayers());
 
 
-    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2.getPlayerInfo(),
-        new ClientUI(), null, null);
+    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2, null, null);
 
     if (this.connection2.isOK()) {
       this.connection2.start();

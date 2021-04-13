@@ -25,11 +25,13 @@ import mechanic.Field;
 import mechanic.Letter;
 import mechanic.Player;
 import mechanic.Tile;
+import network.client.ClientProtocol;
 import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.SendChatMessage;
+import network.server.Server;
 
 /**
  * @author mschmauc
@@ -44,7 +46,8 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   private Player player;
-
+  private ClientProtocol cp;
+  private Server server;
   @FXML
   private TextArea textArea;
   @FXML
@@ -174,11 +177,11 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    */
 
-     /**
-      * Lets a player disconnect
-      * 
-      * @param nickname of the player disconnecting
-      */
+  /**
+   * Lets a player disconnect
+   * 
+   * @param nickname of the player disconnecting
+   */
 
   public void removeJoinedPlayer(String nickname) {
     // TODO
@@ -386,6 +389,26 @@ public class GamePanelController extends ClientUI implements Sender {
 
   public Player getPlayer() {
     return player;
+  }
+
+
+  public Server getServer() {
+    return server;
+  }
+
+
+  public void setServer(Server server) {
+    this.server = server;
+  }
+
+
+  public ClientProtocol getCp() {
+    return cp;
+  }
+
+
+  public void setCp(ClientProtocol cp) {
+    this.cp = cp;
   }
 
 }
