@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import game.GameSettings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -26,238 +30,257 @@ import network.server.Server;
 
 /**
  * 
- * @author nilbecke Handles all User inputs in the Lobby Screen as well as the connection of players
+ * @author nilbecke Handles all User inputs in the Lobby Screen as well as the
+ *         connection of players
  *
  */
 public class LobbyScreenController implements EventHandler<ActionEvent>, Sender {
 
-  private Player player;
-  private ClientProtocol client = null;
-  private Server server = null;
-  private InetAddress address;
-  private static LobbyScreenController instance;
-  private GameSettings gS;
+	private Player player;
+	private InetAddress address;
+	private static LobbyScreenController instance;
+	private GameSettings gS;
+	List<PlayerData> players;
 
-  @FXML
-  private Label countdown;
-  @FXML
-  private Label ip;
-  @FXML
-  private TextField input;
-  @FXML
-  private TextArea chat;
-  @FXML
-  private Button start;
-  @FXML
-  private Button settings;
+	@FXML
+	private Label ip, player1, player2, player3, player4, countdown;
+	@FXML
+	private TextField input;
+	@FXML
+	private TextArea chat;
+	@FXML
+	private Button start;
+	@FXML
+	private Button settings;
+	@FXML
+	private ImageView pic1, pic2, pic3, pic4;
 
-  /**
-   * Set up labels etc before launching the lobby screen
-   */
-  @FXML
-  public synchronized void initialize() {
-    this.player = LobbyScreen.getPlayer();
-    address = null;
-    instance = this;
-    try {
-      address = InetAddress.getLocalHost();
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-    }
-    if (!this.player.isHost()) {
-      this.start.setOpacity(0.4);
-      this.start.setDisable(true);
-      this.ip.setOpacity(0);
-      this.settings.setOpacity(0.4);
-      this.settings.setDisable(true);
-      try {
-        this.player
-            .connect(InetAddress.getByName(LoginScreenActionHandler.getInstance().getConnection()));
-      } catch (UnknownHostException e) {
-        e.printStackTrace();
-      }
-    } else {
-      this.player.host();
-      this.ip.setText("Link:  " + address.getHostAddress());
+	/**
+	 * Set up labels etc before launching the lobby screen
+	 */
 
-    }
-  }
+	/**
+	 * Set up labels etc before launching the lobby screen
+	 */
+	@FXML
+	public synchronized void initialize() {
+		this.player = LobbyScreen.getInstance().getPlayer();
+		address = null;
+		instance = this;
+		try {
+			address = InetAddress.getLocalHost();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		if (!this.player.isHost()) {
+			this.start.setOpacity(0.4);
+			this.start.setDisable(true);
+			this.ip.setOpacity(0);
+			this.settings.setOpacity(0.4);
+			this.settings.setDisable(true);
+			try {
+				this.player.connect(InetAddress.getLocalHost());
 
-  /**
-   * Handles all user inputs in the LobbyScreen
-   */
-  @Override
-  public void handle(ActionEvent e) {
-    String s = ((Node) e.getSource()).getId();
-    switch (s) {
-      case "leavelobby":
-        sendDisconnectMessage(this.player.getNickname());
-        break;
-      case "send":
-      case "sendText":
-        // Reset the Textlabel
-        this.input.setText("");
-        break;
-      case "start":
-        startGame();
-        Stage st = (Stage) ((Button) e.getSource()).getScene().getWindow();
-        st.close();
-        break;
-      case "settings":
-        new SettingsScreen(this.gS).start(new Stage());
-    }
-  }
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		} else {
+			this.player.host();
+			this.ip.setText("Link:  " + address.getHostAddress());
+		}
+		// Initialize Nicknames and avatars
+		if (this.player.isHost()) {
+			this.players = this.player.getServer().getGameState().getAllPlayers();
+		} else {
+			// TODO get Server as client
+		}
+	}
 
-  /**
-   * Starts the countdown before the game launches
-   */
-  public void startGame() {
-    new StartGameMessage(this.player.getNickname(), 10);
-    try {
-      new ClientUI().start(new Stage());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+	/**
+	 * Handles all user inputs in the LobbyScreen
+	 */
+	@Override
+	public void handle(ActionEvent e) {
+		String s = ((Node) e.getSource()).getId();
+		switch (s) {
+		case "leavelobby":
+			sendDisconnectMessage(this.player.getNickname());
+			break;
+		case "send":
+		case "sendText":
+			// Reset the Textlabel
+			this.input.setText("");
+			break;
+		case "start":
+			startGame();
+			Stage st = (Stage) ((Button) e.getSource()).getScene().getWindow();
+			st.close();
+			break;
+		case "settings":
+			new SettingsScreen(this.gS).start(new Stage());
+		}
+	}
 
-  /**
-   * sends the chat to server
-   * 
-   * @param message is the message to be added in the chat
-   * @param sender is the player sending the message
-   * @param time represents the time when the given message was sent
-   */
-  @Override
-  public void sendChatMessage(String sender, String message) {
-    if (message.length() == 0) {
-      return;
-    }
-    Message m = new SendChatMessage(sender, message, LocalDateTime.now());
-    sendMessage(m);
-  }
+	/**
+	 * Starts the countdown before the game launches
+	 */
+	public void startGame() {
+		new StartGameMessage(this.player.getNickname(), 10);
+		try {
+			new ClientUI().start(new Stage());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-  /**
-   * Lets a player disconnect from the current game. If the leaving player is the host, the lobby
-   * closes
-   * 
-   * @param playerID: Nickname of leaving player
-   */
-  @Override
-  public void sendDisconnectMessage(String playerID) {
-    Message m = new DisconnectMessage(playerID);
-    sendMessage(m);
-  }
+	/**
+	 * Sends a given message to all players
+	 * 
+	 * @param m: The Message to be sent
+	 * @return true if message was sent, false otherwise
+	 */
+	public boolean sendMessage(Message m) {
+		try {
+			if (this.player.isHost()) {
+				this.player.getServer().sendToAll(m);
 
-  /**
-   * Sends a given message to all players
-   * 
-   * @param m: The Message to be sent
-   * @return true if message was sent, false otherwise
-   */
-  public boolean sendMessage(Message m) {
-    try {
-      if (this.player.isHost()) {
-        this.server.getServerProtocol().sendToClient(m);
-      } else {
-        this.client.sendToServer(m);
-      }
-      return true;
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
+			} else {
+				this.player.getClientProtocol().sendToServer(m);
+				System.out.println("!");
+			}
+			return true;
+		} catch (IOException e) {
+			return false;
+		}
+	}
 
-  /**
-   * Getter Method for the current Instance of the controller
-   *
-   * @return Current Instance of the contoller
-   */
-  public static LobbyScreenController getLobbyInstance() {
-    return instance;
-  }
+	/**
+	 * sends the chat to server
+	 * 
+	 * @param message is the message to be added in the chat
+	 * @param sender  is the player sending the message
+	 * @param time    represents the time when the given message was sent
+	 */
+	@Override
+	public void sendChatMessage(String sender, String message) {
+		if (message.length() == 0) {
+			return;
+		}
+		Message m = new SendChatMessage(sender, message, LocalDateTime.now());
+		sendMessage(m);
+	}
 
-  /**
-   * Lets a player disconnect or connect
-   * 
-   * @param player: Playerdata of the player to be (dis-)connecting
-   */
-  public void updateJoinedPlayers(PlayerData player) {
+	/**
+	 * Lets a player disconnect from the current game. If the leaving player is the
+	 * host, the lobby closes
+	 * 
+	 * @param playerID: Nickname of leaving player
+	 */
+	@Override
+	public void sendDisconnectMessage(String playerID) {
+		Message m = (Message) new DisconnectMessage(playerID);
+		sendMessage(m);
+	}
 
-  }
+	/**
+	 * Getter Method for the current Instance of the controller
+	 *
+	 * @return Current Instance of the contoller
+	 */
+	public static LobbyScreenController getLobbyInstance() {
+		return instance;
+	}
 
-  /**
-   * Reads updated game settings and distributes them to all players
-   * 
-   * @param: new Instance of game settings
-   */
-  public void updateGameSettings(GameSettings settings) {
-    // TODO
-  }
+	/**
+	 * Lets a player disconnect or connect
+	 * 
+	 * @param player: Playerdata of the player to be (dis-)connecting
+	 */
+	public void updateJoinedPlayers(PlayerData player) {
 
-  /**
-   * Get the current Server
-   * 
-   * @return: Current instance of the server if present else null
-   */
-  public Server getServer() {
-    return this.player.getServer();
-  }
+	}
 
-  /**
-   * Get a reference onto the game settings currently used
-   * 
-   * @return: currently used game settings
-   */
-  public GameSettings getSettings() {
-    return this.gS;
-  }
+	/**
+	 * Reads updated game settings and distributes them to all players
+	 * 
+	 * @param: new Instance of game settings
+	 */
+	public void updateGameSettings(GameSettings settings) {
+		// TODO
+	}
 
-  /**
-   * Lets a player connect
-   * 
-   * @param player: Playerdata of the player to be (dis-)connecting
-   */
-  public void addJoinedPlayer(PlayerData player) {
-    // TODO
-  }
+	/**
+	 * Get the current Server
+	 * 
+	 * @return: Current instance of the server if present else null
+	 */
+	public Server getServer() {
+		return this.player.getServer();
+	}
 
-  /**
-   * Lets a player disconnect
-   * 
-   * @param nickname of the player disconnecting
-   */
+	/**
+	 * Get a reference onto the game settings currently used
+	 * 
+	 * @return: currently used game settings
+	 */
+	public GameSettings getSettings() {
+		return this.gS;
+	}
 
-  public void removeJoinedPlayer(String nickname) {
-    // TODO
-  }
+	/**
+	 * Lets a player connect
+	 * 
+	 * @param player: Playerdata of the player to be (dis-)connecting
+	 */
+	public void addJoinedPlayer(PlayerData player) {
+		// TODO
+	}
 
-  /**
-   * Adds text message from server to chat history.
-   * 
-   * @param message: message
-   * @param sender: nickname of sender
-   * @param timestamp: date and time from when the message has been sent
-   */
-  public void updateChat(String message, String sender, LocalDateTime timestamp) {
-    // TODO
-  }
+	/**
+	 * Lets a player disconnect
+	 * 
+	 * @param nickname of the player disconnecting
+	 */
 
-  /**
-   * Reads updated game settings and distributes them to all players
-   * 
-   * @param: new Instance of game settings
-   */
-  public void updategameSettings(GameSettings settings) {
-    // TODO
-  }
+	public void removeJoinedPlayer(String nickname) {
+		// TODO
+	}
 
-  public void sendCommitTurn(String nickName) {}
+	/**
+	 * Adds text message from server to chat history.
+	 * 
+	 * @param message:   message
+	 * @param sender:    nickname of sender
+	 * @param timestamp: date and time from when the message has been sent
+	 */
+	public void updateChat(String message, String sender, LocalDateTime timestamp) {
+		// TODO
+	}
 
-  @Override
-  public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
-    // TODO
+	/**
+	 * 
+	 */
+	public void closeWindow(Button b) {
+		Stage st = (Stage) b.getScene().getWindow();
+		st.close();
+	}
 
-  }
+	/**
+	 * Reads updated game settings and distributes them to all players
+	 * 
+	 * @param: new Instance of game settings
+	 */
+	public void updategameSettings(GameSettings settings) {
+		// TODO
+	}
+
+	public void sendCommitTurn(String nickName) {
+	}
+
+	@Override
+	public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
+		// TODO
+
+	}
 
 }

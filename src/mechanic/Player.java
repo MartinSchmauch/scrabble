@@ -1,6 +1,5 @@
 package mechanic;
 
-
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import network.client.ClientProtocol;
 import network.server.Server;
-
 
 
 /**
@@ -35,9 +33,8 @@ public class Player {
   @JsonIgnore
   private Server server = null;
 
-
   static final int TILE_COUNT_PER_PLAY = 7;
-  static final int RACK_FIELDS = 7;
+  static final int RACK_FIELDS = 12;
 
   public Player(String nickname) {
     this.info = new PlayerData(nickname);
@@ -66,13 +63,14 @@ public class Player {
     }
   }
 
-  /**
+  /*
    * PLAYER INFO
    */
 
   public PlayerData getPlayerInfo() {
     return this.info;
   }
+
 
   public void setNickname(String nickname) {
     this.info.setNickname(nickname);
@@ -90,9 +88,7 @@ public class Player {
     return this.info.getAvatar();
   }
 
-
-
-  /**
+  /*
    * RACK METHODS
    */
 
@@ -102,10 +98,6 @@ public class Player {
 
   public void setRackTile(int index, Tile tile) {
     this.rack[index].setTile(tile);
-  }
-
-  public void setRackTileToNone(int index) {
-    this.rack[index].setTileOneDirection(null);
   }
 
   /**
@@ -124,14 +116,19 @@ public class Player {
     return rack[i];
   }
 
+
+  public void setRackTileToNone(int index) {
+    this.rack[index].setTileOneDirection(null);
+  }
+
+
+
   /**
    * This method takes a tile and puts it on a free field on the player's rack.
    * 
    */
   public void addTileToRack(Tile tile) {
-    Field f = getFreeRackField();
-    f.setTile(tile);
-    tile.setField(f);
+    tile.setField(getFreeRackField());
     tile.setOnRack(true);
   }
 
@@ -148,6 +145,7 @@ public class Player {
    * @return List<Tile>
    */
 
+
   @JsonIgnore
   public List<Tile> getRackTiles() {
     List<Tile> tiles = new ArrayList<Tile>();
@@ -163,7 +161,6 @@ public class Player {
   public int getTileCountOnRack() {
     return this.getRackTiles().size();
   }
-
 
   /**
    * 
@@ -184,7 +181,6 @@ public class Player {
     return true;
   }
 
-
   /*
    * PLAYER SETTINGS
    */
@@ -204,6 +200,7 @@ public class Player {
   public void setCustomGameSettings(String customGameSettings) {
     this.customGameSettings = customGameSettings;
   }
+
   /*
    * NETWORK
    */
@@ -216,8 +213,18 @@ public class Player {
     this.info.setHost(host);
   }
 
+  public void setServer(Server s) {
+    this.server = s;
+  }
+
+
+
   public Server getServer() {
     return this.server;
+  }
+
+  public ClientProtocol getClientProtocol() {
+    return this.client;
   }
 
   /** @author nilbecke */
@@ -238,10 +245,18 @@ public class Player {
 
   public void connect(InetAddress inetAddress) {
     this.getPlayerInfo().setHost(false);
+
     this.client = new ClientProtocol(inetAddress.toString(), GameSettings.port, this, null, null);
 
-    if (this.client.isOK()) {
+    this.client =
+        new ClientProtocol(inetAddress.getHostAddress(), GameSettings.port, this, null, null);
+
+    if (this.client.isOK())
+
+    {
       this.client.start();
     }
   }
+
+
 }
