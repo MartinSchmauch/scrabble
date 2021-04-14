@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
+import gui.LobbyScreenController;
 import network.client.ClientProtocol;
 import network.server.Server;
 
@@ -240,7 +241,7 @@ public class Player {
 	public void connect(InetAddress inetAddress) {
 		this.getPlayerInfo().setHost(false);
 
-		this.client = new ClientProtocol(inetAddress.getHostAddress(), GameSettings.port, this, null, null);
+		this.client = new ClientProtocol(inetAddress.getHostAddress(), GameSettings.port, this, null, LobbyScreenController.getLobbyInstance());
 		if (this.client.isOK()) {
 			this.client.start();
 		

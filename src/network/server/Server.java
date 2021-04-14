@@ -156,6 +156,7 @@ public class Server {
 
 	public void sendToAll(Message m) {
 		sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
+	System.out.println(getClientNames().size());
 	}
 
 	/**

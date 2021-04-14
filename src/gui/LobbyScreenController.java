@@ -4,14 +4,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import game.GameSettings;
 import game.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -27,7 +25,6 @@ import javafx.util.Duration;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
-import network.client.ClientProtocol;
 import network.messages.DisconnectMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
@@ -72,6 +69,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	@FXML
 	public synchronized void initialize() {
 		this.player = LobbyScreen.getInstance().getPlayer();
+		this.chat.setEditable(false);
+		
 		address = null;
 		instance = this;
 		try {
@@ -84,6 +83,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			this.start.setDisable(true);
 			this.ip.setOpacity(0);
 			this.settings.setOpacity(0.4);
+			this.player.getClientProtocol().setLC(instance);
 
 		} else {
 
@@ -92,14 +92,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		}
 
 		// update nicknames and avatars continuously
-		Timeline playerUpdate = new Timeline(
-				new KeyFrame(Duration.seconds(1),
-				new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent e) {
-						updateJoinedPlayers();
-					}
-				}));
+		Timeline playerUpdate = new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				updateJoinedPlayers();
+			}
+		}));
 		playerUpdate.setCycleCount(Timeline.INDEFINITE);
 		playerUpdate.play();
 	}
@@ -113,9 +111,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		switch (s) {
 		case "leavelobby":
 			sendDisconnectMessage(this.player.getNickname());
+			LobbyScreen.close();
 			break;
 		case "send":
-		case "sendText":
+		case "input":
+			sendChatMessage(this.player.getNickname(), this.input.getText());
 			// Reset the Textlabel
 			this.input.setText("");
 			break;
@@ -186,6 +186,27 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 		}
 		Message m = new SendChatMessage(sender, message, LocalDateTime.now());
 		sendMessage(m);
+	}
+
+	/**
+	 * @author mschmauch updates the chat field with a given message
+	 * @param message:  content of message
+	 * @param dateTime: time, message was sent
+	 * @param sender:   username of player sending message
+	 */
+	public void updateChat(String message, LocalDateTime dateTime, String sender) {
+		String newChatMessage = "";
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
+		newChatMessage = newChatMessage + sender + ", ";
+		newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
+		if (!chat.getText().equals("")) {
+			newChatMessage = chat.getText() + "\n" + newChatMessage + message;
+		} else {
+			newChatMessage += message;
+		}
+		
+		chat.setText(newChatMessage);
+		this.chat.setScrollTop(Double.MAX_VALUE);
 	}
 
 	/**

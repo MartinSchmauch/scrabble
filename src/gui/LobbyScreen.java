@@ -42,32 +42,13 @@ public class LobbyScreen extends Application {
 		player = current;
 		if (player.isHost()) {
 			player.host();
-		} else {
-			try {
-				player.connect(InetAddress.getLocalHost());
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
 		}
-		
-	}
-	public void speicher() {
-		Thread joinedPlayers = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				Runnable r = new Runnable() {
-					@Override
-					public void run() {
-						LobbyScreenController.getLobbyInstance().updateJoinedPlayers();
-					}
-				};
-				while (true) {
-					Platform.runLater(r);
-				}
-			}
-		});
-		joinedPlayers.setDaemon(true);
-		joinedPlayers.start();
+		try {
+			player.connect(InetAddress.getLocalHost());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -108,7 +89,7 @@ public class LobbyScreen extends Application {
 	 * @return: Instance of current player
 	 */
 	public Player getPlayer() {
-		return this.player;
+		return player;
 	}
 
 	/**

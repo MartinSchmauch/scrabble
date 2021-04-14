@@ -127,7 +127,8 @@ public class ClientProtocol extends Thread {
 						break;
 					case UPDATE_CHAT:
 						UpdateChatMessage ucMessage = (UpdateChatMessage) m;
-						gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
+						//gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
+						lpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
 						break;
 					default:
 						break;
@@ -139,6 +140,10 @@ public class ClientProtocol extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setLC(LobbyScreenController lc) {
+		this.lpc=lc;
 	}
 
 	/*

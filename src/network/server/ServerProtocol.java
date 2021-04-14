@@ -10,7 +10,9 @@ import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
+import network.messages.SendChatMessage;
 import network.messages.TileResponseMessage;
+import network.messages.UpdateChatMessage;
 
 /**
  * The ServerProtocol processes all messages from the client and forwards them
@@ -112,8 +114,15 @@ public class ServerProtocol extends Thread {
 					m.getFrom();
 					mtm.getTile();
 					server.sendToAll(m);
+					break;
 				case TILE_REQUEST:
 					TileResponseMessage trm = (TileResponseMessage) m;
+					break;
+				case SEND_CHAT_TEXT:
+					SendChatMessage scm = (SendChatMessage)m;
+					UpdateChatMessage ucm = new UpdateChatMessage(scm.getSender(), scm.getText(),scm.getDateTime());
+					server.sendToAll(ucm);
+					break;
 				default:
 					break;
 				}
