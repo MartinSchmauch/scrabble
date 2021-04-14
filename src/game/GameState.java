@@ -100,7 +100,7 @@ public class GameState implements Serializable {
       stopGame();
     }
 
-    return (allPlayers.remove(player) != null);
+    return (allPlayers.remove(player) != null); 
   }
 
   public boolean startGame(String player) {
