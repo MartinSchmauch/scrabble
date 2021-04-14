@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.GameSettings;
+import game.GameState;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,13 +20,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
 import network.client.ClientProtocol;
 import network.messages.DisconnectMessage;
+import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.SendChatMessage;
 import network.messages.StartGameMessage;
@@ -77,23 +84,24 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			this.start.setDisable(true);
 			this.ip.setOpacity(0);
 			this.settings.setOpacity(0.4);
-			this.settings.setDisable(true);
-			try {
-				this.player.connect(InetAddress.getLocalHost());
 
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
-			}
 		} else {
-			this.player.host();
+
+			sendLobbyMessage(this.player.getNickname(), this.player.getServer().getGameState());
 			this.ip.setText("Link:  " + address.getHostAddress());
 		}
-		// Initialize Nicknames and avatars
-		if (this.player.isHost()) {
-			this.players = this.player.getServer().getGameState().getAllPlayers();
-		} else {
-			// TODO get Server as client
-		}
+
+		// update nicknames and avatars continuously
+		Timeline playerUpdate = new Timeline(
+				new KeyFrame(Duration.seconds(1),
+				new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						updateJoinedPlayers();
+					}
+				}));
+		playerUpdate.setCycleCount(Timeline.INDEFINITE);
+		playerUpdate.play();
 	}
 
 	/**
@@ -146,12 +154,22 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 
 			} else {
 				this.player.getClientProtocol().sendToServer(m);
-				System.out.println("!");
 			}
 			return true;
 		} catch (IOException e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Send the Lobby status as host to clients
+	 * 
+	 * @param id: Nickname of Host
+	 * @param gS: GameState from host
+	 */
+	public void sendLobbyMessage(String id, GameState gS) {
+		Message m = (Message) new LobbyStatusMessage(id, gS);
+		sendMessage(m);
 	}
 
 	/**
@@ -196,8 +214,25 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	 * 
 	 * @param player: Playerdata of the player to be (dis-)connecting
 	 */
-	public void updateJoinedPlayers(PlayerData player) {
-
+	public void updateJoinedPlayers() {
+		GameState gS;
+		if (player.isHost()) {
+			gS = player.getServer().getGameState();
+			this.players = gS.getAllPlayers();
+		} else {
+			gS = player.getClientProtocol().getGameState();
+			this.players = gS.getAllPlayers();
+		}
+		Label[] nicknames = { player1, player2, player3, player4 };
+		ImageView[] avatars = { pic1, pic2, pic3, pic4 };
+		for (int i = 0; i <= 3; i++) {
+			if (i < players.size()) {
+				if (players.get(i) != null) {
+					nicknames[i].setText(players.get(i).getNickname());
+					avatars[i].setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+				}
+			}
+		}
 	}
 
 	/**
@@ -233,7 +268,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 	 * @param player: Playerdata of the player to be (dis-)connecting
 	 */
 	public void addJoinedPlayer(PlayerData player) {
-		// TODO
+
 	}
 
 	/**

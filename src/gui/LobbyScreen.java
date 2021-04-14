@@ -1,32 +1,73 @@
 package gui;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.List;
+
+import game.GameState;
+
 /** 
  * @author nilbecke
  * Launch the Lobby GUI
  * **/
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import mechanic.Player;
+import mechanic.PlayerData;
 
 public class LobbyScreen extends Application {
 
 	private Parent root;
-	private Player player;
+	private static Player player;
 	private static LobbyScreen instance;
+	List<PlayerData> players;
 
 	@FXML
-	private Label ip;
+	private Label ip, player1, player2, player3, player4;
+	@FXML
+	private ImageView pic1, pic2, pic3, pic4;
 
 	public LobbyScreen(Player current) {
 		instance = this;
-		this.player = current;
+		player = current;
+		if (player.isHost()) {
+			player.host();
+		} else {
+			try {
+				player.connect(InetAddress.getLocalHost());
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	public void speicher() {
+		Thread joinedPlayers = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Runnable r = new Runnable() {
+					@Override
+					public void run() {
+						LobbyScreenController.getLobbyInstance().updateJoinedPlayers();
+					}
+				};
+				while (true) {
+					Platform.runLater(r);
+				}
+			}
+		});
+		joinedPlayers.setDaemon(true);
+		joinedPlayers.start();
 	}
 
 	/**
@@ -55,6 +96,8 @@ public class LobbyScreen extends Application {
 	public static void close() {
 		if (LobbyScreenController.getLobbyInstance().getServer() != null) {
 			LobbyScreenController.getLobbyInstance().getServer().stopServer();
+		} else if (!player.isHost()) {
+			player.getClientProtocol().disconnect();
 		}
 		new LoginScreenFXML().start(new Stage());
 	}
@@ -67,13 +110,13 @@ public class LobbyScreen extends Application {
 	public Player getPlayer() {
 		return this.player;
 	}
-	
+
 	/**
 	 * Reference to the current lobby
+	 * 
 	 * @return Instance of Lobby
 	 */
 	public static LobbyScreen getInstance() {
 		return instance;
 	}
-
 }
