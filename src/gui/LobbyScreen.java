@@ -42,14 +42,16 @@ public class LobbyScreen extends Application {
 		player = current;
 		if (player.isHost()) {
 			player.host();
+		} else {
+			try {
+				player.connect(InetAddress.getLocalHost());
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			player.connect(InetAddress.getLocalHost());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-
+		
 	}
+	
 
 	/**
 	 * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby

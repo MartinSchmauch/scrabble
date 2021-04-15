@@ -25,6 +25,7 @@ import javafx.util.Duration;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
+import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
@@ -84,6 +85,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 			this.ip.setOpacity(0);
 			this.settings.setOpacity(0.4);
 			this.player.getClientProtocol().setLC(instance);
+			
 
 		} else {
 
