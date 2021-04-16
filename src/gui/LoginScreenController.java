@@ -20,10 +20,10 @@ import util.JSONHandler;
  * This Class is a Basic Handler for all the input options present in the Login Screen
  **/
 
-public class LoginScreenActionHandler extends LoginScreen implements EventHandler<ActionEvent> {
+public class LoginScreenController extends LoginScreen implements EventHandler<ActionEvent> {
 
   private Player player;
-  private static LoginScreenActionHandler instance;
+  private static LoginScreenController instance;
 
   @FXML
   private TextField LinkField;
@@ -99,7 +99,7 @@ public class LoginScreenActionHandler extends LoginScreen implements EventHandle
    * 
    * @return current instance of the controller
    */
-  public static LoginScreenActionHandler getInstance() {
+  public static LoginScreenController getInstance() {
     return instance;
   }
 
