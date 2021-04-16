@@ -81,7 +81,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public synchronized void initialize() {
     this.player = LobbyScreen.getInstance().getPlayer();
     this.chat.setEditable(false);
-    this.chat.appendText("Welcome to the chat");
+    this.chat.appendText("Welcome to the chat! Please be gentle :)");
     this.cc = new ChatController(this.player);
     address = null;
     instance = this;
