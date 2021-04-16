@@ -1,39 +1,57 @@
 package game;
 
+import java.util.ArrayList;
+import java.util.List;
 import mechanic.Field;
 import mechanic.Tile;
+import mechanic.TileBag;
 import mechanic.Turn;
 
 
 /**
  * The GameController is responsible to evaluate and verify all steps taken in the game and respond
  * accordingly.
- * 
+ *
  * @author ldreyer
  * @author lurny
  */
 
 public class GameController {
-  private GameState gS;
+  private GameState gameState;
+  private TileBag tileBag;
   private Turn turn;
+  private int currentPlayerIndex;
 
   public GameController(GameState gameState) {
-    this.gS = gameState;
+    this.gameState = gameState;
+    this.tileBag = new TileBag();
   }
 
   public void newTurn() {
-    this.turn = new Turn(gS.getCurrentPlayer());
+    this.turn = new Turn(gameState.getCurrentPlayer());
   }
 
-  public int endTurn() {
-    if (!this.turn.calculateWords()) {
-      return -1;
+  public Turn getTurn() {
+    return this.turn;
+  }
+
+  /**
+   * This method gets the new tiles for the current player, determining the amount by checking the
+   * placed tiles of the current turn. If the bag is empty no more tiles are returned.
+   *
+   * @return ArrayList of tiles from tile bag
+   */
+
+  public List<Tile> drawTiles() {
+    List<Tile> tiles = new ArrayList<Tile>();
+
+    for (int i = 0; i < this.turn.getLaydDownTiles().size(); i++) {
+      if (!tileBag.isEmpty()) {
+        tiles.add(tileBag.drawTile());
+      }
     }
 
-    this.turn.calculateTurnScore();
-    gS.addScore(this.turn.getPlayer(), this.turn.getTurnScore());
-
-    return this.turn.getTurnScore();
+    return tiles;
   }
 
 
@@ -42,13 +60,13 @@ public class GameController {
    * the method updates the game board.
    */
 
-  public boolean addTileToGameBoard(String player, Tile t, int xCoordinate, int yCoordinate) {
-    if (!gS.getCurrentPlayer().equals(player)
-        || gS.getGameBoard().getField(xCoordinate, yCoordinate).getTile() != null) {
+  public boolean addTileToGameBoard(String player, Tile t, int x, int y) {
+    if (!gameState.getCurrentPlayer().equals(player)
+        || gameState.getGameBoard().getField(x, y).getTile() != null) {
       return false;
     }
 
-    t.setField(gS.getGameBoard().getField(xCoordinate, yCoordinate));
+    t.setField(gameState.getGameBoard().getField(x, y));
     t.setOnRack(false);
     t.setOnGameBoard(true);
     this.turn.addTileToTurn(t);
@@ -59,14 +77,18 @@ public class GameController {
   /**
    * This method validates the move of a tile from a field on the game board to another field on the
    * game board. If allowed, the method updates the game board.
+   *
+   * @param x1 coordinate before
+   * @param y1 coordinate before
+   * @param x2 coordinate after
+   * @param y2 coordinate after
    */
 
-  public boolean moveTileOnGameBoard(String player, int xCoordinateBefore, int yCoordinateBefore,
-      int xCoordinateAfter, int yCoordinateAfter) {
-    Field beforeField = gS.getGameBoard().getField(xCoordinateBefore, yCoordinateBefore);
-    Field afterField = gS.getGameBoard().getField(xCoordinateAfter, yCoordinateAfter);
+  public boolean moveTileOnGameBoard(String player, int x1, int y1, int x2, int y2) {
+    Field beforeField = gameState.getGameBoard().getField(x1, y1);
+    Field afterField = gameState.getGameBoard().getField(x2, y2);
 
-    if (!gS.getCurrentPlayer().equals(player) || beforeField == null
+    if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
         || beforeField.getTile().isPlayed() || afterField.getTile() != null) {
       return false;
     }
@@ -82,9 +104,9 @@ public class GameController {
    * rack. If allowed, the method updates the game board.
    */
 
-  public boolean removeTileFromGameBoard(String player, int xCoordinate, int yCoordinate) {
-    Field beforeField = gS.getGameBoard().getField(xCoordinate, yCoordinate);
-    if (!gS.getCurrentPlayer().equals(player) || beforeField == null
+  public boolean removeTileFromGameBoard(String player, int x, int y) {
+    Field beforeField = gameState.getGameBoard().getField(x, y);
+    if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
         || beforeField.getTile().isPlayed()) {
       return false;
     }
@@ -93,5 +115,14 @@ public class GameController {
     beforeField.setTile(null);
 
     return true;
+  }
+
+  public String getNextPlayer() {
+    this.currentPlayerIndex++;
+    if (this.currentPlayerIndex >= this.gameState.getAllPlayers().size()) {
+      this.currentPlayerIndex = 0;
+    }
+    String nextPlayer = this.gameState.getAllPlayers().get(currentPlayerIndex).getNickname();
+    return nextPlayer;
   }
 }

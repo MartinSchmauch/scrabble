@@ -1,13 +1,14 @@
 package mechanic;
 
+import game.GameSettings;
 import java.util.Iterator;
 import java.util.List;
-import game.GameSettings;
+
 
 /**
  * The TileBag creates Tile objects for all letters specified in the GameSettings. If the TileBag is
  * empty the isEmpty flag is set to true.
- * 
+ *
  * @author ldreyer
  */
 
@@ -15,6 +16,10 @@ public class TileBag {
   private List<Tile> tiles;
   private boolean isEmpty;
   private int remaining;
+
+  /**
+   * Constructor fills tile bag according to the game settings configuration.
+   */
 
   public TileBag() {
     List<Letter> letters = (List<Letter>) GameSettings.getLetters().values();
@@ -31,7 +36,11 @@ public class TileBag {
     this.isEmpty = tiles.isEmpty();
   }
 
-  /** @return a random Tile from the TileBag */
+  /**
+   * This method chooses a random tile from the tile bag and removes it.
+   *
+   * @return a random Tile from the TileBag
+   */
 
   public Tile drawTile() {
     Tile tile = tiles.remove((int) (remaining * Math.random()) - 1);
@@ -40,7 +49,7 @@ public class TileBag {
     return tile;
   }
 
-  public boolean getIsEmpty() {
+  public boolean isEmpty() {
     return isEmpty;
   }
 

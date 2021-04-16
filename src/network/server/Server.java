@@ -1,5 +1,10 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,11 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.AddTileMessage;
@@ -24,6 +24,7 @@ import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
+import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
@@ -32,8 +33,8 @@ import network.messages.UpdateChatMessage;
  * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
  * sending the defined messages to connected clients. It is also responsible for updating the UI of
  * the game's host.
- * 
- * author @ldreyer
+ *
+ * @author ldreyer
  */
 
 public class Server {
@@ -52,6 +53,11 @@ public class Server {
   private String host;
   private HashMap<String, ServerProtocol> clients = new HashMap<>();
 
+  /**
+   * Initializes Server with host and customGameSettings. If customGameSettings are null, the
+   * default game settings are used.
+   */
+  
   public Server(PlayerData host, String customGameSettings) {
     this.host = host.getNickname();
     this.gameState = new GameState(host, customGameSettings);
@@ -98,8 +104,8 @@ public class Server {
     return this.host;
   }
 
+  /** This method gets the ip address the server is hosted on. */
   public InetAddress getInetAddress() {
-
     try {
       return InetAddress.getLocalHost();
     } catch (UnknownHostException e) {
@@ -127,8 +133,7 @@ public class Server {
     return new ArrayList<String>(clientNames);
   }
 
-  /** sends a message to a list of clients */
-
+  /** This method sends a message to a list of clients. */
   private synchronized void sendTo(List<String> clientNames, Message m) {
     List<String> fails = new ArrayList<String>();
     for (String nickname : clientNames) {
@@ -146,13 +151,13 @@ public class Server {
       removeClient(c);
     }
     try {
-      updateServerUI(m);
+      updateServerUi(m);
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  /** sends a message to all connected clients */
+  /** This method sends a message to all connected clients. */
 
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
@@ -160,7 +165,7 @@ public class Server {
   }
 
   /**
-   * sends a message to all connected clients, except the one client who was given as parameter
+   * This method sends a message to all connected clients, except the one client given as parameter.
    */
 
   public void sendToAllBut(String name, Message m) {
@@ -172,7 +177,12 @@ public class Server {
 
   }
 
-  public void updateServerUI(Message m) throws Exception {
+  /**
+   * This method is called whenever a relevant message is send to clients and is updating the
+   * server's user interface accordingly.
+   */
+  
+  public void updateServerUi(Message m) throws Exception {
     if (!this.gameState.getGameRunning()) {
       if (this.lsc == null) {
         lsc = LobbyScreenController.getLobbyInstance();
@@ -212,39 +222,47 @@ public class Server {
         case DISCONNECT:
           DisconnectMessage dm = (DisconnectMessage) m;
           gpc.removeJoinedPlayer(dm.getFrom());
+          break;
         case SEND_CHAT_TEXT:
           SendChatMessage scm = (SendChatMessage) m;
           gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
+          break;
         case ADD_TILE:
           AddTileMessage atm = (AddTileMessage) m;
           gpc.addTile(atm.getTile());
+          break;
         case REMOVE_TILE:
           RemoveTileMessage rtm = (RemoveTileMessage) m;
           gpc.removeTile(rtm.getTile());
+          break;
         case MOVE_TILE:
           MoveTileMessage mtm = (MoveTileMessage) m;
-
           gpc.moveTile(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
-
+          break;
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
           if (!trm.getIsValid()) {
             gpc.indicateInvalidTurn(trm.getFrom());
           } else {
+            gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
             gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
             this.gameState.setCurrentPlayer(trm.getNextPlayer());
             gpc.indicatePlayerTurn(trm.getNextPlayer());
           }
+          break;
         default:
           break;
       }
     }
   }
-
+  
+  /**
+   * This method is called when the server is supposed to stop. All clients are informed that the
+   * server is no longer being hosted.
+   */
   public void stopServer() {
     running = false;
-    // TODO remove comment
-    // sendToAll(new ShutdownMessage(this.host, "Server closed session."));
+    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {
       try {
