@@ -9,12 +9,9 @@ import java.util.List;
  **/
 
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import mechanic.Player;
@@ -27,12 +24,14 @@ public class LobbyScreen extends Application {
   private static LobbyScreen instance;
   List<PlayerData> players;
 
-  @FXML
-  private Label ip, player1, player2, player3, player4;
-  @FXML
-  private ImageView pic1, pic2, pic3, pic4;
+  /**
+   * Launches the Lobby Screen and hosts a game/ connects to a game
+   * 
+   * @param current Player connetcting/hosting
+   * @param connection "Game Link"
+   */
 
-  public LobbyScreen(Player current) {
+  public LobbyScreen(Player current, String connection) {
     instance = this;
     player = current;
     if (player.isHost()) {
@@ -40,14 +39,17 @@ public class LobbyScreen extends Application {
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
-
-      }
-      System.out.println(player.getServer().getGameState().getAllPlayers().size());
-    } else {
-      try {
-        player.connect(InetAddress.getLocalHost());
-      } catch (UnknownHostException e) {
         e.printStackTrace();
+      }
+    } else {
+      if (connection.equals("")) {
+        try {
+          player.connect(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+          e.printStackTrace();
+        }
+      } else {
+        player.connect(connection);
       }
     }
 
