@@ -1,11 +1,7 @@
 package gui;
 
 import java.io.IOException;
-
-/** @author nilbecke **/
-
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,61 +15,68 @@ import javafx.stage.StageStyle;
 import mechanic.Player;
 import util.JSONHandler;
 
-/** This Class launches the Login Screen of the Scrabble Application **/
+/**
+ * This Class launches the Login Screen of the Scrabble Application
+ * 
+ * @author nilbecke
+ **/
 
 public class LoginScreenFXML extends Application {
 
-	private Parent root;
-	private Player currentPlayer;
+  private Parent root;
+  private Player currentPlayer;
 
-	@FXML
-	private ImageView avatar;
-	@FXML
-	private Label username;
+  @FXML
+  private ImageView avatar;
+  @FXML
+  private Label username;
 
-	/**
-	 * Set up the avatar picture before loginscreen is visible
-	 */
+  /**
+   * Set up the avatar picture before loginscreen is visible.
+   */
 
-	@FXML
-	public void initialize() {
-		this.currentPlayer = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
-		this.username.setText(this.currentPlayer.getNickname());
-		this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
-	}
+  @FXML
+  public void initialize() {
+    this.currentPlayer = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    this.username.setText(this.currentPlayer.getNickname());
+    this.avatar
+        .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
+  }
 
-	/**
-	 * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to
-	 * create the Login Screen
-	 */
+  /**
+   * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create the Login
+   * Screen.
+   * 
+   * @param stage stage to be set
+   */
 
-	@Override
-	public void start(Stage stage) {
-		Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
-		try {
-			this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Scene scene = new Scene(root);
-		stage.setScene(scene);
-		stage.initStyle(StageStyle.UNDECORATED);
-		stage.setTitle("Scrabble3");
+  @Override
+  public void start(Stage stage) {
+    Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
+    try {
+      this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    Scene scene = new Scene(root);
+    stage.setScene(scene);
+    stage.initStyle(StageStyle.UNDECORATED);
+    stage.setTitle("Scrabble3");
 
-		stage.show();
-	}
+    stage.show();
+  }
 
-	public Parent getParent() {
-		return this.root;
-	}
+  public Parent getParent() {
+    return this.root;
+  }
 
-	public LoginScreenFXML getLoginScreen() {
-		return this;
-	}
+  public LoginScreenFXML getLoginScreen() {
+    return this;
+  }
 
-	public static void main(String[] args) {
-		launch(args);
+  public static void main(String[] args) {
+    launch(args);
 
-	}
+  }
 
 }

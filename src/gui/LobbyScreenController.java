@@ -1,5 +1,6 @@
 package gui;
 
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -34,8 +35,9 @@ import network.messages.UpdateChatMessage;
 import network.server.Server;
 
 /**
- * 
- * @author nilbecke Handles all User inputs in the Lobby Screen as well as the connection of players
+ * Handles all User inputs in the Lobby Screen as well as the connection of players.
+ *
+ * @author nilbecke
  *
  */
 public class LobbyScreenController implements EventHandler<ActionEvent>, Sender {
@@ -43,11 +45,21 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   private Player player;
   private InetAddress address;
   private static LobbyScreenController instance;
-  private GameSettings gS;
+  private GameSettings gs;
   List<PlayerData> players;
 
   @FXML
-  private Label ip, player1, player2, player3, player4, countdown;
+  private Label ip;
+  @FXML
+  private Label player1;
+  @FXML
+  private Label player2;
+  @FXML
+  private Label player3;
+  @FXML
+  private Label player4;
+  @FXML
+  private Label countdown;
   @FXML
   private TextField input;
   @FXML
@@ -57,14 +69,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   @FXML
   private Button settings;
   @FXML
-  private ImageView pic1, pic2, pic3, pic4;
+  private ImageView pic1;
+  @FXML
+  private ImageView pic2;
+  @FXML
+  private ImageView pic3;
+  @FXML
+  private ImageView pic4;
 
   /**
-   * Set up labels etc before launching the lobby screen
-   */
-
-  /**
-   * Set up labels etc before launching the lobby screen
+   * Set up labels etc before launching the lobby screen.
    */
   @FXML
   public synchronized void initialize() {
@@ -106,7 +120,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * Handles all user inputs in the LobbyScreen
+   * Handles all user inputs in the LobbyScreen.
    */
   @Override
   public void handle(ActionEvent e) {
@@ -128,12 +142,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
         st.close();
         break;
       case "settings":
-        new SettingsScreen(this.gS).start(new Stage());
+        new SettingsScreen(this.gs).start(new Stage());
+        break;
+      default:
+        break;
     }
   }
 
   /**
-   * Starts the countdown before the game launches
+   * Starts the countdown before the game launches.
    */
   public void startGame() {
     new StartGameMessage(this.player.getNickname(), 10);
@@ -145,9 +162,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * Sends a given message to all players
+   * Sends a given message to all players.
    * 
-   * @param m: The Message to be sent
+   * @param m The Message to be sent
    * @return true if message was sent, false otherwise
    */
   public boolean sendMessage(Message m) {
@@ -165,22 +182,21 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * Send the Lobby status as host to clients
+   * Send the Lobby status as host to clients.
    * 
-   * @param id: Nickname of Host
-   * @param gS: GameState from host
+   * @param id Nickname of Host
+   * @param gs GameState from host
    */
-  public void sendLobbyMessage(String id, GameState gS) {
-    Message m = (Message) new LobbyStatusMessage(id, gS);
+  public void sendLobbyMessage(String id, GameState gs) {
+    Message m = (Message) new LobbyStatusMessage(id, gs);
     sendMessage(m);
   }
 
   /**
-   * sends the chat to server
+   * sends the chat to server.
    * 
    * @param message is the message to be added in the chat
    * @param sender is the player sending the message
-   * @param time represents the time when the given message was sent
    */
   @Override
   public void sendChatMessage(String sender, String message) {
@@ -197,10 +213,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * @author mschmauch updates the chat field with a given message
-   * @param message: content of message
-   * @param dateTime: time, message was sent
-   * @param sender: username of player sending message
+   * updates the chat field with a given message.
+   * 
+   * @author mschmauch
+   * @param message content of message
+   * @param dateTime time, message was sent
+   * @param sender username of player sending message
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
     System.out.println("chat update");
@@ -220,18 +238,18 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 
   /**
    * Lets a player disconnect from the current game. If the leaving player is the host, the lobby
-   * closes
+   * closes.
    * 
-   * @param playerID: Nickname of leaving player
+   * @param playerId Nickname of leaving player
    */
   @Override
-  public void sendDisconnectMessage(String playerID) {
-    Message m = (Message) new DisconnectMessage(playerID);
+  public void sendDisconnectMessage(String playerId) {
+    Message m = (Message) new DisconnectMessage(playerId);
     sendMessage(m);
   }
 
   /**
-   * Getter Method for the current Instance of the controller
+   * Getter Method for the current Instance of the controller.
    *
    * @return Current Instance of the contoller
    */
@@ -240,18 +258,17 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * Lets a player disconnect or connect
+   * Lets a player disconnect or connect.
    * 
-   * @param player: Playerdata of the player to be (dis-)connecting
    */
   public void updateJoinedPlayers() {
-    GameState gS;
+    GameState gs;
     if (player.isHost()) {
-      gS = player.getServer().getGameState();
-      this.players = gS.getAllPlayers();
+      gs = player.getServer().getGameState();
+      this.players = gs.getAllPlayers();
     } else {
-      gS = player.getClientProtocol().getGameState();
-      this.players = gS.getAllPlayers();
+      gs = player.getClientProtocol().getGameState();
+      this.players = gs.getAllPlayers();
     }
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
@@ -267,43 +284,43 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * Reads updated game settings and distributes them to all players
+   * Reads updated game settings and distributes them to all players.
    * 
-   * @param: new Instance of game settings
+   * @param: settings new Instance of game settings
    */
   public void updateGameSettings(GameSettings settings) {
     // TODO
   }
 
   /**
-   * Get the current Server
+   * Get the current Server.
    * 
-   * @return: Current instance of the server if present else null
+   * @return Current instance of the server if present else null
    */
   public Server getServer() {
     return this.player.getServer();
   }
 
   /**
-   * Get a reference onto the game settings currently used
+   * Get a reference onto the game settings currently used.
    * 
-   * @return: currently used game settings
+   * @return Currently used game settings
    */
   public GameSettings getSettings() {
-    return this.gS;
+    return this.gs;
   }
 
   /**
-   * Lets a player connect
+   * Lets a player connect.
    * 
-   * @param player: Playerdata of the player to be (dis-)connecting
+   * @param player Playerdata of the player to be (dis-)connecting
    */
   public void addJoinedPlayer(PlayerData player) {
 
   }
 
   /**
-   * Lets a player disconnect
+   * Lets a player disconnect.
    * 
    * @param nickname of the player disconnecting
    */
@@ -314,7 +331,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
 
 
   /**
-   * 
+   * Closes current window.
    */
   public void closeWindow(Button b) {
     Stage st = (Stage) b.getScene().getWindow();
@@ -322,9 +339,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
   }
 
   /**
-   * Reads updated game settings and distributes them to all players
+   * Reads updated game settings and distributes them to all players.
    * 
-   * @param: new Instance of game settings
+   * @param settings new Instance of game settings
    */
   public void updategameSettings(GameSettings settings) {
     // TODO
