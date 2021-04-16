@@ -11,7 +11,7 @@ package gui;
 
 import java.io.FileInputStream;
 
-import gui.LoginScreenActionHandler;
+import gui.LoginScreenController;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -40,12 +40,12 @@ public class LoginScreenPanel extends Application {
 	private Button statistics;
 	private BorderPane root;
 	private Scene scene;
-	private LoginScreenActionHandler handler;
+	private LoginScreenController handler;
 
 	/** Sets up Pane of current Stage **/
 	public void setUp() {
 		root = new BorderPane();
-		handler = new LoginScreenActionHandler();
+		handler = new LoginScreenController();
 		root.setPadding(new Insets(10, 10, 10, 10));
 				
 		try {

@@ -342,6 +342,7 @@ public class GamePanelController extends ClientUI implements Sender {
   public void sendChatMessage(String sender, String message) {
     Message m = new SendChatMessage(sender, message, LocalDateTime.now());
     sendMessageToServer(m);
+
   }
 
   @Override

@@ -1,22 +1,24 @@
 package game;
 
-import gui.LoginScreenFXML;
+
+import gui.LoginScreen;
 
 /**
+ * This class launches the application by starting in the LogIn screen
+ * 
  * @author nilbecke
- * 
- * 
- *         This class launches the application
+ *
  */
 
 public class MainApp {
 
+  /**
+   * Launches the game by starting the LoginScreen.
+   * 
+   * @param args: Arguments of class
+   */
   public static void main(String[] args) {
-    try {
-      LoginScreenFXML.main(args);
-    } catch (Exception e) {
-      System.out.println("It is doomed");
-    }
+    LoginScreen.main(args);
   }
 
 }
