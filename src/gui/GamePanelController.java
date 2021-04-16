@@ -177,11 +177,11 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    */
 
-  /**
-   * Lets a player disconnect
-   * 
-   * @param nickname of the player disconnecting
-   */
+     /**
+      * Lets a player disconnect
+      * 
+      * @param nickname of the player disconnecting
+      */
 
   public void removeJoinedPlayer(String nickname) {
     // TODO
@@ -347,6 +347,7 @@ public class GamePanelController extends ClientUI implements Sender {
   public void sendChatMessage(String sender, String message) {
     Message m = new SendChatMessage(sender, message, LocalDateTime.now());
     sendMessageToServer(m);
+
   }
 
   @Override

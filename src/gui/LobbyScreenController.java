@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import game.GameSettings;
 import game.GameState;
@@ -25,13 +24,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import mechanic.Player;
 import mechanic.PlayerData;
-import mechanic.Tile;
 import network.messages.DisconnectMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
-import network.messages.SendChatMessage;
 import network.messages.StartGameMessage;
-import network.messages.UpdateChatMessage;
 import network.server.Server;
 
 /**
@@ -40,13 +36,14 @@ import network.server.Server;
  * @author nilbecke
  *
  */
-public class LobbyScreenController implements EventHandler<ActionEvent>, Sender {
+public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   private Player player;
   private InetAddress address;
   private static LobbyScreenController instance;
   private GameSettings gs;
-  List<PlayerData> players;
+  private List<PlayerData> players;
+  private ChatController cc;
 
   @FXML
   private Label ip;
@@ -82,10 +79,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
    */
   @FXML
   public synchronized void initialize() {
-    System.out.println(this + " controller");
     this.player = LobbyScreen.getInstance().getPlayer();
     this.chat.setEditable(false);
-
+    this.chat.appendText("Welcome to the chat");
+    this.cc = new ChatController(this.player);
     address = null;
     instance = this;
     try {
@@ -132,7 +129,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
         break;
       case "send":
       case "input":
-        sendChatMessage(this.player.getNickname(), this.input.getText());
+        this.cc.sendChatMessage(this.player.getNickname(), this.input.getText());
+
         // Reset the Textlabel
         this.input.setText("");
         break;
@@ -192,49 +190,19 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
     sendMessage(m);
   }
 
-  /**
-   * sends the chat to server.
-   * 
-   * @param message is the message to be added in the chat
-   * @param sender is the player sending the message
-   */
-  @Override
-  public void sendChatMessage(String sender, String message) {
-    if (message.length() == 0) {
-      return;
-    }
-    Message m;
-    if (this.player.isHost()) {
-      m = new UpdateChatMessage(sender, message, LocalDateTime.now());
-    } else {
-      m = new SendChatMessage(sender, message, LocalDateTime.now());
-    }
-    sendMessage(m);
-  }
 
   /**
-   * updates the chat field with a given message.
+   * Updates Lobbychat by using the updateChat method in the Chat Controller
    * 
-   * @author mschmauch
-   * @param message content of message
-   * @param dateTime time, message was sent
-   * @param sender username of player sending message
+   * @param message
+   * @param dateTime
+   * @param sender
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
-    System.out.println("chat update");
-    String newChatMessage = "";
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-    newChatMessage = newChatMessage + sender + ", ";
-    newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
-    if (!chat.getText().equals("")) {
-      newChatMessage = chat.getText() + "\n" + newChatMessage + message;
-    } else {
-      newChatMessage += message;
-    }
-
-    chat.setText(newChatMessage);
+    this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
+
 
   /**
    * Lets a player disconnect from the current game. If the leaving player is the host, the lobby
@@ -242,7 +210,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
    * 
    * @param playerId Nickname of leaving player
    */
-  @Override
+
   public void sendDisconnectMessage(String playerId) {
     Message m = (Message) new DisconnectMessage(playerId);
     sendMessage(m);
@@ -345,14 +313,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent>, Sender 
    */
   public void updategameSettings(GameSettings settings) {
     // TODO
-  }
-
-  public void sendCommitTurn(String nickName) {}
-
-  @Override
-  public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
-    // TODO
-
   }
 
 }
