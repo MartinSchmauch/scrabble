@@ -3,12 +3,16 @@ package gui;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -47,15 +51,19 @@ public class GamePanelController extends ClientUI implements Sender {
   @FXML
   private TextField textField;
   @FXML
-  private Button sendButton, skipAndChange;
+  private Button sendButton, skipAndChange, done;
   @FXML
   private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
+  @FXML
+  private Text remainingLetters, timer;
   @FXML
   private Text player1, player2, player3, player4;
   @FXML
   private Rectangle tile1;
   @FXML
   private GridPane grid, rack; // grid is the Main Game Panel
+  @FXML
+  private ProgressBar timeProgress;
 
   private static GamePanelController instance;
 
@@ -71,6 +79,15 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void initialize() { // being called after @FXML annotated fields were populated
+    SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
+                                                                          // ersetzen
+    remainingLetters.textProperty().bind(letterProperty.asString());
+    SimpleStringProperty timerProperty = new SimpleStringProperty("Timer Referenz!");
+    timer.textProperty().bind(timerProperty);
+    SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(0.5); // TODO: restliche zeit
+                                                                           // als anteil von 1 hier
+                                                                           // einfügen
+    timeProgress.progressProperty().bind(progressProperty);
 
   }
 
@@ -292,13 +309,13 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   public void indicateInvalidTurn(String nickName) {
     if (player1.getText().equals(nickName)) {
-      // TODO: zug rï¿½ckgï¿½ngig machen
+      // TODO: zug rückgängig machen
     } else if (player2.getText().equals(nickName)) {
-      // TODO: zug rï¿½ckgï¿½ngig machen
+      // TODO: zug rückgängig machen
     } else if (player3.getText().equals(nickName)) {
-      // TODO: zug rï¿½ckgï¿½ngig machen
+      // TODO: zug rückgängig machen
     } else if (player4.getText().equals(nickName)) {
-      // TODO: zug rï¿½ckgï¿½ngig machen
+      // TODO: zug rückgängig machen
     }
   }
 
@@ -310,13 +327,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * @throws Exception
    */
   public void updateScore(String nickName, int turnScore) throws Exception {
-    String newScore;
-    if (turnScore != 1) {
-      newScore = turnScore + " Points";
-    } else {
-      newScore = turnScore + " Point";
-    }
-
+    String newScore = "";
     if (player1.getText().equals(nickName)) {
       this.playerOnePoints.setText(newScore);
     } else if (player2.getText().equals(nickName)) {
