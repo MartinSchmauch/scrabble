@@ -5,21 +5,18 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ClipboardContent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import mechanic.Field;
 import mechanic.Letter;
@@ -41,45 +38,24 @@ import network.server.Server;
 
 public class GamePanelController extends ClientUI implements Sender {
 
-  public GamePanelController() {
-    System.out.println("Controller erzeugt \n");
-  }
-
   private Player player;
   private ClientProtocol cp;
   private Server server;
+
   @FXML
   private TextArea textArea;
   @FXML
   private TextField textField;
   @FXML
-  private Button sendButton;
+  private Button sendButton, skipAndChange;
   @FXML
-  private Button skipAndChange;
+  private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
   @FXML
-  private Text playerOnePoints;
-  @FXML
-  private Text playerTwoPoints;
-  @FXML
-  private Text playerThreePoints;
-  @FXML
-  private Text playerFourPoints;
-  @FXML
-  private Text player1;
-  @FXML
-  private Text player2;
-  @FXML
-  private Text player3;
-  @FXML
-  private Text player4;
+  private Text player1, player2, player3, player4;
   @FXML
   private Rectangle tile1;
   @FXML
-  private GridPane grid; // Main Game Panel
-  @FXML
-  private GridPane rack;
-
-
+  private GridPane grid, rack; // grid is the Main Game Panel
 
   private static GamePanelController instance;
 
@@ -90,6 +66,13 @@ public class GamePanelController extends ClientUI implements Sender {
     return instance;
   }
 
+  public GamePanelController() { // being called before @FXML annotated fields were populated
+    System.out.println("Controller erzeugt \n");
+  }
+
+  public void initialize() { // being called after @FXML annotated fields were populated
+
+  }
 
   /**
    * 
@@ -107,7 +90,7 @@ public class GamePanelController extends ClientUI implements Sender {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    addTile(new Tile(new Letter('C', 3, 5), new Field(3, 5, 7, 0)));
+    addTile(new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0)));
   }
 
   @FXML
@@ -177,11 +160,11 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    */
 
-  /**
-   * Lets a player disconnect
-   * 
-   * @param nickname of the player disconnecting
-   */
+     /**
+      * Lets a player disconnect
+      * 
+      * @param nickname of the player disconnecting
+      */
 
   public void removeJoinedPlayer(String nickname) {
     // TODO
@@ -232,39 +215,51 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   public void addTile(Tile tile) {
     char letter = tile.getLetter().getChar();
-    int tileValue = tile.getValue();
+    // int tileValue = tile.getValue(); //tileValue
     int column = tile.getField().getxCoordinate();
     int row = 0;
     if (column > 5) { // case: tile is in the second row of the rack
       row = 1;
       column = column - 5;
     }
-    StackPane sP = new StackPane();
-    Rectangle r1 = new Rectangle();
-    r1.setHeight(26);
-    r1.setWidth(26);
-    r1.setArcHeight(10);
-    r1.setArcWidth(10);
-    r1.setOnDragDetected((MouseEvent event) -> {
-      // We want the textArea to be dragged. Could also be copied.
-      Dragboard db = textArea.startDragAndDrop(TransferMode.MOVE);
-      // Put a string on a dragboard as an identifier
-      ClipboardContent content = new ClipboardContent();
-      content.putString(textArea.getId());
-      db.setContent(content);
-      // Consume the event
-      event.consume();
-    });
-    // MouseControlUtil.makeDraggable(r1);
-    Paint rectangle = Color.web("BLUE");
-    r1.setFill(rectangle);
-    Text t1 = new Text(25, 27, Character.toString(letter));
-    Text t2 = new Text(0, 0, String.valueOf(tileValue));
-    t2.setFont(new Font(7));
-    sP.getChildren().add(r1);
-    sP.getChildren().add(t1);
-    sP.getChildren().add(t2);
-    rack.add(sP, column, row);
+    String fileName =
+        FileParameters.datadir + FileParameters.sep + Character.toString(letter) + ".png";
+    System.out.println(fileName);
+    ImageView iV = new ImageView();
+    iV.setImage(new Image("file:" + fileName));
+    iV.setFitWidth(50);
+    iV.setPreserveRatio(true);
+    iV.setSmooth(true);
+    iV.setCache(true);
+    // StackPane sP = new StackPane();
+    // Rectangle r1 = new Rectangle();
+    // r1.setHeight(26);
+    // r1.setWidth(26);
+    // r1.setArcHeight(10);
+    // r1.setArcWidth(10);
+    // r1.setOnDragDetected((MouseEvent event) -> {
+    // // We want the textArea to be dragged. Could also be copied.
+    // Dragboard db = textArea.startDragAndDrop(TransferMode.MOVE);
+    // // Put a string on a dragboard as an identifier
+    // ClipboardContent content = new ClipboardContent();
+    // content.putString(textArea.getId());
+    // db.setContent(content);
+    // // Consume the event
+    // event.consume();
+    // });
+    // // MouseControlUtil.makeDraggable(r1);
+    // Paint rectangle = Color.web("BLUE");
+    // r1.setFill(rectangle);
+    // Text t1 = new Text(25, 27, Character.toString(letter));
+    // Text t2 = new Text(0, 0, String.valueOf(tileValue));
+    // t2.setFont(new Font(7));
+    // sP.getChildren().add(r1);
+    // sP.getChildren().add(t1);
+    // sP.getChildren().add(t2);
+    rack.add(iV, column, row);
+    GridPane.setHalignment(iV, HPos.CENTER);
+    GridPane.setValignment(iV, VPos.CENTER);
+
   }
 
 

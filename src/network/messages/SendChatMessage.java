@@ -3,7 +3,7 @@ package network.messages;
 import java.time.LocalDateTime;
 
 /**
- * This message is send, when a player writes a sends a message via the chat.
+ * This message is send, when a player writes text a message via the chat.
  * 
  * @author mschmauc
  */
