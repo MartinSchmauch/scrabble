@@ -83,7 +83,7 @@ public class LobbyScreen extends Application {
     } else if (!player.isHost()) {
       player.getClientProtocol().disconnect();
     }
-    new LoginScreenFXML().start(new Stage());
+    new LoginScreen().start(new Stage());
   }
 
   /**

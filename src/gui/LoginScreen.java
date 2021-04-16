@@ -21,7 +21,7 @@ import util.JSONHandler;
  * @author nilbecke
  **/
 
-public class LoginScreenFXML extends Application {
+public class LoginScreen extends Application {
 
   private Parent root;
   private Player currentPlayer;
@@ -70,7 +70,7 @@ public class LoginScreenFXML extends Application {
     return this.root;
   }
 
-  public LoginScreenFXML getLoginScreen() {
+  public LoginScreen getLoginScreen() {
     return this;
   }
 

@@ -1,7 +1,6 @@
 package game;
 
-import gui.LoginScreenFXML;
-import javafx.stage.Stage;
+import gui.LoginScreen;
 
 /**
  * This class launches the application.
@@ -20,7 +19,7 @@ public class MainApp {
    */
   public static void main(String[] args) {
     try {
-      new LoginScreenFXML().start(new Stage());
+      LoginScreen.main(args);
     } catch (Exception e) {
       System.out.println("It is doomed");
     }
