@@ -9,14 +9,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -107,15 +106,43 @@ public class GamePanelController extends ClientUI implements Sender {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    addTile(new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0)));
+    // TEST:
+    Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
+    t2.setOnGameBoard(false);
+    t2.setOnRack(true);
+    addTile(t2);
+    Tile t1 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
+    t1.setOnGameBoard(true);
+    t1.setOnRack(false);
+    addTile(t1);
+    // removeTile(t1);
   }
 
   @FXML
   public void rackClicked(MouseEvent event) {
     System.out.println("rackClicked wird aufgerufen");
     Node node = (Node) event.getSource();
-    int x;
-    int y;
+    int x, y;
+    Integer columnIndex = GridPane.getColumnIndex(node);
+    Integer rowIndex = GridPane.getRowIndex(node);
+    if (columnIndex == null) {
+      x = 0;
+    } else {
+      x = columnIndex.intValue();
+    }
+    if (rowIndex == null) {
+      y = 0;
+    } else {
+      y = rowIndex.intValue();
+    }
+    System.out.println("column: " + x + " row: " + y);
+  }
+
+  @FXML
+  public void gridClicked(MouseEvent event) {
+    System.out.println("rackClicked wird aufgerufen");
+    Node node = (Node) event.getSource();
+    int x, y;
     Integer columnIndex = GridPane.getColumnIndex(node);
     Integer rowIndex = GridPane.getRowIndex(node);
     if (columnIndex == null) {
@@ -232,51 +259,29 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   public void addTile(Tile tile) {
     char letter = tile.getLetter().getChar();
-    // int tileValue = tile.getValue(); //tileValue
+    int tileValue = tile.getValue();
     int column = tile.getField().getxCoordinate();
-    int row = 0;
-    if (column > 5) { // case: tile is in the second row of the rack
-      row = 1;
-      column = column - 5;
-    }
-    String fileName =
-        FileParameters.datadir + FileParameters.sep + Character.toString(letter) + ".png";
-    System.out.println(fileName);
-    ImageView iV = new ImageView();
-    iV.setImage(new Image("file:" + fileName));
-    iV.setFitWidth(50);
-    iV.setPreserveRatio(true);
-    iV.setSmooth(true);
-    iV.setCache(true);
-    // StackPane sP = new StackPane();
-    // Rectangle r1 = new Rectangle();
-    // r1.setHeight(26);
-    // r1.setWidth(26);
-    // r1.setArcHeight(10);
-    // r1.setArcWidth(10);
-    // r1.setOnDragDetected((MouseEvent event) -> {
-    // // We want the textArea to be dragged. Could also be copied.
-    // Dragboard db = textArea.startDragAndDrop(TransferMode.MOVE);
-    // // Put a string on a dragboard as an identifier
-    // ClipboardContent content = new ClipboardContent();
-    // content.putString(textArea.getId());
-    // db.setContent(content);
-    // // Consume the event
-    // event.consume();
-    // });
-    // // MouseControlUtil.makeDraggable(r1);
-    // Paint rectangle = Color.web("BLUE");
-    // r1.setFill(rectangle);
-    // Text t1 = new Text(25, 27, Character.toString(letter));
-    // Text t2 = new Text(0, 0, String.valueOf(tileValue));
-    // t2.setFont(new Font(7));
-    // sP.getChildren().add(r1);
-    // sP.getChildren().add(t1);
-    // sP.getChildren().add(t2);
-    rack.add(iV, column, row);
-    GridPane.setHalignment(iV, HPos.CENTER);
-    GridPane.setValignment(iV, VPos.CENTER);
+    int row = tile.getField().getyCoordinate();
 
+    if (tile.isOnRack()) {
+      row = 0;
+      if (column > 5) { // case: tile is in the second row of the rack
+        row = 1;
+        column = column - 5;
+      }
+      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, true);
+      rack.add(newTile, column, row);
+      GridPane.setHalignment(newTile, HPos.CENTER);
+      GridPane.setValignment(newTile, VPos.BOTTOM);
+      GridPane.setMargin(newTile, new Insets(0, 0, 5.5, 0));
+
+    } else if (tile.isOnGameBoard()) {
+      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, false);
+      grid.add(newTile, column, row);
+      GridPane.setHalignment(newTile, HPos.CENTER);
+      GridPane.setValignment(newTile, VPos.BOTTOM);
+      GridPane.setMargin(newTile, new Insets(0, 10, 8, 0));
+    }
   }
 
 
@@ -292,13 +297,24 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   /**
-   * This method removes a tile on the UI. This might be the case when another player removes a tile
-   * during his turn.
+   * This method removes a tile on the GamePanel. This might be the case when another player removes
+   * a tile during his turn. This method can only remove a tile from the GamePanel and NOT from the
+   * rack!
    * 
    * @param tile
    */
   public void removeTile(Tile tile) {
+    // char letter = tile.getLetter().getChar();
+    // int tileValue = tile.getValue(); // tileValue
+    int column = tile.getField().getxCoordinate();
+    int row = tile.getField().getyCoordinate();
 
+    for (Node node : rack.getChildren()) {
+      if (GridPane.getColumnIndex(node) == column && GridPane.getRowIndex(node) == row) { // TODO:
+                                                                                          // nullpointerexception
+        rack.getChildren().remove(node);
+      }
+    }
   }
 
   /**
