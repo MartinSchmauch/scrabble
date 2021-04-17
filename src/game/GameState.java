@@ -17,8 +17,7 @@ import util.JSONHandler;
  * @author nilbecke, ldreyer
  */
 
-public class GameState implements Serializable {
-
+public class GameState implements Serializable, Runnable {
   private static final long serialVersionUID = 1L;
   private boolean isRunning;
   private GameBoard gb;
@@ -26,6 +25,8 @@ public class GameState implements Serializable {
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
   private HashMap<String, Integer> scores;
+  private int min;
+  private int sec;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -33,7 +34,6 @@ public class GameState implements Serializable {
     this.allPlayers = new HashMap<String, PlayerData>();
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
-
     JSONHandler jH = new JSONHandler();
 
     if (customGameSettings != null) {
@@ -59,6 +59,49 @@ public class GameState implements Serializable {
           .setWordMultiplier(f.getWordMultiplier());
     }
   }
+
+  /**
+   * Thread to countdown the maxmimum length of a turn.
+   * 
+   * @author lurny
+   */
+  public void run() {
+    while (true) {
+      if (this.sec == 0 && this.min > 0) {
+        this.sec = 59;
+        this.min--;
+      } else if (this.sec == 0 & this.min == 0) {
+
+      } else {
+        this.sec--;
+      }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+
+      }
+    }
+  }
+
+  /**
+   * method to start the Turn timer.
+   * 
+   * @author lurny
+   */
+  public void startTimer() {
+    this.min = 10;
+    this.sec = 0;
+    new Thread(this).start();
+  }
+
+  public int getMin() {
+    return min;
+  }
+
+  public int getSec() {
+    return sec;
+  }
+
 
   public PlayerData getHost() {
     return this.host;
