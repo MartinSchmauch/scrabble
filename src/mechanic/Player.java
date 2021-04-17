@@ -1,252 +1,262 @@
 package mechanic;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.LobbyScreenController;
+import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import network.client.ClientProtocol;
 import network.server.Server;
 
 /**
- * The Player Class includes PlayerData, containing nickname and avatar. Local
- * GameSettings that should be loaded automatically like volume settings are
- * Player attributes. Also a player's rack is kept local and managed with
- * attributes and methods of this class. A player object can be read from and
- * stored to a JSON file, ignoring the rack methods and attributes.
- * 
+ * The Player Class includes PlayerData, containing nickname and avatar. Local GameSettings that
+ * should be loaded automatically like volume settings are Player attributes. Also a player's rack
+ * is kept local and managed with attributes and methods of this class. A player object can be read
+ * from and stored to a JSON file, ignoring the rack methods and attributes.
+ *
  * @author ldreyer
  */
 
 public class Player {
 
-	private PlayerData info;
-	private int volume;
-	private String customGameSettings;
+  private PlayerData info;
+  private int volume;
+  private String customGameSettings;
 
-	@JsonIgnore
-	private Field[] rack;
-	@JsonIgnore
-	private ClientProtocol client = null;
-	@JsonIgnore
-	private Server server = null;
+  @JsonIgnore
+  private Field[] rack;
+  @JsonIgnore
+  private ClientProtocol client = null;
+  @JsonIgnore
+  private Server server = null;
 
-	static final int TILE_COUNT_PER_PLAY = 7;
-	static final int RACK_FIELDS = 12;
+  static final int TILE_COUNT_PER_PLAY = 7;
+  static final int RACK_FIELDS = 12;
 
-	public Player(String nickname) {
-		this.info = new PlayerData(nickname);
 
-		this.rack = new Field[RACK_FIELDS];
-		for (int i = 0; i < RACK_FIELDS; i++) {
-			this.rack[i] = new Field(i, -1);
-		}
-	}
+  /** Initializes player object with a nickname and an empty rack. */
+  public Player(String nickname) {
+    this.info = new PlayerData(nickname);
 
-	/**
-	 * This constructor is used for initializing a Player Object with an
-	 * ObjectMapper from a JSON file.
-	 */
+    this.rack = new Field[RACK_FIELDS];
+    for (int i = 0; i < RACK_FIELDS; i++) {
+      this.rack[i] = new Field(i, -1);
+    }
+  }
 
-	@JsonCreator
-	public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
-			@JsonProperty("volume") int volume) {
-		info = new PlayerData(nickname);
-		info.setAvatar(avatar);
-		this.volume = volume;
+  /**
+   * This constructor is used for initializing a Player Object with an ObjectMapper from a JSON
+   * file.
+   */
 
-		this.rack = new Field[RACK_FIELDS];
-		for (int i = 0; i < RACK_FIELDS; i++) {
-			this.rack[i] = new Field(i, -1);
-		}
-	}
+  @JsonCreator
+  public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
+      @JsonProperty("volume") int volume) {
+    info = new PlayerData(nickname);
+    info.setAvatar(avatar);
+    this.volume = volume;
 
-	/*
-	 * PLAYER INFO
-	 */
+    this.rack = new Field[RACK_FIELDS];
+    for (int i = 0; i < RACK_FIELDS; i++) {
+      this.rack[i] = new Field(i, -1);
+    }
+  }
 
-	public PlayerData getPlayerInfo() {
-		return this.info;
-	}
+  /*
+   * PLAYER INFO
+   */
 
-	public void setNickname(String nickname) {
-		this.info.setNickname(nickname);
-	}
+  public PlayerData getPlayerInfo() {
+    return this.info;
+  }
 
-	public String getNickname() {
-		return this.info.getNickname();
-	}
+  public void setNickname(String nickname) {
+    this.info.setNickname(nickname);
+  }
 
-	public void setAvatar(String avatar) {
-		this.info.setAvatar(avatar);
-	}
+  public String getNickname() {
+    return this.info.getNickname();
+  }
 
-	public String getAvatar() {
-		return this.info.getAvatar();
-	}
+  public void setAvatar(String avatar) {
+    this.info.setAvatar(avatar);
+  }
 
-	/*
-	 * RACK METHODS
-	 */
+  public String getAvatar() {
+    return this.info.getAvatar();
+  }
 
-	public Tile getRackTile(int index) {
-		return this.rack[index].getTile();
-	}
+  /*
+   * RACK METHODS
+   */
 
-	public void setRackTile(int index, Tile tile) {
-		this.rack[index].setTile(tile);
-	}
+  public Tile getRackTile(int index) {
+    return this.rack[index].getTile();
+  }
 
-	/**
-	 * This method searches the rack for the first field, that is not covered by a
-	 * tile.
-	 * 
-	 * @return emptyField
-	 */
+  public void setRackTile(int index, Tile tile) {
+    this.rack[index].setTile(tile);
+  }
 
-	@JsonIgnore
-	public Field getFreeRackField() { // rack koordinate fortlaufen in xCoordinate
-		int i = 0;
-		while (rack[i].getTile() != null) {
-			i++;
-		}
+  /**
+   * This method searches the rack for the first field, that is not covered by a tile.
+   *
+   * @return emptyField
+   */
 
-		return rack[i];
-	}
+  @JsonIgnore
+  public Field getFreeRackField() { // rack koordinate fortlaufen in xCoordinate
+    int i = 0;
+    while (rack[i].getTile() != null) {
+      i++;
+    }
 
-	public void setRackTileToNone(int index) {
-		this.rack[index].setTileOneDirection(null);
-	}
+    return rack[i];
+  }
 
-	/**
-	 * This method takes a tile and puts it on a free field on the player's rack.
-	 * 
-	 */
-	public void addTileToRack(Tile tile) {
-		tile.setField(getFreeRackField());
-		tile.setOnRack(true);
-	}
+  public void setRackTileToNone(int index) {
+    this.rack[index].setTileOneDirection(null);
+  }
 
-	public Tile removeRackTile(int index) {
-		Tile tile = this.rack[index].getTile();
-		this.rack[index].setTile(null);
+  /**
+   * This method takes a tile and puts it on a free field on the player's rack.
+   */
+  public void addTileToRack(Tile tile) {
+    tile.setField(getFreeRackField());
+    tile.setOnRack(true);
+  }
 
-		return tile;
-	}
+  /**
+   * This method takes a tiles and puts them on free fields on the player's rack.
+   */
+  public void addTilesToRack(List<Tile> tiles) {
+    while (!tiles.isEmpty()) {
+      addTileToRack(tiles.remove(0));
+    }
+  }
 
-	/**
-	 * This method creates a list of all tiles on the rack, ignoring empty fields.
-	 * 
-	 * @return List<Tile>
-	 */
+  /**
+   * This method removes the tile on rack at the given index.
+   *
+   * @return the removed tile
+   */
+  public Tile removeRackTile(int index) {
+    Tile tile = this.rack[index].getTile();
+    this.rack[index].setTile(null);
 
-	@JsonIgnore
-	public List<Tile> getRackTiles() {
-		List<Tile> tiles = new ArrayList<Tile>();
-		for (int i = 0; i < rack.length; i++) {
-			if (rack[i].getTile() != null) {
-				tiles.add(rack[i].getTile());
-			}
-		}
-		return tiles;
-	}
+    return tile;
+  }
 
-	@JsonIgnore
-	public int getTileCountOnRack() {
-		return this.getRackTiles().size();
-	}
+  /**
+   * This method creates a list of all tiles on the rack, ignoring empty fields.
+   *
+   * @return an ArrayList of all tiles on rack
+   */
 
-	/**
-	 * 
-	 * Takes indices of two rack fields and moves the tile from the before-index to
-	 * the after-index. If the operation was successful the method returns true.
-	 * 
-	 * @param indexBefore
-	 * @param indexAfter
-	 * @return success
-	 */
+  @JsonIgnore
+  public List<Tile> getRackTiles() {
+    List<Tile> tiles = new ArrayList<Tile>();
+    for (int i = 0; i < rack.length; i++) {
+      if (rack[i].getTile() != null) {
+        tiles.add(rack[i].getTile());
+      }
+    }
+    return tiles;
+  }
 
-	public boolean reorganizeRackTile(int indexBefore, int indexAfter) {
-		if (rack[indexAfter].getTile() != null) {
-			return false;
-		}
+  @JsonIgnore
+  public int getTileCountOnRack() {
+    return this.getRackTiles().size();
+  }
 
-		rack[indexAfter].setTile(removeRackTile(indexBefore));
-		return true;
-	}
+  /**
+   * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
+   * If the operation was successful the method returns true.
+   *
+   * @return success
+   */
 
-	/*
-	 * PLAYER SETTINGS
-	 */
+  public boolean reorganizeRackTile(int indexBefore, int indexAfter) {
+    if (rack[indexAfter].getTile() != null) {
+      return false;
+    }
 
-	public int getVolume() {
-		return volume;
-	}
+    rack[indexAfter].setTile(removeRackTile(indexBefore));
+    return true;
+  }
 
-	public void setVolume(int volume) {
-		this.volume = volume;
-	}
+  /*
+   * PLAYER SETTINGS
+   */
 
-	public String getCustomGameSettings() {
-		return customGameSettings;
-	}
+  public int getVolume() {
+    return volume;
+  }
 
-	public void setCustomGameSettings(String customGameSettings) {
-		this.customGameSettings = customGameSettings;
-	}
+  public void setVolume(int volume) {
+    this.volume = volume;
+  }
 
-	/*
-	 * NETWORK
-	 */
+  public String getCustomGameSettings() {
+    return customGameSettings;
+  }
 
-	public boolean isHost() {
-		return this.info.isHost();
-	}
+  public void setCustomGameSettings(String customGameSettings) {
+    this.customGameSettings = customGameSettings;
+  }
 
-	public void setHost(boolean host) {
-		this.info.setHost(host);
-	}
+  /*
+   * NETWORK
+   */
 
-	public void setServer(Server s) {
-		this.server = s;
-	}
+  public boolean isHost() {
+    return this.info.isHost();
+  }
 
-	public Server getServer() {
-		return this.server;
-	}
+  public void setHost(boolean host) {
+    this.info.setHost(host);
+  }
 
-	public ClientProtocol getClientProtocol() {
-		return this.client;
-	}
+  public void setServer(Server s) {
+    this.server = s;
+  }
 
-	/** @author nilbecke */
+  public Server getServer() {
+    return this.server;
+  }
 
-	public void host() {
+  public ClientProtocol getClientProtocol() {
+    return this.client;
+  }
 
-		this.getPlayerInfo().setHost(true);
-		this.server = new Server(this.info, null);
-		Runnable r = new Runnable() {
-			public void run() {
-				server.listen();
-			}
-		};
-		new Thread(r).start();
-	}
+  /** @author nilbecke */
 
-	/** @author nilbecke */
+  public void host() {
+    this.getPlayerInfo().setHost(true);
+    this.server = new Server(this.info, null);
+    Runnable r = new Runnable() {
+      public void run() {
+        server.listen();
+      }
+    };
+    new Thread(r).start();
+  }
 
-	public void connect(InetAddress inetAddress) {
-		this.getPlayerInfo().setHost(false);
+  /** @author nilbecke */
 
-		this.client = new ClientProtocol(inetAddress.getHostAddress(), GameSettings.port, this, null, LobbyScreenController.getLobbyInstance());
-		if (this.client.isOK()) {
-			this.client.start();
-		
-		}
-		
-	}
+  public void connect(InetAddress inetAddress) {
+    this.getPlayerInfo().setHost(false);
+
+    this.client = new ClientProtocol(inetAddress.getHostAddress(), GameSettings.port, this, null,
+        LobbyScreenController.getLobbyInstance());
+    if (this.client.isOK()) {
+      this.client.start();
+
+    }
+
+  }
 
 }

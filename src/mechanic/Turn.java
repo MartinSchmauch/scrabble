@@ -1,12 +1,5 @@
 package mechanic;
 
-/**
- * An object of this class is used for each player turn. It is used to find all words that emerge
- * from the layd down tiles, to verfy those words and to calculate the turn score.
- * 
- * @author lurny
- */
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,12 +11,20 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * An object of this class is used for each player turn. It is used to find all words that emerge
+ * from the layd down tiles, to verify those words and to calculate the turn score.
+ * 
+ * @author lurny
+ */
+
 public class Turn implements Serializable {
   private static final long serialVersionUID = 1L;
   String player;
   private List<Tile> laydDownTiles;
   private List<Word> words; // Array, that contains all words, that result from the lay down letters
   private int turnScore;
+  private boolean isValid;
   private static String baseDir = System.getProperty("user.dir")
       + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
   private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
@@ -33,6 +34,7 @@ public class Turn implements Serializable {
     this.player = player;
     this.words = new ArrayList<Word>();
     this.laydDownTiles = new ArrayList<Tile>();
+    this.turnScore = 0;
   }
 
   public boolean addTileToTurn(Tile t) {
@@ -121,7 +123,7 @@ public class Turn implements Serializable {
       }
       wordTiles.clear();
     }
-    // veryfy words
+    // verify words
     boolean help2 = false;
     if (words != null) {
       for (Word tileList : this.words) {
@@ -212,6 +214,16 @@ public class Turn implements Serializable {
     return check;
   }
 
+  /**
+   * Ends the current turn and calculates turn score.
+   */
+
+  public void endTurn() {
+    this.isValid = calculateWords();
+    if (this.isValid) {
+      calculateTurnScore();
+    }
+  }
 
   public void setLaydDownTiles(List<Tile> laydDownTiles) {
     this.laydDownTiles = laydDownTiles;
@@ -235,6 +247,10 @@ public class Turn implements Serializable {
 
   public String getPlayer() {
     return player;
+  }
+
+  public boolean isValid() {
+    return isValid;
   }
 
 
