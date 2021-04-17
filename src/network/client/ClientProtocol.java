@@ -9,6 +9,7 @@ import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
 import mechanic.Player;
+import mechanic.Tile;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
@@ -104,7 +105,9 @@ public class ClientProtocol extends Thread {
               break;
             case TILE_RESPONSE:
               TileResponseMessage trMessage = (TileResponseMessage) m;
-              gpc.addTile(trMessage.getTile());
+              for (Tile t : trMessage.getTiles()) {
+                gpc.addTile(t);
+              }
               break;
             case TURN_RESPONSE:
               TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
