@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,6 +54,18 @@ public class LoginScreen extends Application {
 
   @Override
   public void start(Stage stage) {
+    // Alerts for demo purposes on first submission
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Readme");
+    alert.setHeaderText(null);
+    alert.setContentText("To join a game open application twice on one pc.");
+    Alert alert2 = new Alert(AlertType.ERROR);
+    alert2.setTitle("Readme");
+    alert2.setHeaderText(null);
+    alert2.setContentText(
+        "Let one Player be the host, change the username of the second player ingame (click on avatar) and press join after.");
+    alert2.show();
+
     Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
       this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
@@ -64,6 +78,8 @@ public class LoginScreen extends Application {
     stage.setTitle("Scrabble3");
 
     stage.show();
+    alert.show();
+    alert2.show();
   }
 
   public Parent getParent() {
