@@ -20,7 +20,7 @@ import util.JSONHandler;
 public class GameState implements Serializable, Runnable {
   private static final long serialVersionUID = 1L;
   private boolean isRunning;
-  private GameBoard gb;
+  private transient GameBoard gb;
   private PlayerData host;
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
@@ -28,7 +28,7 @@ public class GameState implements Serializable, Runnable {
   private int min;
   private int sec;
   private String time;
-  private Thread thread;
+  private transient Thread thread;
   private double timeLeftBar;
 
   public GameState(PlayerData host, String customGameSettings) {
