@@ -27,6 +27,9 @@ public class GameState implements Serializable, Runnable {
   private HashMap<String, Integer> scores;
   private int min;
   private int sec;
+  private String time;
+  private Thread thread;
+  private double timeLeftBar;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -34,6 +37,7 @@ public class GameState implements Serializable, Runnable {
     this.allPlayers = new HashMap<String, PlayerData>();
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
+    this.thread = new Thread(this);
     JSONHandler jH = new JSONHandler();
 
     if (customGameSettings != null) {
@@ -67,6 +71,14 @@ public class GameState implements Serializable, Runnable {
    */
   public void run() {
     while (true) {
+      if (this.sec > 9) {
+        this.time = this.min + ":" + this.sec;
+      } else {
+        this.time = this.min + ":0" + this.sec;
+      }
+
+      this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
+
       if (this.sec == 0 && this.min > 0) {
         this.sec = 59;
         this.min--;
@@ -91,7 +103,17 @@ public class GameState implements Serializable, Runnable {
   public void startTimer() {
     this.min = 10;
     this.sec = 0;
-    new Thread(this).start();
+    this.thread.start();
+  }
+
+  /**
+   * method to stop the Turn timer.
+   * 
+   * @author lurny
+   */
+  @SuppressWarnings("deprecation")
+  public void stopTimer() {
+    this.thread.stop();
   }
 
   public int getMin() {
