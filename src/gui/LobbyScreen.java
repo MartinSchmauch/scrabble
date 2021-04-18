@@ -49,7 +49,11 @@ public class LobbyScreen extends Application {
           e.printStackTrace();
         }
       } else {
-        player.connect(connection);
+        try {
+          player.connect(connection);
+        } catch (Exception e) {
+          System.out.println("Kein Host unter dieser Adresse");
+        }
       }
     }
 
