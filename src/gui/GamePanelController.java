@@ -90,25 +90,6 @@ public class GamePanelController extends ClientUI implements Sender {
                                                                            // als anteil von 1 hier
                                                                            // einfügen
     timeProgress.progressProperty().bind(progressProperty);
-
-  }
-
-  /**
-   * 
-   * Listener methods that are executed upon Player UI Interaction
-   * 
-   */
-
-  @FXML
-  public void testMessage(ActionEvent event) {
-    System.out.println("Test Message from 'Send' Button \n");
-    textFieldToTextArea();
-    try {
-      updateScore("Player 2", 1);
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
     // TEST:
     Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
     t2.setOnRack(true);
@@ -122,11 +103,27 @@ public class GamePanelController extends ClientUI implements Sender {
 
   /**
    * 
+   * Listener methods that are executed upon Player UI Interaction
+   * 
+   */
+
+  @FXML
+  public void testMessage(ActionEvent event) {
+    textFieldToTextArea();
+    try {
+      updateScore("Player 2", 1);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * 
    * @param event
    */
   @FXML
   public void rackClicked(MouseEvent event) {
-    System.out.println("rackClicked wird aufgerufen");
     Node node = (Node) event.getSource();
     int[] pos = getPos(node, true);
     int x = pos[0];
@@ -159,7 +156,6 @@ public class GamePanelController extends ClientUI implements Sender {
     // // when true: setSelectedTileOnGrid(false);
     // }
     // }
-    System.out.println("column: " + x + " row: " + y);
   }
 
   /**
@@ -168,7 +164,6 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   @FXML
   public void gridClicked(MouseEvent event) {
-    System.out.println("rackClicked wird aufgerufen");
     Node node = (Node) event.getSource();
     int[] pos = getPos(node, false);
     int x = pos[0];
@@ -216,7 +211,6 @@ public class GamePanelController extends ClientUI implements Sender {
     // // when true: setSelectedTileOnGrid(false);
     // }
     // }
-    System.out.println("column: " + x + " row: " + y);
   }
 
   /**
