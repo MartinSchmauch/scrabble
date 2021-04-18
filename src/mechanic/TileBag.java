@@ -1,8 +1,9 @@
 package mechanic;
 
-import game.GameSettings;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import game.GameSettings;
 
 
 /**
@@ -22,9 +23,9 @@ public class TileBag {
    */
 
   public TileBag() {
-    List<Letter> letters = (List<Letter>) GameSettings.getLetters().values();
+    List<Letter> letters = new ArrayList<Letter>(GameSettings.getLetters().values());
     Iterator<Letter> it = letters.iterator();
-
+    this.tiles = new ArrayList<Tile>();
     while (it.hasNext()) {
       Letter l = it.next();
       for (int i = 0; i < l.getCount(); i++) {

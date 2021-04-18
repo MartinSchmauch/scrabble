@@ -95,7 +95,7 @@ public class ClientProtocol extends Thread {
               break;
             case MOVE_TILE:
               MoveTileMessage mtMessage = (MoveTileMessage) m;
-              gpc.moveTile(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
+              gpc.moveToRack(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
                   mtMessage.getNewYCoordinate());
               break;
             case REMOVE_TILE:

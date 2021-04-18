@@ -241,7 +241,7 @@ public class Server {
           break;
         case MOVE_TILE:
           MoveTileMessage mtm = (MoveTileMessage) m;
-          gpc.moveTile(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
+          gpc.moveToRack(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
           break;
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
