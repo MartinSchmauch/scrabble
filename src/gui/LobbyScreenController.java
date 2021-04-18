@@ -192,7 +192,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
 
   /**
-   * Updates Lobbychat by using the updateChat method in the Chat Controller
+   * Updates Lobbychat by using the updateChat method in the Chat Controller.
    * 
    * @param message
    * @param dateTime
