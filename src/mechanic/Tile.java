@@ -116,6 +116,7 @@ public class Tile implements Serializable {
   // ** @author lurny
   public void setOnGameBoard(boolean onGameBoard) {
     this.onGameBoard = onGameBoard;
+    this.onRack = !onGameBoard; // TODO: check that this does not create errors
   }
 
   // ** @author lurny
@@ -126,6 +127,7 @@ public class Tile implements Serializable {
   // ** @author lurny
   public void setOnRack(boolean onRack) {
     this.onRack = onRack;
+    this.onGameBoard = !onRack; // TODO: check that this does not create errors
   }
 
   /**

@@ -60,6 +60,7 @@ public class ClientUI extends Application { // implements sender?
     Scene scene1 = new Scene(root);
     primaryStage.setScene(scene1);
     primaryStage.setTitle("Scrabble3");
+    primaryStage.setResizable(false);
     primaryStage.show();
   }
 
