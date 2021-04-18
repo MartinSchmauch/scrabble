@@ -231,8 +231,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void updateJoinedPlayers() {
     GameState gs;
-    if (player.isHost()) {
-      gs = player.getServer().getGameState();
+    if (this.player.isHost()) {
+      gs = this.player.getServer().getGameState();
       this.players = gs.getAllPlayers();
     } else {
       gs = player.getClientProtocol().getGameState();
