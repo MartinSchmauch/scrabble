@@ -3,22 +3,20 @@ package gui;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-
-/**
- * @author nilbecke Launch the Lobby GUI
- **/
-
 import javafx.application.Application;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import mechanic.Player;
 import mechanic.PlayerData;
+
+/**
+ * This class launches the Lobby UI as a host or as a client.
+ * 
+ * @author nilbecke
+ **/
 
 public class LobbyScreen extends Application {
 
@@ -27,12 +25,14 @@ public class LobbyScreen extends Application {
   private static LobbyScreen instance;
   List<PlayerData> players;
 
-  @FXML
-  private Label ip, player1, player2, player3, player4;
-  @FXML
-  private ImageView pic1, pic2, pic3, pic4;
+  /**
+   * Launches the Lobby Screen and hosts a game/ connects to a game.
+   * 
+   * @param current Player connetcting/hosting
+   * @param connection "Game Link"
+   */
 
-  public LobbyScreen(Player current) {
+  public LobbyScreen(Player current, String connection) {
     instance = this;
     player = current;
     if (player.isHost()) {
@@ -40,14 +40,21 @@ public class LobbyScreen extends Application {
       try {
         Thread.sleep(10);
       } catch (InterruptedException e) {
-
-      }
-      System.out.println(player.getServer().getGameState().getAllPlayers().size());
-    } else {
-      try {
-        player.connect(InetAddress.getLocalHost());
-      } catch (UnknownHostException e) {
         e.printStackTrace();
+      }
+    } else {
+      if (connection.equals("")) {
+        try {
+          player.connect(InetAddress.getLocalHost().getHostAddress());
+        } catch (UnknownHostException e) {
+          e.printStackTrace();
+        }
+      } else {
+        try {
+          player.connect(connection);
+        } catch (Exception e) {
+          System.out.println("Kein Host unter dieser Adresse");
+        }
       }
     }
 
@@ -55,7 +62,7 @@ public class LobbyScreen extends Application {
 
 
   /**
-   * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby
+   * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby.
    **/
   @Override
   public void start(Stage stage) {
@@ -75,7 +82,7 @@ public class LobbyScreen extends Application {
   }
 
   /**
-   * Closes the Lobby and stops the server
+   * Closes the Lobby and stops the server.
    */
   public static void close() {
     if (LobbyScreenController.getLobbyInstance().getServer() != null) {
@@ -87,16 +94,16 @@ public class LobbyScreen extends Application {
   }
 
   /**
-   * Passes on the instance of local current player
+   * Passes on the instance of local current player.
    * 
-   * @return: Instance of current player
+   * @return Instance of current player
    */
   public Player getPlayer() {
     return player;
   }
 
   /**
-   * Reference to the current lobby
+   * Reference to the current lobby.
    * 
    * @return Instance of Lobby
    */

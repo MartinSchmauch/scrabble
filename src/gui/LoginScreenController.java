@@ -91,7 +91,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    */
 
   public void startLobby() {
-    new LobbyScreen(this.player).start(new Stage());
+    new LobbyScreen(this.player, this.getConnection()).start(new Stage());
   }
 
   /**
@@ -127,7 +127,6 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * @return the input for the inet adress
    */
   public String getConnection() {
-    System.out.println(this.LinkField.getText());
     return this.LinkField.getText();
   }
 

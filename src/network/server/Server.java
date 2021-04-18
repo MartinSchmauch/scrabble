@@ -1,10 +1,5 @@
 package network.server;
 
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,6 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.AddTileMessage;
@@ -57,7 +57,7 @@ public class Server {
    * Initializes Server with host and customGameSettings. If customGameSettings are null, the
    * default game settings are used.
    */
-  
+
   public Server(PlayerData host, String customGameSettings) {
     this.host = host.getNickname();
     this.gameState = new GameState(host, customGameSettings);
@@ -157,7 +157,9 @@ public class Server {
     }
   }
 
+
   /** This method sends a message to all connected clients. */
+
 
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
@@ -165,7 +167,9 @@ public class Server {
   }
 
   /**
-   * This method sends a message to all connected clients, except the one client given as parameter.
+   * <<<<<<< HEAD This method sends a message to all connected clients, except the one client given
+   * as parameter. ======= sends a message to all connected clients, except the one client who was
+   * given as parameter. >>>>>>> refs/remotes/origin/develop_loginscreen
    */
 
   public void sendToAllBut(String name, Message m) {
@@ -181,7 +185,7 @@ public class Server {
    * This method is called whenever a relevant message is send to clients and is updating the
    * server's user interface accordingly.
    */
-  
+
   public void updateServerUi(Message m) throws Exception {
     if (!this.gameState.getGameRunning()) {
       if (this.lsc == null) {
@@ -255,7 +259,7 @@ public class Server {
       }
     }
   }
-  
+
   /**
    * This method is called when the server is supposed to stop. All clients are informed that the
    * server is no longer being hosted.

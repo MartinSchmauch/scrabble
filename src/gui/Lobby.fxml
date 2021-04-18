@@ -18,9 +18,9 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LobbyScreenController">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);">
+            <AnchorPane layoutX="-175.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="199.0" rotate="-16.4" style="-fx-font-weight: bold;" text="lobby" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
                      <font>
@@ -57,11 +57,11 @@
                   </Label>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="leave" layoutX="261.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="356.0">
+            <AnchorPane fx:id="leave" layoutX="86.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="356.0">
                <children>
                   <Button fx:id="leavelobby" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="90.0" stylesheets="@Buttons.css" text="Leave Lobby" />
                   <Button fx:id="start" layoutX="276.0" layoutY="362.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Start" />
-                  <TextArea fx:id="chat" layoutX="23.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0">
+                  <TextArea fx:id="chat" layoutX="23.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -119,6 +119,11 @@
                   <Button fx:id="settings" layoutX="149.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="78.0" stylesheets="@Buttons.css" text="Settings" />
                </children>
             </AnchorPane>
+            <ImageView disable="true" fitHeight="744.0" fitWidth="1262.0" layoutX="-200.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/ScrabbleBoard.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>

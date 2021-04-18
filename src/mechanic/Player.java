@@ -1,13 +1,12 @@
 package mechanic;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.LobbyScreenController;
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.List;
 import network.client.ClientProtocol;
 import network.server.Server;
 
@@ -16,7 +15,7 @@ import network.server.Server;
  * should be loaded automatically like volume settings are Player attributes. Also a player's rack
  * is kept local and managed with attributes and methods of this class. A player object can be read
  * from and stored to a JSON file, ignoring the rack methods and attributes.
- *
+ * 
  * @author ldreyer
  */
 
@@ -36,8 +35,6 @@ public class Player {
   static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 12;
 
-
-  /** Initializes player object with a nickname and an empty rack. */
   public Player(String nickname) {
     this.info = new PlayerData(nickname);
 
@@ -103,7 +100,7 @@ public class Player {
 
   /**
    * This method searches the rack for the first field, that is not covered by a tile.
-   *
+   * 
    * @return emptyField
    */
 
@@ -123,26 +120,13 @@ public class Player {
 
   /**
    * This method takes a tile and puts it on a free field on the player's rack.
+   * 
    */
   public void addTileToRack(Tile tile) {
     tile.setField(getFreeRackField());
     tile.setOnRack(true);
   }
 
-  /**
-   * This method takes a tiles and puts them on free fields on the player's rack.
-   */
-  public void addTilesToRack(List<Tile> tiles) {
-    while (!tiles.isEmpty()) {
-      addTileToRack(tiles.remove(0));
-    }
-  }
-
-  /**
-   * This method removes the tile on rack at the given index.
-   *
-   * @return the removed tile
-   */
   public Tile removeRackTile(int index) {
     Tile tile = this.rack[index].getTile();
     this.rack[index].setTile(null);
@@ -152,8 +136,8 @@ public class Player {
 
   /**
    * This method creates a list of all tiles on the rack, ignoring empty fields.
-   *
-   * @return an ArrayList of all tiles on rack
+   * 
+   * @return List<Tile>
    */
 
   @JsonIgnore
@@ -173,9 +157,12 @@ public class Player {
   }
 
   /**
+   * 
    * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
    * If the operation was successful the method returns true.
-   *
+   * 
+   * @param indexBefore
+   * @param indexAfter
    * @return success
    */
 
@@ -235,6 +222,7 @@ public class Player {
   /** @author nilbecke */
 
   public void host() {
+
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this.info, null);
     Runnable r = new Runnable() {
@@ -247,10 +235,10 @@ public class Player {
 
   /** @author nilbecke */
 
-  public void connect(InetAddress inetAddress) {
+  public void connect(String ip) {
     this.getPlayerInfo().setHost(false);
 
-    this.client = new ClientProtocol(inetAddress.getHostAddress(), GameSettings.port, this, null,
+    this.client = new ClientProtocol(ip, GameSettings.port, this, null,
         LobbyScreenController.getLobbyInstance());
     if (this.client.isOK()) {
       this.client.start();
