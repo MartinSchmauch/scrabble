@@ -85,6 +85,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     this.cc = new ChatController(this.player);
     address = null;
     instance = this;
+
     try {
       address = InetAddress.getLocalHost();
     } catch (UnknownHostException e) {
