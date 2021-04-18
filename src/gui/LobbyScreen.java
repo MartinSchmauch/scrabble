@@ -3,11 +3,6 @@ package gui;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-
-/**
- * @author nilbecke Launch the Lobby GUI
- **/
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +12,12 @@ import javafx.stage.Stage;
 import mechanic.Player;
 import mechanic.PlayerData;
 
+/**
+ * This class launches the Lobby UI as a host or as a client.
+ * 
+ * @author nilbecke
+ **/
+
 public class LobbyScreen extends Application {
 
   private Parent root;
@@ -25,7 +26,7 @@ public class LobbyScreen extends Application {
   List<PlayerData> players;
 
   /**
-   * Launches the Lobby Screen and hosts a game/ connects to a game
+   * Launches the Lobby Screen and hosts a game/ connects to a game.
    * 
    * @param current Player connetcting/hosting
    * @param connection "Game Link"
@@ -61,7 +62,7 @@ public class LobbyScreen extends Application {
 
 
   /**
-   * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby
+   * Reads the "Lobby.fxml" file (@author nilbecke) to create the Lobby.
    **/
   @Override
   public void start(Stage stage) {
@@ -81,7 +82,7 @@ public class LobbyScreen extends Application {
   }
 
   /**
-   * Closes the Lobby and stops the server
+   * Closes the Lobby and stops the server.
    */
   public static void close() {
     if (LobbyScreenController.getLobbyInstance().getServer() != null) {
@@ -93,16 +94,16 @@ public class LobbyScreen extends Application {
   }
 
   /**
-   * Passes on the instance of local current player
+   * Passes on the instance of local current player.
    * 
-   * @return: Instance of current player
+   * @return Instance of current player
    */
   public Player getPlayer() {
     return player;
   }
 
   /**
-   * Reference to the current lobby
+   * Reference to the current lobby.
    * 
    * @return Instance of Lobby
    */

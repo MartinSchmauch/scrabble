@@ -152,7 +152,7 @@ public class Server {
     }
   }
 
-  /** sends a message to all connected clients */
+  /** sends a message to all connected clients. */
 
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
@@ -160,7 +160,7 @@ public class Server {
   }
 
   /**
-   * sends a message to all connected clients, except the one client who was given as parameter
+   * sends a message to all connected clients, except the one client who was given as parameter.
    */
 
   public void sendToAllBut(String name, Message m) {
