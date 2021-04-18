@@ -111,14 +111,13 @@ public class GamePanelController extends ClientUI implements Sender {
     }
     // TEST:
     Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
-    t2.setOnGameBoard(false);
     t2.setOnRack(true);
     addTile(t2);
-    Tile t1 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
+    Tile t1 = new Tile(new Letter('C', 5, 5), new Field(5, 5, 1, 0));
     t1.setOnGameBoard(true);
-    t1.setOnRack(false);
     addTile(t1);
     // removeTile(t1);
+    // removeTile(t2);
   }
 
   /**
@@ -132,31 +131,34 @@ public class GamePanelController extends ClientUI implements Sender {
     int[] pos = getPos(node, true);
     int x = pos[0];
     int y = pos[1];
-
-    if (selectedTileOnRack == false && selectedTileOnGrid == false) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        setSelectedTileOnRack(true);
-        coordinates[0] = x;
-      }
-    }
-    if (selectedTileOnRack) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        // case: switch positions of tiles on rack
-        setSelectedTileOnRack(false);
-      } else {
-        // case: move tile to empty field
-        setSelectedTileOnRack(false);
-      }
-    }
-    if (selectedTileOnGrid) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        // case: check, wether you can exchange tiles
-        // when true: setSelectedTileOnGrid(false);
-      } else {
-        // case: check, wether you can move tile to rack
-        // when true: setSelectedTileOnGrid(false);
-      }
-    }
+    // GUI test start:
+    setSelectedTileOnRack(true);
+    coordinates[0] = x;
+    // GUI test ende.
+    // if (selectedTileOnRack == false && selectedTileOnGrid == false) {
+    // if (cp.getPlayer().getRackTile(x) != null) {
+    // setSelectedTileOnRack(true);
+    // coordinates[0] = x;
+    // }
+    // }
+    // if (selectedTileOnRack) {
+    // if (cp.getPlayer().getRackTile(x) != null) {
+    // // case: switch positions of tiles on rack
+    // setSelectedTileOnRack(false);
+    // } else {
+    // // case: move tile to empty field
+    // setSelectedTileOnRack(false);
+    // }
+    // }
+    // if (selectedTileOnGrid) {
+    // if (cp.getPlayer().getRackTile(x) != null) {
+    // // case: check, wether you can exchange tiles
+    // // when true: setSelectedTileOnGrid(false);
+    // } else {
+    // // case: check, wether you can move tile to rack
+    // // when true: setSelectedTileOnGrid(false);
+    // }
+    // }
     System.out.println("column: " + x + " row: " + y);
   }
 
@@ -171,41 +173,49 @@ public class GamePanelController extends ClientUI implements Sender {
     int[] pos = getPos(node, false);
     int x = pos[0];
     int y = pos[1];
-
-    if (selectedTileOnRack == false && selectedTileOnGrid == false) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        setSelectedTileOnGrid(true);
-        coordinates[0] = x;
-        coordinates[1] = y;
-      }
-    }
+    // GUI test start:
     if (selectedTileOnRack) {
-      if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
-        // case: exchange tiles on rack and grid
-        // check wether its is a valid move
-        sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 1
-        sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
-        // if yes: setSelectedTileOnRack(false);
-      } else {
-        // case: move tile from rack to empty grid field
-        // check wether it is a valid move
-        sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y);
-        // if yes: setSelectedTileOnRack(false);
-      }
-    } else if (selectedTileOnGrid) {
-      if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
-        // case: exchange tiles on grid
-        // check, wether you can exchange tiles
-        sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 1
-        sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
-        // when true: setSelectedTileOnGrid(false);
-      } else {
-        // case: move tile on grid to empty field
-        // check wether you can exchange tiles
-        sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y);
-        // when true: setSelectedTileOnGrid(false);
-      }
+      Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
+      t2.setOnRack(true);
+      moveToGamePanel(t2, x, y);
     }
+    // GUI test ende.
+    // if (selectedTileOnRack == false && selectedTileOnGrid == false) {
+    // if (cp.getPlayer().getRackTile(x) != null) {
+    // setSelectedTileOnGrid(true);
+    // coordinates[0] = x;
+    // coordinates[1] = y;
+    // }
+    // }
+    // if (selectedTileOnRack) {
+    // if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
+    // // case: exchange tiles on rack and grid
+    // // check wether its is a valid move
+    // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 1
+    // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
+    // // if yes: setSelectedTileOnRack(false);
+    // } else {
+    // // MAINCASE: move tile from rack(coordinates[0]) to empty grid field(x,y)
+    // // check wether it is a valid move
+    // sendTileMove(player.getNickname(), player.getRackTile(coordinates[0]), x, y);
+    // // if yes: setSelectedTileOnRack(false);
+    // }
+    // } else if (selectedTileOnGrid) {
+    // if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
+    // // case: exchange tiles on grid
+    // // check, wether you can exchange tiles
+    // sendTileMove(player.getNickname(), player.getRackTile(x), coordinates[0], coordinates[1]); //
+    // stein
+    // // 1
+    // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
+    // // when true: setSelectedTileOnGrid(false);
+    // } else {
+    // // case: move tile on grid to empty field
+    // // check wether you can exchange tiles
+    // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y);
+    // // when true: setSelectedTileOnGrid(false);
+    // }
+    // }
     System.out.println("column: " + x + " row: " + y);
   }
 
@@ -314,6 +324,7 @@ public class GamePanelController extends ClientUI implements Sender {
         column = column - 5;
       }
       VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, true);
+      newTile.setMouseTransparent(true);
       rack.add(newTile, column, row);
       GridPane.setHalignment(newTile, HPos.CENTER);
       GridPane.setValignment(newTile, VPos.BOTTOM);
@@ -321,6 +332,7 @@ public class GamePanelController extends ClientUI implements Sender {
 
     } else if (tile.isOnGameBoard()) {
       VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, false);
+      newTile.setMouseTransparent(true);
       grid.add(newTile, column, row);
       GridPane.setHalignment(newTile, HPos.CENTER);
       GridPane.setValignment(newTile, VPos.BOTTOM);
@@ -330,15 +342,35 @@ public class GamePanelController extends ClientUI implements Sender {
 
 
   /**
-   * This method updates a Tile on the UI by putting the tile on a new position provided by the
-   * newField parameter and removing it from the last position.
+   * This method updates a Tile on the UI by putting the tile on a new position on the Rack provided
+   * by the parameters parameters and removing it from the last position.
    * 
    * @param tile
-   * @param newField
+   * @param newXCoordinate
+   * @param newYCoordinate
    */
-  public void moveTile(Tile tile, int newXCoordinate, int newYCoordinate) {
+  public void moveToRack(Tile tile, int newXCoordinate, int newYCoordinate) {
     removeTile(tile);
-    addTile(new Tile(tile.getLetter())); // TODO: hier neue koordinaten richtig einfügen
+    tile.setOnRack(true);
+    Field newField = new Field(newXCoordinate, newYCoordinate);
+    tile.setField(newField);
+    addTile(tile);
+  }
+
+  /**
+   * This method updates a Tile on the UI by putting the tile on a new position on the GamePanel
+   * provided by the coordinate parameters and removing it from the last position.
+   * 
+   * @param tile
+   * @param newXCoordinate
+   * @param newYCoordinate
+   */
+  public void moveToGamePanel(Tile tile, int newXCoordinate, int newYCoordinate) {
+    removeTile(tile);
+    tile.setOnGameBoard(true);
+    Field newField = new Field(newXCoordinate, newYCoordinate);
+    tile.setField(newField);
+    addTile(tile);
   }
 
   /**
@@ -368,6 +400,7 @@ public class GamePanelController extends ClientUI implements Sender {
         }
         if (node instanceof Parent && x == column && y == row) {
           rack.getChildren().remove(node);
+          break;
         }
       }
     } else {
@@ -386,6 +419,7 @@ public class GamePanelController extends ClientUI implements Sender {
         }
         if (node instanceof Parent && x == column && y == row) {
           grid.getChildren().remove(node);
+          break;
         }
       }
     }

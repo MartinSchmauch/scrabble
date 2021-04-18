@@ -324,66 +324,18 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <StackPane onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="56.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="102.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="196.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="243.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="49.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
-                                    <StackPane layoutX="149.0" layoutY="49.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
-                                       <children>
-                                          <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
-                                       </children>
-                                    </StackPane>
+                                    <Rectangle fill="#ffffff00" height="60.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="106.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="344.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="427.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="87.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="94.0" layoutY="87.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="178.0" layoutY="87.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="261.0" layoutY="87.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                    <Rectangle fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onMouseClicked="#rackClicked" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                  </children>
                               </GridPane>
                            </children>
