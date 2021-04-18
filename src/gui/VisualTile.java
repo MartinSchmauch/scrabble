@@ -9,19 +9,28 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+
+/**
+ * 
+ * @author Martin
+ * 
+ *         This class represents a tile on the MainGamePanelScreen and the constructor is being
+ *         called, when a new tile needs to be genereated. The tile consists of a Parent container,
+ *         which contains a StackPane. In the StackPane a rectangle and two texts are layered.
+ */
 public class VisualTile extends Parent {
 
   private static final int TILE_WIDTH = 55;
   private static final int TILE_HEIGHT = 55;
 
-  private static Rectangle shape;
+  private Rectangle shape;
 
-  public static Rectangle getShape() {
+  public Rectangle getShape() {
     return shape;
   }
 
-  private static Text letterText;
-  private static Text valueText;
+  private Text letterText;
+  private Text valueText;
 
 
   public VisualTile(String letter, int value, boolean onRack) {
@@ -52,24 +61,24 @@ public class VisualTile extends Parent {
   }
 
 
-  public static void setShape(Rectangle shape) {
-    VisualTile.shape = shape;
+  public void setShape(Rectangle shape) {
+    this.shape = shape;
   }
 
-  public static Text getLetterText() {
-    return letterText;
+  public Text getLetterText() {
+    return this.letterText;
   }
 
-  public static void setLetterText(Text letterText) {
-    VisualTile.letterText = letterText;
+  public void setLetterText(Text letterText) {
+    this.letterText = letterText;
   }
 
-  public static Text getValueText() {
-    return valueText;
+  public Text getValueText() {
+    return this.valueText;
   }
 
-  public static void setValueText(Text valueText) {
-    VisualTile.valueText = valueText;
+  public void setValueText(Text valueText) {
+    this.valueText = valueText;
   }
 
 }

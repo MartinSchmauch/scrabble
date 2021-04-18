@@ -324,62 +324,62 @@
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <StackPane onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0">
+                                    <StackPane onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1">
+                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="56.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2">
+                                    <StackPane layoutX="56.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="102.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3">
+                                    <StackPane layoutX="102.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4">
+                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="196.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5">
+                                    <StackPane layoutX="196.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="243.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1">
+                                    <StackPane layoutX="243.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.rowIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="49.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                                    <StackPane layoutX="10.0" layoutY="49.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="10.0" layoutY="10.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <StackPane layoutX="10.0" layoutY="10.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
                                     </StackPane>
-                                    <StackPane layoutX="149.0" layoutY="49.0" onDragDetected="#rackPaneDragged" onDragDropped="#rackPaneDropped" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                                    <StackPane layoutX="149.0" layoutY="49.0" onMouseClicked="#rackClicked" prefHeight="60.0" prefWidth="60.0" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                        <children>
                                           <Rectangle fill="#ffffff00" height="60.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
                                        </children>
@@ -390,7 +390,7 @@
                         </StackPane>
                         <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0">
                            <children>
-                              <Button fx:id="skipAndChange" mnemonicParsing="false" prefHeight="30.0" prefWidth="160.0" text="Skip &amp; Change">
+                              <Button fx:id="skipAndChange" mnemonicParsing="false" onAction="#skipAndChange" prefHeight="30.0" prefWidth="160.0" text="Skip &amp; Change">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -686,7 +686,7 @@
                   <Rectangle fill="#8fb492" height="50.0" onMouseClicked="#gridClicked" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                   <Rectangle fill="#8fb492" height="50.0" onMouseClicked="#gridClicked" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                   <Rectangle fill="#ff7a7a" height="50.0" onMouseClicked="#gridClicked" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                  <StackPane onDragDetected="#gamePanelDragged" onDragDropped="#gamePanelDropped" onMouseClicked="#gridClicked" prefHeight="50.0" prefWidth="50.0" />
+                  <StackPane onMouseClicked="#gridClicked" prefHeight="50.0" prefWidth="50.0" />
                   <Rectangle fill="#ff7a7a" height="50.0" onMouseClicked="#gridClicked" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
             </GridPane>

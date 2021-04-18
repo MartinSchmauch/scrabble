@@ -30,6 +30,7 @@ public class ClientProtocol extends Thread {
   private GamePanelController gpc;
   private LobbyScreenController lpc;
   private Player player;
+
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
@@ -175,5 +176,17 @@ public class ClientProtocol extends Thread {
 
   public void setGameState(GameState gameState) {
     this.gameState = gameState;
+  }
+
+  /**
+   * @author mschmauc
+   */
+
+  public Player getPlayer() {
+    return player;
+  }
+
+  public void setPlayer(Player player) {
+    this.player = player;
   }
 }
