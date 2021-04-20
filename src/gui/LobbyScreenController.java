@@ -10,6 +10,7 @@ import game.GameSettings;
 import game.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -127,8 +128,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "leavelobby":
         sendDisconnectMessage(this.player.getNickname());
         LobbyScreen.close();
-        Stage st = (Stage) ((Button) e.getSource()).getScene().getWindow();
-        st.close();
+        closeWindow();
         break;
       case "send":
       case "input":
@@ -139,8 +139,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         break;
       case "start":
         startGame();
-        st = (Stage) ((Button) e.getSource()).getScene().getWindow();
-        st.close();
         break;
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
@@ -154,12 +152,34 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Starts the countdown before the game launches.
    */
   public void startGame() {
-    new StartGameMessage(this.player.getNickname(), 10);
-    try {
-      new ClientUI().start(new Stage());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
+  }
+
+  /**
+   * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
+   */
+  public synchronized void startGameScreen(Player currentPlayer) {
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          new ClientUI().start(new Stage());
+          closeWindow();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
+
+    System.out.println("Window closed");
+  }
+
+  /**
+   * Closes the current lobby window. Is called when game starts or user decides to leave lobby.
+   */
+  public void closeWindow() {
+    Stage s = (Stage) this.chat.getScene().getWindow();
+    s.close();
   }
 
   /**
@@ -239,7 +259,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.players = gs.getAllPlayers();
     } else {
       gs = player.getClientProtocol().getGameState();
-      this.players = gs.getAllPlayers();
+      try {
+        this.players = gs.getAllPlayers();
+      } catch (NullPointerException e) {
+        return;
+      }
     }
 
     Label[] nicknames = {player1, player2, player3, player4};
