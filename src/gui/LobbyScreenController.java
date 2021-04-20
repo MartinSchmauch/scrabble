@@ -80,6 +80,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   @FXML
   public synchronized void initialize() {
+    // remove later (just demo purposes)
+    this.countdown.setText(5 + "");
     this.player = LobbyScreen.getInstance().getPlayer();
     this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
@@ -152,14 +154,32 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Starts the countdown before the game launches.
    */
   public void startGame() {
+
     sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
   }
+
 
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
    */
   public synchronized void startGameScreen(Player currentPlayer) {
-    Platform.runLater(new Runnable() {
+
+
+    // Displays countdown
+    Timeline cdLabel =
+        new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+          int counter = 5;
+
+          @Override
+          public void handle(ActionEvent e) {
+            updateCountdown(counter);
+            counter--;
+          }
+        }));
+    cdLabel.setCycleCount(6);
+    cdLabel.play();
+
+    cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
       @Override
       public void run() {
         try {
@@ -169,9 +189,14 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
           e.printStackTrace();
         }
       }
-    });
+    }));
 
-    System.out.println("Window closed");
+
+
+  }
+
+  public void updateCountdown(int c) {
+    this.countdown.setText(c + "");
   }
 
   /**
