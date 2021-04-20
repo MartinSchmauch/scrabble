@@ -59,6 +59,8 @@ public class ClientUI extends Application { // implements sender?
     this.root = FXMLLoader.load(new File(FileParameters.fxmlPath).toURI().toURL());
     Scene scene1 = new Scene(root);
     primaryStage.setScene(scene1);
+    // Close server connections
+    primaryStage.setOnCloseRequest(e -> LobbyScreen.close());
     primaryStage.setTitle("Scrabble3");
     primaryStage.show();
   }
