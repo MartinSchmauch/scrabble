@@ -127,6 +127,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "leavelobby":
         sendDisconnectMessage(this.player.getNickname());
         LobbyScreen.close();
+        Stage st = (Stage) ((Button) e.getSource()).getScene().getWindow();
+        st.close();
         break;
       case "send":
       case "input":
@@ -137,7 +139,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         break;
       case "start":
         startGame();
-        Stage st = (Stage) ((Button) e.getSource()).getScene().getWindow();
+        st = (Stage) ((Button) e.getSource()).getScene().getWindow();
         st.close();
         break;
       case "settings":
@@ -239,15 +241,19 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       gs = player.getClientProtocol().getGameState();
       this.players = gs.getAllPlayers();
     }
+
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
-        if (players.get(i) != null) {
-          nicknames[i].setText(players.get(i).getNickname());
-          avatars[i]
-              .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
-        }
+        // Player connects
+        nicknames[i].setText(players.get(i).getNickname());
+        avatars[i]
+            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+      } else {
+        // Player disconnects
+        nicknames[i].setText("");
+        avatars[i].setImage(null);
       }
     }
   }
@@ -280,7 +286,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Lets a player connect.
+   * Lets a player connects, is calles by the server.
    * 
    * @param player Playerdata of the player to be (dis-)connecting
    */
@@ -289,7 +295,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Lets a player disconnect.
+   * Lets a player disconnect, is called by the server.
    * 
    * @param nickname of the player disconnecting
    */

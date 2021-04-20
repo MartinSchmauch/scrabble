@@ -188,7 +188,6 @@ public class Server {
           break;
         case UPDATE_CHAT:
           UpdateChatMessage um = (UpdateChatMessage) m;
-          System.out.println(lsc + " server");
           lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
           break;
         case START_GAME:
