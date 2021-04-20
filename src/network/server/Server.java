@@ -206,7 +206,7 @@ public class Server {
           break;
         case START_GAME:
           StartGameMessage sgm = (StartGameMessage) m;
-          lsc.startGame();
+          lsc.startGameScreen(this.player);
           break;
         case GAME_STATISTIC:
           GameStatisticMessage gsm = (GameStatisticMessage) m;

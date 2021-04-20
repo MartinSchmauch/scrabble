@@ -125,6 +125,7 @@ public class ClientProtocol extends Thread {
               break;
             case START_GAME:
               StartGameMessage sgMessage = (StartGameMessage) m;
+              this.lpc.startGameScreen(this.player);
               // tbImplemented
               break;
             case GAME_STATISTIC:

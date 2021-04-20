@@ -21,7 +21,7 @@ import network.messages.UpdateChatMessage;
  * The ServerProtocol processes all messages from the client and forwards them to the Server class.
  * This class is run as a thread and is created for every connected client. The first message has to
  * be a CONNECT_MESSAGE. If the nickname exists on the server already, the client is rejected.
- *
+ * 
  * @author ldreyer
  */
 
@@ -37,7 +37,7 @@ public class ServerProtocol extends Thread {
    * Server Protocol is initialized with a socket as client and a server object for game state and
    * server ui handling.
    */
-  
+
   public ServerProtocol(Socket client, Server server) {
     this.socket = client;
     this.server = server;
@@ -49,14 +49,20 @@ public class ServerProtocol extends Thread {
     }
   }
 
+
   /** Sends the initialGameState to the client who uses this protocol. */
 
   public void sendInitialGameState() throws IOException {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
-    sendToClient(m);
+
+    // Changed to send To All
+    this.server.sendToAll(m);
+
   }
 
+
   /** Sends message to the client who uses this protocol. */
+
 
   public void sendToClient(Message m) throws IOException {
     this.out.writeObject(m);
@@ -115,6 +121,7 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             server.removeClient(m.getFrom());
             running = false;
+            sendInitialGameState();
             disconnect();
             break;
           case MOVE_TILE:
@@ -128,10 +135,10 @@ public class ServerProtocol extends Thread {
             if (!ctm.getFrom().equals(server.getGameState().getCurrentPlayer())) {
               break;
             }
-            
+
             Turn turn = server.getGameController().getTurn();
             turn.endTurn();
-            
+
             String nextPlayer;
 
             if (turn.isValid()) {
@@ -142,10 +149,18 @@ public class ServerProtocol extends Thread {
             } else {
               nextPlayer = null;
             }
-            
+
             server.sendToAll(new TurnResponseMessage(ctm.getFrom(), turn.isValid(),
                 turn.getTurnScore(), nextPlayer));
-            
+
+            sendInitialGameState();
+            running = false;
+            disconnect();
+            break;
+
+          case TILE_REQUEST:
+            TileResponseMessage trm = (TileResponseMessage) m;
+
             break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;

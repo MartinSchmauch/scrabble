@@ -240,6 +240,7 @@ public class Player {
 
     this.client = new ClientProtocol(ip, GameSettings.port, this, null,
         LobbyScreenController.getLobbyInstance());
+
     if (this.client.isOK()) {
       this.client.start();
 
