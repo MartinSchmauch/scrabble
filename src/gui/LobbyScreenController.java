@@ -80,7 +80,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   @FXML
   public synchronized void initialize() {
-    // remove later (just demo purposes)
+
+    // TODO remove later (just demo purposes)
     this.countdown.setText(5 + "");
     this.player = LobbyScreen.getInstance().getPlayer();
     this.chat.setEditable(false);
@@ -100,7 +101,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.ip.setOpacity(0);
       this.settings.setOpacity(0.4);
       this.player.getClientProtocol().setLC(instance);
-
 
     } else {
 
@@ -154,7 +154,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Starts the countdown before the game launches.
    */
   public void startGame() {
-
+    this.start.setDisable(true);
+    this.settings.setDisable(true);
     sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
   }
 
@@ -168,7 +169,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     // Displays countdown
     Timeline cdLabel =
         new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-          int counter = 5;
+          int counter = 4;
 
           @Override
           public void handle(ActionEvent e) {
@@ -176,7 +177,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
             counter--;
           }
         }));
-    cdLabel.setCycleCount(6);
+    cdLabel.setCycleCount(5);
     cdLabel.play();
 
     cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
