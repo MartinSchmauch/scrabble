@@ -17,7 +17,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import mechanic.Player;
-import util.JSONHandler;
+import util.JsonHandler;
 
 
 
@@ -48,7 +48,7 @@ public class UserSettingsScreen extends Application {
 	
 	@FXML
 	public void initialize() {
-		this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
+		this.player = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
 		this.nickname.setText(this.player.getNickname());
 		this.volbar.setValue((double)this.player.getVolume());
 		this.vol.setText((int)this.volbar.getValue()+"");

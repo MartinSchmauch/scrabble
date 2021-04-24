@@ -50,9 +50,6 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     score.setText(settings.getMaxScore() + "");
     size.setText(settings.getGameBoardSize() + "");
     bingo.setText(settings.getBingo() + "");
-    ai.setText(settings.getAiDifficulty().substring(0, 1).toUpperCase()
-        + settings.getAiDifficulty().substring(1));
-
   }
 
   /**
