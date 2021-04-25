@@ -22,7 +22,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import mechanic.Field;
 import mechanic.Letter;
-import mechanic.Player;
 import mechanic.Tile;
 import network.client.ClientProtocol;
 import network.messages.CommitTurnMessage;
@@ -39,7 +38,7 @@ import network.server.Server;
 
 public class GamePanelController extends ClientUI implements Sender {
 
-  private Player player;
+  // private Player player;
   private ClientProtocol cp;
   private Server server;
   private static boolean selectedTileOnGrid = false;
@@ -80,9 +79,9 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void initialize() { // being called after @FXML annotated fields were populated
-    this.player = ClientUI.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
-    this.cc = new ChatController(this.player);
-    this.chat.setEditable(false);
+    ClientUI.player = ClientUI.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
+    cc = new ChatController(ClientUI.player);
+    chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
     SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
                                                                           // ersetzen
@@ -112,7 +111,7 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @FXML
   public void sendMessage(ActionEvent event) {
-    this.cc.sendChatMessage(this.player.getNickname(), this.textField.getText());
+    this.cc.sendChatMessage(ClientUI.player.getNickname(), this.textField.getText());
   }
 
   /**
@@ -230,19 +229,6 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
 
-  /** puts a message from the textField to the chat */
-  public void textFieldToTextArea() {
-    toTextArea(this.textField.textProperty().getValue());
-    this.textField.textProperty().setValue("");
-  }
-
-  /** puts a String from param in a new row in the TextArea */
-  public void toTextArea(String message) {
-    String chatHistory = this.chat.textProperty().getValue();
-    this.chat.textProperty().setValue(chatHistory + "\n" + message);
-  }
-
-
   /**
    * 
    * Methods to be used by the ClientProtocol to change the UI of the Client
@@ -296,27 +282,22 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    * @param tile
    */
-  public void addTile(Tile tile) {
-    char letter = tile.getLetter().getChar();
-    int tileValue = tile.getValue();
-    int column = tile.getField().getxCoordinate();
-    int row = tile.getField().getyCoordinate();
-
-    if (tile.isOnRack()) {
+  public void addTile(String letter, int tileValue, int column, int row, boolean fromRack) {
+    if (fromRack) {
       row = 0;
       if (column > 5) { // case: tile is in the second row of the rack
         row = 1;
-        column = column - 5;
+        column -= 5;
       }
-      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, true);
+      VisualTile newTile = new VisualTile(letter, tileValue, fromRack);
       newTile.setMouseTransparent(true);
       rack.add(newTile, column, row);
       GridPane.setHalignment(newTile, HPos.CENTER);
       GridPane.setValignment(newTile, VPos.BOTTOM);
       GridPane.setMargin(newTile, new Insets(0, 0, 5.5, 0));
 
-    } else if (tile.isOnGameBoard()) {
-      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, false);
+    } else {
+      VisualTile newTile = new VisualTile(letter, tileValue, !fromRack);
       newTile.setMouseTransparent(true);
       grid.add(newTile, column, row);
       GridPane.setHalignment(newTile, HPos.CENTER);
@@ -334,7 +315,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * @param newXCoordinate
    * @param newYCoordinate
    */
-  public void moveToRack(Tile tile, int newXCoordinate, int newYCoordinate) {
+  public void moveToRack(Tile tile, int oldXCoordinate, int oldYCoordinate) {
     removeTile(tile);
     tile.setOnRack(true);
     Field newField = new Field(newXCoordinate, newYCoordinate);
@@ -499,9 +480,9 @@ public class GamePanelController extends ClientUI implements Sender {
     }
   }
 
-  public Player getPlayer() {
-    return player;
-  }
+  // public Player getPlayer() {
+  // return ClientUI.getPlayer();
+  // }
 
 
   public Server getServer() {

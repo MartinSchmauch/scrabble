@@ -22,7 +22,7 @@ public class ClientUI extends Application { // implements sender?
   private Parent root;
   private static ClientUI instance;
   private String username;
-  private Player player;
+  public static Player player;
   private ClientProtocol connection;
 
   public static void main(String[] args) {
@@ -62,7 +62,7 @@ public class ClientUI extends Application { // implements sender?
     Scene scene1 = new Scene(root);
     primaryStage.setScene(scene1);
     // Close server connections
-    primaryStage.setOnCloseRequest(e -> LobbyScreen.close());
+    // primaryStage.setOnCloseRequest(e -> LobbyScreen.close());
     primaryStage.setTitle("Scrabble3");
     primaryStage.setResizable(false);
     primaryStage.show();
