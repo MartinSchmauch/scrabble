@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mechanic.Letter;
 import mechanic.Player;
+import util.JSONHandler;
 
 /**
  * 
@@ -51,6 +52,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   private Label letterValue;
   @FXML
   private Label letterAmount;
+  @FXML
+  private Label valid;
   @FXML
   private ImageView avatar;
   @FXML
@@ -116,14 +119,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.avatar
         .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
     settings = SettingsScreen.getSettings();
-    time.setText(settings.getTimePerPlayer() + "");
-    overtime.setText(settings.getMaxOvertime() + "");
-    score.setText(settings.getMaxScore() + "");
-    size.setText(settings.getGameBoardSize() + "");
-    bingo.setText(settings.getBingo() + "");
-    ai.setText(settings.getAiDifficulty().substring(0, 1).toUpperCase()
-        + settings.getAiDifficulty().substring(1));
-    dic0.setText(settings.getDictionary());
+    setUpLabels();
   }
 
   /**
@@ -196,9 +192,27 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         break;
       case "dic2":
         OpenExternalScreen.open(settings.getDictionary());
+        break;
+      case "restore":
+        settings = new JSONHandler().loadGameSettings("resources/defaultGameSettings.json");
+        setUpLabels();
       default:
         break;
     }
+  }
+
+  /**
+   * 
+   */
+  public void setUpLabels() {
+    this.time.setText(settings.getTimePerPlayer() + "");
+    this.overtime.setText(settings.getMaxOvertime() + "");
+    this.score.setText(settings.getMaxScore() + "");
+    this.size.setText(settings.getGameBoardSize() + "");
+    this.bingo.setText(settings.getBingo() + "");
+    this.ai.setText(settings.getAiDifficulty().substring(0, 1).toUpperCase()
+        + settings.getAiDifficulty().substring(1));
+    this.dic0.setText(settings.getDictionary());
   }
 
   /**
@@ -207,9 +221,12 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void chooseFile() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Choose Dictionary");
-    File f = fileChooser.showSaveDialog(new Stage());
+    File f = fileChooser.showOpenDialog(new Stage());
     if (f != null && f.getPath().equals("*.csv")) {
       settings.setDictionary(f.getPath());
+      this.valid.setOpacity(0);
+    } else {
+      this.valid.setOpacity(1);
     }
   }
 

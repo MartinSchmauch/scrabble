@@ -148,9 +148,15 @@
                            </rowConstraints>
                         </GridPane>
                         <Label prefHeight="18.0" prefWidth="99.0" text="Time per Player" />
-                        <Label id="durationLabel" fx:id="time" prefHeight="42.0" prefWidth="103.0" text="30" GridPane.columnIndex="1" />
+                        <Label id="durationLabel" fx:id="time" prefHeight="42.0" prefWidth="103.0" text="30" GridPane.columnIndex="1">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <Label text="Max Overtime" GridPane.rowIndex="1" />
-                        <Label fx:id="overtime" prefHeight="41.0" prefWidth="95.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="overtime" prefHeight="41.0" prefWidth="95.0" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <Label text="Max Score" GridPane.rowIndex="2" />
                         <Label fx:id="score" prefHeight="37.0" prefWidth="89.0" text="100" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Size" GridPane.rowIndex="3" />
@@ -202,6 +208,11 @@
                            </children>
                         </HBox>
                         <Label fx:id="dic0" text="dic0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="valid" alignment="CENTER_RIGHT" disable="true" opacity="0.0" prefHeight="31.0" prefWidth="220.0" text="File not valid (use .csv)" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                           <font>
+                              <Font size="7.0" />
+                           </font>
+                        </Label>
                      </children>
                   </GridPane>
                   <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="460.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
