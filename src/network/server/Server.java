@@ -336,4 +336,8 @@ public class Server {
   public ServerProtocol getServerProtocol() {
     return this.serverProtocol;
   }
+
+  public GamePanelController getGamePanelController() {
+    return gpc;
+  }
 }

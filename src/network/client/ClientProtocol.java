@@ -191,4 +191,8 @@ public class ClientProtocol extends Thread {
   public void setPlayer(Player player) {
     this.player = player;
   }
+
+  public GamePanelController getGamePanelController() {
+    return gpc;
+  }
 }

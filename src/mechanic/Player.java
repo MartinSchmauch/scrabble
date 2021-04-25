@@ -261,6 +261,8 @@ public class Player {
 
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this.info, null);
+    this.gpc = this.server.getGamePanelController();
+
     Runnable r = new Runnable() {
       public void run() {
         server.listen();
@@ -276,7 +278,8 @@ public class Player {
 
     this.client = new ClientProtocol(ip, GameSettings.port, this, null,
         LobbyScreenController.getLobbyInstance());
-
+    this.gpc = this.client.getGamePanelController();
+    
     if (this.client.isOK()) {
       this.client.start();
 
