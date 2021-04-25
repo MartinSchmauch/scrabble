@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import mechanic.Player;
 import network.client.ClientProtocol;
 
 /** @author mschmauc */
@@ -21,6 +22,7 @@ public class ClientUI extends Application { // implements sender?
   private Parent root;
   private static ClientUI instance;
   private String username;
+  private Player player;
   private ClientProtocol connection;
 
   public static void main(String[] args) {
@@ -80,5 +82,9 @@ public class ClientUI extends Application { // implements sender?
 
   public void setConnection(ClientProtocol connection) {
     this.connection = connection;
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 }

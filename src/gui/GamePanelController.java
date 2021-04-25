@@ -2,7 +2,6 @@ package gui;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -30,7 +29,6 @@ import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
-import network.messages.SendChatMessage;
 import network.server.Server;
 
 /**
@@ -47,9 +45,10 @@ public class GamePanelController extends ClientUI implements Sender {
   private static boolean selectedTileOnGrid = false;
   private static boolean selectedTileOnRack = false;
   private static int coordinates[] = new int[2];
+  private ChatController cc;
 
   @FXML
-  private TextArea textArea;
+  private TextArea chat;
   @FXML
   private TextField textField;
   @FXML
@@ -81,6 +80,10 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void initialize() { // being called after @FXML annotated fields were populated
+    this.player = ClientUI.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
+    this.cc = new ChatController(this.player);
+    this.chat.setEditable(false);
+    this.chat.appendText("Welcome to the chat! Please be gentle :)");
     SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
                                                                           // ersetzen
     remainingLetters.textProperty().bind(letterProperty.asString());
@@ -108,14 +111,8 @@ public class GamePanelController extends ClientUI implements Sender {
    */
 
   @FXML
-  public void testMessage(ActionEvent event) {
-    textFieldToTextArea();
-    try {
-      updateScore("Player 2", 1);
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+  public void sendMessage(ActionEvent event) {
+    this.cc.sendChatMessage(this.player.getNickname(), this.textField.getText());
   }
 
   /**
@@ -233,7 +230,7 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
 
-  /** puts a message from the textField to the textArea */
+  /** puts a message from the textField to the chat */
   public void textFieldToTextArea() {
     toTextArea(this.textField.textProperty().getValue());
     this.textField.textProperty().setValue("");
@@ -241,8 +238,8 @@ public class GamePanelController extends ClientUI implements Sender {
 
   /** puts a String from param in a new row in the TextArea */
   public void toTextArea(String message) {
-    String chatHistory = this.textArea.textProperty().getValue();
-    this.textArea.textProperty().setValue(chatHistory + "\n" + message);
+    String chatHistory = this.chat.textProperty().getValue();
+    this.chat.textProperty().setValue(chatHistory + "\n" + message);
   }
 
 
@@ -264,21 +261,15 @@ public class GamePanelController extends ClientUI implements Sender {
 
 
   /**
-   * This method updates the TextArea in the Client UI and puts the newest Chat message from the
-   * method parameter in the TextArea including timestamp and sender. Hereby a ChatMessage is built
-   * as string containing timeStamp, sender and message and puts them to the textArea as new row
+   * Updates Lobbychat by using the updateChat method in the Chat Controller.
    * 
    * @param sender
    * @param message
    * @param dateTime
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
-    String newChatMessage = "";
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-    newChatMessage = newChatMessage + sender + ", ";
-    newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
-    newChatMessage = newChatMessage + message;
-    toTextArea(newChatMessage);
+    this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
+    this.chat.setScrollTop(Double.MAX_VALUE);
   }
 
   /**
@@ -468,11 +459,7 @@ public class GamePanelController extends ClientUI implements Sender {
    */
 
   @Override
-  public void sendChatMessage(String sender, String message) {
-    Message m = new SendChatMessage(sender, message, LocalDateTime.now());
-    sendMessageToServer(m);
-
-  }
+  public void sendChatMessage(String sender, String message) {}
 
   @Override
   public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
