@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import mechanic.Player;
-import mechanic.Tile;
 import network.messages.Message;
 import network.messages.SendChatMessage;
 import network.messages.UpdateChatMessage;
@@ -75,7 +74,7 @@ public class ChatController implements Sender {
   }
 
   @Override
-  public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
+  public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
     // TODO Auto-generated method stub
 
   }
