@@ -14,7 +14,7 @@ import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
 import network.messages.SendChatMessage;
-import network.messages.TileResponseMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -152,8 +152,8 @@ public class ServerProtocol extends Thread {
 
             if (turn.isValid()) {
               nextPlayer = server.getGameController().getNextPlayer();
-              TileResponseMessage trm =
-                  new TileResponseMessage(server.getHost(), server.getGameController().drawTiles());
+              TileMessage trm =
+                  new TileMessage(server.getHost(), server.getGameController().drawTiles());
               sendToClient(trm);
             } else {
               nextPlayer = null;
@@ -167,8 +167,9 @@ public class ServerProtocol extends Thread {
             disconnect();
             break;
 
-          case TILE_REQUEST:
-            TileResponseMessage trm = (TileResponseMessage) m;
+          case TILE:
+            TileMessage tm = (TileMessage) m;
+            this.server.getGameController().addTilesToTileBag(tm.getTiles());
 
             break;
           case SEND_CHAT_TEXT:

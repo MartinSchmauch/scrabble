@@ -1,13 +1,13 @@
 /** @author lurny */
 package network.client;
 
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.Player;
 import mechanic.Tile;
 import network.messages.AddTileMessage;
@@ -18,11 +18,10 @@ import network.messages.GameStatisticMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
-import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
-import network.messages.TileResponseMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -93,19 +92,14 @@ public class ClientProtocol extends Thread {
                   .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
               gpc.addTile(atMessage.getTile());
               break;
-            case MOVE_TILE:
-              MoveTileMessage mtMessage = (MoveTileMessage) m;
-              // gpc.moveToRack(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
-              // mtMessage.getNewYCoordinate()); // TODO:param oldX, oldY !!
-              break;
             case REMOVE_TILE:
               RemoveTileMessage rtMessage = (RemoveTileMessage) m;
               // rtMessage.getTile().setField(gameState.getGameBoard()
               // .getField(rtMessage.getX(), rtMessage.getY()));
               // gpc.removeTile(rtMessage.getTile()); // TODO:param: int x, int y, boolean isOnRack
               break;
-            case TILE_RESPONSE:
-              TileResponseMessage trMessage = (TileResponseMessage) m;
+            case TILE:
+              TileMessage trMessage = (TileMessage) m;
               for (Tile t : trMessage.getTiles()) {
                 gpc.addTile(t);
               }
