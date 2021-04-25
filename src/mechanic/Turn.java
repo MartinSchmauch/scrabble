@@ -69,7 +69,7 @@ public class Turn implements Serializable {
       // find Top Letter
       while (t.getTopTile() != null) {
         t = t.getTopTile();
-        System.out.println("i am here");
+        //System.out.println("i am here");
       }
       // Go from Top to Bottom to build word
       wordTiles.add(t);

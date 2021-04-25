@@ -1,6 +1,7 @@
 package mechanic;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -15,9 +16,9 @@ public class AIplayer extends Player {
 
   private int maxNumOfTiles;
 
-  public AIplayer(String nickname, int maximumWordLength) {
+  public AIplayer(String nickname, int maxNumOfTiles) {
     super(nickname);
-    this.maxNumOfTiles = maximumWordLength;
+    this.maxNumOfTiles = maxNumOfTiles;
   }
 
   @JsonCreator
@@ -338,11 +339,13 @@ public class AIplayer extends Player {
       for (Field[] currentLocation : possibleLocations) {
         currentLayedDownTiles = null;
         indicesOnRack = new ArrayList<Integer>();
-        while ((currentLayedDownTiles = nextTiles(currentLayedDownTiles, indicesOnRack, 2)) != null) {
+        while ((currentLayedDownTiles = nextTiles(currentLayedDownTiles, indicesOnRack, k)) != null) {
           System.out.println(currentLayedDownTiles);
           for (int i = 0; i < currentLayedDownTiles.size(); i++) {
             currentLocation[i].setTile(currentLayedDownTiles.get(i));
             this.setRackTileToNone(indicesOnRack.get(i));
+            System.out.println("#### TILE MOVED FROM RACK TO GB #####");
+            System.out.println(currentLayedDownTiles.get(i));
           }
           currentTurn = new Turn(this.getNickname());
           currentTurn.setLaydDownTiles(currentLayedDownTiles);
@@ -357,7 +360,7 @@ public class AIplayer extends Player {
             }
           }
           //if (currentLayedDownTiles != null) {
-            this.cleanupGameboard(currentLayedDownTiles);
+            this.cleanupGameboardAndRack(currentLayedDownTiles, indicesOnRack);
           //}
         }
       }
@@ -372,10 +375,12 @@ public class AIplayer extends Player {
 
   }
 
-  private void cleanupGameboard(List<Tile> layedDownTileList) {
-    for (Tile t : layedDownTileList) {
+  private void cleanupGameboardAndRack(List<Tile> layedDownTileList, List<Integer> indicesOnRack) {
+    Tile t;
+    for (int i = 0; i < layedDownTileList.size(); i++) {
+      t = layedDownTileList.get(i);
       t.getField().setTileOneDirection(null);
-      this.getFreeRackField().setTile(t);
+      this.setRackTile(indicesOnRack.get(i), t);
     }
 
   }
@@ -393,7 +398,7 @@ public class AIplayer extends Player {
       for (int i = numOfTiles - 1; i >= 0; i--) {
         int currentRackIndex = indicesOnRack.get(i);
         for (currentRackIndex++; currentRackIndex < 7; currentRackIndex++) {
-          if (indicesOnRack.indexOf(currentRackIndex) == -1) {
+          if (indicesOnRack.indexOf(currentRackIndex) == -1 || indicesOnRack.indexOf(currentRackIndex) > i) {
             current.set(i, this.getRackTile(currentRackIndex));
             indicesOnRack.set(i, currentRackIndex);
             for (i++; i < numOfTiles; i++) {

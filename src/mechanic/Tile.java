@@ -212,7 +212,10 @@ public class Tile implements Serializable {
 
   @Override
   public String toString() {
-    return "Tile at Field " + this.field.toString() + " with Char " + this.letter.getChar();
+    if (this.getField().getTile() != this) {
+      return "###########################\n###########################\n###########################\n###########################\n DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n" + "Tile at at Field " + this.field.toString() + " with Char " + this.letter.getChar();
+    }
+    return "Tile at at Field " + this.field.toString() + " with Char " + this.letter.getChar();
   }
 
 }

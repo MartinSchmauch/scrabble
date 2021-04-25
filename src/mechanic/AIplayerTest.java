@@ -81,7 +81,7 @@ public class AIplayerTest {
   @Test
   public void testgenerateLayedDownTiles() {
     gb = new GameBoard(15);
-    aiplayer = new AIplayer("test", 10);
+    aiplayer = new AIplayer("test", 2);
 
     // BIRTHDAY
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(4, 8));
