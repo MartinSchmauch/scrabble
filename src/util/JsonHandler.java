@@ -3,8 +3,13 @@ package util;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.GameSettings;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +32,14 @@ public class JsonHandler {
 
   private ObjectMapper objectMapper;
 
+  /**
+   * The constructor initializes an object mapper for further json handling.
+   */
+
   public JsonHandler() {
     this.objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
   }
 
   /** This method loads a player profile from a file. */
@@ -118,14 +128,55 @@ public class JsonHandler {
     }
   }
 
+  /**
+   * This method writes all defined GameSettings to a Json File from the static GameSettings class.
+   */
 
   public void saveGameSettings(String path) {
-    GameSettings settings = new GameSettings();
+    JsonNodeFactory factory = JsonNodeFactory.instance;
+    ObjectNode rootNode = factory.objectNode();
+
+    rootNode.put("timePerPlayer", GameSettings.getTimePerPlayer());
+    rootNode.put("maxOvertime", GameSettings.getMaxOvertime());
+    rootNode.put("maxScore", GameSettings.getMaxScore());
+    rootNode.put("dictionary", GameSettings.getDictionary());
+    rootNode.put("bingo", GameSettings.getBingo());
+
+    ObjectNode letter = factory.objectNode();
+    ObjectNode letterInfo;
+
+    for (Letter l : GameSettings.getLetters().values()) {
+      letterInfo = factory.objectNode();
+      letterInfo.put("letterValue", l.getLetterValue());
+      letterInfo.put("count", l.getCount());
+      letter.set(l.getCharacter() + "", letterInfo);
+    }
+    rootNode.set("letters", letter);
+
+
+    ArrayNode specialFields = factory.arrayNode();
+    ObjectNode field = factory.objectNode();
+
+    for (Field f : GameSettings.getSpecialFields()) {
+      field = factory.objectNode();
+      field.put("xCoordinate", f.getxCoordinate());
+      field.put("yCoordinate", f.getyCoordinate());
+      field.put("wordMultiplier", f.getWordMultiplier());
+      field.put("letterMultiplier", f.getLetterMultiplier());
+      specialFields.add(field);
+    }
+    
+    rootNode.set("specialFields", specialFields);
+
+    FileWriter fileWriter;
     try {
-      objectMapper.writeValue(new File(path), settings);
+      fileWriter = new FileWriter(path);
+      fileWriter.write(rootNode.toPrettyString());
+      fileWriter.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
+
   }
 
 

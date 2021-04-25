@@ -1,99 +1,423 @@
 {
-	"timePerPlayer":1500,
-	"maxOvertime":600,
-	"maxScore":-1,
-	"dictionary":"resources/dict.csv",
-	"bingo":50,
-	"letters": {
-		"A":{"count":9,"letterValue":1},
-		"B":{"count":2,"letterValue":3},
-		"C":{"count":2,"letterValue":3},
-		"D":{"count":4,"letterValue":2},
-		"E":{"count":12,"letterValue":1},
-		"F":{"count":2,"letterValue":4},
-		"G":{"count":3,"letterValue":2},
-		"H":{"count":2,"letterValue":4},
-		"I":{"count":9,"letterValue":1},
-		"J":{"count":1,"letterValue":8},
-		"K":{"count":1,"letterValue":5},
-		"L":{"count":4,"letterValue":1},
-		"M":{"count":2,"letterValue":3},
-		"N":{"count":6,"letterValue":1},
-		"O":{"count":8,"letterValue":1},
-		"P":{"count":2,"letterValue":3},
-		"Q":{"count":1,"letterValue":10},
-		"R":{"count":6,"letterValue":1},
-		"S":{"count":4,"letterValue":1},
-		"T":{"count":6,"letterValue":1},
-		"U":{"count":4,"letterValue":1},
-		"V":{"count":2,"letterValue":4},
-		"W":{"count":2,"letterValue":4},
-		"X":{"count":1,"letterValue":8},
-		"Y":{"count":2,"letterValue":4},
-		"Z":{"count":1,"letterValue":10},
-		"*":{"count":2,"letterValue":0}
-	},
-	"specialFields":[
-		{"xCoordinate":8,"yCoordinate":8,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":2,"yCoordinate":2,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":3,"yCoordinate":3,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":4,"yCoordinate":4,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":5,"yCoordinate":5,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":14,"yCoordinate":2,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":13,"yCoordinate":3,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":12,"yCoordinate":4,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":11,"yCoordinate":5,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":2,"yCoordinate":14,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":3,"yCoordinate":13,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":4,"yCoordinate":12,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":5,"yCoordinate":11,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":14,"yCoordinate":14,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":13,"yCoordinate":13,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":12,"yCoordinate":12,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":11,"yCoordinate":11,"letterMultiplier":1,"wordMultiplier":2},
-		{"xCoordinate":1,"yCoordinate":1,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":15,"yCoordinate":1,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":1,"yCoordinate":15,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":15,"yCoordinate":15,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":1,"yCoordinate":8,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":8,"yCoordinate":1,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":15,"yCoordinate":8,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":8,"yCoordinate":15,"letterMultiplier":1,"wordMultiplier":3},
-		{"xCoordinate":4,"yCoordinate":1,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":12,"yCoordinate":1,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":7,"yCoordinate":3,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":8,"yCoordinate":3,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":1,"yCoordinate":4,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":8,"yCoordinate":4,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":15,"yCoordinate":4,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":3,"yCoordinate":7,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":7,"yCoordinate":7,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":9,"yCoordinate":7,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":13,"yCoordinate":7,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":4,"yCoordinate":8,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":12,"yCoordinate":8,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":3,"yCoordinate":9,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":7,"yCoordinate":9,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":9,"yCoordinate":9,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":13,"yCoordinate":9,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":1,"yCoordinate":12,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":8,"yCoordinate":12,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":15,"yCoordinate":12,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":7,"yCoordinate":13,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":9,"yCoordinate":13,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":4,"yCoordinate":15,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":12,"yCoordinate":15,"letterMultiplier":2,"wordMultiplier":1},
-		{"xCoordinate":6,"yCoordinate":2,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":10,"yCoordinate":2,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":2,"yCoordinate":6,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":6,"yCoordinate":6,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":10,"yCoordinate":6,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":14,"yCoordinate":6,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":2,"yCoordinate":10,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":6,"yCoordinate":10,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":10,"yCoordinate":10,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":14,"yCoordinate":10,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":6,"yCoordinate":14,"letterMultiplier":3,"wordMultiplier":1},
-		{"xCoordinate":10,"yCoordinate":14,"letterMultiplier":3,"wordMultiplier":1}
-	]
+  "timePerPlayer" : 1500,
+  "maxOvertime" : 600,
+  "maxScore" : -1,
+  "dictionary" : "resources/dict.csv",
+  "bingo" : 50,
+  "letters" : {
+    "A" : {
+      "letterValue" : 1,
+      "count" : 9
+    },
+    "B" : {
+      "letterValue" : 3,
+      "count" : 2
+    },
+    "C" : {
+      "letterValue" : 3,
+      "count" : 2
+    },
+    "D" : {
+      "letterValue" : 2,
+      "count" : 4
+    },
+    "E" : {
+      "letterValue" : 1,
+      "count" : 12
+    },
+    "F" : {
+      "letterValue" : 4,
+      "count" : 2
+    },
+    "G" : {
+      "letterValue" : 2,
+      "count" : 3
+    },
+    "H" : {
+      "letterValue" : 4,
+      "count" : 2
+    },
+    "I" : {
+      "letterValue" : 1,
+      "count" : 9
+    },
+    "J" : {
+      "letterValue" : 8,
+      "count" : 1
+    },
+    "K" : {
+      "letterValue" : 5,
+      "count" : 1
+    },
+    "L" : {
+      "letterValue" : 1,
+      "count" : 4
+    },
+    "M" : {
+      "letterValue" : 3,
+      "count" : 2
+    },
+    "N" : {
+      "letterValue" : 1,
+      "count" : 6
+    },
+    "O" : {
+      "letterValue" : 1,
+      "count" : 8
+    },
+    "P" : {
+      "letterValue" : 3,
+      "count" : 2
+    },
+    "Q" : {
+      "letterValue" : 10,
+      "count" : 1
+    },
+    "R" : {
+      "letterValue" : 1,
+      "count" : 6
+    },
+    "S" : {
+      "letterValue" : 1,
+      "count" : 4
+    },
+    "T" : {
+      "letterValue" : 1,
+      "count" : 6
+    },
+    "U" : {
+      "letterValue" : 1,
+      "count" : 4
+    },
+    "V" : {
+      "letterValue" : 4,
+      "count" : 2
+    },
+    "W" : {
+      "letterValue" : 4,
+      "count" : 2
+    },
+    "X" : {
+      "letterValue" : 8,
+      "count" : 1
+    },
+    "Y" : {
+      "letterValue" : 4,
+      "count" : 2
+    },
+    "Z" : {
+      "letterValue" : 10,
+      "count" : 1
+    },
+    "*" : {
+      "letterValue" : 0,
+      "count" : 2
+    }
+  },
+  "specialFields" : [ {
+    "xCoordinate" : 8,
+    "yCoordinate" : 8,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 2,
+    "yCoordinate" : 2,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 3,
+    "yCoordinate" : 3,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 4,
+    "yCoordinate" : 4,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 5,
+    "yCoordinate" : 5,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 14,
+    "yCoordinate" : 2,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 13,
+    "yCoordinate" : 3,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 12,
+    "yCoordinate" : 4,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 11,
+    "yCoordinate" : 5,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 2,
+    "yCoordinate" : 14,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 3,
+    "yCoordinate" : 13,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 4,
+    "yCoordinate" : 12,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 5,
+    "yCoordinate" : 11,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 14,
+    "yCoordinate" : 14,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 13,
+    "yCoordinate" : 13,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 12,
+    "yCoordinate" : 12,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 11,
+    "yCoordinate" : 11,
+    "wordMultiplier" : 2,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 1,
+    "yCoordinate" : 1,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 15,
+    "yCoordinate" : 1,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 1,
+    "yCoordinate" : 15,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 15,
+    "yCoordinate" : 15,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 1,
+    "yCoordinate" : 8,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 8,
+    "yCoordinate" : 1,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 15,
+    "yCoordinate" : 8,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 8,
+    "yCoordinate" : 15,
+    "wordMultiplier" : 3,
+    "letterMultiplier" : 1
+  }, {
+    "xCoordinate" : 4,
+    "yCoordinate" : 1,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 12,
+    "yCoordinate" : 1,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 7,
+    "yCoordinate" : 3,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 8,
+    "yCoordinate" : 3,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 1,
+    "yCoordinate" : 4,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 8,
+    "yCoordinate" : 4,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 15,
+    "yCoordinate" : 4,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 3,
+    "yCoordinate" : 7,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 7,
+    "yCoordinate" : 7,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 9,
+    "yCoordinate" : 7,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 13,
+    "yCoordinate" : 7,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 4,
+    "yCoordinate" : 8,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 12,
+    "yCoordinate" : 8,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 3,
+    "yCoordinate" : 9,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 7,
+    "yCoordinate" : 9,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 9,
+    "yCoordinate" : 9,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 13,
+    "yCoordinate" : 9,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 1,
+    "yCoordinate" : 12,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 8,
+    "yCoordinate" : 12,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 15,
+    "yCoordinate" : 12,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 7,
+    "yCoordinate" : 13,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 9,
+    "yCoordinate" : 13,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 4,
+    "yCoordinate" : 15,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 12,
+    "yCoordinate" : 15,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 2
+  }, {
+    "xCoordinate" : 6,
+    "yCoordinate" : 2,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 10,
+    "yCoordinate" : 2,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 2,
+    "yCoordinate" : 6,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 6,
+    "yCoordinate" : 6,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 10,
+    "yCoordinate" : 6,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 14,
+    "yCoordinate" : 6,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 2,
+    "yCoordinate" : 10,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 6,
+    "yCoordinate" : 10,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 10,
+    "yCoordinate" : 10,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 14,
+    "yCoordinate" : 10,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 6,
+    "yCoordinate" : 14,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  }, {
+    "xCoordinate" : 10,
+    "yCoordinate" : 14,
+    "wordMultiplier" : 1,
+    "letterMultiplier" : 3
+  } ]
 }

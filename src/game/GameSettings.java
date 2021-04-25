@@ -1,7 +1,5 @@
 package game;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.HashMap;
 import java.util.List;
 import mechanic.Field;
@@ -14,9 +12,7 @@ import mechanic.Letter;
  * @author ldreyer
  */
 
-@JsonInclude(Include.NON_NULL)
 public class GameSettings {
-
   public static int port = 8421;
   private static int gameBoardSize = 15;
   private static int gameCountdown = 5;
