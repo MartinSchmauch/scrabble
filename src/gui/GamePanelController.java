@@ -12,6 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
@@ -61,7 +63,7 @@ public class GamePanelController extends ClientUI implements Sender {
   @FXML
   private Rectangle tile1;
   @FXML
-  private GridPane grid, rack; // grid is the Main Game Panel
+  private GridPane grid, rack; // grid is the Main Game Board
   @FXML
   private ProgressBar timeProgress;
 
@@ -254,6 +256,8 @@ public class GamePanelController extends ClientUI implements Sender {
       * @param nickname of the player disconnecting
       */
 
+
+
   public void removeJoinedPlayer(String nickname) {
     // TODO
   }
@@ -419,7 +423,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    * @param nickName
    */
-  public void indicateInvalidTurn(String nickName) {
+  public void indicateInvalidTurn(String nickName, String message) {
     if (player1.getText().equals(nickName)) {
       // TODO: zug rückgängig machen
     } else if (player2.getText().equals(nickName)) {
@@ -429,6 +433,11 @@ public class GamePanelController extends ClientUI implements Sender {
     } else if (player4.getText().equals(nickName)) {
       // TODO: zug rückgängig machen
     }
+    Alert alert = new Alert(AlertType.ERROR);
+    alert.setTitle("Error");
+    alert.setHeaderText(null);
+    alert.setContentText(message);
+    alert.show();
   }
 
   /**
