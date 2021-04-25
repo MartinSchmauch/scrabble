@@ -33,7 +33,7 @@ public class Player {
   private Server server = null;
 
   static final int TILE_COUNT_PER_PLAY = 7;
-  static final int RACK_FIELDS = 12;
+  static final int RACK_FIELDS = 7;
 
   public Player(String nickname) {
     this.info = new PlayerData(nickname);
