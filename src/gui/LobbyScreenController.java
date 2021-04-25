@@ -1,13 +1,12 @@
 package gui;
 
 
-import java.io.IOException;
+import game.GameSettings;
+import game.GameState;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
-import game.GameSettings;
-import game.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -211,20 +210,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Sends a given message to all players.
    * 
    * @param m The Message to be sent
-   * @return true if message was sent, false otherwise
    */
   public boolean sendMessage(Message m) {
-    try {
-      if (this.player.isHost()) {
-        this.player.getServer().sendToAll(m);
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(m);
 
-      } else {
-        this.player.getClientProtocol().sendToServer(m);
-      }
-      return true;
-    } catch (IOException e) {
-      return false;
+    } else {
+      this.player.getClientProtocol().sendToServer(m);
     }
+    return true;
   }
 
   /**

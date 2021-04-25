@@ -95,14 +95,14 @@ public class ClientProtocol extends Thread {
               break;
             case MOVE_TILE:
               MoveTileMessage mtMessage = (MoveTileMessage) m;
-              gpc.moveToRack(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
-                  mtMessage.getNewYCoordinate()); // TODO:param oldX, oldY !!
+              // gpc.moveToRack(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
+              // mtMessage.getNewYCoordinate()); // TODO:param oldX, oldY !!
               break;
             case REMOVE_TILE:
               RemoveTileMessage rtMessage = (RemoveTileMessage) m;
-              rtMessage.getTile().setField(gameState.getGameBoard()
-                  .getField(rtMessage.getxCoordinate(), rtMessage.getyCoordinate()));
-              gpc.removeTile(rtMessage.getTile()); // TODO:param: int x, int y, boolean isOnRack
+              // rtMessage.getTile().setField(gameState.getGameBoard()
+              // .getField(rtMessage.getX(), rtMessage.getY()));
+              // gpc.removeTile(rtMessage.getTile()); // TODO:param: int x, int y, boolean isOnRack
               break;
             case TILE_RESPONSE:
               TileResponseMessage trMessage = (TileResponseMessage) m;

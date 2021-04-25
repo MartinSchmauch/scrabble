@@ -17,7 +17,6 @@ import java.util.Set;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
-import mechanic.Tile;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
@@ -139,7 +138,7 @@ public class Server {
       sendToAll(m);
       Field f = m.getTile().getField();
       RemoveTileMessage rtm = new RemoveTileMessage(host, f.getxCoordinate(), f.getyCoordinate());
-      serverProtocol.sendToClient(rtm);
+      clients.get(m.getFrom()).sendToClient(rtm);
     } else {
       InvalidMoveMessage im =
           new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
@@ -179,7 +178,7 @@ public class Server {
     AddTileMessage atm =
         new AddTileMessage(host, oldField.getTile(), m.getNewXCoordinate(), m.getNewYCoordinate());
     sendToAll(rtm);
-    serverProtocol.sendToClient(atm);
+    clients.get(m.getFrom()).sendToClient(atm);
   }
 
 
@@ -280,17 +279,17 @@ public class Server {
           RemoveTileMessage rtm = (RemoveTileMessage) m;
           gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
           break;
-        case MOVE_TILE:
-          MoveTileMessage mtm = (MoveTileMessage) m;
-          Tile t = this.gameState.getGameBoard()
-              .getField(mtm.getOldXCoordinate(), mtm.getOldYCoordinate()).getTile();
-          gpc.removeTile(mtm.getOldXCoordinate(), mtm.getOldYCoordinate(),
-              (mtm.getOldYCoordinate() == -1));
-
-          t.setField(this.gameState.getGameBoard().getField(mtm.getNewXCoordinate(),
-              mtm.getNewYCoordinate()));
-          gpc.addTile(t);
-          break;
+        // case MOVE_TILE:
+        // MoveTileMessage mtm = (MoveTileMessage) m;
+        // Tile t = this.gameState.getGameBoard()
+        // .getField(mtm.getOldXCoordinate(), mtm.getOldYCoordinate()).getTile();
+        // gpc.removeTile(mtm.getOldXCoordinate(), mtm.getOldYCoordinate(),
+        // (mtm.getOldYCoordinate() == -1));
+        //
+        // t.setField(this.gameState.getGameBoard().getField(mtm.getNewXCoordinate(),
+        // mtm.getNewYCoordinate()));
+        // gpc.addTile(t);
+        // break;
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
           if (!trm.getIsValid()) {
