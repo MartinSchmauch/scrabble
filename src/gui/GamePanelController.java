@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -500,12 +499,8 @@ public class GamePanelController extends ClientUI implements Sender {
    */
 
   public void sendMessageToServer(Message m) {
-    try {
-      if (getConnection() != null) {
-        getConnection().sendToServer(m);
-      }
-    } catch (IOException e1) {
-      e1.printStackTrace();
+    if (getConnection() != null) {
+      getConnection().sendToServer(m);
     }
   }
 

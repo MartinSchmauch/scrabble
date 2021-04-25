@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import mechanic.Turn;
+import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
@@ -64,10 +65,16 @@ public class ServerProtocol extends Thread {
   /** Sends message to the client who uses this protocol. */
 
 
-  public void sendToClient(Message m) throws IOException {
-    this.out.writeObject(m);
-    out.flush();
-    out.reset();
+  public void sendToClient(Message m) {
+    try {
+      this.out.writeObject(m);
+      out.flush();
+      out.reset();
+    } catch (IOException e) {
+      System.out.println("Client " + this.clientName + " removed (message delivery failed).");
+      server.removeClient(this.clientName);
+      e.printStackTrace();
+    }
   }
 
   void disconnect() {
@@ -124,11 +131,13 @@ public class ServerProtocol extends Thread {
             sendInitialGameState();
             disconnect();
             break;
+          case ADD_TILE:
+            AddTileMessage atm = (AddTileMessage) m;
+            server.handleAddTileToGameBoard(atm);
+            break;
           case MOVE_TILE:
             MoveTileMessage mtm = (MoveTileMessage) m;
-            m.getFrom();
-            mtm.getTile();
-            server.sendToAll(m);
+            server.handleMoveTile(mtm);
             break;
           case COMMIT_TURN:
             CommitTurnMessage ctm = (CommitTurnMessage) m;

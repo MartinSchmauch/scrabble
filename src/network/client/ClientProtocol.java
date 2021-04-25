@@ -1,13 +1,13 @@
 /** @author lurny */
 package network.client;
 
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import mechanic.Player;
 import mechanic.Tile;
 import network.messages.AddTileMessage;
@@ -116,7 +116,7 @@ public class ClientProtocol extends Thread {
                 gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
                 turnrMessage.getNextPlayer();
               } else {
-                gpc.indicateInvalidTurn(turnrMessage.getFrom());
+                gpc.indicateInvalidTurn(turnrMessage.getFrom(), "Invalid Turn");
               }
               break;
             case LOBBY_STATUS:
@@ -168,10 +168,14 @@ public class ClientProtocol extends Thread {
     }
   }
 
-  public void sendToServer(Message message) throws IOException {
-    this.out.writeObject(message);
-    out.flush();
-    out.reset();
+  public void sendToServer(Message message) {
+    try {
+      this.out.writeObject(message);
+      this.out.flush();
+      this.out.reset();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public GameState getGameState() {

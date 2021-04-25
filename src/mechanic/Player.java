@@ -9,6 +9,8 @@ import gui.LobbyScreenController;
 import java.util.ArrayList;
 import java.util.List;
 import network.client.ClientProtocol;
+import network.messages.AddTileMessage;
+import network.messages.MoveTileMessage;
 import network.server.Server;
 
 /**
@@ -160,23 +162,54 @@ public class Player {
   }
 
   /**
-   * 
    * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
    * If the operation was successful the method returns true.
-   * 
-   * @param indexBefore
-   * @param indexAfter
-   * @return success
    */
 
-  public boolean reorganizeRackTile(int indexBefore, int indexAfter) {
-    if (rack[indexAfter].getTile() != null) {
-      return false;
+  public void reorganizeRackTile(int indexBefore, int indexAfter) {
+    if (rack[indexBefore].getTile() == null && rack[indexAfter].getTile() != null) {
+      gpc.indicateInvalidTurn(this.getNickname(), "Invalid Field Selection.");
     }
 
     rack[indexAfter].setTile(removeRackTile(indexBefore));
-    return true;
+    gpc.moveToRack(rack[indexAfter].getTile(), indexBefore, -1);
   }
+
+
+  public void moveToRack(Tile tile, int newIndex) {
+    if (newIndex == -1 && getFreeRackField() != null) {
+      newIndex = getFreeRackField().getxCoordinate();
+    }
+    if (newIndex == -1 || rack[newIndex].getTile() != null) {
+      gpc.indicateInvalidTurn(this.getNickname(), "Field on Rack not free.");
+    }
+    
+    MoveTileMessage mtm = new MoveTileMessage(this.getNickname(), tile.getField().getxCoordinate(),
+        tile.getField().getyCoordinate(), newIndex, -1);
+    
+    if (this.isHost()) {
+      server.handleMoveTile(mtm);
+    } else {
+      client.sendToServer(mtm);
+    }
+  }
+
+
+  public void moveToGameBoard(int oldIndex, int newX, int newY) {
+    Tile t = rack[oldIndex].getTile();
+    if (t == null) {
+      gpc.indicateInvalidTurn(this.getNickname(), "Selcted field on Rack is empty.");
+    }
+
+    AddTileMessage atm = new AddTileMessage(this.getNickname(), t, newX, newY);
+
+    if (this.isHost()) {
+      server.handleAddTileToGameBoard(atm);
+    } else {
+        client.sendToServer(atm);
+    }
+  }
+
 
   /*
    * PLAYER SETTINGS
