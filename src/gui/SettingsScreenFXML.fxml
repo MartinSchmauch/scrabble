@@ -98,6 +98,9 @@
                               <Button fx:id="moDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="moUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
+                           <rowConstraints>
+                              <RowConstraints />
+                           </rowConstraints>
                         </GridPane>
                         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">
                           <columnConstraints>
@@ -110,6 +113,9 @@
                               <Button fx:id="msDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="msUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                            </children>
+                           <rowConstraints>
+                              <RowConstraints />
+                           </rowConstraints>
                         </GridPane>
                         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="3">
                           <columnConstraints>
@@ -122,6 +128,9 @@
                               <Button fx:id="sDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="sUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
+                           <rowConstraints>
+                              <RowConstraints />
+                           </rowConstraints>
                         </GridPane>
                         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="4">
                           <columnConstraints>
@@ -134,6 +143,9 @@
                               <Button fx:id="bDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="bUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
+                           <rowConstraints>
+                              <RowConstraints />
+                           </rowConstraints>
                         </GridPane>
                         <Label prefHeight="18.0" prefWidth="99.0" text="Time per Player" />
                         <Label id="durationLabel" fx:id="time" prefHeight="42.0" prefWidth="103.0" text="30" GridPane.columnIndex="1" />
@@ -153,12 +165,12 @@
                         <Label fx:id="ai" prefHeight="42.0" prefWidth="89.0" text="Easy" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <Label text="Letter" GridPane.rowIndex="8" />
                         <Label fx:id="letter" text="A" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label fx:id="letterValue" alignment="CENTER" prefHeight="18.0" prefWidth="0.0" text="1" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                        <Label fx:id="letterValue" prefHeight="18.0" prefWidth="26.0" text="1" GridPane.columnIndex="1" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
                         </Label>
-                        <Label fx:id="letterAmount" text="9" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                        <Label fx:id="letterAmount" prefHeight="18.0" prefWidth="37.0" text="9" GridPane.columnIndex="1" GridPane.rowIndex="9">
                            <GridPane.margin>
                               <Insets left="50.0" />
                            </GridPane.margin>
@@ -189,6 +201,7 @@
                               </HBox>
                            </children>
                         </HBox>
+                        <Label fx:id="dic0" text="dic0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                      </children>
                   </GridPane>
                   <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="460.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">

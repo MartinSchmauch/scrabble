@@ -75,7 +75,8 @@ public class UserSettingsScreenController extends UserSettingsScreen
         s.close();
         break;
       case "tut":
-        OpenTutorial.open();
+        OpenExternalScreen
+            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
         break;
       case "next":
         updateAvatar(true);

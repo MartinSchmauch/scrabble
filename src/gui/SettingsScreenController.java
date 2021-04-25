@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import game.GameSettings;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -9,7 +10,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import mechanic.Letter;
 import mechanic.Player;
 
 /**
@@ -40,6 +43,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   private Label bingo;
   @FXML
   private Label ai;
+  @FXML
+  private Label dic0;
   @FXML
   private Label letter;
   @FXML
@@ -118,7 +123,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     bingo.setText(settings.getBingo() + "");
     ai.setText(settings.getAiDifficulty().substring(0, 1).toUpperCase()
         + settings.getAiDifficulty().substring(1));
-
+    dic0.setText(settings.getDictionary());
   }
 
   /**
@@ -167,10 +172,76 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       case "letterDown":
         updateLetterLabel(this.letter.getText().charAt(0), false);
         break;
+      case "valueUp":
+        updateLabel(this.letterValue, Integer.parseInt(letterValue.getText()) + 1);
+        updateValueOrCount();
+        break;
+      case "valueDown":
+        updateLabel(this.letterValue, Integer.parseInt(letterValue.getText()) - 1);
+        updateValueOrCount();
+        break;
+      case "amountUp":
+        updateLabel(this.letterAmount, Integer.parseInt(letterAmount.getText()) + 1);
+        updateValueOrCount();
+        break;
+      case "amountDown":
+        updateLabel(this.letterAmount, Integer.parseInt(letterAmount.getText()) - 1);
+        updateValueOrCount();
+        break;
+      case "dif":
+        changeAi();
+        break;
+      case "dic1":
+        chooseFile();
+        break;
+      case "dic2":
+        OpenExternalScreen.open(settings.getDictionary());
       default:
         break;
     }
   }
+
+  /**
+   * Lets a user choose a new dictionary to be used
+   */
+  public void chooseFile() {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Choose Dictionary");
+    File f = fileChooser.showSaveDialog(new Stage());
+    if (f != null && f.getPath().equals("*.csv")) {
+      settings.setDictionary(f.getPath());
+    }
+  }
+
+  /**
+   * Changes the AI Difficulty between easy and hard.
+   */
+  public void changeAi() {
+    if (this.ai.getText().equals("Easy")) {
+      this.ai.setText("Hard");
+      settings.setAiDifficulty("hard");
+    } else {
+      this.ai.setText("Easy");
+      settings.setAiDifficulty("easy");
+    }
+  }
+
+  /**
+   * Updates the value and count of letters after performing a change. The changes will be saved in
+   * the letters Hashmap.
+   */
+  public void updateValueOrCount() {
+    settings.getLetters().put(this.letter.getText().charAt(0),
+        new Letter(this.letter.getText().charAt(0), Integer.parseInt(letterValue.getText()),
+            Integer.parseInt(letterAmount.getText())));
+  }
+
+  /**
+   * Lets a user cycle through all letters to be able to change amount and value for this letter.
+   * 
+   * @param current the currently selected character out of [A-Z].
+   * @param direction indicates if the letter is to be incremented or decremented.
+   */
 
   public void updateLetterLabel(Character current, boolean direction) {
     if (direction) {
