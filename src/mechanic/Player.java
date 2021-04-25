@@ -1,12 +1,13 @@
 package mechanic;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
+import gui.GamePanelController;
 import gui.LobbyScreenController;
+import java.util.ArrayList;
+import java.util.List;
 import network.client.ClientProtocol;
 import network.server.Server;
 
@@ -31,6 +32,8 @@ public class Player {
   private ClientProtocol client = null;
   @JsonIgnore
   private Server server = null;
+  @JsonIgnore
+  private GamePanelController gpc = null;
 
   static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 12;

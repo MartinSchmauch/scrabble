@@ -7,13 +7,13 @@ import java.util.List;
 import mechanic.Field;
 import mechanic.GameBoard;
 import mechanic.PlayerData;
-import util.JSONHandler;
+import util.JsonHandler;
 
 /**
  * This class keeps track whether the game is running or in lobby state. It refers to the
  * GameSettings and holds the player data (including avatars) of all players in the lobby or in the
  * game.
- * 
+ *
  * @author nilbecke, ldreyer
  */
 
@@ -30,6 +30,8 @@ public class GameState implements Serializable, Runnable {
   private String time;
   private transient Thread thread;
   private double timeLeftBar;
+  private boolean turnCountdown;
+  private GameSettings gameSettings;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -38,18 +40,18 @@ public class GameState implements Serializable, Runnable {
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
     this.thread = new Thread(this);
-    JSONHandler jH = new JSONHandler();
+    JsonHandler jsonHandler = new JsonHandler();
 
     if (customGameSettings != null) {
-      jH.loadGameSettings(customGameSettings);
+      jsonHandler.loadGameSettings(customGameSettings);
     } else {
-      jH.loadGameSettings("resources/defaultGameSettings.json");
+      jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
     }
   }
 
   /**
-   * setUp Gameboard with special Fields
-   * 
+   * Set up gameboard with special fields.
+   *
    * @author lurny
    */
   public void setUpGameboard() {
@@ -66,11 +68,11 @@ public class GameState implements Serializable, Runnable {
 
   /**
    * Thread to countdown the maxmimum length of a turn.
-   * 
+   *
    * @author lurny
    */
   public void run() {
-    while (true) {
+    while (turnCountdown) {
       if (this.sec > 9) {
         this.time = this.min + ":" + this.sec;
       } else {
@@ -83,37 +85,38 @@ public class GameState implements Serializable, Runnable {
         this.sec = 59;
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
-
+        this.turnCountdown = false;
       } else {
         this.sec--;
       }
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {
-
+        this.turnCountdown = false;
       }
     }
   }
 
   /**
    * method to start the Turn timer.
-   * 
+   *
    * @author lurny
    */
   public void startTimer() {
     this.min = 10;
     this.sec = 0;
+    this.turnCountdown = true;
     this.thread.start();
   }
 
   /**
    * method to stop the Turn timer.
-   * 
+   *
    * @author lurny
    */
-  @SuppressWarnings("deprecation")
+
   public void stopTimer() {
-    this.thread.stop();
+    this.turnCountdown = false;
   }
 
   public int getMin() {

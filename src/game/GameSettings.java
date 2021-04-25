@@ -8,25 +8,23 @@ import mechanic.Letter;
 /**
  * This class is static and holds all current game settings. It can be updated with a Json file and
  * the loadGameSettings method of the JSONHandler class.
- * 
+ *
  * @author ldreyer
  */
 
 public class GameSettings {
-  private static int timePerPlayer;
+  public static int port = 8421;
+  private static int gameBoardSize = 15;
+  private static int gameCountdown = 5;
+
+  private static int timePerPlayer = 5;
   private static int maxOvertime;
   private static int maxScore;
-  private static int gameBoardSize;
   private static String dictionary;
-  private static String aiDifficulty;
-  private static int gameCountdown;
   private static int bingo;
 
   private static HashMap<Character, Letter> letters;
   private static List<Field> specialFields;
-
-  public static int port = 8421;
-
 
 
   public static int getTimePerPlayer() {
@@ -78,17 +76,6 @@ public class GameSettings {
     GameSettings.dictionary = dictionary;
   }
 
-
-  public static String getAiDifficulty() {
-    return aiDifficulty;
-  }
-
-
-  public static void setAiDifficulty(String aiDifficulty) {
-    GameSettings.aiDifficulty = aiDifficulty;
-  }
-
-
   public static int getGameCountdown() {
     return gameCountdown;
   }
@@ -109,13 +96,12 @@ public class GameSettings {
   }
 
 
-  public static HashMap<Character, Letter> getLetters() {
-    return letters;
-  }
-
-
   public static void setLetters(HashMap<Character, Letter> letters) {
     GameSettings.letters = letters;
+  }
+
+  public static HashMap<Character, Letter> getLetters() {
+    return letters;
   }
 
 
@@ -127,7 +113,5 @@ public class GameSettings {
   public static void setSpecialFields(List<Field> specialFields) {
     GameSettings.specialFields = specialFields;
   }
-
-
 
 }

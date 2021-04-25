@@ -301,7 +301,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * @param tile
    */
   public void addTile(Tile tile) {
-    char letter = tile.getLetter().getChar();
+    char letter = tile.getLetter().getCharacter();
     int tileValue = tile.getValue();
     int column = tile.getField().getxCoordinate();
     int row = tile.getField().getyCoordinate();
