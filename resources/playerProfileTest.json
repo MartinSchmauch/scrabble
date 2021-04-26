@@ -1,13 +1,3 @@
-{
-  "nickname" : "ScrabbleGamer",
-  "avatar" : "/About.png",
-  "volume" : 60,
-  "customGameSettings" : null,
-  "clientProtocol" : null,
-  "host" : false,
-  "playerInfo" : {
-    "nickname" : "ScrabbleGamer",
-    "avatar" : "/About.png",
-    "host" : false
-  }
-}
+
+{"nickname":"123440977","avatar":"/avatar4.png","volume":57,"customGameSettings":"","host":false,"playerInfo":{"nickname":"123440977","avatar":"/avatar4.png","host":false},"clientProtocol":null}
+

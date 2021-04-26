@@ -40,7 +40,9 @@ public class GameState implements Serializable, Runnable {
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
     this.thread = new Thread(this);
+
     JsonHandler jsonHandler = new JsonHandler();
+
 
     if (customGameSettings != null) {
       jsonHandler.loadGameSettings(customGameSettings);

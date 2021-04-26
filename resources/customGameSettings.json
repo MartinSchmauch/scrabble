@@ -4,6 +4,7 @@
   "maxScore" : -1,
   "dictionary" : "resources/dict.csv",
   "bingo" : 50,
+  "difficulty": "easy",
   "letters" : {
     "A" : {
       "letterValue" : 1,

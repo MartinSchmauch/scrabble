@@ -65,7 +65,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           System.exit(0);
           break;
         case "Tutorial":
-          OpenTutorial.open();
+          OpenExternalScreen
+              .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
           break;
 
         case "Settings":

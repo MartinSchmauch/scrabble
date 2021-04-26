@@ -1,13 +1,6 @@
 package util;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import game.GameSettings;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +10,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import game.GameSettings;
 import mechanic.Field;
 import mechanic.Letter;
 import mechanic.Player;
@@ -82,7 +83,7 @@ public class JsonHandler {
 
       HashMap<Character, Letter> letters = new HashMap<Character, Letter>();
       Iterator<Entry<String, JsonNode>> nodes = jsonNode.get("letters").fields();
-      
+
       while (nodes.hasNext()) {
         letterNode = (Map.Entry<String, JsonNode>) nodes.next();
 
@@ -111,8 +112,7 @@ public class JsonHandler {
         }
 
         specialFields.add(new Field(letterMultiplier, wordMultiplier,
-            fieldNode.get("xCoordinate").asInt(),
-            fieldNode.get("yCoordinate").asInt()));
+            fieldNode.get("xCoordinate").asInt(), fieldNode.get("yCoordinate").asInt()));
       }
 
       GameSettings.setTimePerPlayer(jsonNode.get("timePerPlayer").asInt());
@@ -120,6 +120,7 @@ public class JsonHandler {
       GameSettings.setMaxScore(jsonNode.get("maxScore").asInt());
       GameSettings.setDictionary(jsonNode.get("dictionary").asText());
       GameSettings.setBingo(jsonNode.get("bingo").asInt());
+      GameSettings.setAiDifficulty(jsonNode.get("difficulty").asText());
       GameSettings.setLetters(letters);
       GameSettings.setSpecialFields(specialFields);
 
@@ -141,6 +142,7 @@ public class JsonHandler {
     rootNode.put("maxScore", GameSettings.getMaxScore());
     rootNode.put("dictionary", GameSettings.getDictionary());
     rootNode.put("bingo", GameSettings.getBingo());
+    rootNode.put("difficulty", GameSettings.getAiDifficulty());
 
     ObjectNode letter = factory.objectNode();
     ObjectNode letterInfo;
@@ -165,7 +167,7 @@ public class JsonHandler {
       field.put("letterMultiplier", f.getLetterMultiplier());
       specialFields.add(field);
     }
-    
+
     rootNode.set("specialFields", specialFields);
 
     FileWriter fileWriter;
@@ -177,8 +179,8 @@ public class JsonHandler {
       e.printStackTrace();
     }
 
+
   }
-
-
-
 }
+
+

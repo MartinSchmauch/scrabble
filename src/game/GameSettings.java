@@ -22,10 +22,17 @@ public class GameSettings {
   private static int maxScore;
   private static String dictionary;
   private static int bingo;
-
+  private static String ai;
   private static HashMap<Character, Letter> letters;
   private static List<Field> specialFields;
 
+  public static String getAiDifficulty() {
+    return ai;
+  }
+
+  public static void setAiDifficulty(String newAi) {
+    ai = newAi;
+  }
 
   public static int getTimePerPlayer() {
     return timePerPlayer;

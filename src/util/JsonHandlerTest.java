@@ -2,11 +2,10 @@ package util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import game.GameSettings;
-import mechanic.Player;
 import org.junit.Before;
 import org.junit.Test;
+import game.GameSettings;
+import mechanic.Player;
 
 /**
  * This class tests the json handler implementation.
@@ -42,7 +41,7 @@ public class JsonHandlerTest {
     assertEquals(GameSettings.getTimePerPlayer(), 1500);
     assertEquals(GameSettings.getLetters().get('A').getLetterValue(), 1);
     assertEquals(GameSettings.getSpecialFields().get(0).getWordMultiplier(), 2);
-  
+
     jsonHandler.saveGameSettings("resources/customGameSettings.json");
   }
 
