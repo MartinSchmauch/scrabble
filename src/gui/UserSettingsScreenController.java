@@ -12,7 +12,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import util.JSONHandler;
+import util.JsonHandler;
 
 /**
  * This class handles all user based action in the User Settings Screen like changing nocknam,
@@ -64,7 +64,7 @@ public class UserSettingsScreenController extends UserSettingsScreen
       case "save":
       case "exit":
         this.player.setNickname(this.namefield.getText());
-        new JSONHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
+        new JsonHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
         LoginScreenController.getInstance().setUsername(this.player.getNickname());
         LoginScreenController.getInstance()
             .setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());

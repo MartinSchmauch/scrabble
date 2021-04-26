@@ -25,11 +25,11 @@ import mechanic.Player;
  * @author ldreyer
  */
 
-public class JSONHandler {
+public class JsonHandler {
 
   private ObjectMapper objectMapper;
 
-  public JSONHandler() {
+  public JsonHandler() {
     this.objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }

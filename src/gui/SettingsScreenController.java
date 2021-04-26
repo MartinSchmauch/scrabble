@@ -14,7 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mechanic.Letter;
 import mechanic.Player;
-import util.JSONHandler;
+import util.JsonHandler;
 
 /**
  * 
@@ -194,7 +194,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         OpenExternalScreen.open(settings.getDictionary());
         break;
       case "restore":
-        settings = new JSONHandler().loadGameSettings("resources/defaultGameSettings.json");
+        settings = new JsonHandler().loadGameSettings("resources/defaultGameSettings.json");
         setUpLabels();
       default:
         break;

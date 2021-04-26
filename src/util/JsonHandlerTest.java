@@ -9,14 +9,14 @@ import mechanic.Player;
 
 /** @author ldreyer */
 
-public class JSONHandlerTest {
+public class JsonHandlerTest {
 
-  private JSONHandler jH;
+  private JsonHandler jH;
   private Player p;
 
   @Before
   public void setUp() throws Exception {
-    this.jH = new JSONHandler();
+    this.jH = new JsonHandler();
   }
 
   @Test

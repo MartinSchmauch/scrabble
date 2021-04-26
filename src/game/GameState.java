@@ -7,7 +7,7 @@ import java.util.List;
 import mechanic.Field;
 import mechanic.GameBoard;
 import mechanic.PlayerData;
-import util.JSONHandler;
+import util.JsonHandler;
 
 /**
  * This class keeps track whether the game is running or in lobby state. It refers to the
@@ -38,7 +38,7 @@ public class GameState implements Serializable, Runnable {
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
     this.thread = new Thread(this);
-    JSONHandler jH = new JSONHandler();
+    JsonHandler jH = new JsonHandler();
 
     if (customGameSettings != null) {
       jH.loadGameSettings(customGameSettings);
