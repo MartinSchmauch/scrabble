@@ -13,9 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import mechanic.Player;
-import util.JSONHandler;
+import util.JsonHandler;
 
 /**
  * This Class launches the Login Screen of the Scrabble Application
@@ -39,7 +38,7 @@ public class LoginScreen extends Application {
 
   @FXML
   public void initialize() {
-    this.currentPlayer = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    this.currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar
         .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
@@ -74,7 +73,7 @@ public class LoginScreen extends Application {
     }
     Scene scene = new Scene(root);
     stage.setScene(scene);
-    stage.initStyle(StageStyle.UNDECORATED);
+    // stage.initStyle(StageStyle.UNDECORATED);
     stage.setTitle("Scrabble3");
 
     stage.show();

@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import mechanic.Turn;
+import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
@@ -13,7 +14,7 @@ import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
 import network.messages.SendChatMessage;
-import network.messages.TileResponseMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -21,7 +22,7 @@ import network.messages.UpdateChatMessage;
  * The ServerProtocol processes all messages from the client and forwards them to the Server class.
  * This class is run as a thread and is created for every connected client. The first message has to
  * be a CONNECT_MESSAGE. If the nickname exists on the server already, the client is rejected.
- *
+ * 
  * @author ldreyer
  */
 
@@ -37,7 +38,7 @@ public class ServerProtocol extends Thread {
    * Server Protocol is initialized with a socket as client and a server object for game state and
    * server ui handling.
    */
-  
+
   public ServerProtocol(Socket client, Server server) {
     this.socket = client;
     this.server = server;
@@ -49,19 +50,31 @@ public class ServerProtocol extends Thread {
     }
   }
 
+
   /** Sends the initialGameState to the client who uses this protocol. */
 
   public void sendInitialGameState() throws IOException {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
-    sendToClient(m);
+
+    // Changed to send To All
+    this.server.sendToAll(m);
+
   }
+
 
   /** Sends message to the client who uses this protocol. */
 
-  public void sendToClient(Message m) throws IOException {
-    this.out.writeObject(m);
-    out.flush();
-    out.reset();
+
+  public void sendToClient(Message m) {
+    try {
+      this.out.writeObject(m);
+      out.flush();
+      out.reset();
+    } catch (IOException e) {
+      System.out.println("Client " + this.clientName + " removed (message delivery failed).");
+      server.removeClient(this.clientName);
+      e.printStackTrace();
+    }
   }
 
   void disconnect() {
@@ -115,37 +128,49 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             server.removeClient(m.getFrom());
             running = false;
+            sendInitialGameState();
             disconnect();
+            break;
+          case ADD_TILE:
+            AddTileMessage atm = (AddTileMessage) m;
+            server.handleAddTileToGameBoard(atm);
             break;
           case MOVE_TILE:
             MoveTileMessage mtm = (MoveTileMessage) m;
-            m.getFrom();
-            mtm.getTile();
-            server.sendToAll(m);
+            server.handleMoveTile(mtm);
             break;
           case COMMIT_TURN:
             CommitTurnMessage ctm = (CommitTurnMessage) m;
             if (!ctm.getFrom().equals(server.getGameState().getCurrentPlayer())) {
               break;
             }
-            
+
             Turn turn = server.getGameController().getTurn();
             turn.endTurn();
-            
+
             String nextPlayer;
 
             if (turn.isValid()) {
               nextPlayer = server.getGameController().getNextPlayer();
-              TileResponseMessage trm =
-                  new TileResponseMessage(server.getHost(), server.getGameController().drawTiles());
+              TileMessage trm =
+                  new TileMessage(server.getHost(), server.getGameController().drawTiles());
               sendToClient(trm);
             } else {
               nextPlayer = null;
             }
-            
+
             server.sendToAll(new TurnResponseMessage(ctm.getFrom(), turn.isValid(),
                 turn.getTurnScore(), nextPlayer));
-            
+
+            sendInitialGameState();
+            running = false;
+            disconnect();
+            break;
+
+          case TILE:
+            TileMessage tm = (TileMessage) m;
+            this.server.getGameController().addTilesToTileBag(tm.getTiles());
+
             break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;

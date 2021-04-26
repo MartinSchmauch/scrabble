@@ -1,33 +1,38 @@
 package mechanic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * This class is used for storing all available letters and how many tiles of the respective letter
  * are generated for the TileBag. The letter object is an attribute of every tile, defining its
  * identity. All attributes are final. Letters are generated from the GameSettings.
- * 
+ *
  * @author ldreyer
  */
 
 public class Letter {
-  private final char CHAR;
-  private final int VALUE;
-  private final int COUNT;
+
+  @JsonIgnore
+  private char character;
+
+  private int value;
+  private int count;
 
   public Letter(char letter, int letterValue, int count) {
-    this.CHAR = letter;
-    this.VALUE = letterValue;
-    this.COUNT = count;
+    this.character = letter;
+    this.value = letterValue;
+    this.count = count;
   }
 
-  public char getChar() {
-    return this.CHAR;
+  public char getCharacter() {
+    return this.character;
   }
 
   public int getLetterValue() {
-    return this.VALUE;
+    return this.value;
   }
 
   public int getCount() {
-    return COUNT;
+    return this.count;
   }
 }

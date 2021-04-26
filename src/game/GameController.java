@@ -54,6 +54,19 @@ public class GameController {
     return tiles;
   }
 
+  /**
+   * This method adds Tiles from the parameter tileList to the TileBag.
+   * 
+   * @author lurny
+   * 
+   * @param liste
+   */
+  public void addTilesToTileBag(List<Tile> tileList) {
+    for (Tile t : tileList) {
+      this.tileBag.addTile(t);
+    }
+  }
+
 
   /**
    * This method validates the move of a tile from a player's rack to the game board. If allowed,

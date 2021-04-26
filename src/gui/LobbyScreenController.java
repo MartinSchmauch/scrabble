@@ -1,15 +1,15 @@
 package gui;
 
 
-import java.io.IOException;
+import game.GameSettings;
+import game.GameState;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
-import game.GameSettings;
-import game.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -79,12 +79,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   @FXML
   public synchronized void initialize() {
+
+    // TODO remove later (just demo purposes)
+    this.countdown.setText(5 + "");
     this.player = LobbyScreen.getInstance().getPlayer();
     this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
     this.cc = new ChatController(this.player);
     address = null;
     instance = this;
+
     try {
       address = InetAddress.getLocalHost();
     } catch (UnknownHostException e) {
@@ -96,7 +100,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.ip.setOpacity(0);
       this.settings.setOpacity(0.4);
       this.player.getClientProtocol().setLC(instance);
-
 
     } else {
 
@@ -126,6 +129,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "leavelobby":
         sendDisconnectMessage(this.player.getNickname());
         LobbyScreen.close();
+        closeWindow();
         break;
       case "send":
       case "input":
@@ -136,8 +140,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         break;
       case "start":
         startGame();
-        Stage st = (Stage) ((Button) e.getSource()).getScene().getWindow();
-        st.close();
         break;
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
@@ -151,32 +153,73 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Starts the countdown before the game launches.
    */
   public void startGame() {
-    new StartGameMessage(this.player.getNickname(), 10);
-    try {
-      new ClientUI().start(new Stage());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    this.start.setDisable(true);
+    this.settings.setDisable(true);
+    sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
+  }
+
+
+  /**
+   * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
+   */
+  public synchronized void startGameScreen(Player currentPlayer) {
+
+
+    // Displays countdown
+    Timeline cdLabel =
+        new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+          int counter = 4;
+
+          @Override
+          public void handle(ActionEvent e) {
+            updateCountdown(counter);
+            counter--;
+          }
+        }));
+    cdLabel.setCycleCount(5);
+    cdLabel.play();
+
+    cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        try {
+          new ClientUI().start(new Stage());
+          closeWindow();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }));
+
+
+
+  }
+
+  public void updateCountdown(int c) {
+    this.countdown.setText(c + "");
+  }
+
+  /**
+   * Closes the current lobby window. Is called when game starts or user decides to leave lobby.
+   */
+  public void closeWindow() {
+    Stage s = (Stage) this.chat.getScene().getWindow();
+    s.close();
   }
 
   /**
    * Sends a given message to all players.
    * 
    * @param m The Message to be sent
-   * @return true if message was sent, false otherwise
    */
   public boolean sendMessage(Message m) {
-    try {
-      if (this.player.isHost()) {
-        this.player.getServer().sendToAll(m);
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(m);
 
-      } else {
-        this.player.getClientProtocol().sendToServer(m);
-      }
-      return true;
-    } catch (IOException e) {
-      return false;
+    } else {
+      this.player.getClientProtocol().sendToServer(m);
     }
+    return true;
   }
 
   /**
@@ -236,17 +279,25 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.players = gs.getAllPlayers();
     } else {
       gs = player.getClientProtocol().getGameState();
-      this.players = gs.getAllPlayers();
+      try {
+        this.players = gs.getAllPlayers();
+      } catch (NullPointerException e) {
+        return;
+      }
     }
+
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
-        if (players.get(i) != null) {
-          nicknames[i].setText(players.get(i).getNickname());
-          avatars[i]
-              .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
-        }
+        // Player connects
+        nicknames[i].setText(players.get(i).getNickname());
+        avatars[i]
+            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+      } else {
+        // Player disconnects
+        nicknames[i].setText("");
+        avatars[i].setImage(null);
       }
     }
   }
@@ -279,7 +330,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Lets a player connect.
+   * Lets a player connects, is calles by the server.
    * 
    * @param player Playerdata of the player to be (dis-)connecting
    */
@@ -288,7 +339,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Lets a player disconnect.
+   * Lets a player disconnect, is called by the server.
    * 
    * @param nickname of the player disconnecting
    */

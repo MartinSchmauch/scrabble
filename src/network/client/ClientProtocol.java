@@ -18,11 +18,10 @@ import network.messages.GameStatisticMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
-import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
-import network.messages.TileResponseMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -93,19 +92,14 @@ public class ClientProtocol extends Thread {
                   .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
               gpc.addTile(atMessage.getTile());
               break;
-            case MOVE_TILE:
-              MoveTileMessage mtMessage = (MoveTileMessage) m;
-              gpc.moveToRack(mtMessage.getTile(), mtMessage.getNewXCoordinate(),
-                  mtMessage.getNewYCoordinate());
-              break;
             case REMOVE_TILE:
               RemoveTileMessage rtMessage = (RemoveTileMessage) m;
-              rtMessage.getTile().setField(gameState.getGameBoard()
-                  .getField(rtMessage.getxCoordinate(), rtMessage.getyCoordinate()));
-              gpc.removeTile(rtMessage.getTile());
+              // rtMessage.getTile().setField(gameState.getGameBoard()
+              // .getField(rtMessage.getX(), rtMessage.getY()));
+              // gpc.removeTile(rtMessage.getTile()); // TODO:param: int x, int y, boolean isOnRack
               break;
-            case TILE_RESPONSE:
-              TileResponseMessage trMessage = (TileResponseMessage) m;
+            case TILE:
+              TileMessage trMessage = (TileMessage) m;
               for (Tile t : trMessage.getTiles()) {
                 gpc.addTile(t);
               }
@@ -116,7 +110,7 @@ public class ClientProtocol extends Thread {
                 gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
                 turnrMessage.getNextPlayer();
               } else {
-                gpc.indicateInvalidTurn(turnrMessage.getFrom());
+                gpc.indicateInvalidTurn(turnrMessage.getFrom(), "Invalid Turn");
               }
               break;
             case LOBBY_STATUS:
@@ -125,6 +119,7 @@ public class ClientProtocol extends Thread {
               break;
             case START_GAME:
               StartGameMessage sgMessage = (StartGameMessage) m;
+              this.lpc.startGameScreen(this.player);
               // tbImplemented
               break;
             case GAME_STATISTIC:
@@ -133,7 +128,7 @@ public class ClientProtocol extends Thread {
               break;
             case UPDATE_CHAT:
               UpdateChatMessage ucMessage = (UpdateChatMessage) m;
-              // gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
+              gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
               lpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
               break;
             default:
@@ -167,10 +162,14 @@ public class ClientProtocol extends Thread {
     }
   }
 
-  public void sendToServer(Message message) throws IOException {
-    this.out.writeObject(message);
-    out.flush();
-    out.reset();
+  public void sendToServer(Message message) {
+    try {
+      this.out.writeObject(message);
+      this.out.flush();
+      this.out.reset();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public GameState getGameState() {
@@ -191,5 +190,9 @@ public class ClientProtocol extends Thread {
 
   public void setPlayer(Player player) {
     this.player = player;
+  }
+
+  public GamePanelController getGamePanelController() {
+    return gpc;
   }
 }

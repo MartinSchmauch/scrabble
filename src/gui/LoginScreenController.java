@@ -14,7 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
-import util.JSONHandler;
+import util.JsonHandler;
 
 /**
  * This Class is a Basic Handler for all the input options present in the Login Screen
@@ -42,7 +42,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     if (instance == null) {
       instance = this;
     }
-    this.player = new JSONHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    this.player = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
     if (e.getSource().getClass() != Button.class) {
       join();
     } else {
@@ -65,7 +65,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           System.exit(0);
           break;
         case "Tutorial":
-          OpenTutorial.open();
+          OpenExternalScreen
+              .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
           break;
 
         case "Settings":

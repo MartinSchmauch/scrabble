@@ -1,5 +1,10 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,17 +14,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
+import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameStatisticMessage;
+import network.messages.InvalidMoveMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
@@ -128,6 +130,58 @@ public class Server {
     this.clients.remove(player);
   }
 
+  /** Handles move from rack to gameBoard (with AddTileMessage). */
+
+  public void handleAddTileToGameBoard(AddTileMessage m) {
+    if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
+        m.getNewYCoordinate())) {
+      sendToAll(m);
+      Field f = m.getTile().getField();
+      RemoveTileMessage rtm = new RemoveTileMessage(host, f.getxCoordinate(), f.getyCoordinate());
+      clients.get(m.getFrom()).sendToClient(rtm);
+    } else {
+      InvalidMoveMessage im =
+          new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
+      sendToAll(im);
+    }
+  }
+
+  /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
+
+  public void handleMoveTile(MoveTileMessage m) {
+    Field oldField =
+        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate());
+
+    if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
+      if (!this.gameController.removeTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
+          m.getOldYCoordinate())) {
+        InvalidMoveMessage im =
+            new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
+        sendToAll(im);
+        return;
+      }
+    } else if (m.getNewYCoordinate() != -1 && m.getOldYCoordinate() != -1) { // move on game board
+      if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldXCoordinate(),
+          m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
+        InvalidMoveMessage im =
+            new InvalidMoveMessage(m.getFrom(), "Tile could not be moved on GameBoard.");
+        sendToAll(im);
+        return;
+      } else {
+        InvalidMoveMessage im = new InvalidMoveMessage(m.getFrom(), "Invalid.");
+        sendToAll(im);
+        return;
+      }
+    }
+    RemoveTileMessage rtm =
+        new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
+    AddTileMessage atm =
+        new AddTileMessage(host, oldField.getTile(), m.getNewXCoordinate(), m.getNewYCoordinate());
+    sendToAll(rtm);
+    clients.get(m.getFrom()).sendToClient(atm);
+  }
+
+
   public synchronized List<String> getClientNames() {
     Set<String> clientNames = this.clients.keySet();
     return new ArrayList<String>(clientNames);
@@ -135,25 +189,14 @@ public class Server {
 
   /** This method sends a message to a list of clients. */
   private synchronized void sendTo(List<String> clientNames, Message m) {
-    List<String> fails = new ArrayList<String>();
     for (String nickname : clientNames) {
+      ServerProtocol c = clients.get(nickname);
+      c.sendToClient((Message) (m));
       try {
-        ServerProtocol c = clients.get(nickname);
-        c.sendToClient((Message) (m));
-      } catch (IOException e) {
+        updateServerUi(m);
+      } catch (Exception e) {
         e.printStackTrace();
-        fails.add(nickname);
-        continue;
       }
-    }
-    for (String c : fails) {
-      System.out.println("Client " + c + " removed (message delivery failed).");
-      removeClient(c);
-    }
-    try {
-      updateServerUi(m);
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
@@ -167,9 +210,7 @@ public class Server {
   }
 
   /**
-   * <<<<<<< HEAD This method sends a message to all connected clients, except the one client given
-   * as parameter. ======= sends a message to all connected clients, except the one client who was
-   * given as parameter. >>>>>>> refs/remotes/origin/develop_loginscreen
+   * This method sends a message to all connected clients, except the one client given as parameter.
    */
 
   public void sendToAllBut(String name, Message m) {
@@ -206,7 +247,7 @@ public class Server {
           break;
         case START_GAME:
           StartGameMessage sgm = (StartGameMessage) m;
-          lsc.startGame();
+          lsc.startGameScreen(this.player);
           break;
         case GAME_STATISTIC:
           GameStatisticMessage gsm = (GameStatisticMessage) m;
@@ -236,16 +277,23 @@ public class Server {
           break;
         case REMOVE_TILE:
           RemoveTileMessage rtm = (RemoveTileMessage) m;
-          gpc.removeTile(rtm.getTile());
+          gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
           break;
-        case MOVE_TILE:
-          MoveTileMessage mtm = (MoveTileMessage) m;
-          gpc.moveToRack(mtm.getTile(), mtm.getNewXCoordinate(), mtm.getNewYCoordinate());
-          break;
+        // case MOVE_TILE:
+        // MoveTileMessage mtm = (MoveTileMessage) m;
+        // Tile t = this.gameState.getGameBoard()
+        // .getField(mtm.getOldXCoordinate(), mtm.getOldYCoordinate()).getTile();
+        // gpc.removeTile(mtm.getOldXCoordinate(), mtm.getOldYCoordinate(),
+        // (mtm.getOldYCoordinate() == -1));
+        //
+        // t.setField(this.gameState.getGameBoard().getField(mtm.getNewXCoordinate(),
+        // mtm.getNewYCoordinate()));
+        // gpc.addTile(t);
+        // break;
         case TURN_RESPONSE:
           TurnResponseMessage trm = (TurnResponseMessage) m;
           if (!trm.getIsValid()) {
-            gpc.indicateInvalidTurn(trm.getFrom());
+            gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
           } else {
             gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
             gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
@@ -287,5 +335,9 @@ public class Server {
 
   public ServerProtocol getServerProtocol() {
     return this.serverProtocol;
+  }
+
+  public GamePanelController getGamePanelController() {
+    return gpc;
   }
 }

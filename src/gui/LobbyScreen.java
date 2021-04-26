@@ -52,6 +52,7 @@ public class LobbyScreen extends Application {
       } else {
         try {
           player.connect(connection);
+
         } catch (Exception e) {
           System.out.println("Kein Host unter dieser Adresse");
         }
