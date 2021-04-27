@@ -2,14 +2,14 @@ package network.server;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import java.io.IOException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+
 import game.GameSettings;
 import mechanic.Player;
 import network.client.ClientProtocol;
 import network.messages.ConnectMessage;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 
 /** @author ldreyer */
@@ -56,11 +56,7 @@ public class ServerTest {
     }
 
     ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
-    try {
-      this.connection.sendToServer(cm);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    this.connection.sendToServer(cm);
 
     assertTrue(server.checkNickname("ScrabbleGamer"));
     System.out.println(server.getGameState().getAllPlayers());
@@ -75,11 +71,7 @@ public class ServerTest {
     }
 
     cm = new ConnectMessage(this.player2.getPlayerInfo());
-    try {
-      this.connection2.sendToServer(cm);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    this.connection2.sendToServer(cm);
 
     Thread.sleep(10);
 

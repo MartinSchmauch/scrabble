@@ -1,5 +1,6 @@
 package mechanic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 /**
@@ -8,15 +9,19 @@ import java.io.Serializable;
  * attribute knowing on which field it lies. This double-linked relation is automatically
  * established when setting a tile to a field. The word and letter multiplier values are one by
  * default and higher if the field is a special field.
- * 
+ *
  * @author ldreyer
  */
 
 public class Field implements Serializable {
 
   private static final long serialVersionUID = 1L;
+
+  @JsonIgnore
   private GameBoard gameBoard;
+  @JsonIgnore
   private Tile tile;
+
   private int xCoordinate; // starting at 1
   private int yCoordinate; // starting at 1
   private int letterMultiplier;
@@ -106,6 +111,7 @@ public class Field implements Serializable {
    * 
    * @author lurny
    */
+  @JsonIgnore
   public Field getLeft() {
     if (this.xCoordinate > 1) {
       return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
@@ -120,6 +126,7 @@ public class Field implements Serializable {
    * 
    * @author lurny
    */
+  @JsonIgnore
   public Field getRight() {
     if (this.xCoordinate <= 14) {
       return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
@@ -134,6 +141,7 @@ public class Field implements Serializable {
    * 
    * @author lurny
    */
+  @JsonIgnore
   public Field getTop() {
     if (this.yCoordinate > 1) {
       return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
@@ -148,6 +156,7 @@ public class Field implements Serializable {
    * 
    * @author lurny
    */
+  @JsonIgnore
   public Field getBottom() {
     if (this.yCoordinate <= 14) {
       return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);

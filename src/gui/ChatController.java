@@ -1,10 +1,8 @@
 package gui;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import mechanic.Player;
-import mechanic.Tile;
 import network.messages.Message;
 import network.messages.SendChatMessage;
 import network.messages.UpdateChatMessage;
@@ -12,7 +10,7 @@ import network.messages.UpdateChatMessage;
 
 /**
  * Class to handle all Chat Messages in Lobby and in game.
- * 
+ *
  * @author nilbecke
  *
  */
@@ -26,7 +24,7 @@ public class ChatController implements Sender {
 
   /**
    * updates the chat field with a given message.
-   * 
+   *
    * @author mschmauch
    * @param message content of message
    * @param dateTime time, message was sent
@@ -56,26 +54,20 @@ public class ChatController implements Sender {
 
   /**
    * Sends a given message to all players.
-   * 
+   *
    * @param m The Message to be sent
-   * @return true if message was sent, false otherwise
    */
-  public boolean sendMessage(Message m) {
-    try {
-      if (this.player.isHost()) {
-        this.player.getServer().sendToAll(m);
+  public void sendMessage(Message m) {
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(m);
 
-      } else {
-        this.player.getClientProtocol().sendToServer(m);
-      }
-      return true;
-    } catch (IOException e) {
-      return false;
+    } else {
+      this.player.getClientProtocol().sendToServer(m);
     }
   }
 
   @Override
-  public void sendTileMove(String nickName, Tile tile, int newX, int newY) {
+  public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
     // TODO Auto-generated method stub
 
   }

@@ -25,7 +25,7 @@ public class Word {
   public String toString() {
     String wordString = "";
     for (Tile t : this.tiles) {
-      wordString = wordString + t.getLetter().getChar();
+      wordString = wordString + t.getLetter().getCharacter();
     }
     return wordString;
   }

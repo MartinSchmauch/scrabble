@@ -10,6 +10,9 @@ package mechanic;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import game.GameController;
+import game.GameState;
+import util.JsonHandler;
 
 
 public class TurnTest {
@@ -22,6 +25,12 @@ public class TurnTest {
   @Before
   public void before() {
     // Test 1
+    JsonHandler jh = new JsonHandler();
+    jh.loadGameSettings("resources/defaultGameSettings.json");
+    PlayerData pd1 = new PlayerData("Tom");
+    GameState gs1 = new GameState(pd1, "");
+    GameController gc1 = new GameController(gs1);
+
     tile1 = new Tile(new Letter('C', 1, 1), l1);
     tile2 = new Tile(new Letter('L', 1, 1), l2);
     tile3 = new Tile(new Letter('O', 1, 1), l3);
@@ -55,7 +64,7 @@ public class TurnTest {
     tile4.setField(gb.getField(4, 1));
     tile5.setField(gb.getField(5, 1));
 
-    turn = new Turn("TestPlayer");
+    turn = new Turn("TestPlayer", gc1);
 
     turn.addTileToTurn(tile1);
     turn.addTileToTurn(tile2);
@@ -64,6 +73,10 @@ public class TurnTest {
     turn.addTileToTurn(tile5);
 
     // Test 2
+    PlayerData pd2 = new PlayerData("Tom");
+    GameState gs2 = new GameState(pd2, "");
+    GameController gc2 = new GameController(gs2);
+
     f = new Tile(new Letter('F', 1, 1));
     a = new Tile(new Letter('A', 1, 1));
     r = new Tile(new Letter('R', 1, 1));
@@ -95,7 +108,7 @@ public class TurnTest {
     gb2.getField(4, 5).setTile(t1);
     gb2.getField(5, 5).setTile(e);
 
-    turn2 = new Turn("TestPlayer2");
+    turn2 = new Turn("TestPlayer2", gc2);
     turn2.addTileToTurn(o2);
     turn2.addTileToTurn(b);
 
