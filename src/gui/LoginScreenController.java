@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mechanic.Player;
 
 /**
@@ -51,12 +52,11 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       join();
     } else {
       Button button = (Button) e.getSource();
-      Stage s;
+      Stage s = (Stage) button.getScene().getWindow();;
       switch (button.getText()) {
         case "Join":
           this.player.setHost(false);
           startLobby();
-          s = (Stage) button.getScene().getWindow();
           s.close();
           break;
         case "Host Game":
@@ -77,7 +77,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           // new SettingsScreen().start(new Stage());
           break;
         case "Account":
-          openAccount(guest);
+          openAccount(s);
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
@@ -93,33 +93,37 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * Lets a user access the user settings. If no user profile is present the system asks the user if
    * he wants to create one.
    * 
-   * @param guest indicates if a profile has been created (=false).
+   * @param s defines the Stage which is cloes if the user settings screen is launched
    */
-  public void openAccount(boolean guest) {
+  public void openAccount(Stage s) {
     File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
-    if (!guest || f.exists()) {
+    if (f.exists()) {
+      s.close();
       new UserSettingsScreen(this.player).start(new Stage());
     } else {
-      Alert alert = new Alert(AlertType.CONFIRMATION);
+      CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
       alert.setTitle("No profile created yet");
       alert.setHeaderText("Create profile?");
       alert.setContentText("Do you want to create a new profile ");
+      alert.initStyle(StageStyle.UNDECORATED);
+
+      alert.changeButtonText("Yes", ButtonType.OK);
+      alert.changeButtonText("No", ButtonType.CANCEL);
 
       Optional<ButtonType> result = alert.showAndWait();
       if (result.get() == ButtonType.OK) {
-
         try {
           f.createNewFile();
         } catch (IOException e) {
           e.printStackTrace();
         }
-
-        guest = false;
-        openAccount(guest);
+        openAccount(s);
       } else {
         alert.close();
+
       }
     }
+
   }
 
   /**
@@ -147,6 +151,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * @param input Nickname of current player
    */
   public void setUsername(String input) {
+
     this.username.setText(input);
   }
 

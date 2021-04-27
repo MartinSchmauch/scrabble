@@ -1,7 +1,9 @@
 package gui;
 
 
+
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +12,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mechanic.Player;
 
 
@@ -23,6 +27,8 @@ public class UserSettingsScreen extends Application {
 
   private Parent root;
   private static Player player;
+  private double xOffset;
+  private double yOffset;
 
 
   @FXML
@@ -47,11 +53,28 @@ public class UserSettingsScreen extends Application {
 
   @Override
   public synchronized void start(Stage stage) {
+
     try {
       this.root = FXMLLoader.load(getClass().getResource("UserSettings.fxml"));
       Scene scene = new Scene(root);
       stage.setScene(scene);
-      // stage.initStyle(StageStyle.UNDECORATED);
+      stage.initStyle(StageStyle.UNDECORATED);
+
+      root.setOnMousePressed(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          xOffset = event.getSceneX();
+          yOffset = event.getSceneY();
+        }
+      });
+      root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          stage.setX(event.getScreenX() - xOffset);
+          stage.setY(event.getScreenY() - yOffset);
+        }
+      });
+
       stage.setTitle("User Settings");
       stage.showAndWait();
     } catch (Exception e) {

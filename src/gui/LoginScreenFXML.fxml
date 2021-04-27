@@ -43,7 +43,7 @@
                         <Image url="@images/avatar.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="username" accessibleRole="BUTTON" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="10.0" layoutY="270.0" prefHeight="18.0" prefWidth="183.0" text="&lt;Username&gt;" />
+                  <Label fx:id="username" accessibleRole="BUTTON" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="10.0" layoutY="268.0" prefHeight="18.0" prefWidth="183.0" text="&lt;Username&gt;" />
                   <Button layoutX="101.0" layoutY="258.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="47.0" prefWidth="128.0" style="-fx-background-color: transparent;" text="Account">
                      <tooltip>
                         <Tooltip text="View Personal Account" />
@@ -95,11 +95,6 @@
                         <Tooltip text="Exit Game" />
                      </tooltip>
                   </Button>
-                  <Label layoutX="86.0" layoutY="89.0" text="Welcome Back!">
-                     <font>
-                        <Font name="Century Gothic Bold" size="22.0" />
-                     </font>
-                  </Label>
                   <Button disable="true" layoutX="96.0" layoutY="342.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="35.0" prefWidth="34.0" style="-fx-background-color: transparent;" text="Settings">
                      <tooltip>
                         <Tooltip text="Change Settings" />
@@ -109,7 +104,7 @@
             </AnchorPane>
             <AnchorPane layoutX="-175.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="200.0" style="-fx-font-weight: bold;" text="scrabble" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="200.0" rotate="-16.4" style="-fx-font-weight: bold;" text="scrabble" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
                      <font>
                         <Font name="ScrambleMixed" size="50.0" />
                      </font>
@@ -144,6 +139,11 @@
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
             </ImageView>
+            <Label layoutX="149.0" layoutY="81.0" text="Welcome to Scrabble3!">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </center>

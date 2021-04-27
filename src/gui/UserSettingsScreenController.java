@@ -5,7 +5,6 @@ import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -84,11 +83,12 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
       case "exit":
         this.player.setNickname(this.namefield.getText());
         new JsonHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
-        updateLoginScreen();
+
         if (SettingsScreenController.getInstance() != null) {
           SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
         }
         s.close();
+        new LoginScreen().start(new Stage());
         break;
       case "tut":
         OpenExternalScreen
@@ -114,6 +114,10 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
    */
 
   public void setUp() {
+    if (this.player.getNickname().equals("Guest")) {
+      this.player.setNickname("ScrabbleGamer");
+      this.player.setAvatar("\\avatar0.png");
+    }
     this.nickname.setText(this.player.getNickname());
     this.volbar.setValue((double) this.player.getVolume());
     this.vol.setText((int) this.volbar.getValue() + "");
@@ -129,10 +133,18 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void deletePlayerProfile() {
 
-    Alert alert = new Alert(AlertType.CONFIRMATION);
+
+
+    CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
     alert.setTitle("Are you sure?");
     alert.setHeaderText("Are you sure you want to delete your Profile?");
     alert.setContentText("The Application will close after deletion");
+
+    alert.changeButtonText("Delete", ButtonType.OK);
+    alert.changeButtonText("Cancel", ButtonType.CANCEL);
+
+    alert.getDialogPane().getStylesheets()
+        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
@@ -150,6 +162,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
    * Saves all changes to the LoginScreen
    */
   public void updateLoginScreen() {
+
     if (LoginScreenController.getInstance() != null) {
       LoginScreenController.getInstance().setUsername(this.player.getNickname());
       LoginScreenController.getInstance()
