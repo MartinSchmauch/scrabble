@@ -328,8 +328,8 @@ public class AIplayer extends Player {
     HashSet<Field[]> possibleLocations;
     Turn currentTurn;
     int maximumScore = 0;
-//    List<Tile> layedDownTileListWithMaximumScore = null;
-//    Field[] layedDownFieldsWithMaximumScore = null;
+    // List<Tile> layedDownTileListWithMaximumScore = null;
+    Field[] layedDownFieldsWithMaximumScore = null;
     ArrayList<Tile> currentLayedDownTiles;
     ArrayList<Integer> indicesOnRack;
     Turn turnWithMaximumScore = null;
@@ -339,7 +339,8 @@ public class AIplayer extends Player {
       for (Field[] currentLocation : possibleLocations) {
         currentLayedDownTiles = null;
         indicesOnRack = new ArrayList<Integer>();
-        while ((currentLayedDownTiles = nextTiles(currentLayedDownTiles, indicesOnRack, k)) != null) {
+        while ((currentLayedDownTiles =
+            nextTiles(currentLayedDownTiles, indicesOnRack, k)) != null) {
           System.out.println(currentLayedDownTiles);
           for (int i = 0; i < currentLayedDownTiles.size(); i++) {
             currentLocation[i].setTile(currentLayedDownTiles.get(i));
@@ -349,19 +350,19 @@ public class AIplayer extends Player {
           }
           currentTurn = new Turn(this.getNickname());
           currentTurn.setLaydDownTiles(currentLayedDownTiles);
-          if (currentTurn.calculateWords() && maximumScore < currentTurn.getTurnScore()) {
+          if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
             maximumScore = currentTurn.getTurnScore();
-//            layedDownTileListWithMaximumScore = currentLayedDownTiles;
-//            layedDownFieldsWithMaximumScore = currentLocation;
+            // layedDownTileListWithMaximumScore = currentLayedDownTiles;
+            layedDownFieldsWithMaximumScore = currentLocation;
             turnWithMaximumScore = currentTurn;
             System.out.println("NEW MAXIMUM SCORE: " + maximumScore);
             for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
               System.out.println("Tile newly layed down: " + t);
             }
           }
-          //if (currentLayedDownTiles != null) {
-            this.cleanupGameboardAndRack(currentLayedDownTiles, indicesOnRack);
-          //}
+          // if (currentLayedDownTiles != null) {
+          this.cleanupGameboardAndRack(currentLayedDownTiles, indicesOnRack);
+          // }
         }
       }
     }
@@ -370,6 +371,14 @@ public class AIplayer extends Player {
     System.out.println("Maximum score: " + maximumScore);
     for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
       System.out.println("Tile newly layed down: " + t);
+    }
+    System.out.println("----------------------");
+    for (Word w : turnWithMaximumScore.getWords()) {
+      System.out.println(w.toString());
+    }
+    System.out.println("----------------------");
+    for (Field f : layedDownFieldsWithMaximumScore) {
+      System.out.println(f);
     }
     return turnWithMaximumScore;
 
@@ -398,7 +407,8 @@ public class AIplayer extends Player {
       for (int i = numOfTiles - 1; i >= 0; i--) {
         int currentRackIndex = indicesOnRack.get(i);
         for (currentRackIndex++; currentRackIndex < 7; currentRackIndex++) {
-          if (indicesOnRack.indexOf(currentRackIndex) == -1 || indicesOnRack.indexOf(currentRackIndex) > i) {
+          if (indicesOnRack.indexOf(currentRackIndex) == -1
+              || indicesOnRack.indexOf(currentRackIndex) > i) {
             current.set(i, this.getRackTile(currentRackIndex));
             indicesOnRack.set(i, currentRackIndex);
             for (i++; i < numOfTiles; i++) {
