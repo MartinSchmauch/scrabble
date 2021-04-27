@@ -328,7 +328,7 @@ public class AIplayer extends Player {
     HashSet<Field[]> possibleLocations;
     Turn currentTurn;
     int maximumScore = 0;
-    // List<Tile> layedDownTileListWithMaximumScore = null;
+    //List<Tile> layedDownTileListWithMaximumScore = null;
     Field[] layedDownFieldsWithMaximumScore = null;
     ArrayList<Tile> currentLayedDownTiles;
     ArrayList<Integer> indicesOnRack;
@@ -352,9 +352,9 @@ public class AIplayer extends Player {
           currentTurn.setLaydDownTiles(currentLayedDownTiles);
           if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
             maximumScore = currentTurn.getTurnScore();
-            // layedDownTileListWithMaximumScore = currentLayedDownTiles;
+            //layedDownTileListWithMaximumScore = currentLayedDownTiles;
             layedDownFieldsWithMaximumScore = currentLocation;
-            turnWithMaximumScore = currentTurn;
+            turnWithMaximumScore = currentTurn.getDeepCopy();
             System.out.println("NEW MAXIMUM SCORE: " + maximumScore);
             for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
               System.out.println("Tile newly layed down: " + t);
