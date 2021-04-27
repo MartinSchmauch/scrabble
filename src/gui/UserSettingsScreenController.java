@@ -4,7 +4,10 @@ import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -12,6 +15,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import mechanic.Player;
 import util.JsonHandler;
 
 /**
@@ -21,11 +25,14 @@ import util.JsonHandler;
  * @author nilbecke
  **/
 
-public class UserSettingsScreenController extends UserSettingsScreen
-    implements EventHandler<ActionEvent> {
+public class UserSettingsScreenController implements EventHandler<ActionEvent> {
+
+  private Player player;
 
   @FXML
-  private Label nickname, vol;
+  private Label nickname;
+  @FXML
+  private Label vol;
   @FXML
   private TextField namefield;
   @FXML
@@ -35,12 +42,20 @@ public class UserSettingsScreenController extends UserSettingsScreen
   @FXML
   private Button back;
   @FXML
+  private Button delete;
+  @FXML
   private Slider volbar;
   @FXML
   private ImageView avatar;
 
   // Holds which of the 10 avatars is currently selected.
   private int currentAvatar;
+
+
+  public void initialize() {
+    this.player = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    setUp();
+  }
 
   /**
    * Main handling method of button based user inputs.
@@ -52,6 +67,7 @@ public class UserSettingsScreenController extends UserSettingsScreen
   public void handle(ActionEvent e) {
 
     Button b = (Button) e.getSource();
+    Stage s = (Stage) b.getScene().getWindow();
     switch (b.getId()) {
       case "cu":
         if (cu.getText().equals("Change Username")) {
@@ -65,13 +81,10 @@ public class UserSettingsScreenController extends UserSettingsScreen
       case "exit":
         this.player.setNickname(this.namefield.getText());
         new JsonHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
-        LoginScreenController.getInstance().setUsername(this.player.getNickname());
-        LoginScreenController.getInstance()
-            .setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
+        updateLoginScreen();
         if (SettingsScreenController.getInstance() != null) {
           SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
         }
-        Stage s = (Stage) b.getScene().getWindow();
         s.close();
         break;
       case "tut":
@@ -84,9 +97,61 @@ public class UserSettingsScreenController extends UserSettingsScreen
       case "back":
         updateAvatar(false);
         break;
+      case "delete":
+        deletePlayerProfile();
+        break;
       default:
         break;
     }
+  }
+
+  /**
+   * Sets up all labels etc. Gets called when window is opened or user profile is reset to the
+   * default profile
+   */
+
+  public void setUp() {
+    this.nickname.setText(this.player.getNickname());
+    this.volbar.setValue((double) this.player.getVolume());
+    this.vol.setText((int) this.volbar.getValue() + "");
+    this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
+    this.namefield.setText(this.player.getNickname());
+  }
+
+
+  /**
+   * Gets called if a player wants to delete his current profile. His profile will be replaced by
+   * the default profile.
+   * 
+   */
+  public void deletePlayerProfile() {
+
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Confirm Delete");
+    alert.setHeaderText(null);
+    alert.setContentText("Are you sure you want to delete your Profile?");
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      JsonHandler jh = new JsonHandler();
+      this.player = jh.loadPlayerProfile("resources/playerProfile.json");
+      jh.savePlayerProfile("resources/playerProfileTest.json", this.player);
+      updateLoginScreen();
+      setUp();
+
+    } else {
+      alert.close();
+    }
+
+  }
+
+  /**
+   * Saves all changes to the LoginScreen
+   */
+  public void updateLoginScreen() {
+    LoginScreenController.getInstance().setUsername(this.player.getNickname());
+    LoginScreenController.getInstance()
+        .setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
   }
 
   /** Adds volume adaptions to volume label under volume bar. **/

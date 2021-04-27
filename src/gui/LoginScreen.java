@@ -51,6 +51,7 @@ public class LoginScreen extends Application {
 
   @Override
   public void start(Stage stage) {
+
     Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
       this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
@@ -63,6 +64,7 @@ public class LoginScreen extends Application {
     stage.setTitle("Scrabble3");
 
     stage.show();
+
   }
 
   public Parent getParent() {
