@@ -132,7 +132,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "user":
-        new UserSettingsScreen().start(new Stage());
+        new UserSettingsScreen(this.currentPlayer).start(new Stage());
         break;
       case "tppUp":
         updateLabel(this.time, Integer.parseInt(time.getText()) + 1);
@@ -207,14 +207,14 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    * 
    */
   public void setUpLabels() {
-    this.time.setText(settings.getTimePerPlayer() + "");
-    this.overtime.setText(settings.getMaxOvertime() + "");
-    this.score.setText(settings.getMaxScore() + "");
-    this.size.setText(settings.getGameBoardSize() + "");
-    this.bingo.setText(settings.getBingo() + "");
-    this.ai.setText(settings.getAiDifficulty().substring(0, 1).toUpperCase()
-        + settings.getAiDifficulty().substring(1));
-    this.dic0.setText(settings.getDictionary());
+    this.time.setText(GameSettings.getTimePerPlayer() + "");
+    this.overtime.setText(GameSettings.getMaxOvertime() + "");
+    this.score.setText(GameSettings.getMaxScore() + "");
+    this.size.setText(GameSettings.getGameBoardSize() + "");
+    this.bingo.setText(GameSettings.getBingo() + "");
+    this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
+        + GameSettings.getAiDifficulty().substring(1));
+    this.dic0.setText(GameSettings.getDictionary());
   }
 
   /**
@@ -225,7 +225,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     fileChooser.setTitle("Choose Dictionary");
     File f = fileChooser.showOpenDialog(new Stage());
     if (f != null && f.getPath().equals("*.csv")) {
-      settings.setDictionary(f.getPath());
+      GameSettings.setDictionary(f.getPath());
       this.valid.setOpacity(0);
     } else {
       this.valid.setOpacity(1);
@@ -238,10 +238,10 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void changeAi() {
     if (this.ai.getText().equals("Easy")) {
       this.ai.setText("Hard");
-      settings.setAiDifficulty("hard");
+      GameSettings.setAiDifficulty("hard");
     } else {
       this.ai.setText("Easy");
-      settings.setAiDifficulty("easy");
+      GameSettings.setAiDifficulty("easy");
     }
   }
 
@@ -250,7 +250,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    * the letters Hashmap.
    */
   public void updateValueOrCount() {
-    settings.getLetters().put(this.letter.getText().charAt(0),
+    GameSettings.getLetters().put(this.letter.getText().charAt(0),
         new Letter(this.letter.getText().charAt(0), Integer.parseInt(letterValue.getText()),
             Integer.parseInt(letterAmount.getText())));
   }
@@ -277,8 +277,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       }
     }
     this.letter.setText(current + "");
-    this.letterValue.setText(settings.getLetters().get(current).getLetterValue() + "");
-    this.letterAmount.setText(settings.getLetters().get(current).getCount() + "");
+    this.letterValue.setText(GameSettings.getLetters().get(current).getLetterValue() + "");
+    this.letterAmount.setText(GameSettings.getLetters().get(current).getCount() + "");
   }
 
   /**
