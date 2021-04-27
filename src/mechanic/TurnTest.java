@@ -25,10 +25,10 @@ public class TurnTest {
   @Before
   public void before() {
     // Test 1
-    JsonHandler jh = new JsonHandler();
-    jh.loadGameSettings("resources/defaultGameSettings.json");
+//    JsonHandler jh = new JsonHandler();
+//    jh.loadGameSettings("resources/defaultGameSettings.json");
     PlayerData pd1 = new PlayerData("Tom");
-    GameState gs1 = new GameState(pd1, "");
+    GameState gs1 = new GameState(pd1, null);
     GameController gc1 = new GameController(gs1);
 
     tile1 = new Tile(new Letter('C', 1, 1), l1);

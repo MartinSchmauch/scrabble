@@ -19,10 +19,11 @@ public class AIplayer extends Player {
   private int maxNumOfTiles;
   private GameController gc;
 
-  public AIplayer(String nickname, int maxNumOfTiles) {
+  public AIplayer(String nickname, int maxNumOfTiles, GameController gc) {
     super(nickname);
     this.maxNumOfTiles = maxNumOfTiles;
-    this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
+    // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
+    this.gc = gc;
   }
 
   @JsonCreator

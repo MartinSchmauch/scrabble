@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import game.GameController;
+import game.GameState;
+import util.JsonHandler;
 
 /**
  * @author pkoenig
@@ -32,45 +35,45 @@ public class AIplayerTest {
    */
   @Test
   public void testGetValidPositionsForWordLength() {
-    aiplayer = new AIplayer("test", 5);
-    gb = new GameBoard(15);
-
-
-
-    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, -1));
-    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 0));
-    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 1));
-
-    Tile a = new Tile(new Letter('A', 1, 1), gb.getField(8, 8));
-    gb.getField(8, 8).setTile(a);
-    System.out.println("Current layed Down tile: " + a);
-    System.out.println("######################## NUMOFTILES == 2 ########################");
-    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
-      System.out.println("# GENERATED POSITION #");
-      for (Field f : f_list) {
-        System.out.println(f);
-      }
-      System.out.println();
-    }
-    System.out.println("######################## NUMOFTILES == 3 ########################");
-    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
-      System.out.println("# GENERATED POSITION #");
-      for (Field f : f_list) {
-        System.out.println(f);
-      }
-      System.out.println();
-    }
+//    aiplayer = new AIplayer("test", 5);
+//    gb = new GameBoard(15);
+//
+//
+//
+//    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, -1));
+//    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 0));
+//    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 1));
+//
+//    Tile a = new Tile(new Letter('A', 1, 1), gb.getField(8, 8));
+//    gb.getField(8, 8).setTile(a);
+//    System.out.println("Current layed Down tile: " + a);
+//    System.out.println("######################## NUMOFTILES == 2 ########################");
+//    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
+//      System.out.println("# GENERATED POSITION #");
+//      for (Field f : f_list) {
+//        System.out.println(f);
+//      }
+//      System.out.println();
+//    }
+//    System.out.println("######################## NUMOFTILES == 3 ########################");
+//    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
+//      System.out.println("# GENERATED POSITION #");
+//      for (Field f : f_list) {
+//        System.out.println(f);
+//      }
+//      System.out.println();
+//    }
   }
 
   @Test
   public void testNextTiles() {
-    aiplayer = new AIplayer("test", 5);
-    gb = new GameBoard(15);
-
-    for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
-      aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
-    }
-    
+//    aiplayer = new AIplayer("test", 5);
+//    gb = new GameBoard(15);
+//
+//    for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
+//      aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
+//    }
+//    
 //    ArrayList<Tile> current = null;
 //    ArrayList<Integer> indicesOnRack = new ArrayList<Integer>();
 //    while ((current = aiplayer.nextTiles(current, indicesOnRack, 4)) != null) {
@@ -80,8 +83,14 @@ public class AIplayerTest {
 
   @Test
   public void testgenerateLayedDownTiles() {
-    gb = new GameBoard(15);
-    aiplayer = new AIplayer("test", 2);
+//    JsonHandler jh = new JsonHandler();
+//    jh.loadGameSettings("resources/defaultGameSettings.json");
+    PlayerData pd1 = new PlayerData("Tom");
+    GameState gs1 = new GameState(pd1, null);
+    GameController gc1 = new GameController(gs1);
+    gs1.setUpGameboard();
+    gb = gs1.getGameBoard();
+    aiplayer = new AIplayer("test", 4, gc1);
 
     // BIRTHDAY
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(4, 8));
