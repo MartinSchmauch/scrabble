@@ -12,7 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 import game.GameController;
 import game.GameState;
-import util.JsonHandler;
 
 
 public class TurnTest {
@@ -25,8 +24,8 @@ public class TurnTest {
   @Before
   public void before() {
     // Test 1
-//    JsonHandler jh = new JsonHandler();
-//    jh.loadGameSettings("resources/defaultGameSettings.json");
+    // JsonHandler jh = new JsonHandler();
+    // jh.loadGameSettings("resources/defaultGameSettings.json");
     PlayerData pd1 = new PlayerData("Tom");
     GameState gs1 = new GameState(pd1, null);
     GameController gc1 = new GameController(gs1);
@@ -74,7 +73,7 @@ public class TurnTest {
 
     // Test 2
     PlayerData pd2 = new PlayerData("Tom");
-    GameState gs2 = new GameState(pd2, "");
+    GameState gs2 = new GameState(pd2, null);
     GameController gc2 = new GameController(gs2);
 
     f = new Tile(new Letter('F', 1, 1));
