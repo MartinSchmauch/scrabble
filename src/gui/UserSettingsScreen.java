@@ -1,5 +1,6 @@
 package gui;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +11,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import mechanic.Player;
 
 
 
@@ -20,10 +22,13 @@ import javafx.stage.Stage;
 public class UserSettingsScreen extends Application {
 
   private Parent root;
+  private static Player player;
 
 
   @FXML
-  private Label nickname, vol;
+  private Label nickname;
+  @FXML
+  private Label vol;
   @FXML
   private Slider volbar;
   @FXML
@@ -31,7 +36,10 @@ public class UserSettingsScreen extends Application {
   @FXML
   private TextField namefield;
 
+  public UserSettingsScreen(Player currentPlayer) {
+    player = currentPlayer;
 
+  }
 
   /**
    * Reads the "UserSettingsScreen.fxml" file (@author nilbecke) to create the user settings Menu
@@ -45,11 +53,14 @@ public class UserSettingsScreen extends Application {
       stage.setScene(scene);
       // stage.initStyle(StageStyle.UNDECORATED);
       stage.setTitle("User Settings");
-      stage.show();
+      stage.showAndWait();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
+  public static Player getPlayer() {
+    return player;
+  }
 
 }

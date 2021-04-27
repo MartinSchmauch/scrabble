@@ -1,11 +1,16 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +28,8 @@ import util.JsonHandler;
 public class LoginScreen extends Application {
 
   private Parent root;
-  private Player currentPlayer;
+  protected Player currentPlayer;
+  protected boolean guest = false;
 
   @FXML
   private ImageView avatar;
@@ -36,7 +42,30 @@ public class LoginScreen extends Application {
 
   @FXML
   public void initialize() {
-    this.currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    if (new File(FileParameters.datadir + ("/playerProfileTest.json")).exists()) {
+      this.currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    } else {
+      this.currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfile.json");
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("Create Player Profile");
+      alert.setHeaderText("Seems like you have no profile created yet");
+      alert.setContentText("Do you want to create a pofile?");
+
+      Optional<ButtonType> result = alert.showAndWait();
+      if (result.get() == ButtonType.OK) {
+        File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
+        try {
+          f.createNewFile();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+        new UserSettingsScreen(this.currentPlayer).start(new Stage());
+      } else {
+        guest = true;
+        alert.close();
+      }
+    }
+
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar
         .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));

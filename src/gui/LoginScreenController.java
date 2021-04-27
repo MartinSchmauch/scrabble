@@ -1,5 +1,9 @@
 package gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
+
 /** @Author nilbecke **/
 
 import javafx.event.ActionEvent;
@@ -8,13 +12,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
-import util.JsonHandler;
 
 /**
  * This Class is a Basic Handler for all the input options present in the Login Screen
@@ -42,7 +46,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     if (instance == null) {
       instance = this;
     }
-    this.player = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    this.player = currentPlayer;
     if (e.getSource().getClass() != Button.class) {
       join();
     } else {
@@ -73,7 +77,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           // new SettingsScreen().start(new Stage());
           break;
         case "Account":
-          new UserSettingsScreen().start(new Stage());
+          openAccount(guest);
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
@@ -81,6 +85,39 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           alert.setHeaderText(null);
           alert.setContentText("Function for " + button.getText() + " Not Yet Implemented :D");
           alert.show();
+      }
+    }
+  }
+
+  /**
+   * Lets a user access the user settings. If no user profile is present the system asks the user if
+   * he wants to create one.
+   * 
+   * @param guest indicates if a profile has been created (=false).
+   */
+  public void openAccount(boolean guest) {
+    File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
+    if (!guest || f.exists()) {
+      new UserSettingsScreen(this.player).start(new Stage());
+    } else {
+      Alert alert = new Alert(AlertType.CONFIRMATION);
+      alert.setTitle("No profile created yet");
+      alert.setHeaderText("Create profile?");
+      alert.setContentText("Do you want to create a new profile ");
+
+      Optional<ButtonType> result = alert.showAndWait();
+      if (result.get() == ButtonType.OK) {
+
+        try {
+          f.createNewFile();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+
+        guest = false;
+        openAccount(guest);
+      } else {
+        alert.close();
       }
     }
   }

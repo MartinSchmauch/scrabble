@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -28,6 +29,7 @@ import util.JsonHandler;
 public class UserSettingsScreenController implements EventHandler<ActionEvent> {
 
   private Player player;
+  private static UserSettingsScreenController instance;
 
   @FXML
   private Label nickname;
@@ -53,7 +55,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
 
 
   public void initialize() {
-    this.player = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    instance = this;
+    this.player = UserSettingsScreen.getPlayer();
     setUp();
   }
 
@@ -127,18 +130,16 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   public void deletePlayerProfile() {
 
     Alert alert = new Alert(AlertType.CONFIRMATION);
-    alert.setTitle("Confirm Delete");
-    alert.setHeaderText(null);
-    alert.setContentText("Are you sure you want to delete your Profile?");
+    alert.setTitle("Are you sure?");
+    alert.setHeaderText("Are you sure you want to delete your Profile?");
+    alert.setContentText("The Application will close after deletion");
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
       JsonHandler jh = new JsonHandler();
       this.player = jh.loadPlayerProfile("resources/playerProfile.json");
-      jh.savePlayerProfile("resources/playerProfileTest.json", this.player);
-      updateLoginScreen();
-      setUp();
-
+      new File(FileParameters.datadir + ("/playerProfileTest.json")).delete();
+      System.exit(0);
     } else {
       alert.close();
     }
@@ -149,9 +150,11 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
    * Saves all changes to the LoginScreen
    */
   public void updateLoginScreen() {
-    LoginScreenController.getInstance().setUsername(this.player.getNickname());
-    LoginScreenController.getInstance()
-        .setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
+    if (LoginScreenController.getInstance() != null) {
+      LoginScreenController.getInstance().setUsername(this.player.getNickname());
+      LoginScreenController.getInstance()
+          .setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
+    }
   }
 
   /** Adds volume adaptions to volume label under volume bar. **/
@@ -206,6 +209,14 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     }
     this.player.setAvatar("/avatar" + this.currentAvatar + ".png");
     this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
+  }
+
+  public void disableDeletion() {
+    this.delete.setDisable(true);
+  }
+
+  public static UserSettingsScreenController getInstance() {
+    return instance;
   }
 
   /**

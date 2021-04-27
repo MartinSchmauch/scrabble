@@ -43,6 +43,7 @@
                         <Image url="@images/avatar.png" />
                      </image>
                   </ImageView>
+                  <Label fx:id="username" accessibleRole="BUTTON" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="10.0" layoutY="270.0" prefHeight="18.0" prefWidth="183.0" text="&lt;Username&gt;" />
                   <Button layoutX="101.0" layoutY="258.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="47.0" prefWidth="128.0" style="-fx-background-color: transparent;" text="Account">
                      <tooltip>
                         <Tooltip text="View Personal Account" />
@@ -143,7 +144,6 @@
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
             </ImageView>
-            <Label fx:id="username" accessibleRole="BUTTON" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="93.0" layoutY="273.0" prefHeight="18.0" prefWidth="183.0" text="&lt;Username&gt;" />
          </children>
       </AnchorPane>
    </center>
