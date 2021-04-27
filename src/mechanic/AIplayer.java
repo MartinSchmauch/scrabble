@@ -344,7 +344,7 @@ public class AIplayer extends Player {
           for (int i = 0; i < currentLayedDownTiles.size(); i++) {
             currentLocation[i].setTile(currentLayedDownTiles.get(i));
             this.setRackTileToNone(indicesOnRack.get(i));
-            System.out.println("#### TILE MOVED FROM RACK TO GB #####");
+            System.out.println("##### TILE MOVED FROM RACK TO GB #####");
             System.out.println(currentLayedDownTiles.get(i));
           }
           currentTurn = new Turn(this.getNickname());
