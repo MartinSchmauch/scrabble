@@ -69,6 +69,7 @@ public class Turn implements Serializable {
       // find Top Letter
       while (t.getTopTile() != null) {
         t = t.getTopTile();
+        //System.out.println("i am here");
       }
       // Go from Top to Bottom to build word
       wordTiles.add(t);
@@ -251,6 +252,26 @@ public class Turn implements Serializable {
 
   public boolean isValid() {
     return isValid;
+  }
+  
+  public Turn getDeepCopy() {
+    Turn res = new Turn(this.getPlayer());
+    res.player = this.player;
+    res.isValid = this.isValid;
+    for (Tile t : this.laydDownTiles) {
+      res.laydDownTiles.add(t);
+    }
+    res.turnScore = this.turnScore;
+    ArrayList<Tile> temp = null;
+    for (Word w : this.words) {
+      temp = new ArrayList<Tile>();
+      for (Tile t : w.getTiles()) {
+        temp.add(t);
+      }
+      res.words.add(new Word(temp));
+    }
+    
+    return res;
   }
 
 
