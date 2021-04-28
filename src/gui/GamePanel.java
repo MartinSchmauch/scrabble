@@ -18,9 +18,9 @@ import network.client.ClientProtocol;
  * being created by using the createGamePanel() method from the GamePanel class
  */
 
-public class ClientUI extends Application { // implements sender?
+public class GamePanel extends Application { // implements sender?
   private Parent root;
-  private static ClientUI instance;
+  private static GamePanel instance;
   private String username;
   public static Player player;
   private ClientProtocol connection;
@@ -29,14 +29,15 @@ public class ClientUI extends Application { // implements sender?
     launch();
   }
 
-  public static ClientUI getInstance() {
+  public static GamePanel getInstance() {
     if (instance == null) {
-      instance = new ClientUI();
+      instance = new GamePanel(player);
     }
     return instance;
   }
 
-  public ClientUI() {
+  public GamePanel(Player current) {
+    player = current;
     createGamePanel();
     // createLoginPanel();
   }

@@ -23,6 +23,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import mechanic.Field;
 import mechanic.Letter;
+import mechanic.Player;
 import mechanic.Tile;
 import network.client.ClientProtocol;
 import network.messages.CommitTurnMessage;
@@ -37,9 +38,9 @@ import network.server.Server;
  *         This class is the Controller Class for the Main Gamel Panel UI for the Client
  */
 
-public class GamePanelController extends ClientUI implements Sender {
+public class GamePanelController implements Sender {
 
-  // private Player player;
+  private Player player;
   private ClientProtocol cp;
   private Server server;
   private static boolean selectedTileOnGrid = false;
@@ -80,8 +81,8 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public void initialize() { // being called after @FXML annotated fields were populated
-    ClientUI.player = ClientUI.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
-    cc = new ChatController(ClientUI.player);
+    this.player = GamePanel.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
+    cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
     SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
@@ -110,7 +111,7 @@ public class GamePanelController extends ClientUI implements Sender {
 
   @FXML
   public void sendMessage(ActionEvent event) {
-    this.cc.sendChatMessage(ClientUI.player.getNickname(), this.textField.getText());
+    this.cc.sendChatMessage(GamePanel.player.getNickname(), this.textField.getText());
   }
 
   /**
@@ -130,36 +131,18 @@ public class GamePanelController extends ClientUI implements Sender {
     // setSelectedTileOnRack(true);
     // coordinates[0] = x;
     // // GUI test ende.
-    if (selectedTileOnRack == false && selectedTileOnGrid == false) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        setSelectedTileOnRack(true);
-        coordinates[0] = x;
-        coordinates[1] = -1;
-      }
-    }
-    if (selectedTileOnRack) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        if (cp.getPlayer().getRackTile(x).getField().getxCoordinate() == x) {
-          setSelectedTileOnRack(false); // selected tile gets deselected
-        } else {// switch positions of tiles on rack
-          // TODO: lokal rack tile positionen in der player klasse ändern
-          setSelectedTileOnRack(false);
-        }
-      } else { // move tile to empty field
-        // TODO: lokal rack tile positionen in der player klasse ändern
-        setSelectedTileOnRack(false);
-      }
-    }
-    if (selectedTileOnGrid) {
-      if (cp.getPlayer().getRackTile(x) != null) { // exchange tiles on rack and board
-        // case: check, wether you can exchange tiles
-        // when true: setSelectedTileOnGrid(false);
-        // when false: error message
-      } else { // move tile from board to rack
-        // case: check, wether you can move tile to rack
-        // when true: setSelectedTileOnGrid(false);
-        // when false: error message
-      }
+    if (x == coordinates[0] && y == coordinates[1]) { // deselect tile
+      setSelectedTileOnRack(false);
+    } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
+      setSelectedTileOnRack(true);
+      coordinates[0] = x;
+      coordinates[1] = -1;
+    } else if (selectedTileOnRack) { // exchange tiles on rack
+      player.reorganizeRackTile(x, coordinates[0]);
+      setSelectedTileOnRack(false);
+    } else if (selectedTileOnGrid) { // try to move tile from board to rack - sender!
+      sendTileMove(player.getNickname(), coordinates[0], coordinates[1], x, y);
+      setSelectedTileOnGrid(false);
     }
   }
 
@@ -183,43 +166,18 @@ public class GamePanelController extends ClientUI implements Sender {
     // moveToGamePanel(t2, x, y);
     // }
     // // GUI test ende.
-    if (selectedTileOnRack == false && selectedTileOnGrid == false) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        setSelectedTileOnGrid(true);
-        coordinates[0] = x;
-        coordinates[1] = y;
-      } else {
-        // TODO: maybe an error sound to occur?
-      }
-    }
-    if (selectedTileOnRack) {
-      if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
-        // case: exchange tiles on rack and grid
-        // check wether its is a valid move
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 1
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
-        // if yes: setSelectedTileOnRack(false);
-      } else {
-        // MAINCASE: move tile from rack(coordinates[0]) to empty grid field(x,y)
-        // check wether it is a valid move
-        // sendTileMove(player.getNickname(), player.getRackTile(coordinates[0]), x, y);
-        // if yes: setSelectedTileOnRack(false);
-      }
-    } else if (selectedTileOnGrid) {
-      if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
-        // case: exchange tiles on grid
-        // check, wether you can exchange tiles
-        // sendTileMove(player.getNickname(), player.getRackTile(x), coordinates[0],
-        // coordinates[1]); // stein
-        // 1
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
-        // when true: setSelectedTileOnGrid(false);
-      } else {
-        // case: move tile on grid to empty field
-        // check wether you can exchange tiles
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y);
-        // when true: setSelectedTileOnGrid(false);
-      }
+    if (x == coordinates[0] && y == coordinates[1]) { // deselect tile
+      setSelectedTileOnGrid(false);
+    } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
+      setSelectedTileOnGrid(true);
+      coordinates[0] = x;
+      coordinates[1] = -1;
+    } else if (selectedTileOnGrid) { // exchange tiles on board
+      sendTileMove(player.getNickname(), coordinates[0], coordinates[1], x, y);
+      setSelectedTileOnGrid(false);
+    } else if (selectedTileOnRack) { // move tile from rack to board
+      player.moveToGameBoard(coordinates[0], x, y);
+      setSelectedTileOnRack(false);
     }
   }
 
@@ -475,7 +433,7 @@ public class GamePanelController extends ClientUI implements Sender {
   @Override
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
     Message m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
-    sendMessageToServer(m);
+    sendMessage(m);
   }
 
   @Override
@@ -483,30 +441,30 @@ public class GamePanelController extends ClientUI implements Sender {
     System.out
         .println("method sendCommitTurn wurde aufgerufen, ausgelï¿½st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
-    sendMessageToServer(m);
+    sendMessage(m);
   }
 
   @Override
   public void sendDisconnectMessage(String nickName) {
     Message m = new DisconnectMessage(nickName);
-    sendMessageToServer(m);
+    sendMessage(m);
   }
+
 
   /**
-   * Method to send a Message to the server instance, using a Client Protocoll instance
+   * Sends a given message to all players.
    * 
-   * @param m
+   * @param m The Message to be sent
    */
+  public boolean sendMessage(Message m) {
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(m);
 
-  public void sendMessageToServer(Message m) {
-    if (getConnection() != null) {
-      getConnection().sendToServer(m);
+    } else {
+      this.player.getClientProtocol().sendToServer(m);
     }
+    return true;
   }
-
-  // public Player getPlayer() {
-  // return ClientUI.getPlayer();
-  // }
 
 
   public Server getServer() {

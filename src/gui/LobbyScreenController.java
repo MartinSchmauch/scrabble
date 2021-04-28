@@ -1,12 +1,12 @@
 package gui;
 
 
-import game.GameSettings;
-import game.GameState;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
+import game.GameSettings;
+import game.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -183,7 +183,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       @Override
       public void run() {
         try {
-          new ClientUI().start(new Stage());
+          new GamePanel(player).start(new Stage());
           closeWindow();
         } catch (Exception e) {
           e.printStackTrace();

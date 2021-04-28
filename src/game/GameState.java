@@ -203,4 +203,8 @@ public class GameState implements Serializable, Runnable {
     return this.scores.replace(player, oldScore, oldScore + turnScore);
   }
 
+  public double getTimeLeftBar() {
+    return timeLeftBar;
+  }
+
 }
