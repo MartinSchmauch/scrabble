@@ -11,7 +11,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -21,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.StageStyle;
 import mechanic.Field;
 import mechanic.Letter;
 import mechanic.Player;
@@ -47,6 +47,10 @@ public class GamePanelController implements Sender {
   private static boolean selectedTileOnRack = false;
   private static int coordinates[] = new int[2];
   private ChatController cc;
+  private static VisualTile rackTiles[][] = new VisualTile[2][6]; // location of visual tiles on
+                                                                  // rack
+  private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
+                                                                     // board
 
   @FXML
   private TextArea chat;
@@ -63,7 +67,7 @@ public class GamePanelController implements Sender {
   @FXML
   private Rectangle tile1;
   @FXML
-  private GridPane grid, rack; // grid is the Main Game Board
+  private GridPane board, rack;
   @FXML
   private ProgressBar timeProgress;
 
@@ -76,23 +80,32 @@ public class GamePanelController implements Sender {
     return instance;
   }
 
-  public GamePanelController() { // being called before @FXML annotated fields were populated
+  /**
+   * Constructor of the class that is being called before @FXML annotated fields were populated
+   */
+  public GamePanelController() {
     System.out.println("Controller erzeugt \n");
   }
 
-  public void initialize() { // being called after @FXML annotated fields were populated
-    this.player = GamePanel.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
+  /**
+   * initialize method of the GamePanelController, that is being called after @FXML annotated fields
+   * were populated
+   */
+  public void initialize() {
+    this.player = GamePanel.getInstance().getPlayer();
     cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
     SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
-                                                                          // ersetzen
+                                                                          // ersetzen aus gamestate
+                                                                          // Klasse
     remainingLetters.textProperty().bind(letterProperty.asString());
     SimpleStringProperty timerProperty = new SimpleStringProperty("Timer Referenz!");
     timer.textProperty().bind(timerProperty);
     SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(0.5); // TODO: restliche zeit
                                                                            // als anteil von 1 hier
-                                                                           // einfügen
+                                                                           // einfügen aus gamestate
+                                                                           // Klasse
     timeProgress.progressProperty().bind(progressProperty);
     // TEST:
     Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
@@ -101,6 +114,7 @@ public class GamePanelController implements Sender {
     Tile t1 = new Tile(new Letter('C', 5, 5), new Field(5, 5, 1, 0));
     t1.setOnGameBoard(true);
     addTile(t1);
+    // TEST ENDE
   }
 
   /**
@@ -109,10 +123,49 @@ public class GamePanelController implements Sender {
    * 
    */
 
+  /**
+   * Method to be executed when a player clicks on the "Send" button of the chat area in the
+   * GamePanel The ChatController handles this event and gets the text from the textfield of the
+   * chat area.
+   * 
+   * @param event
+   */
   @FXML
   public void sendMessage(ActionEvent event) {
     this.cc.sendChatMessage(GamePanel.player.getNickname(), this.textField.getText());
   }
+
+  @FXML
+  public void rackPressed(MouseEvent event) {
+
+  }
+
+  @FXML
+  public void rackDragged(MouseEvent event) {
+
+  }
+
+  @FXML
+  public void rackReleased(MouseEvent event) {
+
+  }
+
+  @FXML
+  public void boardPressed(MouseEvent event) {
+
+  }
+
+  @FXML
+  public void boardDragged(MouseEvent event) {
+
+  }
+
+  @FXML
+  public void boardReleased(MouseEvent event) {
+
+  }
+
+
 
   /**
    * Listener method that is executed, when a rectangle in the GridPane 'rack' is clicked. The
@@ -133,16 +186,20 @@ public class GamePanelController implements Sender {
     // // GUI test ende.
     if (x == coordinates[0] && y == coordinates[1]) { // deselect tile
       setSelectedTileOnRack(false);
+      System.out.println("deselect rack tile");
     } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
       setSelectedTileOnRack(true);
       coordinates[0] = x;
       coordinates[1] = -1;
+      System.out.println("rack tile selected");
     } else if (selectedTileOnRack) { // exchange tiles on rack
       player.reorganizeRackTile(x, coordinates[0]);
       setSelectedTileOnRack(false);
+      System.out.println("reorganizeRackTiles");
     } else if (selectedTileOnGrid) { // try to move tile from board to rack - sender!
       sendTileMove(player.getNickname(), coordinates[0], coordinates[1], x, y);
       setSelectedTileOnGrid(false);
+      System.out.println("move tile from grid to rack: " + coordinates[0] + ", " + coordinates[1]);
     }
   }
 
@@ -154,7 +211,7 @@ public class GamePanelController implements Sender {
    * @param event
    */
   @FXML
-  public void gridClicked(MouseEvent event) {
+  public void boardClicked(MouseEvent event) {
     Node node = (Node) event.getSource();
     int[] pos = getPos(node, false);
     int x = pos[0];
@@ -168,14 +225,18 @@ public class GamePanelController implements Sender {
     // // GUI test ende.
     if (x == coordinates[0] && y == coordinates[1]) { // deselect tile
       setSelectedTileOnGrid(false);
+      System.out.println("deselect grid tile");
     } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
       setSelectedTileOnGrid(true);
       coordinates[0] = x;
       coordinates[1] = -1;
+      System.out.println("select grid tile");
     } else if (selectedTileOnGrid) { // exchange tiles on board
       sendTileMove(player.getNickname(), coordinates[0], coordinates[1], x, y);
       setSelectedTileOnGrid(false);
+      System.out.println("exchange grid tiles");
     } else if (selectedTileOnRack) { // move tile from rack to board
+      System.out.println("rack to grid: coords, x, y: " + coordinates[0] + x + y);
       player.moveToGameBoard(coordinates[0], x, y);
       setSelectedTileOnRack(false);
     }
@@ -270,20 +331,20 @@ public class GamePanelController implements Sender {
         row = 1;
         column -= 5;
       }
-      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, true);
-      newTile.setMouseTransparent(true);
-      rack.add(newTile, column, row);
-      GridPane.setHalignment(newTile, HPos.CENTER);
-      GridPane.setValignment(newTile, VPos.BOTTOM);
-      GridPane.setMargin(newTile, new Insets(0, 0, 5.5, 0));
+      rackTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, true);
+      rackTiles[row][column].setMouseTransparent(true);
+      rack.add(rackTiles[row][column], column, row);
+      GridPane.setHalignment(rackTiles[row][column], HPos.CENTER);
+      GridPane.setValignment(rackTiles[row][column], VPos.BOTTOM);
+      GridPane.setMargin(rackTiles[row][column], new Insets(0, 0, 5.5, 0));
 
     } else {
-      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, false);
-      newTile.setMouseTransparent(true);
-      grid.add(newTile, column, row);
-      GridPane.setHalignment(newTile, HPos.CENTER);
-      GridPane.setValignment(newTile, VPos.BOTTOM);
-      GridPane.setMargin(newTile, new Insets(0, 10, 8, 0));
+      boardTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, false);
+      boardTiles[row][column].setMouseTransparent(true);
+      board.add(boardTiles[row][column], column, row);
+      GridPane.setHalignment(boardTiles[row][column], HPos.CENTER);
+      GridPane.setValignment(boardTiles[row][column], VPos.BOTTOM);
+      GridPane.setMargin(boardTiles[row][column], new Insets(0, 10, 8, 0));
     }
   }
 
@@ -353,7 +414,7 @@ public class GamePanelController implements Sender {
         }
       }
     } else {
-      for (Node node : grid.getChildren()) {
+      for (Node node : board.getChildren()) {
         Integer columnIndex = GridPane.getColumnIndex(node);
         Integer rowIndex = GridPane.getRowIndex(node);
         if (columnIndex == null) {
@@ -367,7 +428,7 @@ public class GamePanelController implements Sender {
           y = rowIndex.intValue();
         }
         if (node instanceof Parent && x == column && y == row) {
-          grid.getChildren().remove(node);
+          board.getChildren().remove(node);
           break;
         }
       }
@@ -381,20 +442,23 @@ public class GamePanelController implements Sender {
    * @param nickName
    */
   public void indicateInvalidTurn(String nickName, String message) {
-    if (player1.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    } else if (player2.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    } else if (player3.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    } else if (player4.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    }
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(null);
-    alert.setContentText(message);
-    alert.show();
+    // if (player1.getText().equals(nickName)) {
+    // // TODO: zug rückgängig machen
+    // } else if (player2.getText().equals(nickName)) {
+    // // TODO: zug rückgängig machen
+    // } else if (player3.getText().equals(nickName)) {
+    // // TODO: zug rückgängig machen
+    // } else if (player4.getText().equals(nickName)) {
+    // // TODO: zug rückgängig machen
+    // }
+    CustomAlert alert = new CustomAlert(AlertType.WARNING);
+    alert.setTitle("Invalid Turn");
+    alert.setHeaderText("Your turn was not valid");
+    alert.setContentText("Please try a new turn, according to the scrabble rules");
+    alert.initStyle(StageStyle.UNDECORATED);
+
+    alert.getDialogPane().getStylesheets()
+        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
   }
 
   /**
