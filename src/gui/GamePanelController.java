@@ -45,12 +45,13 @@ public class GamePanelController implements Sender {
   private Server server;
   private static boolean selectedTileOnGrid = false;
   private static boolean selectedTileOnRack = false;
-  private static int coordinates[] = new int[2];
+  private static int selectedCoordinates[] = new int[2];
+  private static int targetCoordinates[] = new int[2];
   private ChatController cc;
   private static VisualTile rackTiles[][] = new VisualTile[2][6]; // location of visual tiles on
-                                                                  // rack
+                                                                  // rack, row;column index
   private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
-                                                                     // board
+                                                                     // board, row;column index
 
   @FXML
   private TextArea chat;
@@ -137,7 +138,8 @@ public class GamePanelController implements Sender {
 
   @FXML
   public void rackPressed(MouseEvent event) {
-
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, true);
   }
 
   @FXML
@@ -147,12 +149,15 @@ public class GamePanelController implements Sender {
 
   @FXML
   public void rackReleased(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    targetCoordinates = getPos(node, true);
 
   }
 
   @FXML
   public void boardPressed(MouseEvent event) {
-
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, true);
   }
 
   @FXML
@@ -162,7 +167,8 @@ public class GamePanelController implements Sender {
 
   @FXML
   public void boardReleased(MouseEvent event) {
-
+    Node node = (Node) event.getSource();
+    targetCoordinates = getPos(node, true);
   }
 
 
@@ -184,22 +190,23 @@ public class GamePanelController implements Sender {
     // setSelectedTileOnRack(true);
     // coordinates[0] = x;
     // // GUI test ende.
-    if (x == coordinates[0] && y == coordinates[1]) { // deselect tile
+    if (x == selectedCoordinates[0] && y == selectedCoordinates[1]) { // deselect tile
       setSelectedTileOnRack(false);
       System.out.println("deselect rack tile");
     } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
       setSelectedTileOnRack(true);
-      coordinates[0] = x;
-      coordinates[1] = -1;
+      selectedCoordinates[0] = x;
+      selectedCoordinates[1] = -1;
       System.out.println("rack tile selected");
     } else if (selectedTileOnRack) { // exchange tiles on rack
-      player.reorganizeRackTile(x, coordinates[0]);
+      player.reorganizeRackTile(x, selectedCoordinates[0]);
       setSelectedTileOnRack(false);
       System.out.println("reorganizeRackTiles");
     } else if (selectedTileOnGrid) { // try to move tile from board to rack - sender!
-      sendTileMove(player.getNickname(), coordinates[0], coordinates[1], x, y);
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1], x, y);
       setSelectedTileOnGrid(false);
-      System.out.println("move tile from grid to rack: " + coordinates[0] + ", " + coordinates[1]);
+      System.out.println(
+          "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
     }
   }
 
@@ -223,21 +230,21 @@ public class GamePanelController implements Sender {
     // moveToGamePanel(t2, x, y);
     // }
     // // GUI test ende.
-    if (x == coordinates[0] && y == coordinates[1]) { // deselect tile
+    if (x == selectedCoordinates[0] && y == selectedCoordinates[1]) { // deselect tile
       setSelectedTileOnGrid(false);
       System.out.println("deselect grid tile");
     } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
       setSelectedTileOnGrid(true);
-      coordinates[0] = x;
-      coordinates[1] = -1;
+      selectedCoordinates[0] = x;
+      selectedCoordinates[1] = -1;
       System.out.println("select grid tile");
     } else if (selectedTileOnGrid) { // exchange tiles on board
-      sendTileMove(player.getNickname(), coordinates[0], coordinates[1], x, y);
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1], x, y);
       setSelectedTileOnGrid(false);
       System.out.println("exchange grid tiles");
     } else if (selectedTileOnRack) { // move tile from rack to board
-      System.out.println("rack to grid: coords, x, y: " + coordinates[0] + x + y);
-      player.moveToGameBoard(coordinates[0], x, y);
+      System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0] + x + y);
+      player.moveToGameBoard(selectedCoordinates[0], x, y);
       setSelectedTileOnRack(false);
     }
   }
@@ -410,6 +417,7 @@ public class GamePanelController implements Sender {
         }
         if (node instanceof Parent && x == column && y == row) {
           rack.getChildren().remove(node);
+          rackTiles[row][column] = null; // verwaltung von der visual tile
           break;
         }
       }
@@ -429,6 +437,7 @@ public class GamePanelController implements Sender {
         }
         if (node instanceof Parent && x == column && y == row) {
           board.getChildren().remove(node);
+          boardTiles[row][column] = null; // verwaltung von der visual tile
           break;
         }
       }
@@ -567,11 +576,11 @@ public class GamePanelController implements Sender {
   }
 
   public static int[] getCoordinates() {
-    return coordinates;
+    return selectedCoordinates;
   }
 
   public static void setCoordinates(int coordinates[]) {
-    GamePanelController.coordinates = coordinates;
+    GamePanelController.selectedCoordinates = coordinates;
   }
 
   /**
