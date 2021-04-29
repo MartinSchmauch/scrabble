@@ -43,12 +43,13 @@ public class GameState implements Serializable, Runnable {
 
     JsonHandler jsonHandler = new JsonHandler();
 
-
     if (customGameSettings != null) {
       jsonHandler.loadGameSettings(customGameSettings);
     } else {
       jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
     }
+
+    setUpGameboard();
   }
 
   /**

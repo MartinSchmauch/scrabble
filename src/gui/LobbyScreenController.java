@@ -156,6 +156,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     this.start.setDisable(true);
     this.settings.setDisable(true);
     sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
+    this.getServer().distributeInitialTiles();
   }
 
 
@@ -165,21 +166,24 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public synchronized void startGameScreen(Player currentPlayer) {
 
 
+
     // Displays countdown
-    Timeline cdLabel =
-        new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-          int counter = 4;
+    // Timeline cdLabel =
+    // new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+    // int counter = 4;
+    //
+    // @Override
+    // public void handle(ActionEvent e) {
+    // updateCountdown(counter);
+    // counter--;
+    // }
+    // }));
+    // cdLabel.setCycleCount(5);
+    // cdLabel.play();
 
-          @Override
-          public void handle(ActionEvent e) {
-            updateCountdown(counter);
-            counter--;
-          }
-        }));
-    cdLabel.setCycleCount(5);
-    cdLabel.play();
+    // cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
 
-    cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
+    Platform.runLater(new Runnable() {
       @Override
       public void run() {
         try {
@@ -189,7 +193,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
           e.printStackTrace();
         }
       }
-    }));
+
+    });
 
 
 

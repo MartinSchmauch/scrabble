@@ -81,6 +81,20 @@ public class GameController {
   }
 
   /**
+   * This method gets the 7 initial tiles for the current player.
+   * 
+   * @author lurny
+   * @return ArrayList, that contains 7 tiles from tile bag
+   */
+  public List<Tile> drawInitialTiles() {
+    List<Tile> tiles = new ArrayList<Tile>();
+    for (int i = 0; i < 7; i++) {
+      tiles.add(tileBag.drawTile());
+    }
+    return tiles;
+  }
+
+  /**
    * This method gets the new tiles for the current player, determining the amount by checking the
    * placed tiles of the current turn. If the bag is empty no more tiles are returned.
    *
@@ -183,4 +197,9 @@ public class GameController {
     String nextPlayer = this.gameState.getAllPlayers().get(currentPlayerIndex).getNickname();
     return nextPlayer;
   }
+
+  public GameState getGameState() {
+    return gameState;
+  }
+
 }

@@ -1,10 +1,5 @@
 package network.server;
 
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,9 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
+import mechanic.Tile;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
@@ -28,6 +29,7 @@ import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -64,6 +66,36 @@ public class Server {
     this.host = host.getNickname();
     this.gameState = new GameState(host, customGameSettings);
     this.gameController = new GameController(this.gameState);
+  }
+
+  /**
+   * This method fills the racks of every player with initial tiles.
+   * 
+   * @author lurny
+   */
+  public void distributeInitialTiles() {
+    // add Tiles to host Rack
+    List<Tile> tileList = new ArrayList<Tile>();
+    tileList = this.gameController.drawInitialTiles();
+    // domain
+    this.player.addTilesToRack(tileList);
+    // UI
+    for (Tile t : tileList) {
+      this.gpc.addTile(t);
+    }
+
+    // add Tiles to players
+    for (PlayerData pD : this.gameController.getGameState().getAllPlayers()) {
+      List<Tile> tileList1 = new ArrayList<Tile>();
+      tileList1 = this.gameController.drawInitialTiles();
+      // UI
+      List<String> receiver = new ArrayList<String>();
+      receiver.add(pD.getNickname());
+      this.sendTo(receiver, new TileMessage(this.getHost(), tileList1));
+      // sollen die Racks nur lokal gespeichert werden?
+
+    }
+
   }
 
   /**

@@ -133,6 +133,17 @@ public class Player {
     tile.setOnRack(true);
   }
 
+  /**
+   * This method adds a List of tileson the player´s rack.
+   * 
+   * @author lurny
+   */
+  public void addTilesToRack(List<Tile> tileList) {
+    for (Tile t : tileList) {
+      addTileToRack(t);
+    }
+  }
+
   public Tile removeRackTile(int index) {
     Tile tile = this.rack[index].getTile();
     this.rack[index].setTile(null);
