@@ -6,9 +6,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-//*******************************
+// *******************************
 // DEPRECATED !!!!
-//*******************************
+// *******************************
 
 /**
  * 
@@ -25,8 +25,8 @@ public class AIplayer_firstGeneration extends Player {
   }
 
   @JsonCreator
-  public AIplayer_firstGeneration(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
-      @JsonProperty("volume") int volume) {
+  public AIplayer_firstGeneration(@JsonProperty("nickname") String nickname,
+      @JsonProperty("avatar") String avatar, @JsonProperty("volume") int volume) {
     super(nickname, avatar, volume);
   }
 
@@ -374,7 +374,7 @@ public class AIplayer_firstGeneration extends Player {
       isValid = true;
       for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
         if ((t = currentLocation[wordIndex].getTile()) != null) {
-          if (!(t.getLetter().getChar() == word.getWordString().charAt(wordIndex))) {
+          if (!(t.getLetter().getCharacter() == word.getWordString().charAt(wordIndex))) {
             isValid = false;
             break;
           }
@@ -382,7 +382,7 @@ public class AIplayer_firstGeneration extends Player {
           isValid = false; // will be set to true by for-loop if char is found in rack
           for (int i = 0; i < this.getRackTiles().size(); i++) {
             if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
-                .getRackTile(i).getLetter().getChar()) {
+                .getRackTile(i).getLetter().getCharacter()) {
               isValid = true;
               break;
             }
@@ -397,7 +397,7 @@ public class AIplayer_firstGeneration extends Player {
           if (currentLocation[wordIndex].getTile() == null) {
             for (int i = 0; i < this.getRackTiles().size(); i++) {
               if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
-                  .getRackTile(i).getLetter().getChar()) {
+                  .getRackTile(i).getLetter().getCharacter()) {
                 // currentLocation[wordIndex].setOnlyTile(rack[i]);
                 // currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
                 // currentLocation[wordIndex].getTile().setOnGameBoard(true);

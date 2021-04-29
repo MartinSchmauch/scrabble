@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -31,6 +33,8 @@ public class LoginScreen extends Application {
   protected Player currentPlayer;
   protected boolean guest = false;
   private static boolean alreadyLaunched;
+  private double xOffset;
+  private double yOffset;
 
 
   @FXML
@@ -40,7 +44,8 @@ public class LoginScreen extends Application {
 
 
   /**
-   * Set up the avatar picture before loginscreen is visible.
+   * Set up the avatar picture before loginscreen is visible and ask user for profile creation if no
+   * profile is present.
    */
 
   @FXML
@@ -105,7 +110,23 @@ public class LoginScreen extends Application {
     }
     Scene scene = new Scene(root);
     stage.setScene(scene);
-    // stage.initStyle(StageStyle.UNDECORATED);
+    stage.initStyle(StageStyle.UNDECORATED);
+
+    root.setOnMousePressed(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        xOffset = event.getSceneX();
+        yOffset = event.getSceneY();
+      }
+    });
+    root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent event) {
+        stage.setX(event.getScreenX() - xOffset);
+        stage.setY(event.getScreenY() - yOffset);
+      }
+    });
+
     stage.setTitle("Scrabble3");
     setFirstLaunch(true);
     stage.show();
