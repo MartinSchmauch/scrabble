@@ -91,12 +91,15 @@ public class ClientProtocol extends Thread {
               atMessage.getTile().setField(gameState.getGameBoard()
                   .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
               gpc.addTile(atMessage.getTile());
+              // tbimplemented
               break;
             case REMOVE_TILE:
               RemoveTileMessage rtMessage = (RemoveTileMessage) m;
-              // rtMessage.getTile().setField(gameState.getGameBoard()
-              // .getField(rtMessage.getX(), rtMessage.getY()));
-              // gpc.removeTile(rtMessage.getTile()); // TODO:param: int x, int y, boolean isOnRack
+              boolean onRack = false;
+              if (rtMessage.getY() == -1) {
+                onRack = true;
+              }
+              this.gpc.removeTile(rtMessage.getX(), rtMessage.getY(), onRack);
               break;
             case TILE:
               TileMessage trMessage = (TileMessage) m;

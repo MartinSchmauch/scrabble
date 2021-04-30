@@ -1,10 +1,5 @@
 package network.server;
 
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,9 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
+import mechanic.Tile;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
@@ -28,6 +29,7 @@ import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -60,10 +62,38 @@ public class Server {
    * default game settings are used.
    */
 
-  public Server(PlayerData host, String customGameSettings) {
+  public Server(Player host, String customGameSettings) {
     this.host = host.getNickname();
-    this.gameState = new GameState(host, customGameSettings);
+    this.player = host;
+    this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
     this.gameController = new GameController(this.gameState);
+  }
+
+  /**
+   * This method fills the racks of every player with initial tiles.
+   * 
+   * @author lurny
+   */
+  public void distributeInitialTiles() {
+    // add Tiles to host Rack
+    List<Tile> tileList;
+    tileList = this.gameController.drawInitialTiles();
+    // domain
+    this.player.addTilesToRack(tileList);
+    // UI
+    for (Tile t : tileList) {
+      this.gpc.addTile(t);
+    }
+
+    // add Tiles to players
+    for (ServerProtocol client : this.clients.values()) {
+      tileList = this.gameController.drawInitialTiles();
+      // UI
+      client.sendToClient(new TileMessage(this.getHost(), tileList));
+      // sollen die Racks nur lokal gespeichert werden?
+
+    }
+
   }
 
   /**
@@ -325,6 +355,12 @@ public class Server {
     }
   }
 
+  public void startGame() {
+    this.gameState.setRunning(true);
+    sendToAll(new StartGameMessage(this.host, 10));
+    distributeInitialTiles();
+  }
+
   public Player getPlayer() {
     return player;
   }
@@ -339,5 +375,9 @@ public class Server {
 
   public GamePanelController getGamePanelController() {
     return gpc;
+  }
+
+  public void setRunning(boolean running) {
+    this.running = running;
   }
 }

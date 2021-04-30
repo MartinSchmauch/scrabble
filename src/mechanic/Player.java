@@ -1,13 +1,13 @@
 package mechanic;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
-import java.util.ArrayList;
-import java.util.List;
 import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
 import network.messages.MoveTileMessage;
@@ -91,6 +91,7 @@ public class Player {
     return this.info.getAvatar();
   }
 
+
   /*
    * RACK METHODS
    */
@@ -130,6 +131,17 @@ public class Player {
   public void addTileToRack(Tile tile) {
     tile.setField(getFreeRackField());
     tile.setOnRack(true);
+  }
+
+  /**
+   * This method adds a List of tileson the player´s rack.
+   * 
+   * @author lurny
+   */
+  public void addTilesToRack(List<Tile> tileList) {
+    for (Tile t : tileList) {
+      addTileToRack(t);
+    }
   }
 
   public Tile removeRackTile(int index) {
@@ -183,10 +195,10 @@ public class Player {
     if (newIndex == -1 || rack[newIndex].getTile() != null) {
       gpc.indicateInvalidTurn(this.getNickname(), "Field on Rack not free.");
     }
-    
+
     MoveTileMessage mtm = new MoveTileMessage(this.getNickname(), tile.getField().getxCoordinate(),
         tile.getField().getyCoordinate(), newIndex, -1);
-    
+
     if (this.isHost()) {
       server.handleMoveTile(mtm);
     } else {
@@ -206,7 +218,7 @@ public class Player {
     if (this.isHost()) {
       server.handleAddTileToGameBoard(atm);
     } else {
-        client.sendToServer(atm);
+      client.sendToServer(atm);
     }
   }
 
@@ -260,7 +272,7 @@ public class Player {
   public void host() {
 
     this.getPlayerInfo().setHost(true);
-    this.server = new Server(this.info, null);
+    this.server = new Server(this, null);
     this.gpc = this.server.getGamePanelController();
 
     Runnable r = new Runnable() {
@@ -279,7 +291,7 @@ public class Player {
     this.client = new ClientProtocol(ip, GameSettings.port, this, null,
         LobbyScreenController.getLobbyInstance());
     this.gpc = this.client.getGamePanelController();
-    
+
     if (this.client.isOK()) {
       this.client.start();
 

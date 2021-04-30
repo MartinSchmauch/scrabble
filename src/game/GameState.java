@@ -43,12 +43,13 @@ public class GameState implements Serializable, Runnable {
 
     JsonHandler jsonHandler = new JsonHandler();
 
-
     if (customGameSettings != null) {
       jsonHandler.loadGameSettings(customGameSettings);
     } else {
       jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
     }
+
+    setUpGameboard();
   }
 
   /**
@@ -201,6 +202,10 @@ public class GameState implements Serializable, Runnable {
   public boolean addScore(String player, int turnScore) {
     int oldScore = this.scores.get(player);
     return this.scores.replace(player, oldScore, oldScore + turnScore);
+  }
+
+  public double getTimeLeftBar() {
+    return timeLeftBar;
   }
 
 }

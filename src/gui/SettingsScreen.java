@@ -6,16 +6,22 @@ import game.GameSettings;
 /** @author nilbecke **/
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /** This Class launches the Settings Screen **/
 
 public class SettingsScreen extends Application {
 
   private static GameSettings settings;
+  private double xoffset;
+  private double yoffset;
+
 
 
   /**
@@ -38,7 +44,23 @@ public class SettingsScreen extends Application {
       Parent root = FXMLLoader.load(getClass().getResource("SettingsScreenFXML.fxml"));
       Scene scene = new Scene(root);
       stage.setScene(scene);
-      // stage.initStyle(StageStyle.UNDECORATED);
+      stage.initStyle(StageStyle.UNDECORATED);
+
+      root.setOnMousePressed(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          xoffset = event.getSceneX();
+          yoffset = event.getSceneY();
+        }
+      });
+      root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          stage.setX(event.getScreenX() - xoffset);
+          stage.setY(event.getScreenY() - yoffset);
+        }
+      });
+
       stage.setTitle("Settings");
       stage.show();
 

@@ -132,7 +132,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "user":
-        new UserSettingsScreen(this.currentPlayer).start(new Stage());
+        showUserProfile();
         break;
       case "tppUp":
         updateLabel(this.time, Integer.parseInt(time.getText()) + 1);
@@ -198,13 +198,14 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       case "restore":
         new JsonHandler().loadGameSettings("resources/defaultGameSettings.json");
         setUpLabels();
+        break;
       default:
         break;
     }
   }
 
   /**
-   * 
+   * Set up all labels etc.
    */
   public void setUpLabels() {
     this.time.setText(GameSettings.getTimePerPlayer() + "");

@@ -27,7 +27,6 @@ import mechanic.PlayerData;
 import network.messages.DisconnectMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
-import network.messages.StartGameMessage;
 import network.server.Server;
 
 /**
@@ -139,7 +138,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.input.setText("");
         break;
       case "start":
-        startGame();
+        this.start.setDisable(true);
+        this.settings.setDisable(true);
+        this.getServer().startGame();
         break;
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
@@ -149,15 +150,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     }
   }
 
-  /**
-   * Starts the countdown before the game launches.
-   */
-  public void startGame() {
-    this.start.setDisable(true);
-    this.settings.setDisable(true);
-    sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
-  }
-
 
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
@@ -165,31 +157,35 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public synchronized void startGameScreen(Player currentPlayer) {
 
 
+
     // Displays countdown
-    Timeline cdLabel =
-        new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-          int counter = 4;
+    // Timeline cdLabel =
+    // new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+    // int counter = 4;
+    //
+    // @Override
+    // public void handle(ActionEvent e) {
+    // updateCountdown(counter);
+    // counter--;
+    // }
+    // }));
+    // cdLabel.setCycleCount(5);
+    // cdLabel.play();
 
-          @Override
-          public void handle(ActionEvent e) {
-            updateCountdown(counter);
-            counter--;
-          }
-        }));
-    cdLabel.setCycleCount(5);
-    cdLabel.play();
+    // cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
 
-    cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
+    Platform.runLater(new Runnable() {
       @Override
       public void run() {
         try {
-          new ClientUI().start(new Stage());
+          new GamePanel(player).start(new Stage());
           closeWindow();
         } catch (Exception e) {
           e.printStackTrace();
         }
       }
-    }));
+
+    });
 
 
 

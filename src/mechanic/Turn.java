@@ -1,15 +1,10 @@
 package mechanic;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import game.GameController;
 
 /**
  * An object of this class is used for each player turn. It is used to find all words that emerge
@@ -25,12 +20,14 @@ public class Turn implements Serializable {
   private List<Word> words; // Array, that contains all words, that result from the lay down letters
   private int turnScore;
   private boolean isValid;
+  private GameController gameController;
   private static String baseDir = System.getProperty("user.dir")
       + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
   private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
 
 
-  public Turn(String player) {
+  public Turn(String player, GameController gamecontroller) {
+    this.gameController = gamecontroller;
     this.player = player;
     this.words = new ArrayList<Word>();
     this.laydDownTiles = new ArrayList<Tile>();
@@ -69,7 +66,7 @@ public class Turn implements Serializable {
       // find Top Letter
       while (t.getTopTile() != null) {
         t = t.getTopTile();
-        //System.out.println("i am here");
+        // System.out.println("i am here");
       }
       // Go from Top to Bottom to build word
       wordTiles.add(t);
@@ -132,27 +129,16 @@ public class Turn implements Serializable {
         // String representation of the ArrayList "tileList"
         String wordString = tileList.toString();
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-          Pattern p = Pattern.compile("\\w*");
-          String line;
-          while ((line = br.readLine()) != null) {
-            Matcher m = p.matcher(line);
-            if (!line.isEmpty()) {
-              m.find();
-              String w = line.substring(m.regionStart(), m.end());
-              if (wordString.equalsIgnoreCase(w)) {
-                help2 = true;
-              }
-            }
+        for (String s : this.gameController.getDictionary()) {
+          if (wordString.equalsIgnoreCase(s)) {
+            help2 = true;
           }
-        } catch (FileNotFoundException e) {
-          e.printStackTrace();
-        } catch (IOException e) {
-          e.printStackTrace();
         }
+
         if (help2 == false) {
           return help2;
         }
+        help2 = false;
 
       }
       return true;
@@ -253,9 +239,9 @@ public class Turn implements Serializable {
   public boolean isValid() {
     return isValid;
   }
-  
+
   public Turn getDeepCopy() {
-    Turn res = new Turn(this.getPlayer());
+    Turn res = new Turn(this.getPlayer(), this.gameController);
     res.player = this.player;
     res.isValid = this.isValid;
     for (Tile t : this.laydDownTiles) {
@@ -270,8 +256,12 @@ public class Turn implements Serializable {
       }
       res.words.add(new Word(temp));
     }
-    
+
     return res;
+  }
+
+  public GameController getGameController() {
+    return gameController;
   }
 
 

@@ -33,8 +33,9 @@ public class LoginScreen extends Application {
   protected Player currentPlayer;
   protected boolean guest = false;
   private static boolean alreadyLaunched;
-  private double xOffset;
-  private double yOffset;
+  private double xoffset;
+  private double yoffset;
+
 
 
   @FXML
@@ -102,6 +103,7 @@ public class LoginScreen extends Application {
   @Override
   public void start(Stage stage) {
 
+
     Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
       this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
@@ -115,22 +117,22 @@ public class LoginScreen extends Application {
     root.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
-        xOffset = event.getSceneX();
-        yOffset = event.getSceneY();
+        xoffset = event.getSceneX();
+        yoffset = event.getSceneY();
       }
     });
+
     root.setOnMouseDragged(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
-        stage.setX(event.getScreenX() - xOffset);
-        stage.setY(event.getScreenY() - yOffset);
+        stage.setX(event.getScreenX() - xoffset);
+        stage.setY(event.getScreenY() - yoffset);
       }
     });
 
     stage.setTitle("Scrabble3");
     setFirstLaunch(true);
     stage.show();
-
   }
 
   public static void setFirstLaunch(boolean launch) {

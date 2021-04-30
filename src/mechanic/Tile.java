@@ -220,6 +220,4 @@ public class Tile implements Serializable {
     return "Tile at at Field " + this.field.toString() + " with Char " + this.letter.getCharacter();
   }
 
-
-
 }

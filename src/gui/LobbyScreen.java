@@ -4,11 +4,14 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import mechanic.Player;
 import mechanic.PlayerData;
 
@@ -24,6 +27,8 @@ public class LobbyScreen extends Application {
   private static Player player;
   private static LobbyScreen instance;
   List<PlayerData> players;
+  private double xoffset;
+  private double yoffset;
 
   /**
    * Launches the Lobby Screen and hosts a game/ connects to a game.
@@ -73,7 +78,21 @@ public class LobbyScreen extends Application {
       stage.setOnCloseRequest(e -> close());
       Scene scene = new Scene(root);
       stage.setScene(scene);
-      // stage.initStyle(StageStyle.UNDECORATED);
+      stage.initStyle(StageStyle.UNDECORATED);
+      root.setOnMousePressed(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          xoffset = event.getSceneX();
+          yoffset = event.getSceneY();
+        }
+      });
+      root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          stage.setX(event.getScreenX() - xoffset);
+          stage.setY(event.getScreenY() - yoffset);
+        }
+      });
       stage.setTitle("Lobby");
       stage.show();
     } catch (Exception e) {
