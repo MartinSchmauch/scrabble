@@ -1,13 +1,13 @@
 package mechanic;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
+import java.util.ArrayList;
+import java.util.List;
 import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
 import network.messages.MoveTileMessage;
@@ -129,7 +129,7 @@ public class Player {
    * 
    */
   public void addTileToRack(Tile tile) {
-    tile.setField(getFreeRackField());
+    // tile.setField(getFreeRackField());
     tile.setOnRack(true);
   }
 

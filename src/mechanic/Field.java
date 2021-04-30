@@ -18,7 +18,7 @@ public class Field implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonIgnore
-  private GameBoard gameBoard;
+  private transient GameBoard gameBoard;
   @JsonIgnore
   private Tile tile;
 

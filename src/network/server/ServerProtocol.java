@@ -170,7 +170,6 @@ public class ServerProtocol extends Thread {
           case TILE:
             TileMessage tm = (TileMessage) m;
             this.server.getGameController().addTilesToTileBag(tm.getTiles());
-
             break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;

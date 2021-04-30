@@ -18,7 +18,6 @@ public class AddTileMessage extends Message {
   public AddTileMessage(String from, Tile tile, int newXCoordinate, int newYCoordinate) {
     super(MessageType.ADD_TILE, from);
     this.tile = tile;
-    this.tile.setField(null);
     this.newXCoordinate = newXCoordinate;
     this.newYCoordinate = newYCoordinate;
   }

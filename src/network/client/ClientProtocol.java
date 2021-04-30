@@ -1,13 +1,13 @@
 /** @author lurny */
 package network.client;
 
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import mechanic.Player;
 import mechanic.Tile;
 import network.messages.AddTileMessage;
@@ -103,7 +103,11 @@ public class ClientProtocol extends Thread {
               break;
             case TILE:
               TileMessage trMessage = (TileMessage) m;
+
               for (Tile t : trMessage.getTiles()) {
+                t.setField(this.player.getFreeRackField());
+                t.setOnGameBoard(false);
+                t.setOnRack(true);
                 gpc.addTile(t);
               }
               break;
