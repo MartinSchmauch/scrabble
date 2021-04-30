@@ -45,8 +45,8 @@ public class GamePanelController implements Sender {
   private Server server;
   private static boolean selectedTileOnGrid = false;
   private static boolean selectedTileOnRack = false;
-  private static int selectedCoordinates[] = new int[2];
-  private static int targetCoordinates[] = new int[2];
+  private static int selectedCoordinates[] = new int[2]; // row column
+  private static int targetCoordinates[] = new int[2]; // row, column
   private ChatController cc;
   private static VisualTile rackTiles[][] = new VisualTile[2][6]; // location of visual tiles on
                                                                   // rack, row;column index
@@ -136,93 +136,127 @@ public class GamePanelController implements Sender {
     this.cc.sendChatMessage(GamePanel.player.getNickname(), this.textField.getText());
   }
 
+  /**
+   * 
+   * @param event
+   */
   @FXML
   public void rackPressed(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
   }
 
+  /**
+   * 
+   * @param event
+   */
   @FXML
   public void rackDragged(MouseEvent event) {
 
   }
 
+  /**
+   * 
+   * @param event
+   */
   @FXML
   public void rackReleased(MouseEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
-
+    if (targetCoordinates[0] == selectedCoordinates[0]
+        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+      // System.out.println("deselect rack tile");
+    } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
+      player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
+      // System.out.println("reorganizeRackTiles");
+    } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+          targetCoordinates[0], targetCoordinates[1]);
+      // System.out.println(
+      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+    }
   }
 
+  /**
+   * 
+   * @param event
+   */
   @FXML
   public void boardPressed(MouseEvent event) {
     Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, true);
+    selectedCoordinates = getPos(node, false);
   }
 
+  /**
+   * 
+   * @param event
+   */
   @FXML
   public void boardDragged(MouseEvent event) {
 
   }
 
+  /**
+   * 
+   * @param event
+   */
   @FXML
   public void boardReleased(MouseEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
+    if (targetCoordinates[0] == selectedCoordinates[0]
+        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+      // System.out.println("deselect grid tile");
+    } else if (selectedCoordinates[0] != -1) { // exchange tiles on board
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+          targetCoordinates[0], targetCoordinates[1]);
+      // System.out.println("exchange grid tiles");
+    } else if (selectedCoordinates[0] == -1) { // move tile from rack to board
+      // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
+      // + targetCoordinates[0] + targetCoordinates[1]);
+      player.moveToGameBoard(selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
+    }
   }
 
 
 
   /**
-   * Listener method that is executed, when a rectangle in the GridPane 'rack' is clicked. The
-   * method checks which tile was selected before and causes the right action for the desired tile
-   * movement.
+   * @deprecated
+   * 
+   *             Listener method that is executed, when a rectangle in the GridPane 'rack' is
+   *             clicked. The method checks which tile was selected before and causes the right
+   *             action for the desired tile movement.
    * 
    * @param event
    */
   @FXML
   public void rackClicked(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    int[] pos = getPos(node, true);
-    int x = pos[0];
-    int y = pos[1];
+    // Node node = (Node) event.getSource();
+    // int[] pos = getPos(node, true);
+    // int x = pos[0];
+    // int y = pos[1];
     // // GUI test start:
     // setSelectedTileOnRack(true);
     // coordinates[0] = x;
     // // GUI test ende.
-    if (x == selectedCoordinates[0] && y == selectedCoordinates[1]) { // deselect tile
-      setSelectedTileOnRack(false);
-      System.out.println("deselect rack tile");
-    } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
-      setSelectedTileOnRack(true);
-      selectedCoordinates[0] = x;
-      selectedCoordinates[1] = -1;
-      System.out.println("rack tile selected");
-    } else if (selectedTileOnRack) { // exchange tiles on rack
-      player.reorganizeRackTile(x, selectedCoordinates[0]);
-      setSelectedTileOnRack(false);
-      System.out.println("reorganizeRackTiles");
-    } else if (selectedTileOnGrid) { // try to move tile from board to rack - sender!
-      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1], x, y);
-      setSelectedTileOnGrid(false);
-      System.out.println(
-          "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
-    }
+
   }
 
   /**
-   * Listener method that is executed, when a rectangle in the GridPane 'grid' is clicked. The
-   * method checks which tile was selected before and causes the right action for the desired tile
-   * movement.
+   * @deprecated
+   * 
+   *             Listener method that is executed, when a rectangle in the GridPane 'grid' is
+   *             clicked. The method checks which tile was selected before and causes the right
+   *             action for the desired tile movement.
    *
    * @param event
    */
   @FXML
   public void boardClicked(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    int[] pos = getPos(node, false);
-    int x = pos[0];
-    int y = pos[1];
+    // Node node = (Node) event.getSource();
+    // int[] pos = getPos(node, false);
+    // int x = pos[0];
+    // int y = pos[1];
     // // GUI test start:
     // if (selectedTileOnRack) {
     // Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
@@ -230,23 +264,6 @@ public class GamePanelController implements Sender {
     // moveToGamePanel(t2, x, y);
     // }
     // // GUI test ende.
-    if (x == selectedCoordinates[0] && y == selectedCoordinates[1]) { // deselect tile
-      setSelectedTileOnGrid(false);
-      System.out.println("deselect grid tile");
-    } else if (selectedTileOnRack == false && selectedTileOnGrid == false) { // select tile
-      setSelectedTileOnGrid(true);
-      selectedCoordinates[0] = x;
-      selectedCoordinates[1] = -1;
-      System.out.println("select grid tile");
-    } else if (selectedTileOnGrid) { // exchange tiles on board
-      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1], x, y);
-      setSelectedTileOnGrid(false);
-      System.out.println("exchange grid tiles");
-    } else if (selectedTileOnRack) { // move tile from rack to board
-      System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0] + x + y);
-      player.moveToGameBoard(selectedCoordinates[0], x, y);
-      setSelectedTileOnRack(false);
-    }
   }
 
   /**
@@ -598,19 +615,20 @@ public class GamePanelController implements Sender {
     Integer columnIndex = GridPane.getColumnIndex(node);
     Integer rowIndex = GridPane.getRowIndex(node);
     if (columnIndex == null) {
-      result[0] = 0;
-    } else {
-      result[0] = columnIndex.intValue();
-    }
-    if (rowIndex == null) {
       result[1] = 0;
     } else {
-      result[1] = rowIndex.intValue();
+      result[1] = columnIndex.intValue();
+    }
+    if (rowIndex == null) {
+      result[0] = 0;
+    } else {
+      result[0] = rowIndex.intValue();
     }
     if (nodeFromRack) {
-      if (result[1] > 0) {
-        result[0] = result[0] + 6;
+      if (result[0] > 0) {
+        result[1] = result[1] + 6;
       }
+      result[0] = -1;
     }
     return result;
   }
