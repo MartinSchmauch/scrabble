@@ -272,7 +272,7 @@ public class Player {
   public void host() {
 
     this.getPlayerInfo().setHost(true);
-    this.server = new Server(this.info, null);
+    this.server = new Server(this, null);
     this.gpc = this.server.getGamePanelController();
 
     Runnable r = new Runnable() {

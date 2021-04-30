@@ -1,12 +1,12 @@
 package gui;
 
 
+import game.GameSettings;
+import game.GameState;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
-import game.GameSettings;
-import game.GameState;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -27,7 +27,6 @@ import mechanic.PlayerData;
 import network.messages.DisconnectMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
-import network.messages.StartGameMessage;
 import network.server.Server;
 
 /**
@@ -139,7 +138,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.input.setText("");
         break;
       case "start":
-        startGame();
+        this.start.setDisable(true);
+        this.settings.setDisable(true);
+        this.getServer().startGame();
         break;
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
@@ -147,16 +148,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       default:
         break;
     }
-  }
-
-  /**
-   * Starts the countdown before the game launches.
-   */
-  public void startGame() {
-    this.start.setDisable(true);
-    this.settings.setDisable(true);
-    sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
-    this.getServer().distributeInitialTiles();
   }
 
 

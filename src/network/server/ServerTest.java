@@ -6,6 +6,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import game.GameSettings;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.Player;
 import network.client.ClientProtocol;
 
@@ -35,7 +37,7 @@ public class ServerTest {
   public void test() throws Exception {
 
     // start Server
-    server = new Server(host.getPlayerInfo(), null);
+    server = new Server(host, null);
     System.out.println(server.getGameState().getAllPlayers());
 
     Runnable r = new Runnable() {
@@ -47,7 +49,9 @@ public class ServerTest {
     Thread.sleep(50);
 
     // connect client1: (player)
-    this.connection = new ClientProtocol("127.0.0.1", GameSettings.port, player, null, null);
+    this.connection =
+        new ClientProtocol("127.0.0.1", GameSettings.port, player, new GamePanelController(),
+            new LobbyScreenController());
 
     if (this.connection.isOK()) {
       this.connection.start();
@@ -63,7 +67,8 @@ public class ServerTest {
 
 
     // connect client2: (player 2)
-    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2, null, null);
+    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2,
+        new GamePanelController(), new LobbyScreenController());
 
     if (this.connection2.isOK()) {
       this.connection2.start();
@@ -77,7 +82,8 @@ public class ServerTest {
     System.out.println(server.getGameState().getPlayerData("ScrabblePro"));
     assertTrue(server.getGameState().getAllPlayers().contains(player2.getPlayerInfo()));
 
-    // fill player racks
+    // fill player racks and send StartMessage
+    server.startGame();
 
     server.stopServer();
 

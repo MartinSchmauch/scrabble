@@ -62,9 +62,10 @@ public class Server {
    * default game settings are used.
    */
 
-  public Server(PlayerData host, String customGameSettings) {
+  public Server(Player host, String customGameSettings) {
     this.host = host.getNickname();
-    this.gameState = new GameState(host, customGameSettings);
+    this.player = host;
+    this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
     this.gameController = new GameController(this.gameState);
   }
 
@@ -75,7 +76,7 @@ public class Server {
    */
   public void distributeInitialTiles() {
     // add Tiles to host Rack
-    List<Tile> tileList = new ArrayList<Tile>();
+    List<Tile> tileList;
     tileList = this.gameController.drawInitialTiles();
     // domain
     this.player.addTilesToRack(tileList);
@@ -85,13 +86,10 @@ public class Server {
     }
 
     // add Tiles to players
-    for (PlayerData pD : this.gameController.getGameState().getAllPlayers()) {
-      List<Tile> tileList1 = new ArrayList<Tile>();
-      tileList1 = this.gameController.drawInitialTiles();
+    for (ServerProtocol client : this.clients.values()) {
+      tileList = this.gameController.drawInitialTiles();
       // UI
-      List<String> receiver = new ArrayList<String>();
-      receiver.add(pD.getNickname());
-      this.sendTo(receiver, new TileMessage(this.getHost(), tileList1));
+      client.sendToClient(new TileMessage(this.getHost(), tileList));
       // sollen die Racks nur lokal gespeichert werden?
 
     }
@@ -357,6 +355,12 @@ public class Server {
     }
   }
 
+  public void startGame() {
+    this.gameState.setRunning(true);
+    sendToAll(new StartGameMessage(this.host, 10));
+    distributeInitialTiles();
+  }
+
   public Player getPlayer() {
     return player;
   }
@@ -371,5 +375,9 @@ public class Server {
 
   public GamePanelController getGamePanelController() {
     return gpc;
+  }
+
+  public void setRunning(boolean running) {
+    this.running = running;
   }
 }
