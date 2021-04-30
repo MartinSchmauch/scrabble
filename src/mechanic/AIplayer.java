@@ -1,13 +1,11 @@
 package mechanic;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameController;
-import game.GameState;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
 
 /**
  * 
@@ -333,7 +331,7 @@ public class AIplayer extends Player {
     HashSet<Field[]> possibleLocations;
     Turn currentTurn;
     int maximumScore = 0;
-    //List<Tile> layedDownTileListWithMaximumScore = null;
+    // List<Tile> layedDownTileListWithMaximumScore = null;
     Field[] layedDownFieldsWithMaximumScore = null;
     ArrayList<Tile> currentLayedDownTiles;
     ArrayList<Integer> indicesOnRack;
@@ -357,7 +355,7 @@ public class AIplayer extends Player {
           currentTurn.setLaydDownTiles(currentLayedDownTiles);
           if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
             maximumScore = currentTurn.getTurnScore();
-            //layedDownTileListWithMaximumScore = currentLayedDownTiles;
+            // layedDownTileListWithMaximumScore = currentLayedDownTiles;
             layedDownFieldsWithMaximumScore = currentLocation;
             turnWithMaximumScore = currentTurn.getDeepCopy();
             System.out.println("NEW MAXIMUM SCORE: " + maximumScore);
@@ -432,6 +430,7 @@ public class AIplayer extends Player {
       return null;
     }
   }
+
 
   /**
    * 
@@ -515,79 +514,80 @@ public class AIplayer extends Player {
   // }
   // return null;
   // }
-//  private List<Tile> generateWord(GameBoard gb, Field[] currentLocation,
-//      HashSet<WordOnList> currentDictionary) {
-//    List<Tile> result = new ArrayList<Tile>();
-//    boolean isValid;
-//    boolean atLeastOneRackTileNeeded = false;
-//    Tile t;
-//
-//    // check if all fields already have tiles on gameboard
-//    for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
-//      if (currentLocation[wordIndex].getTile() == null) {
-//        atLeastOneRackTileNeeded = true;
-//      }
-//    }
-//    if (!atLeastOneRackTileNeeded) {
-//      return null;
-//    }
-//
-//    for (WordOnList word : currentDictionary) {
-//      isValid = true;
-//      for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
-//        if ((t = currentLocation[wordIndex].getTile()) != null) {
-//          if (!(t.getLetter().getCharacter() == word.getWordString().charAt(wordIndex))) {
-//            isValid = false;
-//            break;
-//          }
-//        } else {
-//          isValid = false; // will be set to true by for-loop if char is found in rack
-//          for (int i = 0; i < this.getRackTiles().size(); i++) {
-//            if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
-//                .getRackTile(i).getLetter().getCharacter()) {
-//              isValid = true;
-//              break;
-//            }
-//          }
-//          if (!isValid) {
-//            break;
-//          }
-//        }
-//      }
-//      if (isValid) {
-//        for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
-//          if (currentLocation[wordIndex].getTile() == null) {
-//            for (int i = 0; i < this.getRackTiles().size(); i++) {
-//              if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
-//                  .getRackTile(i).getLetter().getCharacter()) {
-//                // currentLocation[wordIndex].setOnlyTile(rack[i]);
-//                // currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
-//                // currentLocation[wordIndex].getTile().setOnGameBoard(true);
-//                // currentLocation[wordIndex].getTile().setOnRack(false);
-//                // currentLocation[wordIndex].getTile().setPlayed(true);
-//                // t = new Tile(new Letter(word.getWordString().charAt(wordIndex),
-//                // rack[i].getLetter().getLetterValue(), rack[i].getLetter().getCount()), )
-//                // result.add(new Tile())
-//                currentLocation[wordIndex].setTile(this.getRackTile(i));
-//                result.add(currentLocation[wordIndex].getTile());
-//
-//                System.out.println("Neuer Buchstabe");
-//                System.out.println(this.getRackTile(i));
-//                System.out.println(currentLocation[wordIndex]);
-//                System.out.println("------------");
-//
-//                this.setRackTileToNone(i);
-//                break;
-//              }
-//            }
-//          } else {
-//            // result.add(currentLocation[wordIndex].getTile());
-//          }
-//        }
-//        return result;
-//      }
-//    }
-//    return null;
-//
-//  }
+  // private List<Tile> generateWord(GameBoard gb, Field[] currentLocation,
+  // HashSet<WordOnList> currentDictionary) {
+  // List<Tile> result = new ArrayList<Tile>();
+  // boolean isValid;
+  // boolean atLeastOneRackTileNeeded = false;
+  // Tile t;
+  //
+  // // check if all fields already have tiles on gameboard
+  // for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
+  // if (currentLocation[wordIndex].getTile() == null) {
+  // atLeastOneRackTileNeeded = true;
+  // }
+  // }
+  // if (!atLeastOneRackTileNeeded) {
+  // return null;
+  // }
+  //
+  // for (WordOnList word : currentDictionary) {
+  // isValid = true;
+  // for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
+  // if ((t = currentLocation[wordIndex].getTile()) != null) {
+  // if (!(t.getLetter().getCharacter() == word.getWordString().charAt(wordIndex))) {
+  // isValid = false;
+  // break;
+  // }
+  // } else {
+  // isValid = false; // will be set to true by for-loop if char is found in rack
+  // for (int i = 0; i < this.getRackTiles().size(); i++) {
+  // if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
+  // .getRackTile(i).getLetter().getCharacter()) {
+  // isValid = true;
+  // break;
+  // }
+  // }
+  // if (!isValid) {
+  // break;
+  // }
+  // }
+  // }
+  // if (isValid) {
+  // for (int wordIndex = 0; wordIndex < currentLocation.length; wordIndex++) {
+  // if (currentLocation[wordIndex].getTile() == null) {
+  // for (int i = 0; i < this.getRackTiles().size(); i++) {
+  // if (this.getRackTile(i) != null && word.getWordString().charAt(wordIndex) == this
+  // .getRackTile(i).getLetter().getCharacter()) {
+  // // currentLocation[wordIndex].setOnlyTile(rack[i]);
+  // // currentLocation[wordIndex].getTile().setOnlyField(currentLocation[wordIndex]);
+  // // currentLocation[wordIndex].getTile().setOnGameBoard(true);
+  // // currentLocation[wordIndex].getTile().setOnRack(false);
+  // // currentLocation[wordIndex].getTile().setPlayed(true);
+  // // t = new Tile(new Letter(word.getWordString().charAt(wordIndex),
+  // // rack[i].getLetter().getLetterValue(), rack[i].getLetter().getCount()), )
+  // // result.add(new Tile())
+  // currentLocation[wordIndex].setTile(this.getRackTile(i));
+  // result.add(currentLocation[wordIndex].getTile());
+  //
+  // System.out.println("Neuer Buchstabe");
+  // System.out.println(this.getRackTile(i));
+  // System.out.println(currentLocation[wordIndex]);
+  // System.out.println("------------");
+  //
+  // this.setRackTileToNone(i);
+  // break;
+  // }
+  // }
+  // } else {
+  // // result.add(currentLocation[wordIndex].getTile());
+  // }
+  // }
+  // return result;
+  // }
+  // }
+  // return null;
+  //
+  // }
+
 }

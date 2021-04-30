@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SettingsScreenController">
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.SettingsScreenController">
    <center>
       <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -223,7 +223,7 @@
                         <ColorAdjust brightness="-1.0" contrast="-1.0" hue="0.1" saturation="0.17" />
                      </effect>
                   </ImageView>
-                  <Button layoutX="462.0" layoutY="19.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="12.0" prefWidth="26.0" style="-fx-border-color: transparent;" text="Exit">
+                  <Button fx:id="exit" layoutX="462.0" layoutY="19.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="12.0" prefWidth="26.0" style="-fx-border-color: transparent;" text="Exit">
                      <tooltip>
                         <Tooltip text="Exit Game" />
                      </tooltip>

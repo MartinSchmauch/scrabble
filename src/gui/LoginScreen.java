@@ -37,6 +37,7 @@ public class LoginScreen extends Application {
   private double yoffset;
 
 
+
   @FXML
   private ImageView avatar;
   @FXML
@@ -44,7 +45,8 @@ public class LoginScreen extends Application {
 
 
   /**
-   * Set up the avatar picture before loginscreen is visible.
+   * Set up the avatar picture before loginscreen is visible and ask user for profile creation if no
+   * profile is present.
    */
 
   @FXML
@@ -119,6 +121,7 @@ public class LoginScreen extends Application {
         yoffset = event.getSceneY();
       }
     });
+
     root.setOnMouseDragged(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {

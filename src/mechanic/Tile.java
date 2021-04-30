@@ -1,7 +1,7 @@
 package mechanic;
 
-import game.GameSettings;
 import java.io.Serializable;
+import game.GameSettings;
 
 /**
  * The Tile class is essential part of the domain model. It has a Field attribute that refers to the
@@ -213,7 +213,9 @@ public class Tile implements Serializable {
   @Override
   public String toString() {
     if (this.getField().getTile() != this) {
-      return "###########################\n###########################\n###########################\n###########################\n DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n" + "Tile at at Field " + this.field.toString() + " with Char " + this.letter.getCharacter();
+      return "###########################\n###########################\n###########################\n###########################\n DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n"
+          + "Tile at at Field " + this.field.toString() + " with Char "
+          + this.letter.getCharacter();
     }
     return "Tile at at Field " + this.field.toString() + " with Char " + this.letter.getCharacter();
   }
