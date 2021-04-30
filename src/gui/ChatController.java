@@ -31,7 +31,6 @@ public class ChatController implements Sender {
    * @param sender username of player sending message
    */
   public String updateChat(String message, LocalDateTime dateTime, String sender) {
-
     String newChatMessage = "";
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     newChatMessage = newChatMessage + sender + ", ";

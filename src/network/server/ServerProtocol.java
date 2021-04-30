@@ -66,6 +66,7 @@ public class ServerProtocol extends Thread {
 
 
   public void sendToClient(Message m) {
+
     try {
       this.out.writeObject(m);
       out.flush();

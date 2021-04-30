@@ -222,11 +222,11 @@ public class Server {
     for (String nickname : clientNames) {
       ServerProtocol c = clients.get(nickname);
       c.sendToClient((Message) (m));
-      try {
-        updateServerUi(m);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    }
+    try {
+      updateServerUi(m);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

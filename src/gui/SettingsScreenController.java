@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -193,15 +194,37 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         chooseFile();
         break;
       case "dic2":
-        OpenExternalScreen.open(settings.getDictionary());
+        OpenExternalScreen.open(GameSettings.getDictionary());
         break;
       case "restore":
         new JsonHandler().loadGameSettings("resources/defaultGameSettings.json");
         setUpLabels();
         break;
+      case "exit":
+        saveSettings();
+        Button b = (Button) e.getSource();
+        Stage st = (Stage) (b.getScene().getWindow());
+        st.close();
+        break;
+      case "save":
+        saveSettings();
+        setUpLabels();
       default:
         break;
     }
+  }
+
+  public void saveSettings() {
+    new JsonHandler().saveGameSettings("resources/gameSettingsTest.json");
+  }
+
+  /**
+   * Shows the user his profile without the possibility to make changes. Gets called if the user
+   * clicks on his username in the game settings screen
+   */
+  public void showUserProfile() {
+    CustomAlert alert = new CustomAlert(AlertType.INFORMATION);
+    alert.show();
   }
 
   /**
