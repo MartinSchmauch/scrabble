@@ -1,10 +1,5 @@
 package network.server;
 
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,6 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -67,6 +67,10 @@ public class Server {
     this.player = host;
     this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
     this.gameController = new GameController(this.gameState);
+  }
+
+  public void setlpc(LobbyScreenController lpc) {
+    this.lsc = lpc;
   }
 
   /**
