@@ -1,6 +1,7 @@
 package mechanic;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 
 /**
  * This class is used for storing all available letters and how many tiles of the respective letter
@@ -10,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @author ldreyer
  */
 
-public class Letter {
+public class Letter implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @JsonIgnore
   private char character;

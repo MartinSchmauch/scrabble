@@ -1,5 +1,10 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,11 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -78,12 +78,18 @@ public class Server {
     // add Tiles to host Rack
     List<Tile> tileList;
     tileList = this.gameController.drawInitialTiles();
-    // domain
-    this.player.addTilesToRack(tileList);
+
     // UI
     for (Tile t : tileList) {
+      t.setField(this.player.getFreeRackField());
+      t.setOnGameBoard(false);
+      t.setOnRack(true);
       this.gpc.addTile(t);
     }
+
+    // domain
+    this.player.addTilesToRack(tileList);
+
 
     // add Tiles to players
     for (ServerProtocol client : this.clients.values()) {
@@ -303,6 +309,8 @@ public class Server {
           break;
         case ADD_TILE:
           AddTileMessage atm = (AddTileMessage) m;
+          atm.getTile().setField(
+              gameState.getGameBoard().getField(atm.getNewXCoordinate(), atm.getNewYCoordinate()));
           gpc.addTile(atm.getTile());
           break;
         case REMOVE_TILE:
