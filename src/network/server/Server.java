@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import javafx.application.Platform;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
@@ -67,10 +68,7 @@ public class Server {
     this.player = host;
     this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
     this.gameController = new GameController(this.gameState);
-  }
-
-  public void setlpc(LobbyScreenController lpc) {
-    this.lsc = lpc;
+    this.lsc = LobbyScreenController.getLobbyInstance();
   }
 
   /**
@@ -79,21 +77,7 @@ public class Server {
    * @author lurny
    */
   public void distributeInitialTiles() {
-    // add Tiles to host Rack
     List<Tile> tileList;
-    tileList = this.gameController.drawInitialTiles();
-
-    // UI
-    for (Tile t : tileList) {
-      t.setField(this.player.getFreeRackField());
-      t.setOnGameBoard(false);
-      t.setOnRack(true);
-      this.gpc.addTile(t);
-    }
-
-    // domain
-    this.player.addTilesToRack(tileList);
-
 
     // add Tiles to players
     for (ServerProtocol client : this.clients.values()) {
@@ -103,6 +87,25 @@ public class Server {
       // sollen die Racks nur lokal gespeichert werden?
 
     }
+
+    // add Tiles to host Rack
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        List<Tile> tileList = gameController.drawInitialTiles();
+
+        // UI
+        for (Tile t : tileList) {
+          t.setField(player.getFreeRackField());
+          t.setOnGameBoard(false);
+          t.setOnRack(true);
+          gpc.addTile(t);
+        }
+
+        // domain
+        player.addTilesToRack(tileList);
+      }
+    });
 
   }
 
@@ -267,86 +270,71 @@ public class Server {
    * server's user interface accordingly.
    */
 
-  public void updateServerUi(Message m) throws Exception {
-    if (!this.gameState.getGameRunning()) {
-      if (this.lsc == null) {
-        lsc = LobbyScreenController.getLobbyInstance();
-      }
-
-      switch (m.getMessageType()) {
-        case CONNECT:
-          ConnectMessage cm = (ConnectMessage) m;
-          lsc.addJoinedPlayer(cm.getPlayerInfo());
-          break;
-        case DISCONNECT:
-          lsc.removeJoinedPlayer(m.getFrom());
-          break;
-        case UPDATE_CHAT:
-          UpdateChatMessage um = (UpdateChatMessage) m;
-          lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
-          break;
-        case START_GAME:
-          StartGameMessage sgm = (StartGameMessage) m;
-          lsc.startGameScreen(this.player);
-          break;
-        case GAME_STATISTIC:
-          GameStatisticMessage gsm = (GameStatisticMessage) m;
-          break;
-        // TODO
-        default:
-          break;
-      }
-    } else {
-
-      if (this.gpc == null) {
-        gpc = GamePanelController.getInstance();
-      }
-
-      switch (m.getMessageType()) {
-        case DISCONNECT:
-          DisconnectMessage dm = (DisconnectMessage) m;
-          gpc.removeJoinedPlayer(dm.getFrom());
-          break;
-        case SEND_CHAT_TEXT:
-          SendChatMessage scm = (SendChatMessage) m;
-          gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
-          break;
-        case ADD_TILE:
-          AddTileMessage atm = (AddTileMessage) m;
-          atm.getTile().setField(
-              gameState.getGameBoard().getField(atm.getNewXCoordinate(), atm.getNewYCoordinate()));
-          gpc.addTile(atm.getTile());
-          break;
-        case REMOVE_TILE:
-          RemoveTileMessage rtm = (RemoveTileMessage) m;
-          gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
-          break;
-        // case MOVE_TILE:
-        // MoveTileMessage mtm = (MoveTileMessage) m;
-        // Tile t = this.gameState.getGameBoard()
-        // .getField(mtm.getOldXCoordinate(), mtm.getOldYCoordinate()).getTile();
-        // gpc.removeTile(mtm.getOldXCoordinate(), mtm.getOldYCoordinate(),
-        // (mtm.getOldYCoordinate() == -1));
-        //
-        // t.setField(this.gameState.getGameBoard().getField(mtm.getNewXCoordinate(),
-        // mtm.getNewYCoordinate()));
-        // gpc.addTile(t);
-        // break;
-        case TURN_RESPONSE:
-          TurnResponseMessage trm = (TurnResponseMessage) m;
-          if (!trm.getIsValid()) {
-            gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
-          } else {
-            gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
-            gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-            this.gameState.setCurrentPlayer(trm.getNextPlayer());
-            gpc.indicatePlayerTurn(trm.getNextPlayer());
+  public void updateServerUi(Message m) {
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if (!gameState.getGameRunning()) {
+          switch (m.getMessageType()) {
+            case CONNECT:
+              ConnectMessage cm = (ConnectMessage) m;
+              lsc.addJoinedPlayer(cm.getPlayerInfo());
+              break;
+            case DISCONNECT:
+              lsc.removeJoinedPlayer(m.getFrom());
+              break;
+            case UPDATE_CHAT:
+              UpdateChatMessage um = (UpdateChatMessage) m;
+              lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
+              break;
+            case START_GAME:
+              StartGameMessage sgm = (StartGameMessage) m;
+              lsc.startGameScreen();
+              break;
+            case GAME_STATISTIC:
+              GameStatisticMessage gsm = (GameStatisticMessage) m;
+              break;
+            // TODO
+            default:
+              break;
           }
-          break;
-        default:
-          break;
+        } else {
+          switch (m.getMessageType()) {
+            case DISCONNECT:
+              DisconnectMessage dm = (DisconnectMessage) m;
+              gpc.removeJoinedPlayer(dm.getFrom());
+              break;
+            case SEND_CHAT_TEXT:
+              SendChatMessage scm = (SendChatMessage) m;
+              gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
+              break;
+            case ADD_TILE:
+              AddTileMessage atm = (AddTileMessage) m;
+              atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
+                  atm.getNewYCoordinate()));
+              gpc.addTile(atm.getTile());
+              break;
+            case REMOVE_TILE:
+              RemoveTileMessage rtm = (RemoveTileMessage) m;
+              gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
+              break;
+            case TURN_RESPONSE:
+              TurnResponseMessage trm = (TurnResponseMessage) m;
+              if (!trm.getIsValid()) {
+                gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
+              } else {
+                gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                gameState.setCurrentPlayer(trm.getNextPlayer());
+                gpc.indicatePlayerTurn(trm.getNextPlayer());
+              }
+              break;
+            default:
+              break;
+          }
+        }
       }
-    }
+    });
   }
 
   /**
@@ -368,8 +356,15 @@ public class Server {
   }
 
   public void startGame() {
-    this.gameState.setRunning(true);
-    sendToAll(new StartGameMessage(this.host, 10));
+    sendToAll(new StartGameMessage(host, 10));
+
+    try {
+      Thread.sleep(3000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    gameState.setRunning(true);
     distributeInitialTiles();
   }
 
@@ -388,6 +383,15 @@ public class Server {
   public GamePanelController getGamePanelController() {
     return gpc;
   }
+
+  public void setGamePanelController(GamePanelController gpc) {
+    this.gpc = gpc;
+  }
+
+  public void setLobbyScreenController(LobbyScreenController lsc) {
+    this.lsc = lsc;
+  }
+
 
   public void setRunning(boolean running) {
     this.running = running;

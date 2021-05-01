@@ -23,7 +23,7 @@ public class GamePanelTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    host.getServer().setlpc(this.controller);
+
     client.setHost(false);
     try {
       client.connect(InetAddress.getLocalHost().getHostAddress());

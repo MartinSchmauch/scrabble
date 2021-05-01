@@ -115,7 +115,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   public void initialize() {
     instance = this;
-    this.currentPlayer = LobbyScreen.getInstance().getPlayer();
+    this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar
         .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));

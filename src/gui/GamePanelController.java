@@ -20,9 +20,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mechanic.Field;
-import mechanic.Letter;
 import mechanic.Player;
 import mechanic.Tile;
 import network.client.ClientProtocol;
@@ -75,25 +74,11 @@ public class GamePanelController implements Sender {
   private static GamePanelController instance;
 
   public static GamePanelController getInstance() {
-    if (instance == null) {
-      instance = new GamePanelController();
-    }
     return instance;
   }
 
-  /**
-   * Constructor of the class that is being called before @FXML annotated fields were populated
-   */
-  public GamePanelController() {
-    System.out.println("Controller erzeugt \n");
-  }
-
-  /**
-   * initialize method of the GamePanelController, that is being called after @FXML annotated fields
-   * were populated
-   */
-  public void initialize() {
-    this.player = GamePanel.getInstance().getPlayer();
+  public void initData(Player player) {
+    this.player = player;
     cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
@@ -107,16 +92,11 @@ public class GamePanelController implements Sender {
                                                                            // als anteil von 1 hier
                                                                            // einfügen aus gamestate
                                                                            // Klasse
+    System.out.println("Controller erzeugt \n");
+
     timeProgress.progressProperty().bind(progressProperty);
-    // TEST:
-    Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
-    t2.setOnRack(true);
-    addTile(t2);
-    Tile t1 = new Tile(new Letter('C', 5, 5), new Field(5, 5, 1, 0));
-    t1.setOnGameBoard(true);
-    addTile(t1);
-    // TEST ENDE
   }
+
 
   /**
    * 
@@ -133,7 +113,7 @@ public class GamePanelController implements Sender {
    */
   @FXML
   public void sendMessage(ActionEvent event) {
-    this.cc.sendChatMessage(GamePanel.player.getNickname(), this.textField.getText());
+    this.cc.sendChatMessage(this.player.getNickname(), this.textField.getText());
   }
 
   /**
@@ -272,8 +252,7 @@ public class GamePanelController implements Sender {
    */
   @FXML
   public void completeTurn(ActionEvent event) {
-    String userName = "Martin";
-    sendCommitTurn(userName);
+    sendCommitTurn(this.player.getNickname());
   }
 
   /**
@@ -494,7 +473,7 @@ public class GamePanelController implements Sender {
    * @param turnScore
    * @throws Exception
    */
-  public void updateScore(String nickName, int turnScore) throws Exception {
+  public void updateScore(String nickName, int turnScore) {
     String newScore = "";
     if (player1.getText().equals(nickName)) {
       this.playerOnePoints.setText(newScore);
@@ -505,7 +484,7 @@ public class GamePanelController implements Sender {
     } else if (player4.getText().equals(nickName)) {
       this.playerFourPoints.setText(newScore);
     } else {
-      throw new Exception("Player " + nickName + "is not part of the GameBoard");
+      System.out.println("Player " + nickName + "is not part of the GameBoard");
     }
 
   }
@@ -633,5 +612,17 @@ public class GamePanelController implements Sender {
     return result;
   }
 
+  /**
+   * Closes the Game and stops the server.
+   */
+
+  public void close() {
+    if (this.player.getServer() != null) {
+      this.player.getServer().stopServer();
+    } else if (!this.player.isHost()) {
+      this.player.getClientProtocol().disconnect();
+    }
+    new LoginScreen().start(new Stage());
+  }
 }
 

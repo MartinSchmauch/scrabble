@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.util.ArrayList;
 import java.util.List;
 import network.client.ClientProtocol;
@@ -273,7 +272,6 @@ public class Player {
 
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this, null);
-    this.gpc = this.server.getGamePanelController();
 
     Runnable r = new Runnable() {
       public void run() {
@@ -288,9 +286,7 @@ public class Player {
   public void connect(String ip) {
     this.getPlayerInfo().setHost(false);
 
-    this.client = new ClientProtocol(ip, GameSettings.port, this, null,
-        LobbyScreenController.getLobbyInstance());
-    this.gpc = this.client.getGamePanelController();
+    this.client = new ClientProtocol(ip, GameSettings.port, this);
 
     if (this.client.isOK()) {
       this.client.start();

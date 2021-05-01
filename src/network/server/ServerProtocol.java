@@ -53,11 +53,10 @@ public class ServerProtocol extends Thread {
 
   /** Sends the initialGameState to the client who uses this protocol. */
 
-  public void sendInitialGameState() throws IOException {
+  public void sendInitialGameState() {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
 
-    // Changed to send To All
-    this.server.sendToAll(m);
+    this.sendToClient(m);
 
   }
 
@@ -129,7 +128,7 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             server.removeClient(m.getFrom());
             running = false;
-            sendInitialGameState();
+            server.sendToAll(m);
             disconnect();
             break;
           case ADD_TILE:

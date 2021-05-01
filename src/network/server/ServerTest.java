@@ -6,8 +6,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import game.GameSettings;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import mechanic.Player;
 import network.client.ClientProtocol;
 
@@ -50,8 +48,7 @@ public class ServerTest {
 
     // connect client1: (player)
     this.connection =
-        new ClientProtocol("127.0.0.1", GameSettings.port, player, new GamePanelController(),
-            new LobbyScreenController());
+        new ClientProtocol("127.0.0.1", GameSettings.port, player);
 
     if (this.connection.isOK()) {
       this.connection.start();
@@ -67,8 +64,7 @@ public class ServerTest {
 
 
     // connect client2: (player 2)
-    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2,
-        new GamePanelController(), new LobbyScreenController());
+    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2);
 
     if (this.connection2.isOK()) {
       this.connection2.start();

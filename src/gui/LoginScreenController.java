@@ -2,6 +2,8 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Optional;
 
 /** @Author nilbecke **/
@@ -9,6 +11,9 @@ import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
@@ -29,6 +35,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
 
   private Player player;
   private static LoginScreenController instance;
+  private double xoffset;
+  private double yoffset;
 
   @FXML
   private TextField LinkField;
@@ -57,13 +65,10 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         case "Join":
           this.player.setHost(false);
           startLobby();
-          s.close();
           break;
         case "Host Game":
           this.player.setHost(true);
           startLobby();
-          s = (Stage) button.getScene().getWindow();
-          s.close();
           break;
         case "Exit":
           System.exit(0);
@@ -133,7 +138,76 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    */
 
   public void startLobby() {
-    new LobbyScreen(this.player, this.getConnection()).start(new Stage());
+    String connection;
+
+    if (this.getConnection() == "") {
+      try {
+        connection = InetAddress.getLocalHost().getHostAddress();
+      } catch (UnknownHostException e) {
+        e.printStackTrace();
+        return;
+      }
+    } else {
+      connection = this.getConnection();
+    }
+
+    if (this.player.isHost()) {
+      this.player.host();
+    } else {
+      this.player.connect(connection);
+
+      if (!this.player.getClientProtocol().isOK()) {
+        CustomAlert alert = new CustomAlert(AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Could not establish connection.");
+        alert.show();
+        return;
+      }
+    }
+
+    try {
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
+
+      Stage stage = new Stage(StageStyle.DECORATED);
+      Parent root = loader.load();
+      stage.setScene(new Scene(root));
+
+      LobbyScreenController controller = loader.getController();
+      if (player.isHost()) {
+        player.getServer().setLobbyScreenController(controller);
+      } else {
+        player.getClientProtocol().setLobbyScreenController(controller);
+      }
+      controller.initData(player, connection);
+
+      root.setOnMousePressed(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          xoffset = event.getSceneX();
+          yoffset = event.getSceneY();
+        }
+      });
+
+      root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+          stage.setX(event.getScreenX() - xoffset);
+          stage.setY(event.getScreenY() - yoffset);
+        }
+      });
+
+      stage.initStyle(StageStyle.UNDECORATED);
+      stage.setTitle("Lobby");
+      stage.setOnCloseRequest(e -> controller.close());
+      stage.show();
+
+      Stage s = (Stage) LinkField.getScene().getWindow();
+      s.close();
+
+    } catch (IOException ioe) {
+      ioe.printStackTrace();
+    }
   }
 
   /**
