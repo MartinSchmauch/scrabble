@@ -19,6 +19,7 @@ import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
+import mechanic.Turn;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
@@ -179,9 +180,18 @@ public class Server {
     if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
         m.getNewYCoordinate())) {
       sendToAll(m);
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
       Field f = m.getTile().getField();
       RemoveTileMessage rtm = new RemoveTileMessage(host, f.getxCoordinate(), f.getyCoordinate());
-      clients.get(m.getFrom()).sendToClient(rtm);
+      if (m.getFrom().equals(this.getHost())) {
+        updateServerUi((Message) rtm);
+      } else {
+        clients.get(m.getFrom()).sendToClient(rtm);
+      }
     } else {
       InvalidMoveMessage im =
           new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
@@ -367,6 +377,7 @@ public class Server {
     gameState.setRunning(true);
     gameState.setCurrentPlayer(host);
     distributeInitialTiles();
+    this.gameController.setTurn(new Turn(this.host, this.gameController));
   }
 
   public Player getPlayer() {

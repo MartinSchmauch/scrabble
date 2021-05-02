@@ -80,6 +80,10 @@ public class GameController {
     return this.turn;
   }
 
+  public void setTurn(Turn turn) {
+    this.turn = turn;
+  }
+
   /**
    * This method gets the 7 initial tiles for the current player.
    * 
