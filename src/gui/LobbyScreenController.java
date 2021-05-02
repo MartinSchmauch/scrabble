@@ -1,13 +1,12 @@
 package gui;
 
 
+import game.GameSettings;
+import game.GameState;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import game.GameSettings;
-import game.GameState;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -225,10 +224,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * 
    */
   public void updateJoinedPlayers() {
-
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
         GameState gs;
         if (player.isHost()) {
           gs = player.getServer().getGameState();
@@ -256,8 +251,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
             avatars[i].setImage(null);
           }
         }
-      }
-    });
   }
 
   /**
