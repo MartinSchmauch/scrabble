@@ -1,5 +1,10 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,11 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -177,6 +177,8 @@ public class Server {
   /** Handles move from rack to gameBoard (with AddTileMessage). */
 
   public void handleAddTileToGameBoard(AddTileMessage m) {
+    Field f = m.getTile().getField();
+
     if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
         m.getNewYCoordinate())) {
       sendToAll(m);
@@ -185,7 +187,7 @@ public class Server {
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      Field f = m.getTile().getField();
+
       RemoveTileMessage rtm = new RemoveTileMessage(host, f.getxCoordinate(), f.getyCoordinate());
       if (m.getFrom().equals(this.getHost())) {
         updateServerUi((Message) rtm);
@@ -319,12 +321,14 @@ public class Server {
               gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
               break;
             case ADD_TILE:
+              System.out.println("Hi Add");
               AddTileMessage atm = (AddTileMessage) m;
               atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
                   atm.getNewYCoordinate()));
               gpc.addTile(atm.getTile());
               break;
             case REMOVE_TILE:
+              System.out.println("Hi Remove");
               RemoveTileMessage rtm = (RemoveTileMessage) m;
               gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
               break;
