@@ -1,6 +1,7 @@
 package gui;
 
 import java.time.LocalDateTime;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,7 +17,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -116,6 +121,84 @@ public class GamePanelController implements Sender {
     this.cc.sendChatMessage(this.player.getNickname(), this.textField.getText());
   }
 
+  @FXML
+  public void rackDragHandling(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, true);
+
+    System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
+
+    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
+    ClipboardContent cb = new ClipboardContent();
+    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
+    db.setContent(cb);
+
+    event.consume();
+  }
+
+  @FXML
+  public void boardDragHandling(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, false);
+
+    System.out
+        .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
+
+    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
+    ClipboardContent cb = new ClipboardContent();
+    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
+    db.setContent(cb);
+
+    event.consume();
+  }
+
+  @FXML
+  public void DragOverHandling(DragEvent event) {
+    event.acceptTransferModes(TransferMode.ANY);
+  }
+
+  @FXML
+  public void rackDropHandling(DragEvent event) {
+    Node node = (Node) event.getSource();
+    targetCoordinates = getPos(node, true);
+    System.out.println("rackReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
+
+    if (targetCoordinates[0] == selectedCoordinates[0]
+        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+      // System.out.println("deselect rack tile");
+    } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
+      player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
+      // System.out.println("reorganizeRackTiles");
+    } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+          targetCoordinates[0], targetCoordinates[1]);
+      // System.out.println(
+      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+    }
+    resetCoordinates();
+  }
+
+  @FXML
+  public void boardDropHandling(DragEvent event) {
+    Node node = (Node) event.getSource();
+    targetCoordinates = getPos(node, false);
+    System.out.println("boardReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
+
+    if (targetCoordinates[0] == selectedCoordinates[0]
+        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+      // System.out.println("deselect rack tile");
+    } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
+      player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
+      // System.out.println("reorganizeRackTiles");
+    } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+          targetCoordinates[0], targetCoordinates[1]);
+      // System.out.println(
+      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+    }
+    resetCoordinates();
+  }
+
   /**
    * 
    * @param event
@@ -124,6 +207,8 @@ public class GamePanelController implements Sender {
   public void rackPressed(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
+    // System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " +
+    // selectedCoordinates[1]);
   }
 
   /**
@@ -141,20 +226,24 @@ public class GamePanelController implements Sender {
    */
   @FXML
   public void rackReleased(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    targetCoordinates = getPos(node, true);
-    if (targetCoordinates[0] == selectedCoordinates[0]
-        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-      // System.out.println("deselect rack tile");
-    } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
-      player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
-      // System.out.println("reorganizeRackTiles");
-    } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
-      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
-          targetCoordinates[0], targetCoordinates[1]);
-      // System.out.println(
-      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
-    }
+    // Node node = (Node) event.getSource();
+    // targetCoordinates = getPos(node, true);
+    // // System.out.println("rackReleased at: " + targetCoordinates[0] + "; " +
+    // targetCoordinates[1]);
+    //
+    // if (targetCoordinates[0] == selectedCoordinates[0]
+    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+    // // System.out.println("deselect rack tile");
+    // } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
+    // player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
+    // // System.out.println("reorganizeRackTiles");
+    // } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+    // targetCoordinates[0], targetCoordinates[1]);
+    // // System.out.println(
+    // // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+    // }
+    // resetCoordinates();
   }
 
   /**
@@ -165,6 +254,8 @@ public class GamePanelController implements Sender {
   public void boardPressed(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, false);
+    // System.out
+    // .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
   }
 
   /**
@@ -182,20 +273,30 @@ public class GamePanelController implements Sender {
    */
   @FXML
   public void boardReleased(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    targetCoordinates = getPos(node, true);
-    if (targetCoordinates[0] == selectedCoordinates[0]
-        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-      // System.out.println("deselect grid tile");
-    } else if (selectedCoordinates[0] != -1) { // exchange tiles on board
-      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
-          targetCoordinates[0], targetCoordinates[1]);
-      // System.out.println("exchange grid tiles");
-    } else if (selectedCoordinates[0] == -1) { // move tile from rack to board
-      // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
-      // + targetCoordinates[0] + targetCoordinates[1]);
-      player.moveToGameBoard(selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
-    }
+    // Node node = (Node) event.getSource();
+    // targetCoordinates = getPos(node, false);
+    // // System.out.println("boardRealeased at: " + targetCoordinates[0] + "; " +
+    // // targetCoordinates[1]);
+    // if (targetCoordinates[0] == selectedCoordinates[0]
+    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+    // // System.out.println("deselect grid tile");
+    // } else if (selectedCoordinates[0] != -1) { // exchange tiles on board
+    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+    // targetCoordinates[0], targetCoordinates[1]);
+    // // System.out.println("exchange grid tiles");
+    // } else if (selectedCoordinates[0] == -1) { // move tile from rack to board
+    // // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
+    // // + targetCoordinates[0] + targetCoordinates[1]);
+    // player.moveToGameBoard(selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
+    // }
+    // resetCoordinates();
+  }
+
+  public static void resetCoordinates() {
+    selectedCoordinates[0] = -2;
+    selectedCoordinates[1] = -2;
+    targetCoordinates[0] = -2;
+    targetCoordinates[1] = -2;
   }
 
 
@@ -456,14 +557,19 @@ public class GamePanelController implements Sender {
     // } else if (player4.getText().equals(nickName)) {
     // // TODO: zug rückgängig machen
     // }
-    CustomAlert alert = new CustomAlert(AlertType.WARNING);
-    alert.setTitle("Invalid Turn");
-    alert.setHeaderText("Your turn was not valid");
-    alert.setContentText("Please try a new turn, according to the scrabble rules");
-    alert.initStyle(StageStyle.UNDECORATED);
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        CustomAlert alert = new CustomAlert(AlertType.WARNING);
+        alert.setTitle("Invalid Turn");
+        alert.setHeaderText("Your turn was not valid");
+        alert.setContentText("Please try a new turn, according to the scrabble rules");
+        alert.initStyle(StageStyle.UNDECORATED);
 
-    alert.getDialogPane().getStylesheets()
-        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+        alert.getDialogPane().getStylesheets()
+            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+      }
+    });
   }
 
   /**

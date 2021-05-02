@@ -1,12 +1,13 @@
 package mechanic;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.GamePanelController;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.application.Platform;
 import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
 import network.messages.MoveTileMessage;
@@ -37,7 +38,7 @@ public class Player {
   private GamePanelController gpc = null;
 
   static final int TILE_COUNT_PER_PLAY = 7;
-  static final int RACK_FIELDS = 7;
+  static final int RACK_FIELDS = 12;
 
   public Player(String nickname) {
     this.info = new PlayerData(nickname);
@@ -178,12 +179,17 @@ public class Player {
    */
 
   public void reorganizeRackTile(int indexBefore, int indexAfter) {
-    if (rack[indexBefore].getTile() == null && rack[indexAfter].getTile() != null) {
-      gpc.indicateInvalidTurn(this.getNickname(), "Invalid Field Selection.");
-    }
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if (rack[indexBefore].getTile() == null && rack[indexAfter].getTile() != null) {
+          gpc.indicateInvalidTurn(getNickname(), "Invalid Field Selection.");
+        }
 
-    rack[indexAfter].setTile(removeRackTile(indexBefore));
-    gpc.moveToRack(rack[indexAfter].getTile(), indexBefore, -1);
+        rack[indexAfter].setTile(removeRackTile(indexBefore));
+        gpc.moveToRack(rack[indexAfter].getTile(), indexBefore, -1);
+      }
+    });
   }
 
 
