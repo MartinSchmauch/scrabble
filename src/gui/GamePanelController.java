@@ -700,20 +700,20 @@ public class GamePanelController implements Sender {
     Integer columnIndex = GridPane.getColumnIndex(node);
     Integer rowIndex = GridPane.getRowIndex(node);
     if (columnIndex == null) {
-      result[1] = 0;
-    } else {
-      result[1] = columnIndex.intValue();
-    }
-    if (rowIndex == null) {
       result[0] = 0;
     } else {
-      result[0] = rowIndex.intValue();
+      result[0] = columnIndex.intValue();
+    }
+    if (rowIndex == null) {
+      result[1] = 0;
+    } else {
+      result[1] = rowIndex.intValue();
     }
     if (nodeFromRack) {
-      if (result[0] > 0) {
-        result[1] = result[1] + 6;
+      if (result[1] > 0) {
+        result[0] = result[0] + 6;
       }
-      result[0] = -1;
+      result[1] = -1;
     }
     return result;
   }
