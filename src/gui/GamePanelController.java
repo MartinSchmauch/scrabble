@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -95,7 +96,8 @@ public class GamePanelController implements Sender {
     timer.textProperty().bind(timerProperty);
     SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(0.5); // TODO: restliche zeit
                                                                            // als anteil von 1 hier
-                                                                           // einf�gen aus gamestate
+                                                                           // einf�gen aus
+                                                                           // gamestate
                                                                            // Klasse
     System.out.println("Controller erzeugt \n");
 
@@ -372,11 +374,11 @@ public class GamePanelController implements Sender {
    * 
    */
 
-  /**
-   * Lets a player disconnect
-   * 
-   * @param nickname of the player disconnecting
-   */
+     /**
+      * Lets a player disconnect
+      * 
+      * @param nickname of the player disconnecting
+      */
 
 
 
@@ -498,43 +500,24 @@ public class GamePanelController implements Sender {
    */
   public void removeTile(int column, int row, boolean isOnRack) {
     int x, y;
+    ObservableList<Node> list;
     if (isOnRack) {
-      for (Node node : rack.getChildren()) {
-        Integer columnIndex = GridPane.getColumnIndex(node);
-        Integer rowIndex = GridPane.getRowIndex(node);
-        if (columnIndex == null) {
-          x = 0;
-        } else {
-          x = columnIndex.intValue();
-        }
-        if (rowIndex == null) {
-          y = 0;
-        } else {
-          y = rowIndex.intValue();
-        }
+      list = rack.getChildren();
+      for (Node node : list) {
+        x = getPos(node, true)[0];
+        y = getPos(node, true)[1];
         if (node instanceof Parent && x == column && y == row) {
           rack.getChildren().remove(node);
-          rackTiles[row][column] = null; // verwaltung von der visual tile
           break;
         }
       }
     } else {
-      for (Node node : board.getChildren()) {
-        Integer columnIndex = GridPane.getColumnIndex(node);
-        Integer rowIndex = GridPane.getRowIndex(node);
-        if (columnIndex == null) {
-          x = 0;
-        } else {
-          x = columnIndex.intValue();
-        }
-        if (rowIndex == null) {
-          y = 0;
-        } else {
-          y = rowIndex.intValue();
-        }
+      list = board.getChildren();
+      for (Node node : list) {
+        x = getPos(node, false)[0];
+        y = getPos(node, false)[1];
         if (node instanceof Parent && x == column && y == row) {
           board.getChildren().remove(node);
-          boardTiles[row][column] = null; // verwaltung von der visual tile
           break;
         }
       }
@@ -613,7 +596,8 @@ public class GamePanelController implements Sender {
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out
+        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessage(m);
   }
