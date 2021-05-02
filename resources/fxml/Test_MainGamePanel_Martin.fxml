@@ -55,7 +55,7 @@
                                                    <children>
                                                       <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fx:id="image1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@creeper.png" />
                                                                </image>
@@ -75,7 +75,7 @@
                                                                   </Text>
                                                                   <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
                                                                      <children>
-                                                                        <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="pointsLabel1" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
                                                                            <font>
                                                                               <Font name="System Bold" size="18.0" />
                                                                            </font>
@@ -96,7 +96,7 @@
                                                       </HBox>
                                                       <HBox fx:id="player2Box" alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fx:id="image2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@creeper.png" />
                                                                </image>
@@ -116,7 +116,7 @@
                                                                   </Text>
                                                                   <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
                                                                      <children>
-                                                                        <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="pointsLabel2" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
                                                                            <font>
                                                                               <Font name="System Bold" size="18.0" />
                                                                            </font>
@@ -137,7 +137,7 @@
                                                       </HBox>
                                                       <HBox fx:id="player3Box" alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fx:id="image3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@creeper.png" />
                                                                </image>
@@ -157,7 +157,7 @@
                                                                   </Text>
                                                                   <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
                                                                      <children>
-                                                                        <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="pointsLabel3" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
                                                                            <font>
                                                                               <Font name="System Bold" size="18.0" />
                                                                            </font>
@@ -178,7 +178,7 @@
                                                       </HBox>
                                                       <HBox fx:id="player4Box" alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                            <ImageView fx:id="image4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                                                <image>
                                                                   <Image url="@creeper.png" />
                                                                </image>
@@ -198,7 +198,7 @@
                                                                   </Text>
                                                                   <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
                                                                      <children>
-                                                                        <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="pointsLabel4" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
                                                                            <font>
                                                                               <Font name="System Bold" size="18.0" />
                                                                            </font>

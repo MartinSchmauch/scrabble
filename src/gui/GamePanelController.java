@@ -1,6 +1,8 @@
 package gui;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import game.GameState;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -18,6 +20,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -29,6 +33,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
+import mechanic.PlayerData;
 import mechanic.Tile;
 import network.client.ClientProtocol;
 import network.messages.CommitTurnMessage;
@@ -46,6 +51,7 @@ import network.server.Server;
 public class GamePanelController implements Sender {
 
   private Player player;
+  private List<PlayerData> players;
   private ClientProtocol cp;
   private Server server;
   private static boolean selectedTileOnGrid = false;
@@ -65,11 +71,15 @@ public class GamePanelController implements Sender {
   @FXML
   private Button sendButton, skipAndChange, done;
   @FXML
-  private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
-  @FXML
-  private Text remainingLetters, timer;
+  private ImageView image1, image2, image3, image4;
   @FXML
   private Text player1, player2, player3, player4;
+  @FXML
+  private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
+  @FXML
+  private Text pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4;
+  @FXML
+  private Text remainingLetters, timer;
   @FXML
   private Rectangle tile1;
   @FXML
@@ -99,8 +109,37 @@ public class GamePanelController implements Sender {
                                                                            // einf�gen aus
                                                                            // gamestate
                                                                            // Klasse
-    System.out.println("Controller erzeugt \n");
+    Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
+    Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    Text[] playerNameLabel = {player1, player2, player3, player4};
+    ImageView[] avatarImageView = {image1, image2, image3, image4};
+    GameState gs;
+    if (player.isHost()) {
+      gs = player.getServer().getGameState();
+      players = gs.getAllPlayers();
+    } else {
+      gs = player.getClientProtocol().getGameState();
+      try {
+        players = gs.getAllPlayers();
+      } catch (NullPointerException e) {
+        return;
+      }
+    }
 
+    for (int i = 0; i <= 3; i++) {
+      if (i < players.size()) {
+        playerNameLabel[i].setText(players.get(i).getNickname());
+        pointsLabel[i].setText("0");
+        playerLabel[i].setText("Points: ");
+        avatarImageView[i]
+            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+      } else {
+        playerNameLabel[i].setText(null);
+        pointsLabel[i].setText(null);
+        playerLabel[i].setText(null);
+        avatarImageView[i].setImage(null);
+      }
+    }
     timeProgress.progressProperty().bind(progressProperty);
   }
 
@@ -714,4 +753,3 @@ public class GamePanelController implements Sender {
     new LoginScreen().start(new Stage());
   }
 }
-
