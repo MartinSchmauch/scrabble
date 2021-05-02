@@ -629,8 +629,12 @@ public class GamePanelController implements Sender {
 
   @Override
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
-    Message m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
-    sendMessage(m);
+    MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
+    if (this.player.isHost()) {
+      this.player.getServer().handleMoveTile(m);
+    } else {
+      sendMessage(m);
+    }
   }
 
   @Override

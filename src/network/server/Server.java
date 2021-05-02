@@ -204,8 +204,9 @@ public class Server {
   /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
 
   public void handleMoveTile(MoveTileMessage m) {
-    Field oldField =
-        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate());
+    Tile oldTile =
+        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate())
+            .getTile();
 
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
       if (!this.gameController.removeTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
@@ -215,6 +216,17 @@ public class Server {
         sendToAll(im);
         return;
       }
+
+      AddTileMessage atm =
+          new AddTileMessage(m.getFrom(), oldTile,
+          m.getNewXCoordinate(), m.getNewYCoordinate());
+
+      if (m.getFrom().equals(this.getHost())) {
+        updateServerUi((Message) atm);
+      } else {
+        clients.get(m.getFrom()).sendToClient(atm);
+      }
+
     } else if (m.getNewYCoordinate() != -1 && m.getOldYCoordinate() != -1) { // move on game board
       if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
@@ -222,18 +234,21 @@ public class Server {
             new InvalidMoveMessage(m.getFrom(), "Tile could not be moved on GameBoard.");
         sendToAll(im);
         return;
-      } else {
-        InvalidMoveMessage im = new InvalidMoveMessage(m.getFrom(), "Invalid.");
-        sendToAll(im);
-        return;
       }
+
+      AddTileMessage atm =
+          new AddTileMessage(m.getFrom(), oldTile,
+          m.getNewXCoordinate(),
+          m.getNewYCoordinate());
+      sendToAll(atm);
+
     }
+
     RemoveTileMessage rtm =
         new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
-    AddTileMessage atm =
-        new AddTileMessage(host, oldField.getTile(), m.getNewXCoordinate(), m.getNewYCoordinate());
+
     sendToAll(rtm);
-    clients.get(m.getFrom()).sendToClient(atm);
+
   }
 
 
@@ -323,8 +338,16 @@ public class Server {
             case ADD_TILE:
               System.out.println("Hi Add");
               AddTileMessage atm = (AddTileMessage) m;
-              atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
-                  atm.getNewYCoordinate()));
+              if (atm.getNewYCoordinate() == -1) {
+                atm.getTile().setField(player.getRackField(atm.getNewXCoordinate()));
+                atm.getTile().setOnRack(true);
+                atm.getTile().setOnGameBoard(false);
+              } else {
+                atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
+                    atm.getNewYCoordinate()));
+                atm.getTile().setOnRack(false);
+                atm.getTile().setOnGameBoard(true);
+              }
               gpc.addTile(atm.getTile());
               break;
             case REMOVE_TILE:
@@ -373,7 +396,7 @@ public class Server {
     sendToAll(new StartGameMessage(host, 10));
 
     try {
-      Thread.sleep(3000);
+      Thread.sleep(1000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

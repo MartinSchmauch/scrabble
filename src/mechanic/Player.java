@@ -120,6 +120,11 @@ public class Player {
     return rack[i];
   }
 
+  @JsonIgnore
+  public Field getRackField(int index) {
+    return rack[index];
+  }
+
   public void setRackTileToNone(int index) {
     this.rack[index].setTileOneDirection(null);
   }
@@ -183,6 +188,7 @@ public class Player {
       public void run() {
         if (rack[indexBefore].getTile() == null || rack[indexAfter].getTile() != null) {
           gpc.indicateInvalidTurn(getNickname(), "Invalid Field Selection.");
+          return;
         }
         Tile t = rack[indexBefore].getTile();
         removeRackTile(indexBefore);
@@ -200,6 +206,7 @@ public class Player {
     }
     if (newIndex == -1 || rack[newIndex].getTile() != null) {
       gpc.indicateInvalidTurn(this.getNickname(), "Field on Rack not free.");
+      return;
     }
 
     MoveTileMessage mtm = new MoveTileMessage(this.getNickname(), tile.getField().getxCoordinate(),
@@ -217,6 +224,7 @@ public class Player {
     Tile t = rack[oldIndex].getTile();
     if (t == null) {
       gpc.indicateInvalidTurn(this.getNickname(), "Selcted field on Rack is empty.");
+      return;
     }
 
     AddTileMessage atm = new AddTileMessage(this.getNickname(), t, newX, newY);
