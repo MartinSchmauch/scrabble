@@ -95,7 +95,7 @@ public class GamePanelController implements Sender {
     timer.textProperty().bind(timerProperty);
     SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(0.5); // TODO: restliche zeit
                                                                            // als anteil von 1 hier
-                                                                           // einfügen aus gamestate
+                                                                           // einfï¿½gen aus gamestate
                                                                            // Klasse
     System.out.println("Controller erzeugt \n");
 
@@ -167,7 +167,7 @@ public class GamePanelController implements Sender {
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
       // System.out.println("deselect rack tile");
     } else if (selectedCoordinates[1] == -1) { // exchange tiles on rack
-      player.reorganizeRackTile(selectedCoordinates[0], targetCoordinates[1]);
+      player.reorganizeRackTile(selectedCoordinates[0], targetCoordinates[0]);
       // System.out.println("reorganizeRackTiles");
     } else if (selectedCoordinates[1] != -1) { // try to move tile from board to rack - sender!
       sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
@@ -372,11 +372,11 @@ public class GamePanelController implements Sender {
    * 
    */
 
-     /**
-      * Lets a player disconnect
-      * 
-      * @param nickname of the player disconnecting
-      */
+  /**
+   * Lets a player disconnect
+   * 
+   * @param nickname of the player disconnecting
+   */
 
 
 
@@ -433,7 +433,7 @@ public class GamePanelController implements Sender {
       row = 0;
       if (column > 5) { // case: tile is in the second row of the rack
         row = 1;
-        column -= 5;
+        column -= 6;
       }
       rackTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, true);
       rackTiles[row][column].setMouseTransparent(true);
@@ -549,13 +549,13 @@ public class GamePanelController implements Sender {
    */
   public void indicateInvalidTurn(String nickName, String message) {
     // if (player1.getText().equals(nickName)) {
-    // // TODO: zug rückgängig machen
+    // // TODO: zug rï¿½ckgï¿½ngig machen
     // } else if (player2.getText().equals(nickName)) {
-    // // TODO: zug rückgängig machen
+    // // TODO: zug rï¿½ckgï¿½ngig machen
     // } else if (player3.getText().equals(nickName)) {
-    // // TODO: zug rückgängig machen
+    // // TODO: zug rï¿½ckgï¿½ngig machen
     // } else if (player4.getText().equals(nickName)) {
-    // // TODO: zug rückgängig machen
+    // // TODO: zug rï¿½ckgï¿½ngig machen
     // }
     Platform.runLater(new Runnable() {
       @Override
@@ -613,8 +613,7 @@ public class GamePanelController implements Sender {
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out
-        .println("method sendCommitTurn wurde aufgerufen, ausgelï¿½st von " + nickName + "\n");
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgelï¿½st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessage(m);
   }

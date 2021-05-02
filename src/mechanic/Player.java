@@ -145,9 +145,8 @@ public class Player {
   }
 
   public Tile removeRackTile(int index) {
-    Tile tile = this.rack[index].getTile();
-    this.rack[index].setTile(null);
-
+    Tile tile = rack[index].getTile();
+    rack[index].setTile(null);
     return tile;
   }
 
@@ -182,12 +181,14 @@ public class Player {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        if (rack[indexBefore].getTile() == null && rack[indexAfter].getTile() != null) {
+        if (rack[indexBefore].getTile() == null || rack[indexAfter].getTile() != null) {
           gpc.indicateInvalidTurn(getNickname(), "Invalid Field Selection.");
         }
-
-        rack[indexAfter].setTile(removeRackTile(indexBefore));
-        gpc.moveToRack(rack[indexAfter].getTile(), indexBefore, -1);
+        Tile t = rack[indexBefore].getTile();
+        removeRackTile(indexBefore);
+        setRackTile(indexAfter, t);
+        t.setField(rack[indexAfter]);
+        gpc.moveToRack(t, indexBefore, -1);
       }
     });
   }
@@ -270,6 +271,11 @@ public class Player {
 
   public ClientProtocol getClientProtocol() {
     return this.client;
+  }
+
+  @JsonIgnore
+  public void setGamePanelController(GamePanelController gpc) {
+    this.gpc = gpc;
   }
 
   /** @author nilbecke */

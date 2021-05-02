@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import javafx.application.Platform;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
+import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -365,6 +365,7 @@ public class Server {
     }
 
     gameState.setRunning(true);
+    gameState.setCurrentPlayer(host);
     distributeInitialTiles();
   }
 

@@ -1,13 +1,13 @@
 /** @author lurny */
 package network.client;
 
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Player;
 import mechanic.Tile;
@@ -128,6 +128,8 @@ public class ClientProtocol extends Thread {
                   break;
                 case START_GAME:
                   StartGameMessage sgMessage = (StartGameMessage) m;
+                  gameState.setCurrentPlayer(sgMessage.getFrom());
+                  gameState.setRunning(true);
                   lpc.startGameScreen();
                   break;
                 case GAME_STATISTIC:

@@ -1,12 +1,12 @@
 package gui;
 
 
-import game.GameSettings;
-import game.GameState;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import game.GameSettings;
+import game.GameState;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -155,6 +155,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       } else {
         player.getClientProtocol().setGamePanelController(controller);
       }
+
+      player.setGamePanelController(controller);
 
       controller.initData(player);
       stage.setOnCloseRequest(e -> controller.close());
