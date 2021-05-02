@@ -166,10 +166,10 @@ public class GamePanelController implements Sender {
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
       // System.out.println("deselect rack tile");
-    } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
-      player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
+    } else if (selectedCoordinates[1] == -1) { // exchange tiles on rack
+      player.reorganizeRackTile(selectedCoordinates[0], targetCoordinates[1]);
       // System.out.println("reorganizeRackTiles");
-    } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+    } else if (selectedCoordinates[1] != -1) { // try to move tile from board to rack - sender!
       sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
           targetCoordinates[0], targetCoordinates[1]);
       // System.out.println(
@@ -186,15 +186,15 @@ public class GamePanelController implements Sender {
 
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-      // System.out.println("deselect rack tile");
-    } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
-      player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
-      // System.out.println("reorganizeRackTiles");
-    } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+      // System.out.println("deselect grid tile");
+    } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
       sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
           targetCoordinates[0], targetCoordinates[1]);
-      // System.out.println(
-      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+      // System.out.println("exchange grid tiles");
+    } else if (selectedCoordinates[1] == -1) { // move tile from rack to board
+      // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
+      // + targetCoordinates[0] + targetCoordinates[1]);
+      player.moveToGameBoard(selectedCoordinates[0], targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
   }
