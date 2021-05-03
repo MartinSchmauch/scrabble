@@ -1,13 +1,13 @@
 {
-  "nickname" : "ScrabbleGamer3",
-  "avatar" : "/avatar7.png",
+  "nickname" : "Martin client",
+  "avatar" : "/avatar0.png",
   "volume" : 60,
   "customGameSettings" : null,
+  "clientProtocol" : null,
   "host" : true,
   "playerInfo" : {
-    "nickname" : "ScrabbleGamer3",
-    "avatar" : "/avatar7.png",
+    "nickname" : "Martin client",
+    "avatar" : "/avatar0.png",
     "host" : true
-  },
-  "clientProtocol" : null
+  }
 }

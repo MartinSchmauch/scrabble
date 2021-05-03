@@ -138,9 +138,13 @@ public class ClientProtocol extends Thread {
                   break;
                 case UPDATE_CHAT:
                   UpdateChatMessage ucMessage = (UpdateChatMessage) m;
-                  // gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
-                  // ucMessage.getFrom());
-                  lpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(), ucMessage.getFrom());
+                  if (!gameState.getGameRunning()) {
+                    lpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
+                        ucMessage.getFrom());
+                  } else {
+                    gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
+                        ucMessage.getFrom());
+                  }
                   break;
                 case CONNECT:
                   ConnectMessage cMessage = (ConnectMessage) m;

@@ -10,17 +10,6 @@ package gui;
 public interface Sender {
 
   /**
-   * This method creates a new SendChatMessage that is supposed to inform the server that a client
-   * has send a chat message in his Client UI. Therefore the new message is send to the server,
-   * using the sendMessageToServer() method
-   * 
-   * @param sender
-   * @param message
-   * @param timeStamp
-   */
-  void sendChatMessage(String sender, String message);
-
-  /**
    * This method creates a new TileRequestMessage that is supposed to inform the server that a
    * client has moved a tile in his Client UI and the tile move needs to be checked for conformitiy.
    * Therefore the new message is send to the server, using the sendMessageToServer() method; the

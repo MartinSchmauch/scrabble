@@ -1,10 +1,5 @@
 package network.server;
 
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,6 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -204,9 +204,8 @@ public class Server {
   /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
 
   public void handleMoveTile(MoveTileMessage m) {
-    Tile oldTile =
-        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate())
-            .getTile();
+    Tile oldTile = this.gameState.getGameBoard()
+        .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
 
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
       if (!this.gameController.removeTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
@@ -218,8 +217,7 @@ public class Server {
       }
 
       AddTileMessage atm =
-          new AddTileMessage(m.getFrom(), oldTile,
-          m.getNewXCoordinate(), m.getNewYCoordinate());
+          new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
 
       if (m.getFrom().equals(this.getHost())) {
         updateServerUi((Message) atm);
@@ -237,9 +235,7 @@ public class Server {
       }
 
       AddTileMessage atm =
-          new AddTileMessage(m.getFrom(), oldTile,
-          m.getNewXCoordinate(),
-          m.getNewYCoordinate());
+          new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
       sendToAll(atm);
 
     }
@@ -276,7 +272,6 @@ public class Server {
 
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
-
   }
 
   /**
@@ -365,6 +360,10 @@ public class Server {
                 gameState.setCurrentPlayer(trm.getNextPlayer());
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
               }
+              break;
+            case UPDATE_CHAT:
+              UpdateChatMessage um = (UpdateChatMessage) m;
+              gpc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
               break;
             default:
               break;

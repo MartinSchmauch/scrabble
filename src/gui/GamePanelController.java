@@ -160,6 +160,7 @@ public class GamePanelController implements Sender {
   @FXML
   public void sendMessage(ActionEvent event) {
     this.cc.sendChatMessage(this.player.getNickname(), this.textField.getText());
+    this.textField.setText("");
   }
 
   @FXML
@@ -624,9 +625,6 @@ public class GamePanelController implements Sender {
    * 
    * TODO: Sollte man die Methoden nicht doch lieber in ClientUi auslagern?
    */
-
-  @Override
-  public void sendChatMessage(String sender, String message) {}
 
   @Override
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
