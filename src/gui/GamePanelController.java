@@ -4,9 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import game.GameState;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -131,14 +128,22 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
         avatarImageView[i].setImage(null);
       }
     }
-    SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(50);
-    remainingLetters.textProperty().bind(letterProperty.asString());
-    SimpleStringProperty timerProperty = new SimpleStringProperty(gs.getMin() + ":" + gs.getSec());
-    timer.textProperty().bind(timerProperty);
-    SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(gs.getTimeLeftBar());
-    timeProgress.progressProperty().bind(progressProperty);
+    remainingLetters.setText("TODO: read max letters from gamesettings");
+    timer.setText("TODO: read time per player from gamesettings");
+    timeProgress.setProgress(1.0);
   }
 
+  public void updateTimer(String min, String sec) {
+    timer.setText(min + ":" + sec);
+  }
+
+  public void updateRemainingLetters(int number) {
+    remainingLetters.setText(String.valueOf(number));
+  }
+
+  public void updateProgressBar(Double progress) {
+    timeProgress.setProgress(progress);
+  }
 
   /**
    * 

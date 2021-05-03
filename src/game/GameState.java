@@ -208,4 +208,8 @@ public class GameState implements Serializable, Runnable {
     return timeLeftBar;
   }
 
+  public GameSettings getGameSettings() {
+    return gameSettings;
+  }
+
 }
