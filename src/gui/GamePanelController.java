@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -48,7 +49,7 @@ import network.server.Server;
  *         This class is the Controller Class for the Main Gamel Panel UI for the Client
  */
 
-public class GamePanelController implements Sender {
+public class GamePanelController implements Sender, EventHandler<ActionEvent> {
 
   private Player player;
   private List<PlayerData> players;
@@ -67,9 +68,9 @@ public class GamePanelController implements Sender {
   @FXML
   private TextArea chat;
   @FXML
-  private TextField textField;
+  private TextField chatInput;
   @FXML
-  private Button sendButton, skipAndChange, done;
+  private Button sendButton, skipAndChangeButton, doneButton;
   @FXML
   private ImageView image1, image2, image3, image4;
   @FXML
@@ -144,18 +145,22 @@ public class GamePanelController implements Sender {
    * Listener methods that are executed upon Player UI Interaction
    * 
    */
-
-  /**
-   * Method to be executed when a player clicks on the "Send" button of the chat area in the
-   * GamePanel The ChatController handles this event and gets the text from the textfield of the
-   * chat area.
-   * 
-   * @param event
-   */
-  @FXML
-  public void sendMessage(ActionEvent event) {
-    this.cc.sendChatMessage(this.player.getNickname(), this.textField.getText());
-    this.textField.setText("");
+  @Override
+  public void handle(ActionEvent e) {
+    String s = ((Node) e.getSource()).getId();
+    switch (s) {
+      case "sendButton":
+        sendMessage();
+        break;
+      case "skipAndChangeButton":
+        skipAndChange();
+        break;
+      case "doneButton":
+        completeTurn();
+        break;
+      default:
+        break;
+    }
   }
 
   @FXML
@@ -385,20 +390,27 @@ public class GamePanelController implements Sender {
   }
 
   /**
+   * Method to be executed when a player clicks on the "Send" button of the chat area in the
+   * GamePanel The ChatController handles this event and gets the text from the textfield of the
+   * chat area.
    * 
-   * @param event
    */
-  @FXML
-  public void completeTurn(ActionEvent event) {
+  public void sendMessage() {
+    this.cc.sendChatMessage(this.player.getNickname(), this.chatInput.getText());
+    this.chatInput.setText("");
+  }
+
+  /**
+   * 
+   */
+  public void completeTurn() {
     sendCommitTurn(this.player.getNickname());
   }
 
   /**
    * 
-   * @param event
    */
-  @FXML
-  public void skipAndChange(ActionEvent event) {
+  public void skipAndChange() {
 
   }
 
