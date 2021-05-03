@@ -279,7 +279,7 @@
                                           </TextArea>
                                           <HBox alignment="CENTER" maxWidth="300.0" prefHeight="60.0" prefWidth="240.0">
                                              <children>
-                                                <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="250.0" prefHeight="60.0" prefWidth="230.0" promptText="Message...">
+                                                <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="250.0" onKeyPressed="#sendChatByEnter" prefHeight="60.0" prefWidth="230.0" promptText="Message...">
                                                    <font>
                                                       <Font size="14.0" />
                                                    </font>
