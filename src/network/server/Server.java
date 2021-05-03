@@ -188,7 +188,8 @@ public class Server {
         e.printStackTrace();
       }
 
-      RemoveTileMessage rtm = new RemoveTileMessage(host, f.getxCoordinate(), f.getyCoordinate());
+      RemoveTileMessage rtm =
+          new RemoveTileMessage(m.getFrom(), f.getxCoordinate(), f.getyCoordinate());
       if (m.getFrom().equals(this.getHost())) {
         updateServerUi((Message) rtm);
       } else {
@@ -206,9 +207,12 @@ public class Server {
   public void handleMoveTile(MoveTileMessage m) {
     Tile oldTile = this.gameState.getGameBoard()
         .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
-
+    // TODO Check why oldTile.field is null here. The following statement should be temporary
+    oldTile.setField(
+        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate()));
+    
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
-      if (!this.gameController.removeTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
+      if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate())) {
         InvalidMoveMessage im =
             new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
@@ -216,12 +220,11 @@ public class Server {
         return;
       }
 
-      AddTileMessage atm =
-          new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
-
       if (m.getFrom().equals(this.getHost())) {
-        updateServerUi((Message) atm);
+        player.moveToRack(oldTile, m.getNewXCoordinate());
       } else {
+        AddTileMessage atm =
+            new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
         clients.get(m.getFrom()).sendToClient(atm);
       }
 
@@ -238,12 +241,10 @@ public class Server {
           new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
       sendToAll(atm);
 
+      RemoveTileMessage rtm =
+          new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
+      sendToAll(rtm);
     }
-
-    RemoveTileMessage rtm =
-        new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
-
-    sendToAll(rtm);
 
   }
 
@@ -350,6 +351,9 @@ public class Server {
             case REMOVE_TILE:
               System.out.println("Hi Remove");
               RemoveTileMessage rtm = (RemoveTileMessage) m;
+              if (rtm.getY() == -1) {
+                player.removeRackTile(rtm.getX());
+              }
               gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
               break;
             case TURN_RESPONSE:
@@ -366,6 +370,7 @@ public class Server {
             case INVALID:
               InvalidMoveMessage imm = (InvalidMoveMessage) m;
               gpc.indicateInvalidTurn(imm.getFrom(), imm.getReason());
+              break;
             case UPDATE_CHAT:
               UpdateChatMessage um = (UpdateChatMessage) m;
               gpc.updateChat(um.getText(), um.getDateTime(), um.getFrom());

@@ -10,7 +10,7 @@ import gui.GamePanelController;
 import javafx.application.Platform;
 import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
-import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.server.Server;
 
 /**
@@ -204,18 +204,27 @@ public class Player {
     if (newIndex == -1 && getFreeRackField() != null) {
       newIndex = getFreeRackField().getxCoordinate();
     }
+
     if (newIndex == -1 || rack[newIndex].getTile() != null) {
       gpc.indicateInvalidTurn(this.getNickname(), "Field on Rack not free.");
       return;
     }
 
-    MoveTileMessage mtm = new MoveTileMessage(this.getNickname(), tile.getField().getxCoordinate(),
-        tile.getField().getyCoordinate(), newIndex, -1);
+    RemoveTileMessage rtm = new RemoveTileMessage(this.getNickname(),
+        tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
 
     if (this.isHost()) {
-      server.handleMoveTile(mtm);
+      server.getGameController().removeTileFromGameBoard(this.getNickname(),
+          tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
+      server.sendToAll(rtm);
+      AddTileMessage atm = new AddTileMessage(this.getNickname(), tile, newIndex, -1);
+      server.updateServerUi(atm);
     } else {
-      client.sendToServer(mtm);
+      client.sendToServer(rtm);
+      tile.setField(getRackField(newIndex));
+      tile.setOnRack(true);
+      tile.setOnGameBoard(false);
+      gpc.addTile(tile);
     }
   }
 

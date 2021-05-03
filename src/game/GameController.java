@@ -171,6 +171,7 @@ public class GameController {
 
     this.turn.moveTileInTurn(beforeField.getTile(), afterField);
     beforeField.getTile().setField(afterField);
+    beforeField.setTile(null);
 
     return true;
   }
@@ -189,6 +190,16 @@ public class GameController {
 
     this.turn.removeTileFromTurn(beforeField.getTile());
     beforeField.setTile(null);
+
+    return true;
+  }
+
+  public boolean checkRemoveTileFromGameBoard(String player, int x, int y) {
+    Field beforeField = gameState.getGameBoard().getField(x, y);
+    if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
+        || beforeField.getTile().isPlayed()) {
+      return false;
+    }
 
     return true;
   }
