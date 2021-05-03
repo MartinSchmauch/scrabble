@@ -590,6 +590,7 @@ public class GamePanelController implements Sender {
 
         alert.getDialogPane().getStylesheets()
             .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+        alert.show();
       }
     });
   }
