@@ -65,6 +65,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
   private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
                                                                      // board, row;column index
 
+
+
   @FXML
   private TextArea chat;
   @FXML
@@ -89,6 +91,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
   private ProgressBar timeProgress;
 
   private static GamePanelController instance;
+
+  private int min;
+  private int sec;
+  private String time;
+  private transient Thread thread;
+  private double timeLeftBar;
+  private boolean turnCountdown;
 
   public static GamePanelController getInstance() {
     return instance;
@@ -139,6 +148,67 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
     timeProgress.progressProperty().bind(progressProperty);
   }
 
+
+  /**
+   * Thread to countdown the maxmimum length of a turn.
+   *
+   * @author lurny
+   */
+  public void run() {
+    while (turnCountdown) {
+      if (this.sec > 9) {
+        this.time = this.min + ":" + this.sec;
+      } else {
+        this.time = this.min + ":0" + this.sec;
+      }
+
+      this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
+
+      if (this.sec == 0 && this.min > 0) {
+        this.sec = 59;
+        this.min--;
+      } else if (this.sec == 0 & this.min == 0) {
+        this.turnCountdown = false;
+      } else {
+        this.sec--;
+      }
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        this.turnCountdown = false;
+      }
+    }
+  }
+
+  /**
+   * method to start the Turn timer.
+   *
+   * @author lurny
+   */
+  public void startTimer() {
+    this.min = 10;
+    this.sec = 0;
+    this.turnCountdown = true;
+    this.thread.start();
+  }
+
+  /**
+   * method to stop the Turn timer.
+   *
+   * @author lurny
+   */
+
+  public void stopTimer() {
+    this.turnCountdown = false;
+  }
+
+  public int getMin() {
+    return min;
+  }
+
+  public int getSec() {
+    return sec;
+  }
 
   /**
    * 
@@ -456,11 +526,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
    * 
    */
 
-     /**
-      * Lets a player disconnect
-      * 
-      * @param nickname of the player disconnecting
-      */
+  /**
+   * Lets a player disconnect
+   * 
+   * @param nickname of the player disconnecting
+   */
   public void removeJoinedPlayer(String nickname) {
     // TODO
   }
@@ -679,8 +749,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out
-        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessage(m);
   }
