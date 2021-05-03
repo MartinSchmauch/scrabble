@@ -711,7 +711,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         CustomAlert alert = new CustomAlert(AlertType.WARNING);
         alert.setTitle("Invalid Turn");
         alert.setHeaderText("Your turn was not valid");
-        alert.setContentText("Please try a new turn, according to the scrabble rules");
+        alert.setContentText(message);
         alert.initStyle(StageStyle.UNDECORATED);
 
         alert.getDialogPane().getStylesheets()

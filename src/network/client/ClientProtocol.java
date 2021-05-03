@@ -89,18 +89,20 @@ public class ClientProtocol extends Thread {
                   break;
                 case ADD_TILE:
                   AddTileMessage atMessage = (AddTileMessage) m;
-                  atMessage.getTile().setField(gameState.getGameBoard()
-                      .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
-                  gpc.addTile(atMessage.getTile());
-                  // tbimplemented
+                  if (atMessage.getNewYCoordinate() == -1) {
+                    player.moveToRack(atMessage.getTile(), atMessage.getNewXCoordinate());
+                  } else {
+                    atMessage.getTile().setField(gameState.getGameBoard()
+                        .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
+                    gpc.addTile(atMessage.getTile());
+                  }
                   break;
                 case REMOVE_TILE:
                   RemoveTileMessage rtMessage = (RemoveTileMessage) m;
-                  boolean onRack = false;
                   if (rtMessage.getY() == -1) {
-                    onRack = true;
+                    player.getRackField(rtMessage.getX()).setTile(null);
                   }
-                  gpc.removeTile(rtMessage.getX(), rtMessage.getY(), onRack);
+                  gpc.removeTile(rtMessage.getX(), rtMessage.getY(), (rtMessage.getY() == -1));
                   break;
                 case TILE:
                   TileMessage trMessage = (TileMessage) m;

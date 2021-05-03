@@ -98,13 +98,18 @@ public class Tile implements Serializable {
       return false;
     } else {
       t = (Tile) other;
-      if (t.isPlayed == this.isPlayed && t.field.equals(this.field)
-          && t.onGameBoard == this.onGameBoard && t.onRack == this.onRack
-          && t.letter.equals(this.letter)) {
-        return true;
-      } else {
-        return false;
+      if (t.isPlayed == this.isPlayed && t.onGameBoard == this.onGameBoard
+          && t.onRack == this.onRack) {
+        if (t.field != null && this.field != null && t.field.equals(this.field)
+            || t.field == null && this.field == null) {
+          if (t.letter != null && this.letter != null && t.letter.equals(this.letter)
+              || t.letter == null && this.letter == null) {
+            return true;
+          }
+        }
       }
+
+      return false;
     }
   }
 
