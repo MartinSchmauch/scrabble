@@ -117,6 +117,7 @@ public class ClientProtocol extends Thread {
                   if (turnrMessage.getIsValid()) {
                     gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
                     turnrMessage.getNextPlayer();
+                    gpc.startTimer();
                   } else {
                     gpc.indicateInvalidTurn(turnrMessage.getFrom(), "Invalid Turn");
                   }
@@ -131,6 +132,8 @@ public class ClientProtocol extends Thread {
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
                   lpc.startGameScreen();
+                  gpc.initializeThread();
+                  gpc.startTimer();
                   break;
                 case GAME_STATISTIC:
                   GameStatisticMessage gsMessage = (GameStatisticMessage) m;

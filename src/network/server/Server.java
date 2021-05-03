@@ -361,6 +361,7 @@ public class Server {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gameState.setCurrentPlayer(trm.getNextPlayer());
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
+                gpc.startTimer();
               }
               break;
             case INVALID:

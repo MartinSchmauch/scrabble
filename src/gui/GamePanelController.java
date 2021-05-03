@@ -178,6 +178,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
+        // Send it
       } else {
         this.sec--;
       }
