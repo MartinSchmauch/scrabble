@@ -98,17 +98,7 @@ public class GamePanelController implements Sender {
     cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
-    SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
-                                                                          // ersetzen aus gamestate
-                                                                          // Klasse
-    remainingLetters.textProperty().bind(letterProperty.asString());
-    SimpleStringProperty timerProperty = new SimpleStringProperty("Timer Referenz!");
-    timer.textProperty().bind(timerProperty);
-    SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(0.5); // TODO: restliche zeit
-                                                                           // als anteil von 1 hier
-                                                                           // einf�gen aus
-                                                                           // gamestate
-                                                                           // Klasse
+
     Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
     Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
     Text[] playerNameLabel = {player1, player2, player3, player4};
@@ -140,6 +130,11 @@ public class GamePanelController implements Sender {
         avatarImageView[i].setImage(null);
       }
     }
+    SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(50);
+    remainingLetters.textProperty().bind(letterProperty.asString());
+    SimpleStringProperty timerProperty = new SimpleStringProperty(gs.getMin() + ":" + gs.getSec());
+    timer.textProperty().bind(timerProperty);
+    SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(gs.getTimeLeftBar());
     timeProgress.progressProperty().bind(progressProperty);
   }
 
