@@ -92,7 +92,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private int min;
   private int sec;
   private String time;
-  private transient Thread thread;
+  private Thread thread;
   private double timeLeftBar;
   private boolean turnCountdown;
 
