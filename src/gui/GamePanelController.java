@@ -26,8 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
@@ -156,6 +154,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "sendButton":
+      case "chatInput":
         sendMessage();
         break;
       case "skipAndChangeButton":
@@ -166,20 +165,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
         break;
       default:
         break;
-    }
-  }
-
-  /**
-   * Listener Method, that is executed when the chatInput field is selected and the ENTER key is
-   * clicked on the keyboard. The sendMessage method is called from that event similar to clickign
-   * the "send" button.
-   * 
-   * @param ke
-   */
-  @FXML
-  public void sendChatByEnter(KeyEvent ke) {
-    if (ke.getCode().equals(KeyCode.ENTER)) {
-      sendMessage();
     }
   }
 
