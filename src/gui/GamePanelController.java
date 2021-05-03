@@ -46,7 +46,7 @@ import network.server.Server;
  *         This class is the Controller Class for the Main Gamel Panel UI for the Client
  */
 
-public class GamePanelController implements Sender, EventHandler<ActionEvent> {
+public class GamePanelController implements Sender, EventHandler<ActionEvent>, Runnable {
 
   private Player player;
   private List<PlayerData> players;
@@ -154,6 +154,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
     timeProgress.setProgress(progress);
   }
 
+  public void initializeThread() {
+    this.thread = new Thread(this);
+  }
+
   /**
    * Thread to countdown the maxmimum length of a turn.
    *
@@ -177,6 +181,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent> {
       } else {
         this.sec--;
       }
+
+      this.updateTimer(String.valueOf(min), String.valueOf(sec));
+      this.updateProgressBar(this.timeLeftBar);
+
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {

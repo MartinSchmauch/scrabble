@@ -312,6 +312,7 @@ public class Server {
             case START_GAME:
               StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
+              gpc.initializeThread();
               gpc.startTimer();
               break;
             case GAME_STATISTIC:
