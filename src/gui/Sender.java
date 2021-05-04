@@ -33,6 +33,15 @@ public interface Sender {
   void sendCommitTurn(String nickName);
 
   /**
+   * This method is called, when the player wants to skip his turn and replace his tiles on the rack
+   * completely with new tiles. Therefore, a TileMessage is sent to the server, containing the name
+   * of the sender and the list of tiles, the player has on his rack.
+   * 
+   * @param nickName
+   */
+  void sendTileMessage(String nickName);
+
+  /**
    * This method creates a new DisconnectMessage that is supposed to inform the server that a client
    * wants to disconnect from the server and stop the game. Therefore the new message is send to the
    * server, using the sendMessageToServer() method.

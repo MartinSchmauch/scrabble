@@ -38,6 +38,7 @@ import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
+import network.messages.TileMessage;
 import network.server.Server;
 
 /**
@@ -244,7 +245,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         sendMessage();
         break;
       case "skipAndChangeButton":
-        skipAndChange();
+        sendTileMessage(this.player.getNickname());
         break;
       case "doneButton":
         completeTurn();
@@ -530,14 +531,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   /**
    * 
-   */
-  public void skipAndChange() {
-
-  }
-
-
-  /**
-   * 
    * Methods to be used by the ClientProtocol to change the UI of the Client
    * 
    */
@@ -779,6 +772,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     sendMessage(m);
   }
 
+  @Override
+  public void sendTileMessage(String nickName) {
+    Message m = new TileMessage(nickName, this.player.getRackTiles());
+    sendMessage(m);
+  }
 
   /**
    * Sends a given message to all players.
@@ -788,7 +786,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public boolean sendMessage(Message m) {
     if (this.player.isHost()) {
       this.player.getServer().sendToAll(m);
-
     } else {
       this.player.getClientProtocol().sendToServer(m);
     }
