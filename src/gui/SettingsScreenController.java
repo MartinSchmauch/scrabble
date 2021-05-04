@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -29,7 +30,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   private Player currentPlayer;
   private static SettingsScreenController instance;
-  private static GameSettings settings;
+
 
   @FXML
   private Label username;
@@ -107,6 +108,17 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   private Button amountDown;
   @FXML
   private Button amountUp;
+  @FXML
+  private TextField tpptf;
+  @FXML
+  private TextField motf;
+  @FXML
+  private TextField mstf;
+  @FXML
+  private TextField stf;
+  @FXML
+  private TextField btf;
+
 
   /**
    * Initialize the Settings Screen with username, avatar and all current settings
@@ -119,7 +131,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar
         .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
-    settings = SettingsScreen.getSettings();
+
 
     setUpLabels();
 
@@ -141,11 +153,17 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       case "tppDown":
         updateLabel(this.time, Integer.parseInt(time.getText()) - 1);
         break;
+      case "tpp":
+        labelTextfield(this.time, this.tpptf, (Button) e.getSource());
+        break;
       case "moDown":
         updateLabel(this.overtime, Integer.parseInt(overtime.getText()) - 1);
         break;
       case "moUp":
         updateLabel(this.overtime, Integer.parseInt(overtime.getText()) + 1);
+        break;
+      case "mo":
+        labelTextfield(this.overtime, this.motf, (Button) e.getSource());
         break;
       case "msUp":
         updateLabel(this.score, Integer.parseInt(score.getText()) + 1);
@@ -153,17 +171,25 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       case "msDown":
         updateLabel(this.score, Integer.parseInt(score.getText()) - 1);
         break;
+      case "ms":
+        labelTextfield(this.score, this.mstf, (Button) e.getSource());
       case "sUp":
         updateLabel(this.size, Integer.parseInt(size.getText()) + 1);
         break;
       case "sDown":
         updateLabel(this.size, Integer.parseInt(size.getText()) - 1);
         break;
+      case "s":
+        labelTextfield(this.size, this.stf, (Button) e.getSource());
+        break;
       case "bUp":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) + 1);
         break;
       case "bDown":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) - 1);
+        break;
+      case "b":
+        labelTextfield(this.bingo, this.btf, (Button) e.getSource());
         break;
       case "letterUp":
         updateLetterLabel(this.letter.getText().charAt(0), true);
@@ -201,21 +227,58 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         setUpLabels();
         break;
       case "exit":
+      case "save":
         saveSettings();
         Button b = (Button) e.getSource();
         Stage st = (Stage) (b.getScene().getWindow());
         st.close();
         break;
-      case "save":
-        saveSettings();
-        setUpLabels();
+
       default:
         break;
     }
   }
 
+  /**
+   * Saves the settings upon closing the window.
+   */
   public void saveSettings() {
+    GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
+    GameSettings.setMaxOvertime(Integer.parseInt(overtime.getText()));
+    GameSettings.setMaxScore(Integer.parseInt(score.getText()));
+    GameSettings.setGameBoardSize(Integer.parseInt(size.getText()));
+    GameSettings.setBingo(Integer.parseInt(bingo.getText()));
     new JsonHandler().saveGameSettings("resources/gameSettingsTest.json");
+
+  }
+
+  /**
+   * This method is used for changing settings by using a textfield to commit changes.
+   * 
+   * @param lbl defines the label to be updated.
+   * @param tf defines the Textfield with the expected changes.
+   * @param trigger defines the button pushed to invoke the action.
+   */
+  public void labelTextfield(Label lbl, TextField tf, Button trigger) {
+    // Label to Textfield
+    if (trigger.getText().equals("Change")) {
+      trigger.setText("OK");
+      lbl.setOpacity(0);
+      tf.setOpacity(1);
+      tf.setText(lbl.getText());
+    } else { // Textfield to Label
+      trigger.setText("Change");
+      tf.setOpacity(0);
+      try {
+        Integer.parseInt(tf.getText());
+      } catch (NumberFormatException e) {
+        tf.setText(lbl.getText());
+      }
+      if (!tf.getText().equals("")) {
+        lbl.setText(tf.getText());
+      }
+      lbl.setOpacity(1);
+    }
   }
 
   /**

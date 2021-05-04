@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
@@ -82,7 +83,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="tpp" disable="true" mnemonicParsing="false" onAction="#handle" prefHeight="1.0" prefWidth="34.0" stylesheets="@Buttons.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                              <Button fx:id="tpp" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                               <Button fx:id="tppDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                               <Button fx:id="tppUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                            </children>
@@ -94,7 +95,7 @@
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                            <children>
-                              <Button fx:id="mo" disable="true" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BASELINE" />
+                              <Button fx:id="mo" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BASELINE" />
                               <Button fx:id="moDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="moUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
@@ -109,7 +110,7 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                            <children>
-                              <Button fx:id="ms" disable="true" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                              <Button fx:id="ms" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
                               <Button fx:id="msDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="msUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
                            </children>
@@ -124,7 +125,7 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                            <children>
-                              <Button fx:id="s" disable="true" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button fx:id="s" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="sDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="sUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
@@ -139,7 +140,7 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                            <children>
-                              <Button fx:id="b" disable="true" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="OK" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Button fx:id="b" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="bDown" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Button fx:id="bUp" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                            </children>
@@ -213,6 +214,12 @@
                               <Font size="7.0" />
                            </font>
                         </Label>
+                        <TextField fx:id="tpptf" onAction="#handle" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
+                        <TextField fx:id="motf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="mstf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="stf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="btf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <TextField fx:id="tpptf1" layoutX="151.0" layoutY="15.0" onAction="#handle" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" />
                      </children>
                   </GridPane>
                   <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="460.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
@@ -239,7 +246,7 @@
                         <Tooltip text="View Personal Account" />
                      </tooltip>
                   </Button>
-                  <Button fx:id="save" layoutX="433.0" layoutY="458.0" mnemonicParsing="false" stylesheets="@Buttons.css" text="Save" />
+                  <Button fx:id="save" layoutX="433.0" layoutY="458.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Save" />
                   <Button fx:id="restore" layoutX="14.0" layoutY="458.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Restore Defaults" />
                </children>
             </AnchorPane>
