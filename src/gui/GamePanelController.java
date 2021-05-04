@@ -83,6 +83,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @FXML
   private Rectangle tile1;
   @FXML
+  private Rectangle currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4;
+  @FXML
   private GridPane board, rack;
   @FXML
   private ProgressBar timeProgress;
@@ -540,11 +542,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    */
 
-  /**
-   * Lets a player disconnect
-   * 
-   * @param nickname of the player disconnecting
-   */
+     /**
+      * Lets a player disconnect
+      * 
+      * @param nickname of the player disconnecting
+      */
   public void removeJoinedPlayer(String nickname) {
     // TODO
   }
@@ -570,15 +572,17 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    * @param nickName
    */
-  public void indicatePlayerTurn(String nickName) {
-    if (player1.getText().equals(nickName)) {
-      // Effekt f�r player 1
-    } else if (player2.getText().equals(nickName)) {
-      // Effekt f�r player 2
-    } else if (player3.getText().equals(nickName)) {
-      // Effekt f�r player 3
-    } else if (player4.getText().equals(nickName)) {
-      // Effekt f�r player 4
+  public void indicatePlayerTurn(String newPlayer, String oldPlayer) {
+    String[] playerNames =
+        {player1.getText(), player2.getText(), player3.getText(), player4.getText()};
+    Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
+    for (int i = 0; i < 4; i++) {
+      if (playerNames[i].equals(newPlayer)) {
+        rect[i].setVisible(true);
+      }
+      if (playerNames[i].equals(oldPlayer)) {
+        rect[i].setVisible(false);
+      }
     }
   }
 
@@ -763,7 +767,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out
+        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     sendMessage(m);
   }

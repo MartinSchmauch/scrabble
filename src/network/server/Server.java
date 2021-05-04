@@ -210,7 +210,7 @@ public class Server {
     // TODO Check why oldTile.field is null here. The following statement should be temporary
     oldTile.setField(
         this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate()));
-    
+
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
       if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate())) {
@@ -364,7 +364,7 @@ public class Server {
                 gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gameState.setCurrentPlayer(trm.getNextPlayer());
-                gpc.indicatePlayerTurn(trm.getNextPlayer());
+                gpc.indicatePlayerTurn(trm.getNextPlayer(), "TODO");
                 gpc.startTimer();
               }
               break;

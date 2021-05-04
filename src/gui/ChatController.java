@@ -50,14 +50,16 @@ public class ChatController {
    * @param message
    */
   public void sendChatMessage(String sender, String message) {
-    Message m;
-    if (this.player.isHost()) {
-      m = new UpdateChatMessage(sender, message, LocalDateTime.now());
-    } else {
-      m = new SendChatMessage(sender, message, LocalDateTime.now());
+    String chatRegex = ".*\\S+.*";
+    if (message.matches(chatRegex)) {
+      Message m;
+      if (this.player.isHost()) {
+        m = new UpdateChatMessage(sender, message, LocalDateTime.now());
+      } else {
+        m = new SendChatMessage(sender, message, LocalDateTime.now());
+      }
+      sendMessage(m);
     }
-    sendMessage(m);
-
   }
 
   /**

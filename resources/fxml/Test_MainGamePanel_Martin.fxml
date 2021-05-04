@@ -34,7 +34,7 @@
                <children>
                   <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="700.0">
                      <children>
-                        <HBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="539.0" prefWidth="750.0">
+                        <HBox alignment="BOTTOM_CENTER" layoutX="-14.0" layoutY="21.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="539.0" prefWidth="750.0">
                            <children>
                               <VBox alignment="BOTTOM_CENTER" prefHeight="460.0" prefWidth="360.0">
                                  <children>
@@ -49,178 +49,222 @@
                                     <StackPane alignment="BOTTOM_CENTER" prefHeight="450.0" prefWidth="370.0">
                                        <children>
                                           <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" />
-                                          <VBox alignment="CENTER" prefHeight="460.0" prefWidth="370.0">
+                                          <VBox alignment="TOP_CENTER" prefHeight="460.0" prefWidth="370.0">
                                              <children>
                                                 <VBox prefHeight="296.0" prefWidth="370.0">
                                                    <children>
-                                                      <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                      <StackPane prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fx:id="image1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@creeper.png" />
-                                                               </image>
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" right="10.0" top="8.0" />
-                                                               </HBox.margin>
-                                                            </ImageView>
-                                                            <VBox prefHeight="40.0" prefWidth="200.0">
+                                                            <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                                <children>
-                                                                  <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
-                                                                     <font>
-                                                                        <Font size="18.0" />
-                                                                     </font>
-                                                                     <VBox.margin>
-                                                                        <Insets top="8.0" />
-                                                                     </VBox.margin>
-                                                                  </Text>
-                                                                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                  <ImageView fx:id="image1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@creeper.png" />
+                                                                     </image>
+                                                                     <HBox.margin>
+                                                                        <Insets left="10.0" right="10.0" top="8.0" />
+                                                                     </HBox.margin>
+                                                                  </ImageView>
+                                                                  <VBox prefHeight="40.0" prefWidth="200.0">
                                                                      <children>
-                                                                        <Text fx:id="pointsLabel1" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                                                            <font>
-                                                                              <Font name="System Bold" size="18.0" />
+                                                                              <Font size="18.0" />
                                                                            </font>
+                                                                           <VBox.margin>
+                                                                              <Insets top="8.0" />
+                                                                           </VBox.margin>
                                                                         </Text>
-                                                                        <Text fx:id="playerOnePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="18.0" />
-                                                                           </font>
-                                                                        </Text>
+                                                                        <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                           <children>
+                                                                              <Text fx:id="pointsLabel1" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                              <Text fx:id="playerOnePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                           </children>
+                                                                        </HBox>
                                                                      </children>
-                                                                  </HBox>
+                                                                  </VBox>
                                                                </children>
-                                                            </VBox>
+                                                               <padding>
+                                                                  <Insets bottom="5.0" left="10.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <Rectangle fx:id="currentPlayer1" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
                                                          </children>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                                                            <Insets bottom="15.0" top="10.0" />
                                                          </VBox.margin>
-                                                      </HBox>
-                                                      <HBox fx:id="player2Box" alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                      </StackPane>
+                                                      <StackPane layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fx:id="image2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@creeper.png" />
-                                                               </image>
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" right="10.0" top="8.0" />
-                                                               </HBox.margin>
-                                                            </ImageView>
-                                                            <VBox prefHeight="40.0" prefWidth="200.0">
+                                                            <HBox fx:id="player2Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                                <children>
-                                                                  <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
-                                                                     <font>
-                                                                        <Font size="18.0" />
-                                                                     </font>
-                                                                     <VBox.margin>
-                                                                        <Insets top="8.0" />
-                                                                     </VBox.margin>
-                                                                  </Text>
-                                                                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                  <ImageView fx:id="image2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@creeper.png" />
+                                                                     </image>
+                                                                     <HBox.margin>
+                                                                        <Insets left="10.0" right="10.0" top="8.0" />
+                                                                     </HBox.margin>
+                                                                  </ImageView>
+                                                                  <VBox prefHeight="40.0" prefWidth="200.0">
                                                                      <children>
-                                                                        <Text fx:id="pointsLabel2" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                                                            <font>
-                                                                              <Font name="System Bold" size="18.0" />
+                                                                              <Font size="18.0" />
                                                                            </font>
+                                                                           <VBox.margin>
+                                                                              <Insets top="8.0" />
+                                                                           </VBox.margin>
                                                                         </Text>
-                                                                        <Text fx:id="playerTwoPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="18.0" />
-                                                                           </font>
-                                                                        </Text>
+                                                                        <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                           <children>
+                                                                              <Text fx:id="pointsLabel2" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                              <Text fx:id="playerTwoPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                           </children>
+                                                                        </HBox>
                                                                      </children>
-                                                                  </HBox>
+                                                                  </VBox>
                                                                </children>
-                                                            </VBox>
+                                                               <StackPane.margin>
+                                                                  <Insets />
+                                                               </StackPane.margin>
+                                                               <padding>
+                                                                  <Insets bottom="5.0" left="10.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <Rectangle fx:id="currentPlayer2" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
                                                          </children>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                                                            <Insets bottom="15.0" />
                                                          </VBox.margin>
-                                                      </HBox>
-                                                      <HBox fx:id="player3Box" alignment="CENTER_LEFT" layoutX="10.0" layoutY="40.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                      </StackPane>
+                                                      <StackPane layoutX="10.0" layoutY="294.0" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fx:id="image3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@creeper.png" />
-                                                               </image>
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" right="10.0" top="8.0" />
-                                                               </HBox.margin>
-                                                            </ImageView>
-                                                            <VBox prefHeight="40.0" prefWidth="200.0">
+                                                            <HBox fx:id="player3Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                                <children>
-                                                                  <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
-                                                                     <font>
-                                                                        <Font size="18.0" />
-                                                                     </font>
-                                                                     <VBox.margin>
-                                                                        <Insets top="8.0" />
-                                                                     </VBox.margin>
-                                                                  </Text>
-                                                                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                  <ImageView fx:id="image3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@creeper.png" />
+                                                                     </image>
+                                                                     <HBox.margin>
+                                                                        <Insets left="10.0" right="10.0" top="8.0" />
+                                                                     </HBox.margin>
+                                                                  </ImageView>
+                                                                  <VBox prefHeight="40.0" prefWidth="200.0">
                                                                      <children>
-                                                                        <Text fx:id="pointsLabel3" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
                                                                            <font>
-                                                                              <Font name="System Bold" size="18.0" />
+                                                                              <Font size="18.0" />
                                                                            </font>
+                                                                           <VBox.margin>
+                                                                              <Insets top="8.0" />
+                                                                           </VBox.margin>
                                                                         </Text>
-                                                                        <Text fx:id="playerThreePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="18.0" />
-                                                                           </font>
-                                                                        </Text>
+                                                                        <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                           <children>
+                                                                              <Text fx:id="pointsLabel3" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                              <Text fx:id="playerThreePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                           </children>
+                                                                        </HBox>
                                                                      </children>
-                                                                  </HBox>
+                                                                  </VBox>
                                                                </children>
-                                                            </VBox>
+                                                               <StackPane.margin>
+                                                                  <Insets />
+                                                               </StackPane.margin>
+                                                               <padding>
+                                                                  <Insets bottom="5.0" left="10.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <Rectangle fx:id="currentPlayer3" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
                                                          </children>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                                                            <Insets bottom="15.0" />
                                                          </VBox.margin>
-                                                      </HBox>
-                                                      <HBox fx:id="player4Box" alignment="CENTER_LEFT" layoutX="15.0" layoutY="15.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                      </StackPane>
+                                                      <StackPane layoutX="10.0" layoutY="298.0" prefHeight="40.0" prefWidth="200.0">
                                                          <children>
-                                                            <ImageView fx:id="image4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                               <image>
-                                                                  <Image url="@creeper.png" />
-                                                               </image>
-                                                               <HBox.margin>
-                                                                  <Insets left="10.0" right="10.0" top="8.0" />
-                                                               </HBox.margin>
-                                                            </ImageView>
-                                                            <VBox prefHeight="40.0" prefWidth="200.0">
+                                                            <HBox fx:id="player4Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                                <children>
-                                                                  <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
-                                                                     <font>
-                                                                        <Font size="18.0" />
-                                                                     </font>
-                                                                     <VBox.margin>
-                                                                        <Insets top="8.0" />
-                                                                     </VBox.margin>
-                                                                  </Text>
-                                                                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                  <ImageView fx:id="image4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                     <image>
+                                                                        <Image url="@creeper.png" />
+                                                                     </image>
+                                                                     <HBox.margin>
+                                                                        <Insets left="10.0" right="10.0" top="8.0" />
+                                                                     </HBox.margin>
+                                                                  </ImageView>
+                                                                  <VBox prefHeight="40.0" prefWidth="200.0">
                                                                      <children>
-                                                                        <Text fx:id="pointsLabel4" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                        <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
                                                                            <font>
-                                                                              <Font name="System Bold" size="18.0" />
+                                                                              <Font size="18.0" />
                                                                            </font>
+                                                                           <VBox.margin>
+                                                                              <Insets top="8.0" />
+                                                                           </VBox.margin>
                                                                         </Text>
-                                                                        <Text fx:id="playerFourPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
-                                                                           <font>
-                                                                              <Font name="System Bold" size="18.0" />
-                                                                           </font>
-                                                                        </Text>
+                                                                        <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                           <children>
+                                                                              <Text fx:id="pointsLabel4" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                              <Text fx:id="playerFourPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                                                                 <font>
+                                                                                    <Font name="System Bold" size="18.0" />
+                                                                                 </font>
+                                                                              </Text>
+                                                                           </children>
+                                                                        </HBox>
                                                                      </children>
-                                                                  </HBox>
+                                                                  </VBox>
                                                                </children>
-                                                            </VBox>
+                                                               <padding>
+                                                                  <Insets bottom="5.0" left="10.0" />
+                                                               </padding>
+                                                            </HBox>
+                                                            <Rectangle fx:id="currentPlayer4" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
                                                          </children>
                                                          <VBox.margin>
-                                                            <Insets bottom="5.0" left="5.0" right="10.0" top="5.0" />
+                                                            <Insets bottom="15.0" />
                                                          </VBox.margin>
-                                                      </HBox>
+                                                      </StackPane>
                                                    </children>
                                                    <VBox.margin>
                                                       <Insets />
                                                    </VBox.margin>
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                   <padding>
+                                                      <Insets bottom="3.0" top="20.0" />
+                                                   </padding>
                                                 </VBox>
                                                 <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="360.0">
                                                    <children>
