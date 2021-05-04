@@ -50,12 +50,13 @@ public class VisualTile extends Parent {
 
     valueText = new Text(String.valueOf(value));
     valueText.setFont(Font.font(16));
-    double leftMargin = TILE_WIDTH - letterText.getLayoutBounds().getWidth();
-    double topMargin = TILE_HEIGHT - letterText.getLayoutBounds().getHeight();
+    double rightMargin = 4.5;
+    double bottomMargin = 4.5;
 
     sP.getChildren().addAll(shape, letterText, valueText);
     sP.setAlignment(Pos.CENTER);
-    StackPane.setMargin(valueText, new Insets(topMargin, 0, 0, leftMargin));
+    StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
+    StackPane.setMargin(valueText, new Insets(0, bottomMargin, rightMargin, 0));
 
     getChildren().add(sP);
   }
