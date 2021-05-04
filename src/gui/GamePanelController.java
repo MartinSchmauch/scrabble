@@ -611,9 +611,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       GridPane.setMargin(rackTiles[row][column], new Insets(0, 0, 5.5, 0));
 
     } else {
+      row -= 1;
+      column -= 1;
       boardTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, false);
       boardTiles[row][column].setMouseTransparent(true);
-      board.add(boardTiles[row][column], column - 1, row - 1);
+      board.add(boardTiles[row][column], column, row);
       GridPane.setHalignment(boardTiles[row][column], HPos.CENTER);
       GridPane.setValignment(boardTiles[row][column], VPos.BOTTOM);
       GridPane.setMargin(boardTiles[row][column], new Insets(0, 10, 8, 0));

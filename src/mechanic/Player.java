@@ -221,6 +221,7 @@ public class Player {
       server.updateServerUi(atm);
     } else {
       client.sendToServer(rtm);
+      gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
       tile.setField(getRackField(newIndex));
       tile.setOnRack(true);
       tile.setOnGameBoard(false);

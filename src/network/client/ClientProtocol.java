@@ -9,6 +9,7 @@ import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
+import mechanic.Field;
 import mechanic.Player;
 import mechanic.Tile;
 import network.messages.AddTileMessage;
@@ -93,15 +94,17 @@ public class ClientProtocol extends Thread {
                   if (atMessage.getNewYCoordinate() == -1) {
                     player.moveToRack(atMessage.getTile(), atMessage.getNewXCoordinate());
                   } else {
-                    atMessage.getTile().setField(gameState.getGameBoard()
-                        .getField(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
+                    atMessage.getTile().setField(
+                        new Field(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
+                    atMessage.getTile().setOnRack(false);
+                    atMessage.getTile().setOnGameBoard(true);
                     gpc.addTile(atMessage.getTile());
                   }
                   break;
                 case REMOVE_TILE:
                   RemoveTileMessage rtMessage = (RemoveTileMessage) m;
                   if (rtMessage.getY() == -1) {
-                    player.getRackField(rtMessage.getX()).setTile(null);
+                    player.removeRackTile(rtMessage.getX());
                   }
                   gpc.removeTile(rtMessage.getX(), rtMessage.getY(), (rtMessage.getY() == -1));
                   break;

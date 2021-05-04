@@ -13,6 +13,7 @@ import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
@@ -134,6 +135,12 @@ public class ServerProtocol extends Thread {
           case ADD_TILE:
             AddTileMessage atm = (AddTileMessage) m;
             server.handleAddTileToGameBoard(atm);
+            break;
+          case REMOVE_TILE:
+            RemoveTileMessage rtm = (RemoveTileMessage) m;
+            server.getGameController().removeTileFromGameBoard(rtm.getFrom(), rtm.getX(),
+                rtm.getY());
+            server.sendToAll(rtm);
             break;
           case MOVE_TILE:
             MoveTileMessage mtm = (MoveTileMessage) m;
