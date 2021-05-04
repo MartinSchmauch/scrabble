@@ -134,7 +134,7 @@ public class Player {
    * 
    */
   public void addTileToRack(Tile tile) {
-    // tile.setField(getFreeRackField());
+    tile.setField(getFreeRackField());
     tile.setOnRack(true);
   }
 

@@ -1,11 +1,14 @@
 package mechanic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeSet;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameController;
+import game.GameSettings;
 import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
 
@@ -18,13 +21,96 @@ public class AIplayer extends Player {
 
   private int maxNumOfTiles;
   private GameController gc;
+  private TreeSet<AIcombination> twoTilesCombinations;
+  enum AiLevel {
+    LOW,
+    MEDIUM,
+    HIGH,
+    Unbeatable
+  }
+  
+  class AIcombination implements Comparable<AIcombination> {
+    
+    private Tile[] tiles;
+    private int count;
+    
+    public AIcombination(Tile[] tiles) {
+      this.setTiles(tiles);
+    }
+    
+    public void incCount() {
+      this.setCount(this.getCount() + 1);
+    }
+    
+    /**
+     * @return the tiles
+     */
+    public Tile[] getTiles() {
+      return tiles;
+    }
 
-  public AIplayer(String nickname, int maxNumOfTiles, GameController gc) {
+    /**
+     * @param tiles the tiles to set
+     */
+    public void setTiles(Tile[] tiles) {
+      this.tiles = tiles;
+    }
+
+    /**
+     * @return the count
+     */
+    public int getCount() {
+      return count;
+    }
+
+    /**
+     * @param count the count to set
+     */
+    public void setCount(int count) {
+      this.count = count;
+    }
+
+    @Override
+    public int compareTo(AIcombination o) {
+      return Integer.valueOf(this.count).compareTo(Integer.valueOf(o.count));
+    }
+    
+  }
+
+  public AIplayer(String nickname, int maxNumOfTiles, GameController gc, AiLevel level) {
     super(nickname);
     this.maxNumOfTiles = maxNumOfTiles;
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
+    this.generateTwoTilesCombinations(level);
   }
+  
+  
+  
+
+  private void generateTwoTilesCombinations(AiLevel level) {
+    AIcombination c;
+    HashMap<Character, Letter> letters = GameSettings.getLetters();
+    for (String w : gc.getDictionary()) {
+      for (int i = 0; i < w.length() - 1; i++) {
+        c = new AIcombination(new Tile[] {new Tile(letters.get(w.charAt(i))), new Tile(letters.get(w.charAt(i+1)))});
+        if (twoTilesCombinations.contains(c)) {
+          for (AIcombination tilecombination : twoTilesCombinations) {
+            for (Tile t : tilecombination.tiles) {
+              //if (t.equals(t))
+            }
+          }
+        }
+        else {
+          twoTilesCombinations.add(c);
+        }
+      }
+    }
+    
+  }
+
+
+
 
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,

@@ -19,7 +19,6 @@ public class AIplayerTest {
   ArrayList<Field[]> results = new ArrayList<Field[]>();
   GameBoard gb;
 
-
   /**
    * @throws java.lang.Exception
    */
@@ -81,7 +80,7 @@ public class AIplayerTest {
     // }
   }
 
-  //@Test
+  @Test
   public void testgenerateLayedDownTiles() {
     // JsonHandler jh = new JsonHandler();
     // jh.loadGameSettings("resources/defaultGameSettings.json");
@@ -90,7 +89,7 @@ public class AIplayerTest {
     GameController gc1 = new GameController(gs1);
     gs1.setUpGameboard();
     gb = gs1.getGameBoard();
-    aiplayer = new AIplayer("test", 4, gc1);
+    aiplayer = new AIplayer("test", 2, gc1, AIplayer.AiLevel.Unbeatable);
 
     // BIRTHDAY
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(4, 8));
@@ -170,7 +169,7 @@ public class AIplayerTest {
     GameController gc1 = new GameController(gs1);
     gs1.setUpGameboard();
     gb = gs1.getGameBoard();
-    aiplayer = new AIplayer("test2", 4, gc1);
+    aiplayer = new AIplayer("test2", 2, gc1, AIplayer.AiLevel.Unbeatable);
 
     // BIRTH
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(6, 8));
