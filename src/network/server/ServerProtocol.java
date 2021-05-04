@@ -170,6 +170,11 @@ public class ServerProtocol extends Thread {
           case TILE:
             TileMessage tm = (TileMessage) m;
             this.server.getGameController().addTilesToTileBag(tm.getTiles());
+            // TODO reset turn; turn is valid as well if laydowntiles is empty
+            this.server.getGameController().getTurn().endTurn();
+            Turn skipTurn = server.getGameController().getTurn();
+            server.sendToAll(new TurnResponseMessage(tm.getFrom(), skipTurn.isValid(),
+                skipTurn.getTurnScore(), server.getGameController().getNextPlayer()));
             break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;

@@ -284,6 +284,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void boardDragHandling(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, false);
+    selectedCoordinates[0]++;
+    selectedCoordinates[1]++;
 
     System.out
         .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
@@ -341,6 +343,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void boardDropHandling(DragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, false);
+    targetCoordinates[0] += 1;
+    targetCoordinates[1] += 1;
     System.out.println("boardReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
 
     if (targetCoordinates[0] == selectedCoordinates[0]
@@ -609,7 +613,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     } else {
       boardTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, false);
       boardTiles[row][column].setMouseTransparent(true);
-      board.add(boardTiles[row][column], column, row);
+      board.add(boardTiles[row][column], column - 1, row - 1);
       GridPane.setHalignment(boardTiles[row][column], HPos.CENTER);
       GridPane.setValignment(boardTiles[row][column], VPos.BOTTOM);
       GridPane.setMargin(boardTiles[row][column], new Insets(0, 10, 8, 0));
@@ -674,6 +678,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
       }
     } else {
+      column -= 1;
+      row -= 1;
       list = board.getChildren();
       for (Node node : list) {
         x = getPos(node, false)[0];

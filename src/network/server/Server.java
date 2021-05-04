@@ -205,6 +205,15 @@ public class Server {
   /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
 
   public void handleMoveTile(MoveTileMessage m) {
+    // TODO temporary
+    if (this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate())
+        .getTile() == null) {
+      InvalidMoveMessage im =
+          new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
+      sendToAll(im);
+      return;
+    }
+
     Tile oldTile = this.gameState.getGameBoard()
         .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
     // TODO Check why oldTile.field is null here. The following statement should be temporary
