@@ -35,57 +35,57 @@ public class AIplayerTest {
    */
   @Test
   public void testGetValidPositionsForWordLength() {
-//    aiplayer = new AIplayer("test", 5);
-//    gb = new GameBoard(15);
-//
-//
-//
-//    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, -1));
-//    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 0));
-//    assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 1));
-//
-//    Tile a = new Tile(new Letter('A', 1, 1), gb.getField(8, 8));
-//    gb.getField(8, 8).setTile(a);
-//    System.out.println("Current layed Down tile: " + a);
-//    System.out.println("######################## NUMOFTILES == 2 ########################");
-//    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
-//      System.out.println("# GENERATED POSITION #");
-//      for (Field f : f_list) {
-//        System.out.println(f);
-//      }
-//      System.out.println();
-//    }
-//    System.out.println("######################## NUMOFTILES == 3 ########################");
-//    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
-//      System.out.println("# GENERATED POSITION #");
-//      for (Field f : f_list) {
-//        System.out.println(f);
-//      }
-//      System.out.println();
-//    }
+    // aiplayer = new AIplayer("test", 5);
+    // gb = new GameBoard(15);
+    //
+    //
+    //
+    // assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, -1));
+    // assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 0));
+    // assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 1));
+    //
+    // Tile a = new Tile(new Letter('A', 1, 1), gb.getField(8, 8));
+    // gb.getField(8, 8).setTile(a);
+    // System.out.println("Current layed Down tile: " + a);
+    // System.out.println("######################## NUMOFTILES == 2 ########################");
+    // for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
+    // System.out.println("# GENERATED POSITION #");
+    // for (Field f : f_list) {
+    // System.out.println(f);
+    // }
+    // System.out.println();
+    // }
+    // System.out.println("######################## NUMOFTILES == 3 ########################");
+    // for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
+    // System.out.println("# GENERATED POSITION #");
+    // for (Field f : f_list) {
+    // System.out.println(f);
+    // }
+    // System.out.println();
+    // }
   }
 
   @Test
   public void testNextTiles() {
-//    aiplayer = new AIplayer("test", 5);
-//    gb = new GameBoard(15);
-//
-//    for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
-//      aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
-//    }
-//    
-//    ArrayList<Tile> current = null;
-//    ArrayList<Integer> indicesOnRack = new ArrayList<Integer>();
-//    while ((current = aiplayer.nextTiles(current, indicesOnRack, 4)) != null) {
-//      System.out.println(current);
-//    }
+    // aiplayer = new AIplayer("test", 5);
+    // gb = new GameBoard(15);
+    //
+    // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
+    // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
+    // }
+    //
+    // ArrayList<Tile> current = null;
+    // ArrayList<Integer> indicesOnRack = new ArrayList<Integer>();
+    // while ((current = aiplayer.nextTiles(current, indicesOnRack, 4)) != null) {
+    // System.out.println(current);
+    // }
   }
 
-  @Test
+  //@Test
   public void testgenerateLayedDownTiles() {
-//    JsonHandler jh = new JsonHandler();
-//    jh.loadGameSettings("resources/defaultGameSettings.json");
-    PlayerData pd1 = new PlayerData("Tom");
+    // JsonHandler jh = new JsonHandler();
+    // jh.loadGameSettings("resources/defaultGameSettings.json");
+    PlayerData pd1 = new PlayerData("test1");
     GameState gs1 = new GameState(pd1, null);
     GameController gc1 = new GameController(gs1);
     gs1.setUpGameboard();
@@ -157,6 +157,58 @@ public class AIplayerTest {
     for (Tile result : idealTurn.getLaydDownTiles()) {
       System.out.println(result.toString());
     }
+
+
+  }
+  
+  @Test
+  public void testgenerateLayedDownTiles2() {
+    // JsonHandler jh = new JsonHandler();
+    // jh.loadGameSettings("resources/defaultGameSettings.json");
+    PlayerData pd1 = new PlayerData("test2");
+    GameState gs1 = new GameState(pd1, null);
+    GameController gc1 = new GameController(gs1);
+    gs1.setUpGameboard();
+    gb = gs1.getGameBoard();
+    aiplayer = new AIplayer("test2", 4, gc1);
+
+    // BIRTH
+    Tile b = new Tile(new Letter('B', 1, 1), gb.getField(6, 8));
+    gb.getField(6, 8).setTile(b);
+    Tile i = new Tile(new Letter('I', 1, 1), gb.getField(7, 8));
+    gb.getField(7, 8).setTile(i);
+    Tile r = new Tile(new Letter('R', 1, 1), gb.getField(8, 8));
+    gb.getField(8, 8).setTile(r);
+    Tile t = new Tile(new Letter('T', 1, 1), gb.getField(9, 8));
+    gb.getField(9, 8).setTile(t);
+    Tile h = new Tile(new Letter('H', 1, 1), gb.getField(10, 8));
+    gb.getField(10, 8).setTile(h);
+
+
+    // THE
+    h = new Tile(new Letter('H', 1, 1), gb.getField(9, 9));
+    gb.getField(9, 9).setTile(h);
+    Tile e = new Tile(new Letter('E', 1, 1), gb.getField(9, 10));
+    gb.getField(9, 10).setTile(e);
+
+    // BACK
+    Tile a = new Tile(new Letter('A', 1, 1), gb.getField(6, 9));
+    gb.getField(6, 9).setTile(a);
+    Tile c = new Tile(new Letter('C', 1, 1), gb.getField(6, 10));
+    gb.getField(6, 10).setTile(c);
+    Tile k = new Tile(new Letter('K', 1, 1), gb.getField(6, 11));
+    gb.getField(6, 11).setTile(k);
+
+
+    for (char cOnRack = 'D'; cOnRack <= 'J'; cOnRack++) {
+      aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
+    }
+
+    Turn idealTurn = aiplayer.generateIdealTurn(gb);
+    for (Tile result : idealTurn.getLaydDownTiles()) {
+      System.out.println(result.toString());
+    }
+
 
   }
 

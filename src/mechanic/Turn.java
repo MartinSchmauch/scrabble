@@ -94,14 +94,14 @@ public class Turn implements Serializable {
 
       // find leftest Letter
       while (t.getLeftTile() != null) {
-        System.out.println("IN TURN:");
-        System.out.println(t);
+        // System.out.println("IN TURN:");
+        // System.out.println(t);
 
         t = t.getLeftTile();
-        System.out.println(t);
-        System.out.println("t.getField().getTile()");
-        System.out.println(t.getField().getTile());
-        System.out.println("------------");
+        // System.out.println(t);
+        // System.out.println("t.getField().getTile()");
+        // System.out.println(t.getField().getTile());
+        // System.out.println("------------");
       }
       // Go from left to right to build word
       wordTiles.add(t);
@@ -240,6 +240,10 @@ public class Turn implements Serializable {
     return isValid;
   }
 
+  /**
+   * @author pkoenig
+   * @return deep copy of current instance (tiles won't be "deep copied")
+   */
   public Turn getDeepCopy() {
     Turn res = new Turn(this.getPlayer(), this.gameController);
     res.player = this.player;

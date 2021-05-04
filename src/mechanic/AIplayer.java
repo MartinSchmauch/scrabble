@@ -6,6 +6,11 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameController;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import com.google.common.base.Stopwatch;
 
 /**
  * 
@@ -30,12 +35,46 @@ public class AIplayer extends Player {
     super(nickname, avatar, volume);
   }
 
-  /**
-   * 
-   * @param gb
-   * @param numOfTiles
-   * @return
-   */
+  private static void addParallelTilesHorizontally_getValidTilePositionsForNumOfTilesHelper(
+      GameBoard gb, int i, int j, int numOfTiles, HashSet<Field[]> results) {
+    Field[] singleTilesPosition = new Field[numOfTiles];
+    for (int l = i - numOfTiles + 1; l <= i; l++) {
+      for (int w = 0; w <= numOfTiles; w++) {
+        if (w == numOfTiles) {
+          results.add(singleTilesPosition);
+          singleTilesPosition = new Field[numOfTiles];
+          break;
+        } else if (gb.getField(l + w, j) != null && gb.getField(l + w, j).getTile() == null) {
+          singleTilesPosition[w] = gb.getField(l + w, j);
+        } else {
+          singleTilesPosition = new Field[numOfTiles];
+          break;
+        }
+      }
+    }
+  }
+
+  private static void addParallelTilesVertically_getValidTilePositionsForNumOfTilesHelper(
+      GameBoard gb, int i, int j, int numOfTiles, HashSet<Field[]> results) {
+    Field[] singleTilesPosition = new Field[numOfTiles];
+    for (int l = j - numOfTiles + 1; l <= j; l++) {
+      for (int w = 0; w <= numOfTiles; w++) {
+        if (w == numOfTiles) {
+          results.add(singleTilesPosition);
+          singleTilesPosition = new Field[numOfTiles];
+          break;
+        } else if (gb.getField(i, l + w) != null && gb.getField(i, l + w).getTile() == null) {
+          singleTilesPosition[w] = gb.getField(i, l + w);
+        } else {
+          singleTilesPosition = new Field[numOfTiles];
+          break;
+        }
+      }
+    }
+  }
+
+
+
   public HashSet<Field[]> getValidTilePositionsForNumOfTiles(GameBoard gb, int numOfTiles) {
     if (numOfTiles <= 1) {
       return null;
@@ -44,28 +83,20 @@ public class AIplayer extends Player {
     Field[] singleTilesPosition = new Field[numOfTiles];
     for (int j = 1; j <= gb.getFields().length; j++) {
       for (int i = 1; i <= gb.getFields().length; i++) {
-        System.out.println("####################### NEXT FIELD: " + gb.getField(i, j)
-            + " #######################");
-
-
-        // #####################################################################################
-        //
-        // TODO !!!!!!!!!! parallel words, for each position (not just left, right (or up, down)
-        //
-        // #####################################################################################
-
+        // System.out.println("####################### NEXT FIELD: " + gb.getField(i, j)
+        // + " #######################");
 
         if (gb.getField(i, j).getTile() == null) {
-          System.out.println("No Tile currently on this field.");
+          // System.out.println("No Tile currently on this field.");
           if (gb.getField(i, j).getTop() != null && gb.getField(i, j).getTop().getTile() != null) {
             // go down vertically
             for (int k = j; k <= j + numOfTiles; k++) {
               if (k == j + numOfTiles) {
-                System.out.println("# GENERATED POSITION FOR .TOP -> DOWN #");
-                for (Field f : singleTilesPosition) {
-                  System.out.println(f);
-                }
-                System.out.println();
+                // System.out.println("# GENERATED POSITION FOR .TOP -> DOWN #");
+                // for (Field f : singleTilesPosition) {
+                // System.out.println(f);
+                // }
+                // System.out.println();
                 results.add(singleTilesPosition);
                 singleTilesPosition = new Field[numOfTiles];
                 break;
@@ -76,258 +107,389 @@ public class AIplayer extends Player {
                 break;
               }
             }
-            // parallel tiles going right
-            if (gb.getField(i, j).getLeft() == null
-                || (gb.getField(i, j).getLeft().getTile() == null)) {
-              // above check for left tile prevents multiple work
-              for (int l = i; l <= i + numOfTiles; l++) {
-                if (l == i + numOfTiles) {
-                  System.out.println("# GENERATED POSITION FOR .TOP -> RIGHT #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
-                  singleTilesPosition[l - i] = gb.getField(l, j);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
-            // parallel tiles going left
-            if (gb.getField(i, j).getRight() == null
-                || (gb.getField(i, j).getRight().getTile() == null)) {
-              // above check for right tile prevents multiple work
-              for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
-                if (l == i + 1) {
-                  System.out.println("# GENERATED POSITION FOR .TOP -> LEFT #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
-                  singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
+            // parallel tiles
+            addParallelTilesVertically_getValidTilePositionsForNumOfTilesHelper(gb, i, j,
+                numOfTiles, results);
           }
-          if (gb.getField(i, j).getRight() != null
-              && gb.getField(i, j).getRight().getTile() != null) {
-            // go left horizontally
-            for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
-              if (l == i + 1) {
-                System.out.println("# GENERATED POSITION FOR .RIGHT -> LEFT #");
-                for (Field f : singleTilesPosition) {
-                  System.out.println(f);
-                }
-                System.out.println();
-                results.add(singleTilesPosition);
-                singleTilesPosition = new Field[numOfTiles];
-                break;
-              } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
-                singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
-              } else {
-                singleTilesPosition = new Field[numOfTiles];
-                break;
-              }
-            }
-            // parallel tiles going down
-            if (gb.getField(i, j).getTop() == null
-                || gb.getField(i, j).getTop().getTile() == null) {
-              // above check for top tile prevents multiple work
-              for (int k = j; k <= j + numOfTiles; k++) {
-                if (k == j + numOfTiles) {
-                  System.out.println("# GENERATED POSITION FOR .RIGHT -> DOWN #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
-                  singleTilesPosition[k - j] = gb.getField(i, k);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
-            // parallel tiles going up
-            if (gb.getField(i, j).getBottom() == null
-                || gb.getField(i, j).getBottom().getTile() == null) {
-              // above check for bottom tile prevents multiple work
-              for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
-                if (k == j + 1) {
-                  System.out.println("# GENERATED POSITION FOR .RIGHT -> UP #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
-                  singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
 
-          }
-          if (gb.getField(i, j).getBottom() != null
-              && gb.getField(i, j).getBottom().getTile() != null) {
-            // go up vertically
-            for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
-              if (k == j + 1) {
-                System.out.println("# GENERATED POSITION FOR .BOTTOM -> UP #");
-                for (Field f : singleTilesPosition) {
-                  System.out.println(f);
-                }
-                System.out.println();
-                results.add(singleTilesPosition);
-                singleTilesPosition = new Field[numOfTiles];
-                break;
-              } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
-                singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
-              } else {
-                singleTilesPosition = new Field[numOfTiles];
-                break;
-              }
-            }
-            // parallel tiles going right
-            if (gb.getField(i, j).getLeft() == null
-                || (gb.getField(i, j).getLeft().getTile() == null)) {
-              // above check for left tile prevents multiple work
-              for (int l = i; l <= i + numOfTiles; l++) {
-                if (l == i + numOfTiles) {
-                  System.out.println("# GENERATED POSITION FOR .BOTTOM -> RIGHT #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
-                  singleTilesPosition[l - i] = gb.getField(l, j);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
-            // parallel tiles going left
-            if (gb.getField(i, j).getRight() == null
-                || (gb.getField(i, j).getRight().getTile() == null)) {
-              // above check for right tile prevents multiple work
-              for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
-                if (l == i + 1) {
-                  System.out.println("# GENERATED POSITION FOR .BOTTOM -> LEFT #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
-                  singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
-          }
-          if (gb.getField(i, j).getLeft() != null
-              && gb.getField(i, j).getLeft().getTile() != null) {
-            // go right horizontally
-            for (int l = i; l <= i + numOfTiles; l++) {
-              if (l == i + numOfTiles) {
-                System.out.println("# GENERATED POSITION FOR .LEFT -> RIGHT #");
-                for (Field f : singleTilesPosition) {
-                  System.out.println(f);
-                }
-                System.out.println();
-                results.add(singleTilesPosition);
-                singleTilesPosition = new Field[numOfTiles];
-                break;
-              } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
-                singleTilesPosition[l - i] = gb.getField(l, j);
-              } else {
-                singleTilesPosition = new Field[numOfTiles];
-                break;
-              }
-            }
-            // parallel tiles going down
-            if (gb.getField(i, j).getTop() == null
-                || gb.getField(i, j).getTop().getTile() == null) {
-              // above check for top tile prevents multiple work
-              for (int k = j; k <= j + numOfTiles; k++) {
-                if (k == j + numOfTiles) {
-                  System.out.println("# GENERATED POSITION FOR .LEFT -> DOWN #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
-                  singleTilesPosition[k - j] = gb.getField(i, k);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
-            // parallel tiles going up
-            if (gb.getField(i, j).getBottom() == null
-                || gb.getField(i, j).getBottom().getTile() == null) {
-              // above check for bottom tile prevents multiple work
-              for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
-                if (k == j + 1) {
-                  System.out.println("# GENERATED POSITION FOR .LEFT -> UP #");
-                  for (Field f : singleTilesPosition) {
-                    System.out.println(f);
-                  }
-                  System.out.println();
-                  results.add(singleTilesPosition);
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
-                  singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
-                } else {
-                  singleTilesPosition = new Field[numOfTiles];
-                  break;
-                }
-              }
-            }
 
+        }
+        if (gb.getField(i, j).getRight() != null
+            && gb.getField(i, j).getRight().getTile() != null) {
+          // go left horizontally
+          for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
+            if (l == i + 1) {
+              // System.out.println("# GENERATED POSITION FOR .RIGHT -> LEFT #");
+              // for (Field f : singleTilesPosition) {
+              // System.out.println(f);
+              // }
+              // System.out.println();
+              results.add(singleTilesPosition);
+              singleTilesPosition = new Field[numOfTiles];
+              break;
+            } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+              singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
+            } else {
+              singleTilesPosition = new Field[numOfTiles];
+              break;
+            }
           }
-          System.out.println();
+          // parallel tiles
+          addParallelTilesHorizontally_getValidTilePositionsForNumOfTilesHelper(gb, i, j,
+              numOfTiles, results);
+
+        }
+        if (gb.getField(i, j).getBottom() != null
+            && gb.getField(i, j).getBottom().getTile() != null) {
+          // go up vertically
+          for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
+            if (k == j + 1) {
+              // System.out.println("# GENERATED POSITION FOR .BOTTOM -> UP #");
+              // for (Field f : singleTilesPosition) {
+              // System.out.println(f);
+              // }
+              // System.out.println();
+              results.add(singleTilesPosition);
+              singleTilesPosition = new Field[numOfTiles];
+              break;
+            } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+              singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
+            } else {
+              singleTilesPosition = new Field[numOfTiles];
+              break;
+            }
+          }
+          // parallel tiles
+          addParallelTilesVertically_getValidTilePositionsForNumOfTilesHelper(gb, i, j, numOfTiles,
+              results);
+        }
+        if (gb.getField(i, j).getLeft() != null && gb.getField(i, j).getLeft().getTile() != null) {
+          // go right horizontally
+          for (int l = i; l <= i + numOfTiles; l++) {
+            if (l == i + numOfTiles) {
+              // System.out.println("# GENERATED POSITION FOR .LEFT -> RIGHT #");
+              // for (Field f : singleTilesPosition) {
+              // System.out.println(f);
+              // }
+              // System.out.println();
+              results.add(singleTilesPosition);
+              singleTilesPosition = new Field[numOfTiles];
+              break;
+            } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+              singleTilesPosition[l - i] = gb.getField(l, j);
+            } else {
+              singleTilesPosition = new Field[numOfTiles];
+              break;
+            }
+          }
+          // parallel tiles
+          addParallelTilesHorizontally_getValidTilePositionsForNumOfTilesHelper(gb, i, j,
+              numOfTiles, results);
         }
       }
-
     }
     return results;
+
+    /**
+     * 
+     * @param gb
+     * @param numOfTiles
+     * @return
+     */
+    // public HashSet<Field[]> getValidTilePositionsForNumOfTiles(GameBoard gb, int numOfTiles) {
+    // if (numOfTiles <= 1) {
+    // return null;
+    // }
+    // HashSet<Field[]> results = new HashSet<Field[]>(); // no duplicates in results
+    // Field[] singleTilesPosition = new Field[numOfTiles];
+    // for (int j = 1; j <= gb.getFields().length; j++) {
+    // for (int i = 1; i <= gb.getFields().length; i++) {
+    //// System.out.println("####################### NEXT FIELD: " + gb.getField(i, j)
+    //// + " #######################");
+    //
+    //
+    // // #####################################################################################
+    // //
+    // //!!!!!!!!!! parallel words, for each position (not just left, right (or up, down) missing
+    // //
+    // // #####################################################################################
+    //
+    //
+    // if (gb.getField(i, j).getTile() == null) {
+    //// System.out.println("No Tile currently on this field.");
+    // if (gb.getField(i, j).getTop() != null && gb.getField(i, j).getTop().getTile() != null) {
+    // // go down vertically
+    // for (int k = j; k <= j + numOfTiles; k++) {
+    // if (k == j + numOfTiles) {
+    //// System.out.println("# GENERATED POSITION FOR .TOP -> DOWN #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+    // singleTilesPosition[k - j] = gb.getField(i, k);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // // parallel tiles going right
+    // if (gb.getField(i, j).getLeft() == null
+    // || (gb.getField(i, j).getLeft().getTile() == null)) {
+    // // above check for left tile prevents multiple work
+    // for (int l = i; l <= i + numOfTiles; l++) {
+    // if (l == i + numOfTiles) {
+    //// System.out.println("# GENERATED POSITION FOR .TOP -> RIGHT #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+    // singleTilesPosition[l - i] = gb.getField(l, j);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    // // parallel tiles going left
+    // if (gb.getField(i, j).getRight() == null
+    // || (gb.getField(i, j).getRight().getTile() == null)) {
+    // // above check for right tile prevents multiple work
+    // for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
+    // if (l == i + 1) {
+    //// System.out.println("# GENERATED POSITION FOR .TOP -> LEFT #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+    // singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    // }
+    // if (gb.getField(i, j).getRight() != null
+    // && gb.getField(i, j).getRight().getTile() != null) {
+    // // go left horizontally
+    // for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
+    // if (l == i + 1) {
+    //// System.out.println("# GENERATED POSITION FOR .RIGHT -> LEFT #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+    // singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // // parallel tiles going down
+    // if (gb.getField(i, j).getTop() == null
+    // || gb.getField(i, j).getTop().getTile() == null) {
+    // // above check for top tile prevents multiple work
+    // for (int k = j; k <= j + numOfTiles; k++) {
+    // if (k == j + numOfTiles) {
+    //// System.out.println("# GENERATED POSITION FOR .RIGHT -> DOWN #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+    // singleTilesPosition[k - j] = gb.getField(i, k);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    // // parallel tiles going up
+    // if (gb.getField(i, j).getBottom() == null
+    // || gb.getField(i, j).getBottom().getTile() == null) {
+    // // above check for bottom tile prevents multiple work
+    // for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
+    // if (k == j + 1) {
+    //// System.out.println("# GENERATED POSITION FOR .RIGHT -> UP #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+    // singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    //
+    // }
+    // if (gb.getField(i, j).getBottom() != null
+    // && gb.getField(i, j).getBottom().getTile() != null) {
+    // // go up vertically
+    // for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
+    // if (k == j + 1) {
+    //// System.out.println("# GENERATED POSITION FOR .BOTTOM -> UP #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+    // singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // // parallel tiles going right
+    // if (gb.getField(i, j).getLeft() == null
+    // || (gb.getField(i, j).getLeft().getTile() == null)) {
+    // // above check for left tile prevents multiple work
+    // for (int l = i; l <= i + numOfTiles; l++) {
+    // if (l == i + numOfTiles) {
+    //// System.out.println("# GENERATED POSITION FOR .BOTTOM -> RIGHT #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+    // singleTilesPosition[l - i] = gb.getField(l, j);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    // // parallel tiles going left
+    // if (gb.getField(i, j).getRight() == null
+    // || (gb.getField(i, j).getRight().getTile() == null)) {
+    // // above check for right tile prevents multiple work
+    // for (int l = i - numOfTiles + 1; l <= i + 1; l++) {
+    // if (l == i + 1) {
+    //// System.out.println("# GENERATED POSITION FOR .BOTTOM -> LEFT #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+    // singleTilesPosition[l - i + numOfTiles - 1] = gb.getField(l, j);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    // }
+    // if (gb.getField(i, j).getLeft() != null
+    // && gb.getField(i, j).getLeft().getTile() != null) {
+    // // go right horizontally
+    // for (int l = i; l <= i + numOfTiles; l++) {
+    // if (l == i + numOfTiles) {
+    //// System.out.println("# GENERATED POSITION FOR .LEFT -> RIGHT #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(l, j) != null && gb.getField(l, j).getTile() == null) {
+    // singleTilesPosition[l - i] = gb.getField(l, j);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // // parallel tiles going down
+    // if (gb.getField(i, j).getTop() == null
+    // || gb.getField(i, j).getTop().getTile() == null) {
+    // // above check for top tile prevents multiple work
+    // for (int k = j; k <= j + numOfTiles; k++) {
+    // if (k == j + numOfTiles) {
+    //// System.out.println("# GENERATED POSITION FOR .LEFT -> DOWN #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+    // singleTilesPosition[k - j] = gb.getField(i, k);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    // // parallel tiles going up
+    // if (gb.getField(i, j).getBottom() == null
+    // || gb.getField(i, j).getBottom().getTile() == null) {
+    // // above check for bottom tile prevents multiple work
+    // for (int k = j - numOfTiles + 1; k <= j + 1; k++) {
+    // if (k == j + 1) {
+    //// System.out.println("# GENERATED POSITION FOR .LEFT -> UP #");
+    //// for (Field f : singleTilesPosition) {
+    //// System.out.println(f);
+    //// }
+    //// System.out.println();
+    // results.add(singleTilesPosition);
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // } else if (gb.getField(i, k) != null && gb.getField(i, k).getTile() == null) {
+    // singleTilesPosition[k - j + numOfTiles - 1] = gb.getField(i, k);
+    // } else {
+    // singleTilesPosition = new Field[numOfTiles];
+    // break;
+    // }
+    // }
+    // }
+    //
+    // }
+    //// System.out.println();
+    // }
+    // }
+    //
+    // }
+    // return results;
 
   }
 
   public Turn generateIdealTurn(GameBoard gb) {
+    System.out.println("AI is running...");
+    Stopwatch timeOverall = Stopwatch.createStarted();
     HashSet<Field[]> possibleLocations;
     Turn currentTurn;
     int maximumScore = 0;
@@ -336,20 +498,40 @@ public class AIplayer extends Player {
     ArrayList<Tile> currentLayedDownTiles;
     ArrayList<Integer> indicesOnRack;
     Turn turnWithMaximumScore = null;
-    for (int k = 2; k <= this.maxNumOfTiles; k++) {
-      possibleLocations = getValidTilePositionsForNumOfTiles(gb, k);
 
+    int locationIndex; // testing-purposes only
+
+    for (int k = 2; k <= this.maxNumOfTiles; k++) {
+      System.out
+          .println("### NEW POSSIBLE LOCATIONS ARE GENERATED FOR TILENUMBER" + k + " ... ###");
+      Stopwatch sw = Stopwatch.createStarted();
+      possibleLocations = getValidTilePositionsForNumOfTiles(gb, k);
+      sw.stop();
+      System.out.println("----- possible locations generated in "
+          + sw.elapsed(TimeUnit.MILLISECONDS) + " milliseconds -----\n");
+
+      locationIndex = 0; // testing-purposes only
       for (Field[] currentLocation : possibleLocations) {
+        locationIndex++; // testing-purposes only
+        System.out.println("### HANDLE CURRENT-LOCATION AT ");
+        for (Field f : currentLocation) {
+          System.out.print(f);
+        }
+        System.out.println(
+            " with index " + locationIndex + " out of " + possibleLocations.size() + " ... ###");
+        sw.reset();
+        sw.start();
+
         currentLayedDownTiles = null;
         indicesOnRack = new ArrayList<Integer>();
         while ((currentLayedDownTiles =
             nextTiles(currentLayedDownTiles, indicesOnRack, k)) != null) {
-          System.out.println(currentLayedDownTiles);
+          // System.out.println(currentLayedDownTiles);
           for (int i = 0; i < currentLayedDownTiles.size(); i++) {
             currentLocation[i].setTile(currentLayedDownTiles.get(i));
             this.setRackTileToNone(indicesOnRack.get(i));
-            System.out.println("##### TILE MOVED FROM RACK TO GB #####");
-            System.out.println(currentLayedDownTiles.get(i));
+            // System.out.println("##### TILE MOVED FROM RACK TO GB #####");
+            // System.out.println(currentLayedDownTiles.get(i));
           }
           currentTurn = new Turn(this.getNickname(), gc);
           currentTurn.setLaydDownTiles(currentLayedDownTiles);
@@ -358,15 +540,18 @@ public class AIplayer extends Player {
             // layedDownTileListWithMaximumScore = currentLayedDownTiles;
             layedDownFieldsWithMaximumScore = currentLocation;
             turnWithMaximumScore = currentTurn.getDeepCopy();
-            System.out.println("NEW MAXIMUM SCORE: " + maximumScore);
-            for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
-              System.out.println("Tile newly layed down: " + t);
-            }
+            // System.out.println("NEW MAXIMUM SCORE: " + maximumScore);
+            // for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
+            // System.out.println("Tile newly layed down: " + t);
+            // }
           }
           // if (currentLayedDownTiles != null) {
           this.cleanupGameboardAndRack(currentLayedDownTiles, indicesOnRack);
           // }
         }
+        sw.stop();
+        System.out.println("----- current location handled in " + sw.elapsed(TimeUnit.MILLISECONDS)
+            + " milliseconds -----\n");
       }
     }
     System.out.println();
@@ -383,6 +568,9 @@ public class AIplayer extends Player {
     for (Field f : layedDownFieldsWithMaximumScore) {
       System.out.println(f);
     }
+    timeOverall.stop();
+    System.out.println("\n AI finished in "
+        + timeOverall.elapsed(TimeUnit.SECONDS) + " seconds ( " + timeOverall.elapsed(TimeUnit.MINUTES) + " minutes)\n");
     return turnWithMaximumScore;
 
   }
@@ -423,6 +611,11 @@ public class AIplayer extends Player {
                 }
               }
             }
+            System.out.print("nextTiles:");
+            for (Tile t : current) {
+              System.out.print(" " + t.getLetter().getCharacter());
+            }
+            System.out.println();
             return current;
           }
         }
@@ -589,5 +782,4 @@ public class AIplayer extends Player {
   // return null;
   //
   // }
-
 }
