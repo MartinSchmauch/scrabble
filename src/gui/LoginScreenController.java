@@ -45,6 +45,13 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   @FXML
   private ImageView avatar;
 
+  @FXML
+  public void initialize() {
+    this.username.setText(currentPlayer.getNickname());
+    this.avatar.setImage(new Image("file:" + FileParameters.datadir + currentPlayer.getAvatar()));
+
+  }
+
   /**
    * Handles the different Buttons in the Login Screen.
    * 

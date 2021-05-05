@@ -1,7 +1,7 @@
 {
-  "timePerPlayer" : 1500,
+  "timePerPlayer" : 1505,
   "maxOvertime" : 600,
-  "maxScore" : 20,
+  "maxScore" : -1,
   "dictionary" : "resources/dict.csv",
   "bingo" : 50,
   "difficulty" : "easy",

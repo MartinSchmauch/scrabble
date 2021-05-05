@@ -214,7 +214,7 @@
                               <Font size="7.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tpptf" onAction="#handle" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
+                        <TextField fx:id="tpptf" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
                         <TextField fx:id="motf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="mstf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="stf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />

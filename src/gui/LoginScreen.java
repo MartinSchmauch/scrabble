@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -30,9 +29,9 @@ import util.JsonHandler;
 public class LoginScreen extends Application {
 
   private Parent root;
-  protected Player currentPlayer;
+  protected static Player currentPlayer;
   protected boolean guest = false;
-  private static boolean alreadyLaunched;
+  private boolean alreadyLaunched;
   private double xoffset;
   private double yoffset;
 
@@ -49,17 +48,29 @@ public class LoginScreen extends Application {
    * profile is present.
    */
 
-  @FXML
-  public void initialize() {
+
+  public void setUp() {
+
+  }
+
+  /**
+   * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create the Login
+   * Screen.
+   * 
+   * @param stage stage to be set
+   */
+
+  @Override
+  public void start(Stage stage) {
 
     if (new File(FileParameters.datadir + ("/playerProfileTest.json")).exists()) {
-
       currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+      setFirstLaunch(true);
     } else {
-
       currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfile.json");
-
+      System.out.println("spot reached");
       if (!alreadyLaunched) {
+        System.out.println("already launched");
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
 
         alert.setTitle("Create Player Profile");
@@ -82,27 +93,13 @@ public class LoginScreen extends Application {
             e.printStackTrace();
           }
           new UserSettingsScreen(currentPlayer).start(new Stage());
+          return;
         } else {
           guest = true;
           alert.close();
         }
       }
     }
-
-    this.username.setText(currentPlayer.getNickname());
-    this.avatar.setImage(new Image("file:" + FileParameters.datadir + currentPlayer.getAvatar()));
-  }
-
-  /**
-   * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create the Login
-   * Screen.
-   * 
-   * @param stage stage to be set
-   */
-
-  @Override
-  public void start(Stage stage) {
-
 
     Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
@@ -131,11 +128,11 @@ public class LoginScreen extends Application {
     });
 
     stage.setTitle("Scrabble3");
-    setFirstLaunch(true);
     stage.show();
+    setFirstLaunch(true);
   }
 
-  public static void setFirstLaunch(boolean launch) {
+  public void setFirstLaunch(boolean launch) {
     alreadyLaunched = true;
   }
 
