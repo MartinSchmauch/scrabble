@@ -1,5 +1,10 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -9,11 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -95,16 +95,12 @@ public class Server {
       public void run() {
         List<Tile> tileList = gameController.drawInitialTiles();
 
-        // UI
         for (Tile t : tileList) {
           t.setField(player.getFreeRackField());
           t.setOnGameBoard(false);
           t.setOnRack(true);
           gpc.addTile(t);
         }
-
-        // domain
-        player.addTilesToRack(tileList);
       }
     });
 
