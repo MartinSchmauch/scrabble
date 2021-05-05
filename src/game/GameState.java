@@ -25,7 +25,7 @@ public class GameState implements Serializable {
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
   private HashMap<String, Integer> scores;
-  private GameSettings gameSettings;
+  // private GameSettings gameSettings;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -136,9 +136,9 @@ public class GameState implements Serializable {
     return this.scores.replace(player, oldScore, oldScore + turnScore);
   }
 
-  public GameSettings getGameSettings() {
-    return gameSettings;
-  }
+  //public GameSettings getGameSettings() {
+    //return gameSettings;
+  //}
 
 
 }

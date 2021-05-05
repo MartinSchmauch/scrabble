@@ -34,7 +34,15 @@ public class ClientProtocol extends Thread {
   private LobbyScreenController lpc;
   private Player player;
   private Message m;
+  /** 
+   * @author pkoenig
+   */
+  private String ipFromServer;
+  private int portFromServer;
 
+  /**
+   * @author lurny
+   */
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
@@ -69,9 +77,31 @@ public class ClientProtocol extends Thread {
         ConnectMessage cm = (ConnectMessage) m;
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
+       /**
+        * @author pkoenig
+        */
+//      } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED){
+//        ConnectionRefusedMessage crm = (ConnectionRefusedMessage) m;
+//        this.player.setNickname(crm.getAlternativeUserName());
+//        //sendToServer(new ConnectMessage(this.player.getPlayerInfo()));
+//        System.out.println("cp, line 87");
+//        disconnect();
+//        player.connect(ipFromServer);
+////        m = (Message) in.readObject();
+////        if (m.getMessageType() == MessageType.CONNECT) {
+////          ConnectMessage cm = (ConnectMessage) m;
+////          this.player.setNickname(cm.getPlayerInfo().getNickname());
+////          System.out.println("New username: " + player.getNickname());
+////        }
+////        else {
+////          disconnect();
+////        }
       } else {
         disconnect();
       }
+      /**
+       * @author lurny
+       */
 
       while (running) {
         try {
@@ -83,6 +113,7 @@ public class ClientProtocol extends Thread {
               switch (m.getMessageType()) {
                 case CONNECTION_REFUSED:
                   ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
+                  System.out.println("cp, l 115");
                   // tbImplemented
                   break;
                 case SHUTDOWN:
@@ -239,5 +270,37 @@ public class ClientProtocol extends Thread {
 
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lpc = lsc;
+  }
+  
+  /**
+   * @author pkoenig
+   */
+
+  /**
+   * @return the ipFromServer
+   */
+  public String getIpFromServer() {
+    return ipFromServer;
+  }
+
+  /**
+   * @param ipFromServer the ipFromServer to set
+   */
+  public void setIpFromServer(String ipFromServer) {
+    this.ipFromServer = ipFromServer;
+  }
+
+  /**
+   * @return the portFromServer
+   */
+  public int getPortFromServer() {
+    return portFromServer;
+  }
+
+  /**
+   * @param portFromServer the portFromServer to set
+   */
+  public void setPortFromServer(int portFromServer) {
+    this.portFromServer = portFromServer;
   }
 }

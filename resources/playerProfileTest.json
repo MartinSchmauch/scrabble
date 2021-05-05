@@ -1,13 +1,13 @@
 {
-  "nickname" : "client",
-  "avatar" : "/avatars/avatar5.png",
+  "nickname" : "host",
+  "avatar" : "/avatars/avatar6.png",
   "volume" : 60,
   "customGameSettings" : null,
   "host" : true,
   "clientProtocol" : null,
   "playerInfo" : {
-    "nickname" : "client",
-    "avatar" : "/avatars/avatar5.png",
+    "nickname" : "host",
+    "avatar" : "/avatars/avatar6.png",
     "host" : true
   }
 }

@@ -99,13 +99,22 @@ public class ServerProtocol extends Thread {
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
-        if (server.checkNickname(from)) {
-          Message rmsg =
-              new ConnectionRefusedMessage(server.getHost(), "Your nickname was already taken");
-          out.writeObject(rmsg);
-          out.flush();
-          out.reset();
-          disconnect();
+        /**
+         * @author pkoenig
+         */
+        if (server.checkNickname(this.clientName)) {
+          int i = 1;
+          while(server.checkNickname(this.clientName)) {
+            this.clientName = cm.getPlayerInfo().getNickname() + "-" + i;
+            i++;
+          }
+          cm.getPlayerInfo().setNickname(this.clientName);
+          server.addClient(cm.getPlayerInfo(), this);
+          server.sendToAll(cm);
+          sendInitialGameState();
+          /**
+           * @author ldreyer
+           */
         } else if (!from.equals(this.clientName)) {
           Message rmsg = new ConnectionRefusedMessage(server.getHost(),
               "Your sender name did not match your nickname. Error.");

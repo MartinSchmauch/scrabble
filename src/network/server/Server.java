@@ -157,7 +157,7 @@ public class Server {
   }
 
   public boolean checkNickname(String nickname) {
-    return this.clients.keySet().contains(nickname);
+    return this.clients.keySet().contains(nickname)|| this.host.equals(nickname);
   }
 
   public void addClient(PlayerData player, ServerProtocol serverProtocol) {
