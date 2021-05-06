@@ -698,16 +698,8 @@
                   <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                   <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                   <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                  <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
-                     <children>
-                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" />
-                     </children>
-                  </StackPane>
-                  <StackPane prefHeight="150.0" prefWidth="200.0">
-                     <children>
-                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" />
-                     </children>
-                  </StackPane>
+                  <Rectangle fill="#8fb492" height="50.0" layoutX="118.0" layoutY="12.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Rectangle fill="#ff7a7a" height="50.0" layoutX="385.0" layoutY="12.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" onMouseDragged="#boardDragged" onMousePressed="#boardPressed" onMouseReleased="#boardReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
          </children>
