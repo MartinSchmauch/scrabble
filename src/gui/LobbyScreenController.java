@@ -1,12 +1,12 @@
 package gui;
 
 
-import game.GameSettings;
-import game.GameState;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import game.GameSettings;
+import game.GameState;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -224,33 +224,33 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * 
    */
   public void updateJoinedPlayers() {
-        GameState gs;
-        if (player.isHost()) {
-          gs = player.getServer().getGameState();
-          players = gs.getAllPlayers();
-        } else {
-          gs = player.getClientProtocol().getGameState();
-          try {
-            players = gs.getAllPlayers();
-          } catch (NullPointerException e) {
-            return;
-          }
-        }
+    GameState gs;
+    if (player.isHost()) {
+      gs = player.getServer().getGameState();
+      players = gs.getAllPlayers();
+    } else {
+      gs = player.getClientProtocol().getGameState();
+      try {
+        players = gs.getAllPlayers();
+      } catch (NullPointerException e) {
+        return;
+      }
+    }
 
-        Label[] nicknames = {player1, player2, player3, player4};
-        ImageView[] avatars = {pic1, pic2, pic3, pic4};
-        for (int i = 0; i <= 3; i++) {
-          if (i < players.size()) {
-            // Player connects
-            nicknames[i].setText(players.get(i).getNickname());
-            avatars[i]
-                .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
-          } else {
-            // Player disconnects
-            nicknames[i].setText("");
-            avatars[i].setImage(null);
-          }
-        }
+    Label[] nicknames = {player1, player2, player3, player4};
+    ImageView[] avatars = {pic1, pic2, pic3, pic4};
+    for (int i = 0; i <= 3; i++) {
+      if (i < players.size()) {
+        // Player connects
+        nicknames[i].setText(players.get(i).getNickname());
+        avatars[i]
+            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+      } else {
+        // Player disconnects
+        nicknames[i].setText("");
+        avatars[i].setImage(null);
+      }
+    }
   }
 
   /**

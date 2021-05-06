@@ -40,6 +40,7 @@ public class GameState implements Serializable {
       jsonHandler.loadGameSettings(customGameSettings);
     } else {
       jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
+      System.out.println("!");
     }
 
     setUpGameboard();
