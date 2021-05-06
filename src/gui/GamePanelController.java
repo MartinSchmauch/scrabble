@@ -167,11 +167,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
   public void run() {
+    String secString = "";
     while (turnCountdown) {
       if (this.sec > 9) {
-        this.time = this.min + ":" + this.sec;
+        secString = "" + this.sec;
       } else {
-        this.time = this.min + ":0" + this.sec;
+        secString = "0" + this.sec;
       }
 
       this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
@@ -181,12 +182,16 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
-        // Send it
+      }
+      // Send it
+      else if (this.server != null) {
+        System.out.println("lösche das im Gamepanelcontroller Zeile 185");
+        this.server.resetTurnForEveryPlayer();
       } else {
         this.sec--;
       }
 
-      this.updateTimer(String.valueOf(min), String.valueOf(sec));
+      this.updateTimer(String.valueOf(min), secString);
       this.updateProgressBar(this.timeLeftBar);
 
       try {
@@ -195,6 +200,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.turnCountdown = false;
       }
     }
+
   }
 
   /**
@@ -539,11 +545,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    */
 
-     /**
-      * Lets a player disconnect
-      * 
-      * @param nickname of the player disconnecting
-      */
+  /**
+   * Lets a player disconnect
+   * 
+   * @param nickname of the player disconnecting
+   */
   public void removeJoinedPlayer(String nickname) {
     // TODO
   }
@@ -768,10 +774,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out
-        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
-    sendMessage(m);
+    if (this.player.isHost()) {
+      this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
+    } else {
+      sendMessage(m);
+    }
   }
 
   @Override

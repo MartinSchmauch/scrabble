@@ -104,7 +104,7 @@ public class ServerProtocol extends Thread {
          */
         if (server.checkNickname(this.clientName)) {
           int i = 1;
-          while(server.checkNickname(this.clientName)) {
+          while (server.checkNickname(this.clientName)) {
             this.clientName = cm.getPlayerInfo().getNickname() + "-" + i;
             i++;
           }
@@ -163,7 +163,6 @@ public class ServerProtocol extends Thread {
 
             Turn turn = server.getGameController().getTurn();
             turn.endTurn();
-
             String nextPlayer;
 
             if (turn.isValid()) {
@@ -175,8 +174,9 @@ public class ServerProtocol extends Thread {
               nextPlayer = null;
             }
 
-            server.sendToAll(new TurnResponseMessage(ctm.getFrom(), turn.isValid(),
-                turn.getTurnScore(), nextPlayer));
+            server.sendToAll(
+                new TurnResponseMessage(ctm.getFrom(), turn.isValid(), turn.getTurnScore(),
+                    nextPlayer, this.server.getGameController().getTileBag().getRemaining()));
 
             sendInitialGameState();
             running = false;
@@ -190,7 +190,8 @@ public class ServerProtocol extends Thread {
             this.server.getGameController().getTurn().endTurn();
             Turn skipTurn = server.getGameController().getTurn();
             server.sendToAll(new TurnResponseMessage(tm.getFrom(), skipTurn.isValid(),
-                skipTurn.getTurnScore(), server.getGameController().getNextPlayer()));
+                skipTurn.getTurnScore(), server.getGameController().getNextPlayer(),
+                this.server.getGameController().getTileBag().getRemaining()));
             break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;

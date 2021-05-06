@@ -217,4 +217,8 @@ public class GameController {
     return gameState;
   }
 
+  public TileBag getTileBag() {
+    return tileBag;
+  }
+
 }

@@ -142,6 +142,8 @@ public class Tile implements Serializable {
    * @author lurny
    */
   public Tile getTopTile() {
+    System.out.println("Hi");
+    System.out.println(this.getField().getxCoordinate() + " , " + this.getField().getyCoordinate());
     Field f = this.getField().getTop();
     if (f == null) {
       return null;

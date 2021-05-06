@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
@@ -21,6 +22,7 @@ import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.RemoveTileMessage;
+import network.messages.ResetTurnMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TileMessage;
@@ -139,6 +141,24 @@ public class ClientProtocol extends Thread {
                   }
                   gpc.removeTile(rtMessage.getX(), rtMessage.getY(), (rtMessage.getY() == -1));
                   break;
+
+                case RESET_TURN:
+                  ResetTurnMessage resetTMessage = (ResetTurnMessage) m;
+                  List<Tile> tileList = resetTMessage.getTiles();
+                  // remove Tiles from UI Gameboard and domain Gameboard
+                  for (Tile t : tileList) {
+                    gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
+                        false);
+                  }
+                  // if this is the current player: add Tiles to Rack
+                  if (player.getNickname().equals(gameState.getCurrentPlayer())) {
+                    for (Tile t : tileList) {
+                      t.setField(player.getFreeRackField());
+                      player.addTileToRack(t);
+                      gpc.addTile(t);
+                    }
+                  }
+                  break;
                 case TILE:
                   TileMessage trMessage = (TileMessage) m;
 
@@ -151,6 +171,8 @@ public class ClientProtocol extends Thread {
                   break;
                 case TURN_RESPONSE:
                   TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
+                  // TODO please check if it is correct
+                  gpc.updateRemainingLetters(turnrMessage.getRemainingTilesInTileBag());
                   if (turnrMessage.getIsValid()) {
                     gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
                     turnrMessage.getNextPlayer();
@@ -174,6 +196,7 @@ public class ClientProtocol extends Thread {
                   lpc.startGameScreen();
                   gpc.initializeThread();
                   gpc.startTimer();
+                  gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   break;
                 case GAME_STATISTIC:
                   GameStatisticMessage gsMessage = (GameStatisticMessage) m;
