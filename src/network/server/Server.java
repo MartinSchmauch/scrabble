@@ -14,9 +14,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
+import mechanic.Tile;
+import mechanic.Turn;
 import network.messages.AddTileMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
@@ -28,6 +31,7 @@ import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
+import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
@@ -60,10 +64,46 @@ public class Server {
    * default game settings are used.
    */
 
-  public Server(PlayerData host, String customGameSettings) {
+  public Server(Player host, String customGameSettings) {
     this.host = host.getNickname();
-    this.gameState = new GameState(host, customGameSettings);
+    this.player = host;
+    this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
     this.gameController = new GameController(this.gameState);
+    this.lsc = LobbyScreenController.getLobbyInstance();
+  }
+
+  /**
+   * This method fills the racks of every player with initial tiles.
+   * 
+   * @author lurny
+   */
+  public void distributeInitialTiles() {
+    List<Tile> tileList;
+
+    // add Tiles to players
+    for (ServerProtocol client : this.clients.values()) {
+      tileList = this.gameController.drawInitialTiles();
+      // UI
+      client.sendToClient(new TileMessage(this.getHost(), tileList));
+      // sollen die Racks nur lokal gespeichert werden?
+
+    }
+
+    // add Tiles to host Rack
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        List<Tile> tileList = gameController.drawInitialTiles();
+
+        for (Tile t : tileList) {
+          t.setField(player.getFreeRackField());
+          t.setOnGameBoard(false);
+          t.setOnRack(true);
+          gpc.addTile(t);
+        }
+      }
+    });
+
   }
 
   /**
@@ -117,7 +157,7 @@ public class Server {
   }
 
   public boolean checkNickname(String nickname) {
-    return this.clients.keySet().contains(nickname);
+    return this.clients.keySet().contains(nickname)|| this.host.equals(nickname);
   }
 
   public void addClient(PlayerData player, ServerProtocol serverProtocol) {
@@ -133,12 +173,24 @@ public class Server {
   /** Handles move from rack to gameBoard (with AddTileMessage). */
 
   public void handleAddTileToGameBoard(AddTileMessage m) {
+    Field f = m.getTile().getField();
+
     if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
         m.getNewYCoordinate())) {
       sendToAll(m);
-      Field f = m.getTile().getField();
-      RemoveTileMessage rtm = new RemoveTileMessage(host, f.getxCoordinate(), f.getyCoordinate());
-      clients.get(m.getFrom()).sendToClient(rtm);
+      try {
+        Thread.sleep(100);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+
+      RemoveTileMessage rtm =
+          new RemoveTileMessage(m.getFrom(), f.getxCoordinate(), f.getyCoordinate());
+      if (m.getFrom().equals(this.getHost())) {
+        updateServerUi((Message) rtm);
+      } else {
+        clients.get(m.getFrom()).sendToClient(rtm);
+      }
     } else {
       InvalidMoveMessage im =
           new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
@@ -149,17 +201,38 @@ public class Server {
   /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
 
   public void handleMoveTile(MoveTileMessage m) {
-    Field oldField =
-        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate());
+    // TODO temporary
+    if (this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate())
+        .getTile() == null) {
+      InvalidMoveMessage im =
+          new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
+      sendToAll(im);
+      return;
+    }
+
+    Tile oldTile = this.gameState.getGameBoard()
+        .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
+    // TODO Check why oldTile.field is null here. The following statement should be temporary
+    oldTile.setField(
+        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate()));
 
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
-      if (!this.gameController.removeTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
+      if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate())) {
         InvalidMoveMessage im =
             new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
         sendToAll(im);
         return;
       }
+
+      if (m.getFrom().equals(this.getHost())) {
+        player.moveToRack(oldTile, m.getNewXCoordinate());
+      } else {
+        AddTileMessage atm =
+            new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
+        clients.get(m.getFrom()).sendToClient(atm);
+      }
+
     } else if (m.getNewYCoordinate() != -1 && m.getOldYCoordinate() != -1) { // move on game board
       if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
@@ -167,18 +240,17 @@ public class Server {
             new InvalidMoveMessage(m.getFrom(), "Tile could not be moved on GameBoard.");
         sendToAll(im);
         return;
-      } else {
-        InvalidMoveMessage im = new InvalidMoveMessage(m.getFrom(), "Invalid.");
-        sendToAll(im);
-        return;
       }
+
+      AddTileMessage atm =
+          new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
+      sendToAll(atm);
+
+      RemoveTileMessage rtm =
+          new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
+      sendToAll(rtm);
     }
-    RemoveTileMessage rtm =
-        new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
-    AddTileMessage atm =
-        new AddTileMessage(host, oldField.getTile(), m.getNewXCoordinate(), m.getNewYCoordinate());
-    sendToAll(rtm);
-    clients.get(m.getFrom()).sendToClient(atm);
+
   }
 
 
@@ -192,11 +264,11 @@ public class Server {
     for (String nickname : clientNames) {
       ServerProtocol c = clients.get(nickname);
       c.sendToClient((Message) (m));
-      try {
-        updateServerUi(m);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
+    }
+    try {
+      updateServerUi(m);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -206,7 +278,6 @@ public class Server {
 
   public void sendToAll(Message m) {
     sendTo(new ArrayList<String>(getClientNames()), (Message) (m));
-
   }
 
   /**
@@ -227,84 +298,95 @@ public class Server {
    * server's user interface accordingly.
    */
 
-  public void updateServerUi(Message m) throws Exception {
-    if (!this.gameState.getGameRunning()) {
-      if (this.lsc == null) {
-        lsc = LobbyScreenController.getLobbyInstance();
-      }
-
-      switch (m.getMessageType()) {
-        case CONNECT:
-          ConnectMessage cm = (ConnectMessage) m;
-          lsc.addJoinedPlayer(cm.getPlayerInfo());
-          break;
-        case DISCONNECT:
-          lsc.removeJoinedPlayer(m.getFrom());
-          break;
-        case UPDATE_CHAT:
-          UpdateChatMessage um = (UpdateChatMessage) m;
-          lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
-          break;
-        case START_GAME:
-          StartGameMessage sgm = (StartGameMessage) m;
-          lsc.startGameScreen(this.player);
-          break;
-        case GAME_STATISTIC:
-          GameStatisticMessage gsm = (GameStatisticMessage) m;
-          break;
-        // TODO
-        default:
-          break;
-      }
-    } else {
-
-      if (this.gpc == null) {
-        gpc = GamePanelController.getInstance();
-      }
-
-      switch (m.getMessageType()) {
-        case DISCONNECT:
-          DisconnectMessage dm = (DisconnectMessage) m;
-          gpc.removeJoinedPlayer(dm.getFrom());
-          break;
-        case SEND_CHAT_TEXT:
-          SendChatMessage scm = (SendChatMessage) m;
-          gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
-          break;
-        case ADD_TILE:
-          AddTileMessage atm = (AddTileMessage) m;
-          gpc.addTile(atm.getTile());
-          break;
-        case REMOVE_TILE:
-          RemoveTileMessage rtm = (RemoveTileMessage) m;
-          gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
-          break;
-        // case MOVE_TILE:
-        // MoveTileMessage mtm = (MoveTileMessage) m;
-        // Tile t = this.gameState.getGameBoard()
-        // .getField(mtm.getOldXCoordinate(), mtm.getOldYCoordinate()).getTile();
-        // gpc.removeTile(mtm.getOldXCoordinate(), mtm.getOldYCoordinate(),
-        // (mtm.getOldYCoordinate() == -1));
-        //
-        // t.setField(this.gameState.getGameBoard().getField(mtm.getNewXCoordinate(),
-        // mtm.getNewYCoordinate()));
-        // gpc.addTile(t);
-        // break;
-        case TURN_RESPONSE:
-          TurnResponseMessage trm = (TurnResponseMessage) m;
-          if (!trm.getIsValid()) {
-            gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
-          } else {
-            gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
-            gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-            this.gameState.setCurrentPlayer(trm.getNextPlayer());
-            gpc.indicatePlayerTurn(trm.getNextPlayer());
+  public void updateServerUi(Message m) {
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if (!gameState.getGameRunning()) {
+          switch (m.getMessageType()) {
+            case CONNECT:
+              ConnectMessage cm = (ConnectMessage) m;
+              lsc.addJoinedPlayer(cm.getPlayerInfo());
+              break;
+            case DISCONNECT:
+              lsc.removeJoinedPlayer(m.getFrom());
+              break;
+            case UPDATE_CHAT:
+              UpdateChatMessage um = (UpdateChatMessage) m;
+              lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
+              break;
+            case START_GAME:
+              StartGameMessage sgm = (StartGameMessage) m;
+              lsc.startGameScreen();
+              gpc.initializeThread();
+              gpc.startTimer();
+              break;
+            case GAME_STATISTIC:
+              GameStatisticMessage gsm = (GameStatisticMessage) m;
+              break;
+            // TODO
+            default:
+              break;
           }
-          break;
-        default:
-          break;
+        } else {
+          switch (m.getMessageType()) {
+            case DISCONNECT:
+              DisconnectMessage dm = (DisconnectMessage) m;
+              gpc.removeJoinedPlayer(dm.getFrom());
+              break;
+            case SEND_CHAT_TEXT:
+              SendChatMessage scm = (SendChatMessage) m;
+              gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
+              break;
+            case ADD_TILE:
+              System.out.println("Hi Add");
+              AddTileMessage atm = (AddTileMessage) m;
+              if (atm.getNewYCoordinate() == -1) {
+                atm.getTile().setField(player.getRackField(atm.getNewXCoordinate()));
+                atm.getTile().setOnRack(true);
+                atm.getTile().setOnGameBoard(false);
+              } else {
+                atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
+                    atm.getNewYCoordinate()));
+                atm.getTile().setOnRack(false);
+                atm.getTile().setOnGameBoard(true);
+              }
+              gpc.addTile(atm.getTile());
+              break;
+            case REMOVE_TILE:
+              System.out.println("Hi Remove");
+              RemoveTileMessage rtm = (RemoveTileMessage) m;
+              if (rtm.getY() == -1) {
+                player.removeRackTile(rtm.getX());
+              }
+              gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
+              break;
+            case TURN_RESPONSE:
+              TurnResponseMessage trm = (TurnResponseMessage) m;
+              if (!trm.getIsValid()) {
+                gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
+              } else {
+                gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                gameState.setCurrentPlayer(trm.getNextPlayer());
+                gpc.indicatePlayerTurn(trm.getNextPlayer(), "TODO");
+                gpc.startTimer();
+              }
+              break;
+            case INVALID:
+              InvalidMoveMessage imm = (InvalidMoveMessage) m;
+              gpc.indicateInvalidTurn(imm.getFrom(), imm.getReason());
+              break;
+            case UPDATE_CHAT:
+              UpdateChatMessage um = (UpdateChatMessage) m;
+              gpc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
+              break;
+            default:
+              break;
+          }
+        }
       }
-    }
+    });
   }
 
   /**
@@ -325,6 +407,21 @@ public class Server {
     }
   }
 
+  public void startGame() {
+    sendToAll(new StartGameMessage(host, 10));
+
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    gameState.setRunning(true);
+    gameState.setCurrentPlayer(host);
+    distributeInitialTiles();
+    this.gameController.setTurn(new Turn(this.host, this.gameController));
+  }
+
   public Player getPlayer() {
     return player;
   }
@@ -339,5 +436,18 @@ public class Server {
 
   public GamePanelController getGamePanelController() {
     return gpc;
+  }
+
+  public void setGamePanelController(GamePanelController gpc) {
+    this.gpc = gpc;
+  }
+
+  public void setLobbyScreenController(LobbyScreenController lsc) {
+    this.lsc = lsc;
+  }
+
+
+  public void setRunning(boolean running) {
+    this.running = running;
   }
 }

@@ -1,19 +1,19 @@
 package gui;
 
 
-import game.GameSettings;
-import game.GameState;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Platform;
+import game.GameSettings;
+import game.GameState;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -21,14 +21,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.stage.StageStyle;
 import mechanic.Player;
 import mechanic.PlayerData;
+import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
-import network.messages.LobbyStatusMessage;
 import network.messages.Message;
-import network.messages.StartGameMessage;
-import network.server.Server;
 
 /**
  * Handles all User inputs in the Lobby Screen as well as the connection of players.
@@ -39,7 +37,7 @@ import network.server.Server;
 public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   private Player player;
-  private InetAddress address;
+  private String address;
   private static LobbyScreenController instance;
   private GameSettings gs;
   private List<PlayerData> players;
@@ -74,50 +72,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private ImageView pic4;
 
-  /**
-   * Set up labels etc before launching the lobby screen.
-   */
-  @FXML
-  public synchronized void initialize() {
-
-    // TODO remove later (just demo purposes)
-    this.countdown.setText(5 + "");
-    this.player = LobbyScreen.getInstance().getPlayer();
-    this.chat.setEditable(false);
-    this.chat.appendText("Welcome to the chat! Please be gentle :)");
-    this.cc = new ChatController(this.player);
-    address = null;
-    instance = this;
-
-    try {
-      address = InetAddress.getLocalHost();
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-    }
-    if (!this.player.isHost()) {
-      this.start.setOpacity(0.4);
-      this.start.setDisable(true);
-      this.ip.setOpacity(0);
-      this.settings.setOpacity(0.4);
-      this.player.getClientProtocol().setLC(instance);
-
-    } else {
-
-      sendLobbyMessage(this.player.getNickname(), this.player.getServer().getGameState());
-      this.ip.setText("Link:  " + address.getHostAddress());
-    }
-
-    // update nicknames and avatars continuously
-    Timeline playerUpdate =
-        new Timeline(new KeyFrame(Duration.seconds(0.5), new EventHandler<ActionEvent>() {
-          @Override
-          public void handle(ActionEvent e) {
-            updateJoinedPlayers();
-          }
-        }));
-    playerUpdate.setCycleCount(Timeline.INDEFINITE);
-    playerUpdate.play();
-  }
 
   /**
    * Handles all user inputs in the LobbyScreen.
@@ -127,8 +81,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "leavelobby":
-        sendDisconnectMessage(this.player.getNickname());
-        LobbyScreen.close();
+        sendMessage(new DisconnectMessage(this.player.getNickname()));
+        close();
         closeWindow();
         break;
       case "send":
@@ -139,7 +93,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.input.setText("");
         break;
       case "start":
-        startGame();
+        this.start.setDisable(true);
+        this.settings.setDisable(true);
+        Task<Void> task = new Task<Void>() {
+          @Override
+          public Void call() {
+            player.getServer().startGame();
+            return null;
+          }
+        };
+        new Thread(task).start();
         break;
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
@@ -149,50 +112,61 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     }
   }
 
-  /**
-   * Starts the countdown before the game launches.
-   */
-  public void startGame() {
-    this.start.setDisable(true);
-    this.settings.setDisable(true);
-    sendMessage((Message) new StartGameMessage(this.player.getNickname(), 10));
-  }
 
+  public void initData(Player current, String connection) {
+    instance = this;
+    this.player = current;
+
+    this.countdown.setText(5 + "");
+    this.chat.setEditable(false);
+    this.chat.appendText("Welcome to the chat! Please be gentle :)");
+    this.cc = new ChatController(this.player);
+
+    if (player.isHost()) {
+      this.address = current.getServer().getInetAddress().getHostAddress();
+      ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
+      sendMessage(cm);
+    } else {
+      this.player.getClientProtocol().setLC(this);
+      this.address = connection;
+      this.start.setOpacity(0.4);
+      this.start.setDisable(true);
+      this.settings.setOpacity(0.4);
+      this.settings.setDisable(true);
+    }
+    this.ip.setText("Link:  " + address);
+  }
 
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
    */
-  public synchronized void startGameScreen(Player currentPlayer) {
+  public void startGameScreen() {
+    try {
+      Stage stage = new Stage(StageStyle.DECORATED);
 
+      FXMLLoader loader = new FXMLLoader(new File(FileParameters.fxmlPath).toURI().toURL());
+      stage.setScene(new Scene(loader.load()));
 
-    // Displays countdown
-    Timeline cdLabel =
-        new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-          int counter = 4;
+      GamePanelController controller = loader.getController();
 
-          @Override
-          public void handle(ActionEvent e) {
-            updateCountdown(counter);
-            counter--;
-          }
-        }));
-    cdLabel.setCycleCount(5);
-    cdLabel.play();
-
-    cdLabel.setOnFinished(e -> Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        try {
-          new ClientUI().start(new Stage());
-          closeWindow();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+      if (player.isHost()) {
+        player.getServer().setGamePanelController(controller);
+      } else {
+        player.getClientProtocol().setGamePanelController(controller);
       }
-    }));
 
+      player.setGamePanelController(controller);
 
+      controller.initData(player);
+      stage.setOnCloseRequest(e -> controller.close());
+      stage.setTitle("Scrabble3");
+      stage.setResizable(false);
+      stage.show();
 
+      closeWindow();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   public void updateCountdown(int c) {
@@ -222,17 +196,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     return true;
   }
 
-  /**
-   * Send the Lobby status as host to clients.
-   * 
-   * @param id Nickname of Host
-   * @param gs GameState from host
-   */
-  public void sendLobbyMessage(String id, GameState gs) {
-    Message m = (Message) new LobbyStatusMessage(id, gs);
-    sendMessage(m);
-  }
-
 
   /**
    * Updates Lobbychat by using the updateChat method in the Chat Controller.
@@ -246,18 +209,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
 
-
-  /**
-   * Lets a player disconnect from the current game. If the leaving player is the host, the lobby
-   * closes.
-   * 
-   * @param playerId Nickname of leaving player
-   */
-
-  public void sendDisconnectMessage(String playerId) {
-    Message m = (Message) new DisconnectMessage(playerId);
-    sendMessage(m);
-  }
 
   /**
    * Getter Method for the current Instance of the controller.
@@ -274,13 +225,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void updateJoinedPlayers() {
     GameState gs;
-    if (this.player.isHost()) {
-      gs = this.player.getServer().getGameState();
-      this.players = gs.getAllPlayers();
+    if (player.isHost()) {
+      gs = player.getServer().getGameState();
+      players = gs.getAllPlayers();
     } else {
       gs = player.getClientProtocol().getGameState();
       try {
-        this.players = gs.getAllPlayers();
+        players = gs.getAllPlayers();
       } catch (NullPointerException e) {
         return;
       }
@@ -312,15 +263,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Get the current Server.
-   * 
-   * @return Current instance of the server if present else null
-   */
-  public Server getServer() {
-    return this.player.getServer();
-  }
-
-  /**
    * Get a reference onto the game settings currently used.
    * 
    * @return Currently used game settings
@@ -335,7 +277,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param player Playerdata of the player to be (dis-)connecting
    */
   public void addJoinedPlayer(PlayerData player) {
-
+    updateJoinedPlayers();
   }
 
   /**
@@ -345,7 +287,19 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
 
   public void removeJoinedPlayer(String nickname) {
-    // TODO
+    updateJoinedPlayers();
+  }
+
+  /**
+   * Closes the Lobby and stops the server.
+   */
+  public void close() {
+    if (this.player.getServer() != null) {
+      this.player.getServer().stopServer();
+    } else if (!this.player.isHost()) {
+      this.player.getClientProtocol().disconnect();
+    }
+    new LoginScreen().start(new Stage());
   }
 
 
@@ -364,6 +318,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void updategameSettings(GameSettings settings) {
     // TODO
+  }
+
+  public Player getPlayer() {
+    return player;
   }
 
 }

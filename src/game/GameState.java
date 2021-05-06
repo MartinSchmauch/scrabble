@@ -17,7 +17,7 @@ import util.JsonHandler;
  * @author nilbecke, ldreyer
  */
 
-public class GameState implements Serializable, Runnable {
+public class GameState implements Serializable {
   private static final long serialVersionUID = 1L;
   private boolean isRunning;
   private transient GameBoard gb;
@@ -25,13 +25,7 @@ public class GameState implements Serializable, Runnable {
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
   private HashMap<String, Integer> scores;
-  private int min;
-  private int sec;
-  private String time;
-  private transient Thread thread;
-  private double timeLeftBar;
-  private boolean turnCountdown;
-  private GameSettings gameSettings;
+  // private GameSettings gameSettings;
 
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
@@ -39,16 +33,17 @@ public class GameState implements Serializable, Runnable {
     this.allPlayers = new HashMap<String, PlayerData>();
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
-    this.thread = new Thread(this);
 
     JsonHandler jsonHandler = new JsonHandler();
-
 
     if (customGameSettings != null) {
       jsonHandler.loadGameSettings(customGameSettings);
     } else {
       jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
+      System.out.println("!");
     }
+
+    setUpGameboard();
   }
 
   /**
@@ -66,67 +61,6 @@ public class GameState implements Serializable, Runnable {
       this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
           .setWordMultiplier(f.getWordMultiplier());
     }
-  }
-
-  /**
-   * Thread to countdown the maxmimum length of a turn.
-   *
-   * @author lurny
-   */
-  public void run() {
-    while (turnCountdown) {
-      if (this.sec > 9) {
-        this.time = this.min + ":" + this.sec;
-      } else {
-        this.time = this.min + ":0" + this.sec;
-      }
-
-      this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
-
-      if (this.sec == 0 && this.min > 0) {
-        this.sec = 59;
-        this.min--;
-      } else if (this.sec == 0 & this.min == 0) {
-        this.turnCountdown = false;
-      } else {
-        this.sec--;
-      }
-      try {
-        Thread.sleep(1000);
-      } catch (InterruptedException e) {
-        this.turnCountdown = false;
-      }
-    }
-  }
-
-  /**
-   * method to start the Turn timer.
-   *
-   * @author lurny
-   */
-  public void startTimer() {
-    this.min = 10;
-    this.sec = 0;
-    this.turnCountdown = true;
-    this.thread.start();
-  }
-
-  /**
-   * method to stop the Turn timer.
-   *
-   * @author lurny
-   */
-
-  public void stopTimer() {
-    this.turnCountdown = false;
-  }
-
-  public int getMin() {
-    return min;
-  }
-
-  public int getSec() {
-    return sec;
   }
 
 
@@ -202,5 +136,10 @@ public class GameState implements Serializable, Runnable {
     int oldScore = this.scores.get(player);
     return this.scores.replace(player, oldScore, oldScore + turnScore);
   }
+
+  //public GameSettings getGameSettings() {
+    //return gameSettings;
+  //}
+
 
 }

@@ -1,34 +1,44 @@
 package gui;
 
 import java.time.LocalDateTime;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import java.util.List;
+import game.GameState;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import mechanic.Field;
-import mechanic.Letter;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import mechanic.Player;
+import mechanic.PlayerData;
 import mechanic.Tile;
 import network.client.ClientProtocol;
 import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
+import network.messages.TileMessage;
 import network.server.Server;
 
 /**
@@ -37,69 +47,184 @@ import network.server.Server;
  *         This class is the Controller Class for the Main Gamel Panel UI for the Client
  */
 
-public class GamePanelController extends ClientUI implements Sender {
+public class GamePanelController implements Sender, EventHandler<ActionEvent>, Runnable {
 
-  // private Player player;
+  private Player player;
+  private List<PlayerData> players;
   private ClientProtocol cp;
   private Server server;
   private static boolean selectedTileOnGrid = false;
   private static boolean selectedTileOnRack = false;
-  private static int coordinates[] = new int[2];
+  private static int selectedCoordinates[] = new int[2]; // row column
+  private static int targetCoordinates[] = new int[2]; // row, column
   private ChatController cc;
+  private static VisualTile rackTiles[][] = new VisualTile[2][6]; // location of visual tiles on
+                                                                  // rack, row;column index
+  private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
+                                                                     // board, row;column index
+
+
 
   @FXML
   private TextArea chat;
   @FXML
-  private TextField textField;
+  private TextField chatInput;
   @FXML
-  private Button sendButton, skipAndChange, done;
+  private Button sendButton, skipAndChangeButton, doneButton;
   @FXML
-  private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
-  @FXML
-  private Text remainingLetters, timer;
+  private ImageView image1, image2, image3, image4;
   @FXML
   private Text player1, player2, player3, player4;
   @FXML
+  private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
+  @FXML
+  private Text pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4;
+  @FXML
+  private Text remainingLetters, timer;
+  @FXML
   private Rectangle tile1;
   @FXML
-  private GridPane grid, rack; // grid is the Main Game Board
+  private Rectangle currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4;
+  @FXML
+  private GridPane board, rack;
   @FXML
   private ProgressBar timeProgress;
 
   private static GamePanelController instance;
 
+  private int min;
+  private int sec;
+  private String time;
+  private Thread thread;
+  private double timeLeftBar;
+  private boolean turnCountdown;
+
   public static GamePanelController getInstance() {
-    if (instance == null) {
-      instance = new GamePanelController();
-    }
     return instance;
   }
 
-  public GamePanelController() { // being called before @FXML annotated fields were populated
-    System.out.println("Controller erzeugt \n");
-  }
-
-  public void initialize() { // being called after @FXML annotated fields were populated
-    ClientUI.player = ClientUI.getInstance().getPlayer(); // TODO: ClientUI zu GamePanel umbenennen?
-    cc = new ChatController(ClientUI.player);
+  public void initData(Player player) {
+    this.player = player;
+    cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
-    SimpleIntegerProperty letterProperty = new SimpleIntegerProperty(17); // TODO: 17 durch referenz
-                                                                          // ersetzen
-    remainingLetters.textProperty().bind(letterProperty.asString());
-    SimpleStringProperty timerProperty = new SimpleStringProperty("Timer Referenz!");
-    timer.textProperty().bind(timerProperty);
-    SimpleDoubleProperty progressProperty = new SimpleDoubleProperty(0.5); // TODO: restliche zeit
-                                                                           // als anteil von 1 hier
-                                                                           // einfügen
-    timeProgress.progressProperty().bind(progressProperty);
-    // TEST:
-    Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
-    t2.setOnRack(true);
-    addTile(t2);
-    Tile t1 = new Tile(new Letter('C', 5, 5), new Field(5, 5, 1, 0));
-    t1.setOnGameBoard(true);
-    addTile(t1);
+
+    Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
+    Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    Text[] playerNameLabel = {player1, player2, player3, player4};
+    ImageView[] avatarImageView = {image1, image2, image3, image4};
+    GameState gs;
+    if (player.isHost()) {
+      gs = player.getServer().getGameState();
+      players = gs.getAllPlayers();
+    } else {
+      gs = player.getClientProtocol().getGameState();
+      try {
+        players = gs.getAllPlayers();
+      } catch (NullPointerException e) {
+        return;
+      }
+    }
+
+    for (int i = 0; i <= 3; i++) {
+      if (i < players.size()) {
+        playerNameLabel[i].setText(players.get(i).getNickname());
+        pointsLabel[i].setText("0");
+        playerLabel[i].setText("Points: ");
+        avatarImageView[i]
+            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+      } else {
+        playerNameLabel[i].setText(null);
+        pointsLabel[i].setText(null);
+        playerLabel[i].setText(null);
+        avatarImageView[i].setImage(null);
+      }
+    }
+    remainingLetters.setText("TODO: read max letters from gamesettings");
+    timer.setText("TODO: read time per player from gamesettings");
+    timeProgress.setProgress(1.0);
+  }
+
+  public void updateTimer(String min, String sec) {
+    timer.setText(min + ":" + sec);
+  }
+
+  public void updateRemainingLetters(int number) {
+    remainingLetters.setText(String.valueOf(number));
+  }
+
+  public void updateProgressBar(Double progress) {
+    timeProgress.setProgress(progress);
+  }
+
+  public void initializeThread() {
+    this.thread = new Thread(this);
+  }
+
+  /**
+   * Thread to countdown the maxmimum length of a turn.
+   *
+   * @author lurny
+   */
+  public void run() {
+    while (turnCountdown) {
+      if (this.sec > 9) {
+        this.time = this.min + ":" + this.sec;
+      } else {
+        this.time = this.min + ":0" + this.sec;
+      }
+
+      this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
+
+      if (this.sec == 0 && this.min > 0) {
+        this.sec = 59;
+        this.min--;
+      } else if (this.sec == 0 & this.min == 0) {
+        this.turnCountdown = false;
+        // Send it
+      } else {
+        this.sec--;
+      }
+
+      this.updateTimer(String.valueOf(min), String.valueOf(sec));
+      this.updateProgressBar(this.timeLeftBar);
+
+      try {
+        Thread.sleep(1000);
+      } catch (InterruptedException e) {
+        this.turnCountdown = false;
+      }
+    }
+  }
+
+  /**
+   * method to start the Turn timer.
+   *
+   * @author lurny
+   */
+  public void startTimer() {
+    this.min = 10;
+    this.sec = 0;
+    this.turnCountdown = true;
+    this.thread.start();
+  }
+
+  /**
+   * method to stop the Turn timer.
+   *
+   * @author lurny
+   */
+
+  public void stopTimer() {
+    this.turnCountdown = false;
+  }
+
+  public int getMin() {
+    return min;
+  }
+
+  public int getSec() {
+    return sec;
   }
 
   /**
@@ -108,74 +233,279 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    */
 
-  @FXML
-  public void sendMessage(ActionEvent event) {
-    this.cc.sendChatMessage(ClientUI.player.getNickname(), this.textField.getText());
+  /**
+   * Handles all button user inputs in the GamePanel
+   */
+  @Override
+  public void handle(ActionEvent e) {
+    String s = ((Node) e.getSource()).getId();
+    switch (s) {
+      case "sendButton":
+      case "chatInput":
+        sendMessage();
+        break;
+      case "skipAndChangeButton":
+        sendTileMessage(this.player.getNickname());
+        break;
+      case "doneButton":
+        completeTurn();
+        break;
+      default:
+        break;
+    }
   }
 
   /**
-   * Listener method that is executed, when a rectangle in the GridPane 'rack' is clicked. The
-   * method checks which tile was selected before and causes the right action for the desired tile
-   * movement.
+   * TODO
+   * 
+   * @param event
+   */
+  @FXML
+  public void rackDragHandling(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, true);
+
+    System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
+
+    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
+    ClipboardContent cb = new ClipboardContent();
+    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
+    db.setContent(cb);
+
+    event.consume();
+  }
+
+  /**
+   * TODO
+   * 
+   * @param event
+   */
+  @FXML
+  public void boardDragHandling(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, false);
+    selectedCoordinates[0]++;
+    selectedCoordinates[1]++;
+
+    System.out
+        .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
+
+    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
+    ClipboardContent cb = new ClipboardContent();
+    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
+    db.setContent(cb);
+
+    event.consume();
+  }
+
+  /**
+   * TODO
+   * 
+   * @param event
+   */
+  @FXML
+  public void DragOverHandling(DragEvent event) {
+    event.acceptTransferModes(TransferMode.ANY);
+  }
+
+  /**
+   * TODO
+   * 
+   * @param event
+   */
+  @FXML
+  public void rackDropHandling(DragEvent event) {
+    Node node = (Node) event.getSource();
+    targetCoordinates = getPos(node, true);
+    System.out.println("rackReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
+
+    if (targetCoordinates[0] == selectedCoordinates[0]
+        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+      // System.out.println("deselect rack tile");
+    } else if (selectedCoordinates[1] == -1) { // exchange tiles on rack
+      player.reorganizeRackTile(selectedCoordinates[0], targetCoordinates[0]);
+      // System.out.println("reorganizeRackTiles");
+    } else if (selectedCoordinates[1] != -1) { // try to move tile from board to rack - sender!
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+          targetCoordinates[0], targetCoordinates[1]);
+      // System.out.println(
+      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+    }
+    resetCoordinates();
+  }
+
+  /**
+   * TODO
+   * 
+   * @param event
+   */
+  @FXML
+  public void boardDropHandling(DragEvent event) {
+    Node node = (Node) event.getSource();
+    targetCoordinates = getPos(node, false);
+    targetCoordinates[0] += 1;
+    targetCoordinates[1] += 1;
+    System.out.println("boardReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
+
+    if (targetCoordinates[0] == selectedCoordinates[0]
+        && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+      // System.out.println("deselect grid tile");
+    } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
+      sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+          targetCoordinates[0], targetCoordinates[1]);
+      // System.out.println("exchange grid tiles");
+    } else if (selectedCoordinates[1] == -1) { // move tile from rack to board
+      // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
+      // + targetCoordinates[0] + targetCoordinates[1]);
+      player.moveToGameBoard(selectedCoordinates[0], targetCoordinates[0], targetCoordinates[1]);
+    }
+    resetCoordinates();
+  }
+
+  /**
+   * @deprecated
+   * @param event
+   */
+  @FXML
+  public void rackPressed(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, true);
+    // System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " +
+    // selectedCoordinates[1]);
+  }
+
+  /**
+   * @deprecatede
+   * @param event
+   */
+  @FXML
+  public void rackDragged(MouseEvent event) {
+
+  }
+
+  /**
+   * @deprecated
+   * @param event
+   */
+  @FXML
+  public void rackReleased(MouseEvent event) {
+    // Node node = (Node) event.getSource();
+    // targetCoordinates = getPos(node, true);
+    // // System.out.println("rackReleased at: " + targetCoordinates[0] + "; " +
+    // targetCoordinates[1]);
+    //
+    // if (targetCoordinates[0] == selectedCoordinates[0]
+    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+    // // System.out.println("deselect rack tile");
+    // } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
+    // player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
+    // // System.out.println("reorganizeRackTiles");
+    // } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
+    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+    // targetCoordinates[0], targetCoordinates[1]);
+    // // System.out.println(
+    // // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
+    // }
+    // resetCoordinates();
+  }
+
+  /**
+   * @deprecated
+   * @param event
+   */
+  @FXML
+  public void boardPressed(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    selectedCoordinates = getPos(node, false);
+    // System.out
+    // .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
+  }
+
+  /**
+   * @deprecated
+   * @param event
+   */
+  @FXML
+  public void boardDragged(MouseEvent event) {
+
+  }
+
+  /**
+   * @deprecated
+   * @param event
+   */
+  @FXML
+  public void boardReleased(MouseEvent event) {
+    // Node node = (Node) event.getSource();
+    // targetCoordinates = getPos(node, false);
+    // // System.out.println("boardRealeased at: " + targetCoordinates[0] + "; " +
+    // // targetCoordinates[1]);
+    // if (targetCoordinates[0] == selectedCoordinates[0]
+    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
+    // // System.out.println("deselect grid tile");
+    // } else if (selectedCoordinates[0] != -1) { // exchange tiles on board
+    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+    // targetCoordinates[0], targetCoordinates[1]);
+    // // System.out.println("exchange grid tiles");
+    // } else if (selectedCoordinates[0] == -1) { // move tile from rack to board
+    // // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
+    // // + targetCoordinates[0] + targetCoordinates[1]);
+    // player.moveToGameBoard(selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
+    // }
+    // resetCoordinates();
+  }
+
+
+  /**
+   * This method sets all coordinates for the helper arrays of the tile movements to -2. Thereby,
+   * possible errors in the dropHandler methods are evaded.
+   */
+  public static void resetCoordinates() {
+    selectedCoordinates[0] = -2;
+    selectedCoordinates[1] = -2;
+    targetCoordinates[0] = -2;
+    targetCoordinates[1] = -2;
+  }
+
+
+
+  /**
+   * @deprecated
+   * 
+   *             Listener method that is executed, when a rectangle in the GridPane 'rack' is
+   *             clicked. The method checks which tile was selected before and causes the right
+   *             action for the desired tile movement.
    * 
    * @param event
    */
   @FXML
   public void rackClicked(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    int[] pos = getPos(node, true);
-    int x = pos[0];
-    int y = pos[1];
+    // Node node = (Node) event.getSource();
+    // int[] pos = getPos(node, true);
+    // int x = pos[0];
+    // int y = pos[1];
     // // GUI test start:
     // setSelectedTileOnRack(true);
     // coordinates[0] = x;
     // // GUI test ende.
-    if (selectedTileOnRack == false && selectedTileOnGrid == false) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        setSelectedTileOnRack(true);
-        coordinates[0] = x;
-        coordinates[1] = -1;
-      }
-    }
-    if (selectedTileOnRack) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        if (cp.getPlayer().getRackTile(x).getField().getxCoordinate() == x) {
-          setSelectedTileOnRack(false); // selected tile gets deselected
-        } else {// switch positions of tiles on rack
-          // TODO: lokal rack tile positionen in der player klasse ändern
-          setSelectedTileOnRack(false);
-        }
-      } else { // move tile to empty field
-        // TODO: lokal rack tile positionen in der player klasse ändern
-        setSelectedTileOnRack(false);
-      }
-    }
-    if (selectedTileOnGrid) {
-      if (cp.getPlayer().getRackTile(x) != null) { // exchange tiles on rack and board
-        // case: check, wether you can exchange tiles
-        // when true: setSelectedTileOnGrid(false);
-        // when false: error message
-      } else { // move tile from board to rack
-        // case: check, wether you can move tile to rack
-        // when true: setSelectedTileOnGrid(false);
-        // when false: error message
-      }
-    }
+
   }
 
   /**
-   * Listener method that is executed, when a rectangle in the GridPane 'grid' is clicked. The
-   * method checks which tile was selected before and causes the right action for the desired tile
-   * movement.
+   * @deprecated
+   * 
+   *             Listener method that is executed, when a rectangle in the GridPane 'grid' is
+   *             clicked. The method checks which tile was selected before and causes the right
+   *             action for the desired tile movement.
    *
    * @param event
    */
   @FXML
-  public void gridClicked(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    int[] pos = getPos(node, false);
-    int x = pos[0];
-    int y = pos[1];
+  public void boardClicked(MouseEvent event) {
+    // Node node = (Node) event.getSource();
+    // int[] pos = getPos(node, false);
+    // int x = pos[0];
+    // int y = pos[1];
     // // GUI test start:
     // if (selectedTileOnRack) {
     // Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
@@ -183,65 +513,25 @@ public class GamePanelController extends ClientUI implements Sender {
     // moveToGamePanel(t2, x, y);
     // }
     // // GUI test ende.
-    if (selectedTileOnRack == false && selectedTileOnGrid == false) {
-      if (cp.getPlayer().getRackTile(x) != null) {
-        setSelectedTileOnGrid(true);
-        coordinates[0] = x;
-        coordinates[1] = y;
-      } else {
-        // TODO: maybe an error sound to occur?
-      }
-    }
-    if (selectedTileOnRack) {
-      if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
-        // case: exchange tiles on rack and grid
-        // check wether its is a valid move
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 1
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
-        // if yes: setSelectedTileOnRack(false);
-      } else {
-        // MAINCASE: move tile from rack(coordinates[0]) to empty grid field(x,y)
-        // check wether it is a valid move
-        // sendTileMove(player.getNickname(), player.getRackTile(coordinates[0]), x, y);
-        // if yes: setSelectedTileOnRack(false);
-      }
-    } else if (selectedTileOnGrid) {
-      if (cp.getGameState().getGameBoard().getField(x, y).getTile() != null) {
-        // case: exchange tiles on grid
-        // check, wether you can exchange tiles
-        // sendTileMove(player.getNickname(), player.getRackTile(x), coordinates[0],
-        // coordinates[1]); // stein
-        // 1
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y); // stein 2
-        // when true: setSelectedTileOnGrid(false);
-      } else {
-        // case: move tile on grid to empty field
-        // check wether you can exchange tiles
-        // sendTileMove(cp.getGameState().getCurrentPlayer(), null, x, y);
-        // when true: setSelectedTileOnGrid(false);
-      }
-    }
+  }
+
+  /**
+   * Method to be executed when a player clicks on the "Send" button of the chat area in the
+   * GamePanel The ChatController handles this event and gets the text from the textfield of the
+   * chat area.
+   * 
+   */
+  public void sendMessage() {
+    this.cc.sendChatMessage(this.player.getNickname(), this.chatInput.getText());
+    this.chatInput.setText("");
   }
 
   /**
    * 
-   * @param event
    */
-  @FXML
-  public void completeTurn(ActionEvent event) {
-    String userName = "Martin";
-    sendCommitTurn(userName);
+  public void completeTurn() {
+    sendCommitTurn(this.player.getNickname());
   }
-
-  /**
-   * 
-   * @param event
-   */
-  @FXML
-  public void skipAndChange(ActionEvent event) {
-
-  }
-
 
   /**
    * 
@@ -254,16 +544,15 @@ public class GamePanelController extends ClientUI implements Sender {
       * 
       * @param nickname of the player disconnecting
       */
-
-
-
   public void removeJoinedPlayer(String nickname) {
     // TODO
   }
 
 
   /**
-   * Updates Lobbychat by using the updateChat method in the Chat Controller.
+   * Updates Lobbychat by using the updateChat method in the Chat Controller. The String that is
+   * generated by this method from Chat Controller is appended to the chat TextArea and the
+   * chatInput TextField is being cleared.
    * 
    * @param sender
    * @param message
@@ -280,15 +569,17 @@ public class GamePanelController extends ClientUI implements Sender {
    * 
    * @param nickName
    */
-  public void indicatePlayerTurn(String nickName) {
-    if (player1.getText().equals(nickName)) {
-      // Effekt fï¿½r player 1
-    } else if (player2.getText().equals(nickName)) {
-      // Effekt fï¿½r player 2
-    } else if (player3.getText().equals(nickName)) {
-      // Effekt fï¿½r player 3
-    } else if (player4.getText().equals(nickName)) {
-      // Effekt fï¿½r player 4
+  public void indicatePlayerTurn(String newPlayer, String oldPlayer) {
+    String[] playerNames =
+        {player1.getText(), player2.getText(), player3.getText(), player4.getText()};
+    Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
+    for (int i = 0; i < 4; i++) {
+      if (playerNames[i].equals(newPlayer)) {
+        rect[i].setVisible(true);
+      }
+      if (playerNames[i].equals(oldPlayer)) {
+        rect[i].setVisible(false);
+      }
     }
   }
 
@@ -310,22 +601,24 @@ public class GamePanelController extends ClientUI implements Sender {
       row = 0;
       if (column > 5) { // case: tile is in the second row of the rack
         row = 1;
-        column -= 5;
+        column -= 6;
       }
-      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, true);
-      newTile.setMouseTransparent(true);
-      rack.add(newTile, column, row);
-      GridPane.setHalignment(newTile, HPos.CENTER);
-      GridPane.setValignment(newTile, VPos.BOTTOM);
-      GridPane.setMargin(newTile, new Insets(0, 0, 5.5, 0));
+      rackTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, true);
+      rackTiles[row][column].setMouseTransparent(true);
+      rack.add(rackTiles[row][column], column, row);
+      GridPane.setHalignment(rackTiles[row][column], HPos.CENTER);
+      GridPane.setValignment(rackTiles[row][column], VPos.BOTTOM);
+      GridPane.setMargin(rackTiles[row][column], new Insets(0, 0, 5.5, 0));
 
     } else {
-      VisualTile newTile = new VisualTile(Character.toString(letter), tileValue, false);
-      newTile.setMouseTransparent(true);
-      grid.add(newTile, column, row);
-      GridPane.setHalignment(newTile, HPos.CENTER);
-      GridPane.setValignment(newTile, VPos.BOTTOM);
-      GridPane.setMargin(newTile, new Insets(0, 10, 8, 0));
+      row -= 1;
+      column -= 1;
+      boardTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, false);
+      boardTiles[row][column].setMouseTransparent(true);
+      board.add(boardTiles[row][column], column, row);
+      GridPane.setHalignment(boardTiles[row][column], HPos.CENTER);
+      GridPane.setValignment(boardTiles[row][column], VPos.BOTTOM);
+      GridPane.setMargin(boardTiles[row][column], new Insets(0, 10, 8, 0));
     }
   }
 
@@ -375,41 +668,26 @@ public class GamePanelController extends ClientUI implements Sender {
    */
   public void removeTile(int column, int row, boolean isOnRack) {
     int x, y;
+    ObservableList<Node> list;
     if (isOnRack) {
-      for (Node node : rack.getChildren()) {
-        Integer columnIndex = GridPane.getColumnIndex(node);
-        Integer rowIndex = GridPane.getRowIndex(node);
-        if (columnIndex == null) {
-          x = 0;
-        } else {
-          x = columnIndex.intValue();
-        }
-        if (rowIndex == null) {
-          y = 0;
-        } else {
-          y = rowIndex.intValue();
-        }
+      list = rack.getChildren();
+      for (Node node : list) {
+        x = getPos(node, true)[0];
+        y = getPos(node, true)[1];
         if (node instanceof Parent && x == column && y == row) {
           rack.getChildren().remove(node);
           break;
         }
       }
     } else {
-      for (Node node : grid.getChildren()) {
-        Integer columnIndex = GridPane.getColumnIndex(node);
-        Integer rowIndex = GridPane.getRowIndex(node);
-        if (columnIndex == null) {
-          x = 0;
-        } else {
-          x = columnIndex.intValue();
-        }
-        if (rowIndex == null) {
-          y = 0;
-        } else {
-          y = rowIndex.intValue();
-        }
+      column -= 1;
+      row -= 1;
+      list = board.getChildren();
+      for (Node node : list) {
+        x = getPos(node, false)[0];
+        y = getPos(node, false)[1];
         if (node instanceof Parent && x == column && y == row) {
-          grid.getChildren().remove(node);
+          board.getChildren().remove(node);
           break;
         }
       }
@@ -423,20 +701,29 @@ public class GamePanelController extends ClientUI implements Sender {
    * @param nickName
    */
   public void indicateInvalidTurn(String nickName, String message) {
-    if (player1.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    } else if (player2.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    } else if (player3.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    } else if (player4.getText().equals(nickName)) {
-      // TODO: zug rückgängig machen
-    }
-    Alert alert = new Alert(AlertType.ERROR);
-    alert.setTitle("Error");
-    alert.setHeaderText(null);
-    alert.setContentText(message);
-    alert.show();
+    // if (player1.getText().equals(nickName)) {
+    // // TODO: zug rï¿½ckgï¿½ngig machen
+    // } else if (player2.getText().equals(nickName)) {
+    // // TODO: zug rï¿½ckgï¿½ngig machen
+    // } else if (player3.getText().equals(nickName)) {
+    // // TODO: zug rï¿½ckgï¿½ngig machen
+    // } else if (player4.getText().equals(nickName)) {
+    // // TODO: zug rï¿½ckgï¿½ngig machen
+    // }
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        CustomAlert alert = new CustomAlert(AlertType.WARNING);
+        alert.setTitle("Invalid Turn");
+        alert.setHeaderText("Your turn was not valid");
+        alert.setContentText(message);
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        alert.getDialogPane().getStylesheets()
+            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+        alert.show();
+      }
+    });
   }
 
   /**
@@ -446,7 +733,7 @@ public class GamePanelController extends ClientUI implements Sender {
    * @param turnScore
    * @throws Exception
    */
-  public void updateScore(String nickName, int turnScore) throws Exception {
+  public void updateScore(String nickName, int turnScore) {
     String newScore = "";
     if (player1.getText().equals(nickName)) {
       this.playerOnePoints.setText(newScore);
@@ -457,7 +744,7 @@ public class GamePanelController extends ClientUI implements Sender {
     } else if (player4.getText().equals(nickName)) {
       this.playerFourPoints.setText(newScore);
     } else {
-      throw new Exception("Player " + nickName + "is not part of the GameBoard");
+      System.out.println("Player " + nickName + "is not part of the GameBoard");
     }
 
   }
@@ -470,12 +757,13 @@ public class GamePanelController extends ClientUI implements Sender {
    */
 
   @Override
-  public void sendChatMessage(String sender, String message) {}
-
-  @Override
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
-    Message m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
-    sendMessageToServer(m);
+    MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
+    if (this.player.isHost()) {
+      this.player.getServer().handleMoveTile(m);
+    } else {
+      sendMessage(m);
+    }
   }
 
   @Override
@@ -483,36 +771,83 @@ public class GamePanelController extends ClientUI implements Sender {
     System.out
         .println("method sendCommitTurn wurde aufgerufen, ausgelï¿½st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
-    sendMessageToServer(m);
+    sendMessage(m);
   }
 
   @Override
   public void sendDisconnectMessage(String nickName) {
     Message m = new DisconnectMessage(nickName);
-    sendMessageToServer(m);
+    sendMessage(m);
+  }
+
+  @Override
+  public void sendTileMessage(String nickName) {
+    Message m = new TileMessage(nickName, this.player.getRackTiles());
+    sendMessage(m);
   }
 
   /**
-   * Method to send a Message to the server instance, using a Client Protocoll instance
+   * Sends a given message to all players.
    * 
-   * @param m
+   * @param m The Message to be sent
    */
-
-  public void sendMessageToServer(Message m) {
-    if (getConnection() != null) {
-      getConnection().sendToServer(m);
+  public boolean sendMessage(Message m) {
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(m);
+    } else {
+      this.player.getClientProtocol().sendToServer(m);
     }
+    return true;
   }
 
-  // public Player getPlayer() {
-  // return ClientUI.getPlayer();
-  // }
+  /**
+   * This method determines the position of a node in a gridpane and returns the position in a one
+   * dimensional int array with x-coordinate on int[0] and y-coordinate on int[1]. The boolean in
+   * the parameter determines wether the node is located in the rack gridpane or the gamepanel
+   * gridpane - nodeFromRack==true means that the node is located in the rack.
+   * 
+   * @param node
+   * @param nodeFromRack
+   * @return
+   */
+  private int[] getPos(Node node, boolean nodeFromRack) {
+    int[] result = new int[2];
+    Integer columnIndex = GridPane.getColumnIndex(node);
+    Integer rowIndex = GridPane.getRowIndex(node);
+    if (columnIndex == null) {
+      result[0] = 0;
+    } else {
+      result[0] = columnIndex.intValue();
+    }
+    if (rowIndex == null) {
+      result[1] = 0;
+    } else {
+      result[1] = rowIndex.intValue();
+    }
+    if (nodeFromRack) {
+      if (result[1] > 0) {
+        result[0] = result[0] + 6;
+      }
+      result[1] = -1;
+    }
+    return result;
+  }
 
+  /**
+   * Closes the Game and stops the server.
+   */
+  public void close() {
+    if (this.player.getServer() != null) {
+      this.player.getServer().stopServer();
+    } else if (!this.player.isHost()) {
+      this.player.getClientProtocol().disconnect();
+    }
+    new LoginScreen().start(new Stage());
+  }
 
   public Server getServer() {
     return server;
   }
-
 
   public void setServer(Server server) {
     this.server = server;
@@ -545,44 +880,10 @@ public class GamePanelController extends ClientUI implements Sender {
   }
 
   public static int[] getCoordinates() {
-    return coordinates;
+    return selectedCoordinates;
   }
 
   public static void setCoordinates(int coordinates[]) {
-    GamePanelController.coordinates = coordinates;
+    GamePanelController.selectedCoordinates = coordinates;
   }
-
-  /**
-   * This method determines the position of a node in a gridpane and returns the position in a one
-   * dimensional int array with x-coordinate on int[0] and y-coordinate on int[1]. The boolean in
-   * the parameter determines wether the node is located in the rack gridpane or the gamepanel
-   * gridpane - nodeFromRack==true means that the node is located in the rack.
-   * 
-   * @param node
-   * @param nodeFromRack
-   * @return
-   */
-  private int[] getPos(Node node, boolean nodeFromRack) {
-    int[] result = new int[2];
-    Integer columnIndex = GridPane.getColumnIndex(node);
-    Integer rowIndex = GridPane.getRowIndex(node);
-    if (columnIndex == null) {
-      result[0] = 0;
-    } else {
-      result[0] = columnIndex.intValue();
-    }
-    if (rowIndex == null) {
-      result[1] = 0;
-    } else {
-      result[1] = rowIndex.intValue();
-    }
-    if (nodeFromRack) {
-      if (result[1] > 0) {
-        result[0] = result[0] + 6;
-      }
-    }
-    return result;
-  }
-
 }
-

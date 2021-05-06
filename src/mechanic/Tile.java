@@ -1,7 +1,7 @@
 package mechanic;
 
-import game.GameSettings;
 import java.io.Serializable;
+import game.GameSettings;
 
 /**
  * The Tile class is essential part of the domain model. It has a Field attribute that refers to the
@@ -98,13 +98,18 @@ public class Tile implements Serializable {
       return false;
     } else {
       t = (Tile) other;
-      if (t.isPlayed == this.isPlayed && t.field.equals(this.field)
-          && t.onGameBoard == this.onGameBoard && t.onRack == this.onRack
-          && t.letter.equals(this.letter)) {
-        return true;
-      } else {
-        return false;
+      if (t.isPlayed == this.isPlayed && t.onGameBoard == this.onGameBoard
+          && t.onRack == this.onRack) {
+        if (t.field != null && this.field != null && t.field.equals(this.field)
+            || t.field == null && this.field == null) {
+          if (t.letter != null && this.letter != null && t.letter.equals(this.letter)
+              || t.letter == null && this.letter == null) {
+            return true;
+          }
+        }
       }
+
+      return false;
     }
   }
 
@@ -212,7 +217,12 @@ public class Tile implements Serializable {
 
   @Override
   public String toString() {
-    return "Tile at Field " + this.field.toString() + " with Char " + this.letter.getCharacter();
+    if (this.getField().getTile() != this) {
+      return "###########################\n###########################\n###########################\n###########################\n DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n"
+          + "Tile at at Field " + this.field.toString() + " with Char "
+          + this.letter.getCharacter();
+    }
+    return "Tile at at Field " + this.field.toString() + " with Char " + this.letter.getCharacter();
   }
 
 }

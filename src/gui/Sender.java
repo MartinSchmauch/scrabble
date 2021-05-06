@@ -10,17 +10,6 @@ package gui;
 public interface Sender {
 
   /**
-   * This method creates a new SendChatMessage that is supposed to inform the server that a client
-   * has send a chat message in his Client UI. Therefore the new message is send to the server,
-   * using the sendMessageToServer() method
-   * 
-   * @param sender
-   * @param message
-   * @param timeStamp
-   */
-  void sendChatMessage(String sender, String message);
-
-  /**
    * This method creates a new TileRequestMessage that is supposed to inform the server that a
    * client has moved a tile in his Client UI and the tile move needs to be checked for conformitiy.
    * Therefore the new message is send to the server, using the sendMessageToServer() method; the
@@ -42,6 +31,15 @@ public interface Sender {
    * @param nickName
    */
   void sendCommitTurn(String nickName);
+
+  /**
+   * This method is called, when the player wants to skip his turn and replace his tiles on the rack
+   * completely with new tiles. Therefore, a TileMessage is sent to the server, containing the name
+   * of the sender and the list of tiles, the player has on his rack.
+   * 
+   * @param nickName
+   */
+  void sendTileMessage(String nickName);
 
   /**
    * This method creates a new DisconnectMessage that is supposed to inform the server that a client

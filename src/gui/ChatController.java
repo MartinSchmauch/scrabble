@@ -14,7 +14,7 @@ import network.messages.UpdateChatMessage;
  * @author nilbecke
  *
  */
-public class ChatController implements Sender {
+public class ChatController {
 
   private Player player;
 
@@ -31,7 +31,6 @@ public class ChatController implements Sender {
    * @param sender username of player sending message
    */
   public String updateChat(String message, LocalDateTime dateTime, String sender) {
-
     String newChatMessage = "";
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     newChatMessage = newChatMessage + sender + ", ";
@@ -41,15 +40,26 @@ public class ChatController implements Sender {
 
   }
 
-  @Override
+  /**
+   * This method creates a new SendChatMessage that is supposed to inform the server that a client
+   * has send a chat message in his Client UI. Therefore the new message is send to the server,
+   * using the sendMessage() method. If the sender is the actual host, only an UpdateChatMessage is
+   * created and send to the server.
+   * 
+   * @param sender
+   * @param message
+   */
   public void sendChatMessage(String sender, String message) {
-    Message m;
-    if (this.player.isHost()) {
-      m = new UpdateChatMessage(sender, message, LocalDateTime.now());
-    } else {
-      m = new SendChatMessage(sender, message, LocalDateTime.now());
+    String chatRegex = ".*\\S+.*";
+    if (message.matches(chatRegex)) {
+      Message m;
+      if (this.player.isHost()) {
+        m = new UpdateChatMessage(sender, message, LocalDateTime.now());
+      } else {
+        m = new SendChatMessage(sender, message, LocalDateTime.now());
+      }
+      sendMessage(m);
     }
-    sendMessage(m);
   }
 
   /**
@@ -60,30 +70,8 @@ public class ChatController implements Sender {
   public void sendMessage(Message m) {
     if (this.player.isHost()) {
       this.player.getServer().sendToAll(m);
-
     } else {
       this.player.getClientProtocol().sendToServer(m);
     }
   }
-
-  @Override
-  public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void sendCommitTurn(String nickName) {
-    // TODO Auto-generated method stub
-
-  }
-
-  @Override
-  public void sendDisconnectMessage(String playerID) {
-    // TODO Auto-generated method stub
-
-  }
-
-
-
 }

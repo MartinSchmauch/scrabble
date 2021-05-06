@@ -1,7 +1,7 @@
 package mechanic;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * The Field class is essential part of the domain model. It has a Tile attribute that refers to the
@@ -18,7 +18,7 @@ public class Field implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @JsonIgnore
-  private GameBoard gameBoard;
+  private transient GameBoard gameBoard;
   @JsonIgnore
   private Tile tile;
 
@@ -53,8 +53,13 @@ public class Field implements Serializable {
    * @param tile
    */
   public void setTile(Tile tile) {
-    this.tile = tile;
-    tile.setFieldOneDirection(this);
+    if (tile == null) {
+      this.tile.setFieldOneDirection(null);
+      this.tile = null;
+    } else {
+      this.tile = tile;
+      tile.setFieldOneDirection(this);
+    }
   }
 
   public void setOnlyTile(Tile tile) {

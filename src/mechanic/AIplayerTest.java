@@ -2,9 +2,13 @@ package mechanic;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
+import game.GameController;
+import game.GameState;
+import util.JsonHandler;
 
 /**
  * @author pkoenig
@@ -14,7 +18,6 @@ public class AIplayerTest {
   AIplayer aiplayer;
   ArrayList<Field[]> results = new ArrayList<Field[]>();
   GameBoard gb;
-
 
   /**
    * @throws java.lang.Exception
@@ -26,168 +29,67 @@ public class AIplayerTest {
 
   /**
    * Test method for
-   * {@link mechanic.AIplayer#getValidPositionsForWordLength(mechanic.Field[][], int)}. Code is not
-   * fully dynamic with size
+   * {@link mechanic.AIplayer_firstGeneration#getValidPositionsForWordLength(mechanic.Field[][], int)}.
+   * Code is not fully dynamic with size
    */
   @Test
   public void testGetValidPositionsForWordLength() {
-    // fields = new Field[size][size];
-    // for (int i = 0; i < size; i++) {
-    // for (int j = 0; j < size; j++) {
-    // this.fields[i][j] = new Field(i, j);
-    // }
-    // }
+    // aiplayer = new AIplayer("test", 5);
+    // gb = new GameBoard(15);
     //
-    aiplayer = new AIplayer("test", 10);
-    // int[][] res = new int[15][15];
     //
-    // for (int j = 0; j < res.length; j++) {
-    // for (int i = 0; i < res.length; i++) {
-    // res[i][j] = 0;
+    //
+    // assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, -1));
+    // assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 0));
+    // assertEquals(null, aiplayer.getValidTilePositionsForNumOfTiles(gb, 1));
+    //
+    // Tile a = new Tile(new Letter('A', 1, 1), gb.getField(8, 8));
+    // gb.getField(8, 8).setTile(a);
+    // System.out.println("Current layed Down tile: " + a);
+    // System.out.println("######################## NUMOFTILES == 2 ########################");
+    // for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
+    // System.out.println("# GENERATED POSITION #");
+    // for (Field f : f_list) {
+    // System.out.println(f);
     // }
+    // System.out.println();
     // }
-    gb = new GameBoard(15);
+    // System.out.println("######################## NUMOFTILES == 3 ########################");
+    // for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
+    // System.out.println("# GENERATED POSITION #");
+    // for (Field f : f_list) {
+    // System.out.println(f);
+    // }
+    // System.out.println();
+    // }
+  }
 
-
-
-    assertEquals(null, aiplayer.getValidWordPositionsForWordLength(gb, -1));
-    assertEquals(null, aiplayer.getValidWordPositionsForWordLength(gb, 0));
-
-    // System.out.println(res);
-
-    assertEquals(results, aiplayer.getValidWordPositionsForWordLength(gb, 1));
-    assertEquals(results, aiplayer.getValidWordPositionsForWordLength(gb, 5));
-
-    Tile a = new Tile(new Letter('a', 1, 1), gb.getField(8, 8));
-    gb.getField(8, 8).setTile(a);
-
-    ArrayList<Field[]> results = new ArrayList<Field[]>();
-
-    // generate words for "Top Field"
-    Field[] fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(7, 7);
-    fields[1] = gb.getField(8, 7);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 7);
-    fields[1] = gb.getField(9, 7);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 6);
-    fields[1] = gb.getField(8, 7);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 7);
-    fields[1] = gb.getField(8, 8);
-    results.add(fields);
-
-
-    // generate words for "Left Field"
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(6, 8);
-    fields[1] = gb.getField(7, 8);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(7, 8);
-    fields[1] = gb.getField(8, 8);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(7, 7);
-    fields[1] = gb.getField(7, 8);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(7, 8);
-    fields[1] = gb.getField(7, 9);
-    results.add(fields);
-
-
-    // generate words for "Right Field"
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 8);
-    fields[1] = gb.getField(9, 8);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(9, 8);
-    fields[1] = gb.getField(10, 8);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(9, 7);
-    fields[1] = gb.getField(9, 8);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(9, 8);
-    fields[1] = gb.getField(9, 9);
-    results.add(fields);
-
-
-    // generate words for "bottom Field"
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(7, 9);
-    fields[1] = gb.getField(8, 9);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 9);
-    fields[1] = gb.getField(9, 9);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 8);
-    fields[1] = gb.getField(8, 9);
-    results.add(fields);
-
-    fields = new Field[2]; // wordlength 2
-    fields[0] = gb.getField(8, 9);
-    fields[1] = gb.getField(8, 10);
-    results.add(fields);
-
-    // System.out.println("\n EXPECTED");
-    // for (int i = 0; i < results.size(); i++) {
-    // System.out.println("\n" + results.get(i));
-    // for (Field f : results.get(i)) {
-    // System.out.println(f.toString());
+  @Test
+  public void testNextTiles() {
+    // aiplayer = new AIplayer("test", 5);
+    // gb = new GameBoard(15);
+    //
+    // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
+    // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
     // }
     //
+    // ArrayList<Tile> current = null;
+    // ArrayList<Integer> indicesOnRack = new ArrayList<Integer>();
+    // while ((current = aiplayer.nextTiles(current, indicesOnRack, 4)) != null) {
+    // System.out.println(current);
     // }
-
-    assertArrayEquals(results.toArray(),
-        aiplayer.getValidWordPositionsForWordLength(gb, 2).toArray());
-
-    // aiplayer.getValidWordPositionsForWordLength(gb, 5);
-    //
-    // Tile b = new Tile(new Letter('b', 1, 1), gb.getField(8, 8));
-    // gb.getField(8, 8).setTile(b);
-    //
-    // aiplayer.getValidWordPositionsForWordLength(gb, 5);
-
-    // res[6][7] = 1;
-    // res[7][5] = 1;
-    // res[9][7] = 1;
-    // res[7][10] = 1;
-    //
-    // res[6][6] = 1;
-    // res[8][8] = 1;
-    // res[6][8] = 1;
-    // res[8][6] = 1;
-
-
-    // assertArrayEquals(res, aiplayer.getValidPositionsForWordLength(fields, 2));
-
   }
 
   @Test
   public void testgenerateLayedDownTiles() {
-    gb = new GameBoard(15);
-    aiplayer = new AIplayer("test", 10);
+    // JsonHandler jh = new JsonHandler();
+    // jh.loadGameSettings("resources/defaultGameSettings.json");
+    PlayerData pd1 = new PlayerData("test1");
+    GameState gs1 = new GameState(pd1, null);
+    GameController gc1 = new GameController(gs1);
+    gs1.setUpGameboard();
+    gb = gs1.getGameBoard();
+    aiplayer = new AIplayer("test", 2, gc1, AIplayer.AiLevel.Unbeatable);
 
     // BIRTHDAY
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(4, 8));
@@ -246,14 +148,66 @@ public class AIplayerTest {
     Tile k = new Tile(new Letter('K', 1, 1), gb.getField(8, 11));
     gb.getField(8, 11).setTile(k);
 
-    for (char cOnRack = 'A'; cOnRack != 'G'; cOnRack++) {
+    for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
       aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
     }
 
-    List<Tile> results = aiplayer.generateLayedDownFields(gb);
-    for (Tile result : results) {
+    Turn idealTurn = aiplayer.generateIdealTurn(gb);
+    for (Tile result : idealTurn.getLaydDownTiles()) {
       System.out.println(result.toString());
     }
+
+
+  }
+  
+  @Test
+  public void testgenerateLayedDownTiles2() {
+    // JsonHandler jh = new JsonHandler();
+    // jh.loadGameSettings("resources/defaultGameSettings.json");
+    PlayerData pd1 = new PlayerData("test2");
+    GameState gs1 = new GameState(pd1, null);
+    GameController gc1 = new GameController(gs1);
+    gs1.setUpGameboard();
+    gb = gs1.getGameBoard();
+    aiplayer = new AIplayer("test2", 2, gc1, AIplayer.AiLevel.Unbeatable);
+
+    // BIRTH
+    Tile b = new Tile(new Letter('B', 1, 1), gb.getField(6, 8));
+    gb.getField(6, 8).setTile(b);
+    Tile i = new Tile(new Letter('I', 1, 1), gb.getField(7, 8));
+    gb.getField(7, 8).setTile(i);
+    Tile r = new Tile(new Letter('R', 1, 1), gb.getField(8, 8));
+    gb.getField(8, 8).setTile(r);
+    Tile t = new Tile(new Letter('T', 1, 1), gb.getField(9, 8));
+    gb.getField(9, 8).setTile(t);
+    Tile h = new Tile(new Letter('H', 1, 1), gb.getField(10, 8));
+    gb.getField(10, 8).setTile(h);
+
+
+    // THE
+    h = new Tile(new Letter('H', 1, 1), gb.getField(9, 9));
+    gb.getField(9, 9).setTile(h);
+    Tile e = new Tile(new Letter('E', 1, 1), gb.getField(9, 10));
+    gb.getField(9, 10).setTile(e);
+
+    // BACK
+    Tile a = new Tile(new Letter('A', 1, 1), gb.getField(6, 9));
+    gb.getField(6, 9).setTile(a);
+    Tile c = new Tile(new Letter('C', 1, 1), gb.getField(6, 10));
+    gb.getField(6, 10).setTile(c);
+    Tile k = new Tile(new Letter('K', 1, 1), gb.getField(6, 11));
+    gb.getField(6, 11).setTile(k);
+
+
+    for (char cOnRack = 'D'; cOnRack <= 'J'; cOnRack++) {
+      aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
+    }
+
+    Turn idealTurn = aiplayer.generateIdealTurn(gb);
+    for (Tile result : idealTurn.getLaydDownTiles()) {
+      System.out.println(result.toString());
+    }
+
 
   }
 

@@ -44,7 +44,7 @@ public class TileBag {
    */
 
   public Tile drawTile() {
-    Tile tile = tiles.remove((int) (remaining * Math.random()) - 1);
+    Tile tile = tiles.remove((int) ((remaining - 1) * Math.random()));
     isEmpty = tiles.isEmpty();
     remaining = tiles.size();
     return tile;

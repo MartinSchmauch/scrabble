@@ -1,16 +1,16 @@
 package mechanic;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
 import gui.GamePanelController;
-import gui.LobbyScreenController;
-import java.util.ArrayList;
-import java.util.List;
+import javafx.application.Platform;
 import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
-import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.server.Server;
 
 /**
@@ -91,6 +91,7 @@ public class Player {
     return this.info.getAvatar();
   }
 
+
   /*
    * RACK METHODS
    */
@@ -119,6 +120,11 @@ public class Player {
     return rack[i];
   }
 
+  @JsonIgnore
+  public Field getRackField(int index) {
+    return rack[index];
+  }
+
   public void setRackTileToNone(int index) {
     this.rack[index].setTileOneDirection(null);
   }
@@ -132,10 +138,20 @@ public class Player {
     tile.setOnRack(true);
   }
 
-  public Tile removeRackTile(int index) {
-    Tile tile = this.rack[index].getTile();
-    this.rack[index].setTile(null);
+  /**
+   * This method adds a List of tileson the player´s rack.
+   * 
+   * @author lurny
+   */
+  public void addTilesToRack(List<Tile> tileList) {
+    for (Tile t : tileList) {
+      addTileToRack(t);
+    }
+  }
 
+  public Tile removeRackTile(int index) {
+    Tile tile = rack[index].getTile();
+    rack[index].setTile(null);
     return tile;
   }
 
@@ -167,12 +183,20 @@ public class Player {
    */
 
   public void reorganizeRackTile(int indexBefore, int indexAfter) {
-    if (rack[indexBefore].getTile() == null && rack[indexAfter].getTile() != null) {
-      gpc.indicateInvalidTurn(this.getNickname(), "Invalid Field Selection.");
-    }
-
-    rack[indexAfter].setTile(removeRackTile(indexBefore));
-    gpc.moveToRack(rack[indexAfter].getTile(), indexBefore, -1);
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        if (rack[indexBefore].getTile() == null || rack[indexAfter].getTile() != null) {
+          gpc.indicateInvalidTurn(getNickname(), "Invalid Field Selection.");
+          return;
+        }
+        Tile t = rack[indexBefore].getTile();
+        removeRackTile(indexBefore);
+        setRackTile(indexAfter, t);
+        t.setField(rack[indexAfter]);
+        gpc.moveToRack(t, indexBefore, -1);
+      }
+    });
   }
 
 
@@ -180,17 +204,28 @@ public class Player {
     if (newIndex == -1 && getFreeRackField() != null) {
       newIndex = getFreeRackField().getxCoordinate();
     }
+
     if (newIndex == -1 || rack[newIndex].getTile() != null) {
       gpc.indicateInvalidTurn(this.getNickname(), "Field on Rack not free.");
+      return;
     }
-    
-    MoveTileMessage mtm = new MoveTileMessage(this.getNickname(), tile.getField().getxCoordinate(),
-        tile.getField().getyCoordinate(), newIndex, -1);
-    
+
+    RemoveTileMessage rtm = new RemoveTileMessage(this.getNickname(),
+        tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
+
     if (this.isHost()) {
-      server.handleMoveTile(mtm);
+      server.getGameController().removeTileFromGameBoard(this.getNickname(),
+          tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
+      server.sendToAll(rtm);
+      AddTileMessage atm = new AddTileMessage(this.getNickname(), tile, newIndex, -1);
+      server.updateServerUi(atm);
     } else {
-      client.sendToServer(mtm);
+      client.sendToServer(rtm);
+      gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
+      tile.setField(getRackField(newIndex));
+      tile.setOnRack(true);
+      tile.setOnGameBoard(false);
+      gpc.addTile(tile);
     }
   }
 
@@ -199,6 +234,7 @@ public class Player {
     Tile t = rack[oldIndex].getTile();
     if (t == null) {
       gpc.indicateInvalidTurn(this.getNickname(), "Selcted field on Rack is empty.");
+      return;
     }
 
     AddTileMessage atm = new AddTileMessage(this.getNickname(), t, newX, newY);
@@ -206,7 +242,7 @@ public class Player {
     if (this.isHost()) {
       server.handleAddTileToGameBoard(atm);
     } else {
-        client.sendToServer(atm);
+      client.sendToServer(atm);
     }
   }
 
@@ -255,13 +291,17 @@ public class Player {
     return this.client;
   }
 
+  @JsonIgnore
+  public void setGamePanelController(GamePanelController gpc) {
+    this.gpc = gpc;
+  }
+
   /** @author nilbecke */
 
   public void host() {
 
     this.getPlayerInfo().setHost(true);
-    this.server = new Server(this.info, null);
-    this.gpc = this.server.getGamePanelController();
+    this.server = new Server(this, null);
 
     Runnable r = new Runnable() {
       public void run() {
@@ -276,10 +316,8 @@ public class Player {
   public void connect(String ip) {
     this.getPlayerInfo().setHost(false);
 
-    this.client = new ClientProtocol(ip, GameSettings.port, this, null,
-        LobbyScreenController.getLobbyInstance());
-    this.gpc = this.client.getGamePanelController();
-    
+    this.client = new ClientProtocol(ip, GameSettings.port, this);
+
     if (this.client.isOK()) {
       this.client.start();
 

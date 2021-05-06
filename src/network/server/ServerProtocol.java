@@ -13,6 +13,7 @@ import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
+import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
@@ -53,11 +54,10 @@ public class ServerProtocol extends Thread {
 
   /** Sends the initialGameState to the client who uses this protocol. */
 
-  public void sendInitialGameState() throws IOException {
+  public void sendInitialGameState() {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
 
-    // Changed to send To All
-    this.server.sendToAll(m);
+    this.sendToClient(m);
 
   }
 
@@ -66,6 +66,7 @@ public class ServerProtocol extends Thread {
 
 
   public void sendToClient(Message m) {
+
     try {
       this.out.writeObject(m);
       out.flush();
@@ -98,13 +99,22 @@ public class ServerProtocol extends Thread {
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
-        if (server.checkNickname(from)) {
-          Message rmsg =
-              new ConnectionRefusedMessage(server.getHost(), "Your nickname was already taken");
-          out.writeObject(rmsg);
-          out.flush();
-          out.reset();
-          disconnect();
+        /**
+         * @author pkoenig
+         */
+        if (server.checkNickname(this.clientName)) {
+          int i = 1;
+          while(server.checkNickname(this.clientName)) {
+            this.clientName = cm.getPlayerInfo().getNickname() + "-" + i;
+            i++;
+          }
+          cm.getPlayerInfo().setNickname(this.clientName);
+          server.addClient(cm.getPlayerInfo(), this);
+          server.sendToAll(cm);
+          sendInitialGameState();
+          /**
+           * @author ldreyer
+           */
         } else if (!from.equals(this.clientName)) {
           Message rmsg = new ConnectionRefusedMessage(server.getHost(),
               "Your sender name did not match your nickname. Error.");
@@ -128,12 +138,18 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             server.removeClient(m.getFrom());
             running = false;
-            sendInitialGameState();
+            server.sendToAll(m);
             disconnect();
             break;
           case ADD_TILE:
             AddTileMessage atm = (AddTileMessage) m;
             server.handleAddTileToGameBoard(atm);
+            break;
+          case REMOVE_TILE:
+            RemoveTileMessage rtm = (RemoveTileMessage) m;
+            server.getGameController().removeTileFromGameBoard(rtm.getFrom(), rtm.getX(),
+                rtm.getY());
+            server.sendToAll(rtm);
             break;
           case MOVE_TILE:
             MoveTileMessage mtm = (MoveTileMessage) m;
@@ -170,7 +186,11 @@ public class ServerProtocol extends Thread {
           case TILE:
             TileMessage tm = (TileMessage) m;
             this.server.getGameController().addTilesToTileBag(tm.getTiles());
-
+            // TODO reset turn; turn is valid as well if laydowntiles is empty
+            this.server.getGameController().getTurn().endTurn();
+            Turn skipTurn = server.getGameController().getTurn();
+            server.sendToAll(new TurnResponseMessage(tm.getFrom(), skipTurn.isValid(),
+                skipTurn.getTurnScore(), server.getGameController().getNextPlayer()));
             break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;

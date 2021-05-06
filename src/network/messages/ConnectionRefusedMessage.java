@@ -11,6 +11,7 @@ public class ConnectionRefusedMessage extends Message {
   private static final long serialVersionUID = 1L;
 
   private String reason;
+  
 
   public ConnectionRefusedMessage(String from, String reason) {
     super(MessageType.CONNECTION_REFUSED, from);
@@ -19,11 +20,7 @@ public class ConnectionRefusedMessage extends Message {
 
   public String getReason() {
     return this.reason;
-  }
-
-  public void geta() {
-    System.out.println("hi");
-  }
+  }  
 
 
 }

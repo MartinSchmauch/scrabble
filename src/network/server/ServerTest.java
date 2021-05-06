@@ -2,14 +2,12 @@ package network.server;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import game.GameSettings;
-import mechanic.Player;
-import network.client.ClientProtocol;
-import network.messages.ConnectMessage;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import game.GameSettings;
+import mechanic.Player;
+import network.client.ClientProtocol;
 
 
 /** @author ldreyer */
@@ -36,7 +34,8 @@ public class ServerTest {
   @Test
   public void test() throws Exception {
 
-    server = new Server(host.getPlayerInfo(), null);
+    // start Server
+    server = new Server(host, null);
     System.out.println(server.getGameState().getAllPlayers());
 
     Runnable r = new Runnable() {
@@ -44,10 +43,12 @@ public class ServerTest {
         server.listen();
       }
     };
-
     new Thread(r).start();
+    Thread.sleep(50);
 
-    this.connection = new ClientProtocol("127.0.0.1", GameSettings.port, player, null, null);
+    // connect client1: (player)
+    this.connection =
+        new ClientProtocol("127.0.0.1", GameSettings.port, player);
 
     if (this.connection.isOK()) {
       this.connection.start();
@@ -55,14 +56,15 @@ public class ServerTest {
       fail("connection not OK");
     }
 
-    ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
-    this.connection.sendToServer(cm);
-
+    // ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
+    // this.connection.sendToServer(cm);
+    Thread.sleep(10);
     assertTrue(server.checkNickname("ScrabbleGamer"));
     System.out.println(server.getGameState().getAllPlayers());
 
 
-    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2, null, null);
+    // connect client2: (player 2)
+    this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2);
 
     if (this.connection2.isOK()) {
       this.connection2.start();
@@ -70,16 +72,17 @@ public class ServerTest {
       fail("connection not OK");
     }
 
-    cm = new ConnectMessage(this.player2.getPlayerInfo());
-    this.connection2.sendToServer(cm);
 
     Thread.sleep(10);
 
     System.out.println(server.getGameState().getPlayerData("ScrabblePro"));
-
     assertTrue(server.getGameState().getAllPlayers().contains(player2.getPlayerInfo()));
 
+    // fill player racks and send StartMessage
+    server.startGame();
+
     server.stopServer();
+
   }
 
 }

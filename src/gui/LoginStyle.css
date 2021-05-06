@@ -1,9 +1,5 @@
 
 
-@font-face {
-    font-family:'Scrabble';
-    src: url('Scrabble.ttf');
-}
 
 
 
@@ -22,5 +18,8 @@
 	-fx-background-color: radial-gradient(radius 150%, #fcfcfc,#015c1f);
 }
 
-.button{
-	-fx-border-radius: 12px;
+.text-field{
+	-fx-border-color: linear-gradient(to right, #218f33, #83d490);
+	-fx-border-width: 0px 0px 2px;
+	-fx-background-color:transparent
+}

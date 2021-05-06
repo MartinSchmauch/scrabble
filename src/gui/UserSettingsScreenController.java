@@ -116,7 +116,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   public void setUp() {
     if (this.player.getNickname().equals("Guest")) {
       this.player.setNickname("ScrabbleGamer");
-      this.player.setAvatar("\\avatar0.png");
+      this.player.setAvatar("\\avatars\\avatar0.png");
     }
     this.nickname.setText(this.player.getNickname());
     this.volbar.setValue((double) this.player.getVolume());
@@ -220,7 +220,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
         this.currentAvatar = 9;
       }
     }
-    this.player.setAvatar("/avatar" + this.currentAvatar + ".png");
+    this.player.setAvatar("/avatars/avatar" + this.currentAvatar + ".png");
     this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
   }
 

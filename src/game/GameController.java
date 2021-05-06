@@ -1,7 +1,15 @@
 package game;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import mechanic.Field;
 import mechanic.Tile;
 import mechanic.TileBag;
@@ -21,18 +29,73 @@ public class GameController {
   private TileBag tileBag;
   private Turn turn;
   private int currentPlayerIndex;
+  private HashSet<String> dictionary;
+
+
+  private static String baseDir = System.getProperty("user.dir")
+      + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
+  private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
 
   public GameController(GameState gameState) {
+    fillDictionary();
     this.gameState = gameState;
     this.tileBag = new TileBag();
   }
 
+  /**
+   * This method fills the dictionary with words.
+   * 
+   * @author lurny
+   * 
+   */
+  public void fillDictionary() {
+    this.dictionary = new HashSet<String>();
+
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+      Pattern p = Pattern.compile("\\w*");
+      String line;
+      while ((line = br.readLine()) != null) {
+        Matcher m = p.matcher(line);
+        if (!line.isEmpty()) {
+          m.find();
+          this.dictionary.add(line.substring(m.regionStart(), m.end()));
+        }
+      }
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
   public void newTurn() {
-    this.turn = new Turn(gameState.getCurrentPlayer());
+    this.turn = new Turn(gameState.getCurrentPlayer(), this);
+  }
+
+  public HashSet<String> getDictionary() {
+    return dictionary;
   }
 
   public Turn getTurn() {
     return this.turn;
+  }
+
+  public void setTurn(Turn turn) {
+    this.turn = turn;
+  }
+
+  /**
+   * This method gets the 7 initial tiles for the current player.
+   * 
+   * @author lurny
+   * @return ArrayList, that contains 7 tiles from tile bag
+   */
+  public List<Tile> drawInitialTiles() {
+    List<Tile> tiles = new ArrayList<Tile>();
+    for (int i = 0; i < 7; i++) {
+      tiles.add(tileBag.drawTile());
+    }
+    return tiles;
   }
 
   /**
@@ -108,6 +171,7 @@ public class GameController {
 
     this.turn.moveTileInTurn(beforeField.getTile(), afterField);
     beforeField.getTile().setField(afterField);
+    beforeField.setTile(null);
 
     return true;
   }
@@ -130,6 +194,16 @@ public class GameController {
     return true;
   }
 
+  public boolean checkRemoveTileFromGameBoard(String player, int x, int y) {
+    Field beforeField = gameState.getGameBoard().getField(x, y);
+    if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
+        || beforeField.getTile().isPlayed()) {
+      return false;
+    }
+
+    return true;
+  }
+
   public String getNextPlayer() {
     this.currentPlayerIndex++;
     if (this.currentPlayerIndex >= this.gameState.getAllPlayers().size()) {
@@ -138,4 +212,9 @@ public class GameController {
     String nextPlayer = this.gameState.getAllPlayers().get(currentPlayerIndex).getNickname();
     return nextPlayer;
   }
+
+  public GameState getGameState() {
+    return gameState;
+  }
+
 }
