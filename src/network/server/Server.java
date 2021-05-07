@@ -419,9 +419,8 @@ public class Server {
               } else {
                 gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                gpc.indicatePlayerTurn(trm.getNextPlayer(), gameState.getCurrentPlayer());
                 gameState.setCurrentPlayer(trm.getNextPlayer());
-                gpc.indicatePlayerTurn(trm.getNextPlayer(), "TODO");
-                // TODO please check if it is correct
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
                 gpc.startTimer();

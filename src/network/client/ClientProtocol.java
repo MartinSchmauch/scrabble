@@ -36,7 +36,7 @@ public class ClientProtocol extends Thread {
   private LobbyScreenController lpc;
   private Player player;
   private Message m;
-  /** 
+  /**
    * @author pkoenig
    */
   private String ipFromServer;
@@ -79,25 +79,25 @@ public class ClientProtocol extends Thread {
         ConnectMessage cm = (ConnectMessage) m;
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
-       /**
-        * @author pkoenig
-        */
-//      } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED){
-//        ConnectionRefusedMessage crm = (ConnectionRefusedMessage) m;
-//        this.player.setNickname(crm.getAlternativeUserName());
-//        //sendToServer(new ConnectMessage(this.player.getPlayerInfo()));
-//        System.out.println("cp, line 87");
-//        disconnect();
-//        player.connect(ipFromServer);
-////        m = (Message) in.readObject();
-////        if (m.getMessageType() == MessageType.CONNECT) {
-////          ConnectMessage cm = (ConnectMessage) m;
-////          this.player.setNickname(cm.getPlayerInfo().getNickname());
-////          System.out.println("New username: " + player.getNickname());
-////        }
-////        else {
-////          disconnect();
-////        }
+        /**
+         * @author pkoenig
+         */
+        // } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED){
+        // ConnectionRefusedMessage crm = (ConnectionRefusedMessage) m;
+        // this.player.setNickname(crm.getAlternativeUserName());
+        // //sendToServer(new ConnectMessage(this.player.getPlayerInfo()));
+        // System.out.println("cp, line 87");
+        // disconnect();
+        // player.connect(ipFromServer);
+        //// m = (Message) in.readObject();
+        //// if (m.getMessageType() == MessageType.CONNECT) {
+        //// ConnectMessage cm = (ConnectMessage) m;
+        //// this.player.setNickname(cm.getPlayerInfo().getNickname());
+        //// System.out.println("New username: " + player.getNickname());
+        //// }
+        //// else {
+        //// disconnect();
+        //// }
       } else {
         disconnect();
       }
@@ -170,15 +170,17 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case TURN_RESPONSE:
-                  TurnResponseMessage turnrMessage = (TurnResponseMessage) m;
+                  TurnResponseMessage trm = (TurnResponseMessage) m;
                   // TODO please check if it is correct
-                  gpc.updateRemainingLetters(turnrMessage.getRemainingTilesInTileBag());
-                  if (turnrMessage.getIsValid()) {
-                    gpc.updateScore(turnrMessage.getFrom(), turnrMessage.getCalculatedTurnScore());
-                    turnrMessage.getNextPlayer();
+                  gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
+                  if (trm.getIsValid()) {
+                    gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                    gpc.indicatePlayerTurn(trm.getNextPlayer(), gameState.getCurrentPlayer());
+                    gameState.setCurrentPlayer(trm.getNextPlayer()); // do we need to do this step -
+                                                                     // fat client!
                     gpc.startTimer();
                   } else {
-                    gpc.indicateInvalidTurn(turnrMessage.getFrom(), "Invalid Turn");
+                    gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
                   break;
                 case LOBBY_STATUS:
@@ -294,7 +296,7 @@ public class ClientProtocol extends Thread {
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lpc = lsc;
   }
-  
+
   /**
    * @author pkoenig
    */
