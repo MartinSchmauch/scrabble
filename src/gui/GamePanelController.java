@@ -315,7 +315,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     ClipboardContent cb = new ClipboardContent();
     cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
     db.setContent(cb);
-
     event.consume();
   }
 
@@ -423,100 +422,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void rackPressed(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, true);
-    // System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " +
-    // selectedCoordinates[1]);
-  }
-
-  /**
-   * @deprecatede
-   * @param event
-   */
-  @FXML
-  public void rackDragged(MouseEvent event) {
-
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void rackReleased(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // targetCoordinates = getPos(node, true);
-    // // System.out.println("rackReleased at: " + targetCoordinates[0] + "; " +
-    // targetCoordinates[1]);
-    //
-    // if (targetCoordinates[0] == selectedCoordinates[0]
-    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-    // // System.out.println("deselect rack tile");
-    // } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
-    // player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
-    // // System.out.println("reorganizeRackTiles");
-    // } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
-    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
-    // targetCoordinates[0], targetCoordinates[1]);
-    // // System.out.println(
-    // // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
-    // }
-    // resetCoordinates();
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void boardPressed(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, false);
-    // System.out
-    // .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void boardDragged(MouseEvent event) {
-
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void boardReleased(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // targetCoordinates = getPos(node, false);
-    // // System.out.println("boardRealeased at: " + targetCoordinates[0] + "; " +
-    // // targetCoordinates[1]);
-    // if (targetCoordinates[0] == selectedCoordinates[0]
-    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-    // // System.out.println("deselect grid tile");
-    // } else if (selectedCoordinates[0] != -1) { // exchange tiles on board
-    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
-    // targetCoordinates[0], targetCoordinates[1]);
-    // // System.out.println("exchange grid tiles");
-    // } else if (selectedCoordinates[0] == -1) { // move tile from rack to board
-    // // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
-    // // + targetCoordinates[0] + targetCoordinates[1]);
-    // player.moveToGameBoard(selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
-    // }
-    // resetCoordinates();
-  }
-
-
-  /**
    * This method sets all coordinates for the helper arrays of the tile movements to -2. Thereby,
    * possible errors in the dropHandler methods are evaded.
    */
@@ -525,54 +430,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     selectedCoordinates[1] = -2;
     targetCoordinates[0] = -2;
     targetCoordinates[1] = -2;
-  }
-
-
-
-  /**
-   * @deprecated
-   * 
-   *             Listener method that is executed, when a rectangle in the GridPane 'rack' is
-   *             clicked. The method checks which tile was selected before and causes the right
-   *             action for the desired tile movement.
-   * 
-   * @param event
-   */
-  @FXML
-  public void rackClicked(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // int[] pos = getPos(node, true);
-    // int x = pos[0];
-    // int y = pos[1];
-    // // GUI test start:
-    // setSelectedTileOnRack(true);
-    // coordinates[0] = x;
-    // // GUI test ende.
-
-  }
-
-  /**
-   * @deprecated
-   * 
-   *             Listener method that is executed, when a rectangle in the GridPane 'grid' is
-   *             clicked. The method checks which tile was selected before and causes the right
-   *             action for the desired tile movement.
-   *
-   * @param event
-   */
-  @FXML
-  public void boardClicked(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // int[] pos = getPos(node, false);
-    // int x = pos[0];
-    // int y = pos[1];
-    // // GUI test start:
-    // if (selectedTileOnRack) {
-    // Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
-    // t2.setOnRack(true);
-    // moveToGamePanel(t2, x, y);
-    // }
-    // // GUI test ende.
   }
 
   /**
