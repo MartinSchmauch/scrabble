@@ -57,8 +57,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private List<PlayerData> players;
   private ClientProtocol cp;
   private Server server;
-  private static boolean selectedTileOnGrid = false;
-  private static boolean selectedTileOnRack = false;
   private static boolean exchangeTilesMode = false;
   private static List<Tile> tilesToExchange = new ArrayList<Tile>();
   private static int selectedCoordinates[] = new int[2]; // row, column
@@ -147,9 +145,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         avatarImageView[i].setImage(null);
       }
     }
-    remainingLetters.setText("TODO: read max letters from gamesettings");
-    timer.setText("TODO: read time per player from gamesettings");
-    timeProgress.setProgress(1.0);
+    remainingLetters.setText("");
+    timer.setText("");
+    timeProgress.setProgress(0.0);
   }
 
   public void updateTimer(String min, String sec) {
@@ -784,21 +782,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     this.cp = cp;
   }
 
-  public static boolean isSelectedTileOnGrid() {
-    return selectedTileOnGrid;
-  }
-
-  public static void setSelectedTileOnGrid(boolean b) {
-    selectedTileOnGrid = b;
-  }
-
-  public static boolean isSelectedTileOnRack() {
-    return selectedTileOnRack;
-  }
-
-  public static void setSelectedTileOnRack(boolean selectedTileOnRack) {
-    GamePanelController.selectedTileOnRack = selectedTileOnRack;
-  }
 
   public static int[] getCoordinates() {
     return selectedCoordinates;
