@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import game.GameController;
 import game.GameState;
+import mechanic.AIplayer.AIcombination;
 import util.JsonHandler;
 
 /**
@@ -79,8 +80,23 @@ public class AIplayerTest {
     // System.out.println(current);
     // }
   }
-
+  
   @Test
+  public void testgenerateTwoTilesCombinations() {
+    PlayerData pd1 = new PlayerData("test1");
+    GameState gs1 = new GameState(pd1, null);
+    GameController gc1 = new GameController(gs1);
+    gs1.setUpGameboard();
+    gb = gs1.getGameBoard();
+    aiplayer = new AIplayer("test", 2, gc1, AIplayer.AiLevel.Unbeatable);
+    
+    aiplayer.generateTwoTilesCombinations();
+    for (AIcombination c : aiplayer.getTwoTilesCombinations()) {
+      System.out.println(c);
+    }
+  }
+
+  //@Test
   public void testgenerateLayedDownTiles() {
     // JsonHandler jh = new JsonHandler();
     // jh.loadGameSettings("resources/defaultGameSettings.json");
@@ -160,7 +176,7 @@ public class AIplayerTest {
 
   }
   
-  @Test
+  //@Test
   public void testgenerateLayedDownTiles2() {
     // JsonHandler jh = new JsonHandler();
     // jh.loadGameSettings("resources/defaultGameSettings.json");

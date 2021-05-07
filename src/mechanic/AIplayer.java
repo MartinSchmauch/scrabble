@@ -22,38 +22,42 @@ public class AIplayer extends Player {
   private int maxNumOfTiles;
   private GameController gc;
   private TreeSet<AIcombination> twoTilesCombinations;
+  private AiLevel ailevel;
+  private int aiMaximumTiles; 
+
   enum AiLevel {
-    LOW,
-    MEDIUM,
-    HIGH,
-    Unbeatable
+    LOW, MEDIUM, HIGH, Unbeatable
   }
-  
+
   class AIcombination implements Comparable<AIcombination> {
-    
-    private Tile[] tiles;
+
+    private char[] chars;
     private int count;
-    
-    public AIcombination(Tile[] tiles) {
-      this.setTiles(tiles);
+
+    public AIcombination(char[] chars) {
+      this.chars = chars;
+      this.count = 1;
     }
-    
+
+    /**
+     * increase count
+     */
     public void incCount() {
-      this.setCount(this.getCount() + 1);
+      this.count++;
     }
-    
+
     /**
      * @return the tiles
      */
-    public Tile[] getTiles() {
-      return tiles;
+    public char[] getChars() {
+      return this.chars;
     }
 
     /**
      * @param tiles the tiles to set
      */
-    public void setTiles(Tile[] tiles) {
-      this.tiles = tiles;
+    public void setChars(char[] chars) {
+      this.chars = chars;
     }
 
     /**
@@ -72,9 +76,52 @@ public class AIplayer extends Player {
 
     @Override
     public int compareTo(AIcombination o) {
+      // equal tiles
+      if (this.chars.length == o.chars.length) {
+        for (int i = 0; i <= this.chars.length; i++) {
+          if (i == this.chars.length) {
+            return 0;
+          }
+          if (this.chars[i] == o.chars[i]) {
+            break;
+          }
+        }
+      }
+
+      // equal count
+      if (Integer.valueOf(this.count).compareTo(Integer.valueOf(o.count)) == 0) {
+        if (this.chars[0] > o.chars[0]) {
+          return 1;
+        }
+        if (this.chars[0] == o.chars[0]
+            && this.chars[1] > o.chars[1]) {
+          return 1;
+        }
+        return -1;
+      }
+      
+      // usual cases
       return Integer.valueOf(this.count).compareTo(Integer.valueOf(o.count));
     }
-    
+
+    @Override
+    public boolean equals(Object o) {
+      AIcombination oA = (AIcombination) o;
+      if (this.tiles.equals(oA.getTiles())) {
+        return true;
+      }
+      return false;
+    }
+
+    @Override
+    public String toString() {
+      String out = "AIcombination with count: " + this.count + " -> ";
+      for (Tile t : this.tiles) {
+        out = out + " AND " + t.toString();
+      }
+      return out;
+    }
+
   }
 
   public AIplayer(String nickname, int maxNumOfTiles, GameController gc, AiLevel level) {
@@ -82,40 +129,66 @@ public class AIplayer extends Player {
     this.maxNumOfTiles = maxNumOfTiles;
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
-    this.generateTwoTilesCombinations(level);
+    this.ailevel = level;
+    this.twoTilesCombinations = new TreeSet<AIcombination>();
+    this.generateTwoTilesCombinations();
   }
-  
-  
-  
-
-  private void generateTwoTilesCombinations(AiLevel level) {
-    AIcombination c;
-    HashMap<Character, Letter> letters = GameSettings.getLetters();
-    for (String w : gc.getDictionary()) {
-      for (int i = 0; i < w.length() - 1; i++) {
-        c = new AIcombination(new Tile[] {new Tile(letters.get(w.charAt(i))), new Tile(letters.get(w.charAt(i+1)))});
-        if (twoTilesCombinations.contains(c)) {
-          for (AIcombination tilecombination : twoTilesCombinations) {
-            for (Tile t : tilecombination.tiles) {
-              //if (t.equals(t))
-            }
-          }
-        }
-        else {
-          twoTilesCombinations.add(c);
-        }
-      }
-    }
-    
-  }
-
-
-
 
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
     super(nickname, avatar, volume);
+  }
+
+
+  // public void generateTwoTilesCombinations() { // Version 1.0
+  // AIcombination c;
+  // HashMap<Character, Letter> letters = GameSettings.getLetters();
+  // ArrayList<AIcombination> temp = new ArrayList<AIcombination>();
+  // for (String w : gc.getDictionary()) {
+  // for (int i = 0; i < w.length() - 1; i++) {
+  // c = new AIcombination(new Tile[] {new Tile(letters.get(w.charAt(i))), new
+  // Tile(letters.get(w.charAt(i+1)))});
+  // if (temp.contains(c)) {
+  // for (AIcombination tilecombination : temp) {
+  // if (tilecombination.equals(c)) {
+  // tilecombination.incCount();
+  // break;
+  // }
+  // }
+  // }
+  // else {
+  // temp.add(c);
+  // }
+  // }
+  // }
+  // twoTilesCombinations.addAll(temp);
+  // }
+
+  public void generateTwoTilesCombinations() { // Version 2.0 (runtime about 5 sec compared to 2 hours with Version 1.0)
+    AIcombination c;
+    HashMap<Character, Letter> letters = GameSettings.getLetters();
+    // HashMap<char[], AIcombination> temp = new HashMap<char[], AIcombination>();
+    HashMap<String, AIcombination> temp = new HashMap<String, AIcombination>();
+    // char[] cChars;
+    String cChars;
+    for (String w : gc.getDictionary()) {
+      for (int i = 0; i < w.length() - 1; i++) {
+        // cChars = new char[] {w.charAt(i), w.charAt(i+1)};
+        cChars = w.substring(i, i + 2);
+        if ((c = temp.get(cChars)) != null) {
+          c.incCount();
+        } else {
+          c = new AIcombination(new Tile[] {new Tile(letters.get(cChars.charAt(0))),
+              new Tile(letters.get(cChars.charAt(1)))});
+          temp.put(cChars, c);
+        }
+      }
+    }
+    // for (String cOut : temp.keySet()) {
+    // System.out.println(cOut);
+    // }
+    twoTilesCombinations.addAll(temp.values());
   }
 
   private static void addParallelTilesHorizontally_getValidTilePositionsForNumOfTilesHelper(
@@ -652,8 +725,8 @@ public class AIplayer extends Player {
       System.out.println(f);
     }
     timeOverall.stop();
-    System.out.println("\n AI finished in "
-        + timeOverall.elapsed(TimeUnit.SECONDS) + " seconds ( " + timeOverall.elapsed(TimeUnit.MINUTES) + " minutes)\n");
+    System.out.println("\n AI finished in " + timeOverall.elapsed(TimeUnit.SECONDS) + " seconds ( "
+        + timeOverall.elapsed(TimeUnit.MINUTES) + " minutes)\n");
     return turnWithMaximumScore;
 
   }
@@ -668,7 +741,46 @@ public class AIplayer extends Player {
 
   }
 
-  public ArrayList<Tile> nextTiles(ArrayList<Tile> current, ArrayList<Integer> indicesOnRack,
+//  public ArrayList<Tile> nextTiles(ArrayList<Tile> current, ArrayList<Integer> indicesOnRack, // Version 1.0
+//      int numOfTiles) {
+//    if (current == null) {
+//      current = new ArrayList<Tile>();
+//      for (int i = 0; i < numOfTiles; i++) {
+//        current.add(this.getRackTile(i));
+//        indicesOnRack.add(i);
+//      }
+//      return current;
+//    } else {
+//      for (int i = numOfTiles - 1; i >= 0; i--) {
+//        int currentRackIndex = indicesOnRack.get(i);
+//        for (currentRackIndex++; currentRackIndex < 7; currentRackIndex++) {
+//          if (indicesOnRack.indexOf(currentRackIndex) == -1
+//              || indicesOnRack.indexOf(currentRackIndex) > i) {
+//            current.set(i, this.getRackTile(currentRackIndex));
+//            indicesOnRack.set(i, currentRackIndex);
+//            for (i++; i < numOfTiles; i++) {
+//              for (int updateRackIndex = 0; updateRackIndex < 7; updateRackIndex++) {
+//                if (indicesOnRack.indexOf(updateRackIndex) == -1) {
+//                  current.set(i, this.getRackTile(updateRackIndex));
+//                  indicesOnRack.set(i, updateRackIndex);
+//                  break;
+//                }
+//              }
+//            }
+//            System.out.print("nextTiles:");
+//            for (Tile t : current) {
+//              System.out.print(" " + t.getLetter().getCharacter());
+//            }
+//            System.out.println();
+//            return current;
+//          }
+//        }
+//      }
+//      return null;
+//    }
+//  }
+  
+  public ArrayList<Tile> nextTiles(ArrayList<Tile> current, ArrayList<Integer> indicesOnRack, // Version 1.0
       int numOfTiles) {
     if (current == null) {
       current = new ArrayList<Tile>();
@@ -705,6 +817,35 @@ public class AIplayer extends Player {
       }
       return null;
     }
+  }
+
+
+  /**
+   * @return the ailevel
+   */
+  public AiLevel getAilevel() {
+    return ailevel;
+  }
+
+  /**
+   * @param ailevel the ailevel to set
+   */
+  public void setAilevel(AiLevel ailevel) {
+    this.ailevel = ailevel;
+  }
+
+  /**
+   * @return the twoTilesCombinations
+   */
+  public TreeSet<AIcombination> getTwoTilesCombinations() {
+    return twoTilesCombinations;
+  }
+
+  /**
+   * @param twoTilesCombinations the twoTilesCombinations to set
+   */
+  public void setTwoTilesCombinations(TreeSet<AIcombination> twoTilesCombinations) {
+    this.twoTilesCombinations = twoTilesCombinations;
   }
 
 
