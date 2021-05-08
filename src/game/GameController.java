@@ -136,15 +136,16 @@ public class GameController {
    * the method updates the game board.
    */
 
-  public boolean addTileToGameBoard(String player, Tile t, int x, int y) {
+  public boolean addTileToGameBoard(String player, Tile tile, int x, int y) {
     if (!gameState.getCurrentPlayer().equals(player)
         || gameState.getGameBoard().getField(x, y).getTile() != null) {
       return false;
     }
 
-    t.setField(gameState.getGameBoard().getField(x, y));
+    Tile t = new Tile(tile.getLetter(), gameState.getGameBoard().getField(x, y));
     t.setOnRack(false);
     t.setOnGameBoard(true);
+
     this.turn.addTileToTurn(t);
 
     return true;
@@ -215,6 +216,10 @@ public class GameController {
 
   public GameState getGameState() {
     return gameState;
+  }
+
+  public TileBag getTileBag() {
+    return tileBag;
   }
 
 }

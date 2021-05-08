@@ -8,13 +8,15 @@ public class TurnResponseMessage extends Message {
   private boolean isValid;
   private int calculatedTurnScore;
   private String nextPlayer;
+  private int remainingTilesInTileBag;
 
   public TurnResponseMessage(String from, boolean isValid, int calculatedTurnScore,
-      String nextPlayer) {
+      String nextPlayer, int remainingTilesInTileBag) {
     super(MessageType.TURN_RESPONSE, from);
     this.isValid = isValid;
     this.calculatedTurnScore = calculatedTurnScore;
     this.nextPlayer = nextPlayer;
+    this.remainingTilesInTileBag = remainingTilesInTileBag;
   }
 
   public boolean getIsValid() {
@@ -27,6 +29,10 @@ public class TurnResponseMessage extends Message {
 
   public String getNextPlayer() {
     return nextPlayer;
+  }
+
+  public int getRemainingTilesInTileBag() {
+    return remainingTilesInTileBag;
   }
 
 }

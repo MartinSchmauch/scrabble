@@ -9,10 +9,12 @@ package network.messages;
 public class StartGameMessage extends Message {
   private static final long serialVersionUID = 1L;
   private int countdown;
+  private int remainingTilesInTileBag;
 
-  public StartGameMessage(String from, int countdown) {
+  public StartGameMessage(String from, int countdown, int remainingTilesInTileBag) {
     super(MessageType.START_GAME, from);
     this.setCountdown(countdown);
+    this.remainingTilesInTileBag = remainingTilesInTileBag;
   }
 
   public int getCountdown() {
@@ -21,6 +23,10 @@ public class StartGameMessage extends Message {
 
   public void setCountdown(int countdown) {
     this.countdown = countdown;
+  }
+
+  public int getRemainingTilesInTileBag() {
+    return remainingTilesInTileBag;
   }
 
 }

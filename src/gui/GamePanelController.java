@@ -1,7 +1,9 @@
 package gui;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import game.GameState;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -15,6 +17,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -26,6 +29,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -53,9 +57,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private List<PlayerData> players;
   private ClientProtocol cp;
   private Server server;
-  private static boolean selectedTileOnGrid = false;
-  private static boolean selectedTileOnRack = false;
-  private static int selectedCoordinates[] = new int[2]; // row column
+  private static boolean exchangeTilesMode = false;
+  private static List<Tile> tilesToExchange = new ArrayList<Tile>();
+  private static int selectedCoordinates[] = new int[2]; // row, column
   private static int targetCoordinates[] = new int[2]; // row, column
   private ChatController cc;
   private static VisualTile rackTiles[][] = new VisualTile[2][6]; // location of visual tiles on
@@ -86,6 +90,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @FXML
   private Rectangle currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4;
   @FXML
+  private Rectangle r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11;
+  @FXML
   private GridPane board, rack;
   @FXML
   private ProgressBar timeProgress;
@@ -94,7 +100,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   private int min;
   private int sec;
-  private String time;
   private Thread thread;
   private double timeLeftBar;
   private boolean turnCountdown;
@@ -140,9 +145,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         avatarImageView[i].setImage(null);
       }
     }
-    remainingLetters.setText("TODO: read max letters from gamesettings");
-    timer.setText("TODO: read time per player from gamesettings");
-    timeProgress.setProgress(1.0);
+    remainingLetters.setText("");
+    timer.setText("");
+    timeProgress.setProgress(0.0);
   }
 
   public void updateTimer(String min, String sec) {
@@ -167,11 +172,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
   public void run() {
+    String secString = "";
     while (turnCountdown) {
       if (this.sec > 9) {
-        this.time = this.min + ":" + this.sec;
+        secString = "" + this.sec;
       } else {
-        this.time = this.min + ":0" + this.sec;
+        secString = "0" + this.sec;
       }
 
       this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
@@ -181,12 +187,16 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
-        // Send it
+      }
+      // Send it
+      else if (this.server != null) {
+        System.out.println("lösche das im Gamepanelcontroller Zeile 185");
+        this.server.resetTurnForEveryPlayer();
       } else {
         this.sec--;
       }
 
-      this.updateTimer(String.valueOf(min), String.valueOf(sec));
+      this.updateTimer(String.valueOf(min), secString);
       this.updateProgressBar(this.timeLeftBar);
 
       try {
@@ -195,6 +205,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.turnCountdown = false;
       }
     }
+
   }
 
   /**
@@ -245,10 +256,41 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         sendMessage();
         break;
       case "skipAndChangeButton":
-        sendTileMessage(this.player.getNickname());
+        if (!exchangeTilesMode) {
+          exchangeTilesMode = true;
+          skipAndChangeButton.setDisable(true);
+        }
         break;
       case "doneButton":
-        completeTurn();
+        if (exchangeTilesMode) {
+          CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
+          alert.setTitle("Skip & Exchange selected tiles");
+          alert.setHeaderText("Skip & Exchange?");
+          alert.setContentText(
+              "Do you want to skip the current turn and exchange the selected tiles ");
+          alert.initStyle(StageStyle.UNDECORATED);
+
+          alert.changeButtonText("Yes", ButtonType.OK);
+          alert.changeButtonText("No", ButtonType.CANCEL);
+
+          Optional<ButtonType> result = alert.showAndWait();
+          if (result.get() == ButtonType.OK) {
+            sendTileMessage(this.player.getNickname());
+          } else {
+            alert.close();
+          }
+
+          skipAndChangeButton.setText("Skip & Exchange");
+          Rectangle rect[] = {r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+          for (Rectangle r : rect) {
+            r.setStroke(Color.BLACK);
+          }
+          tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
+          exchangeTilesMode = false;
+          skipAndChangeButton.setDisable(false);
+        } else {
+          completeTurn();
+        }
         break;
       default:
         break;
@@ -271,7 +313,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     ClipboardContent cb = new ClipboardContent();
     cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
     db.setContent(cb);
-
     event.consume();
   }
 
@@ -321,15 +362,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-      // System.out.println("deselect rack tile");
+
     } else if (selectedCoordinates[1] == -1) { // exchange tiles on rack
       player.reorganizeRackTile(selectedCoordinates[0], targetCoordinates[0]);
-      // System.out.println("reorganizeRackTiles");
+
     } else if (selectedCoordinates[1] != -1) { // try to move tile from board to rack - sender!
       sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
           targetCoordinates[0], targetCoordinates[1]);
-      // System.out.println(
-      // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
     }
     resetCoordinates();
   }
@@ -362,99 +401,23 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     resetCoordinates();
   }
 
-  /**
-   * @deprecated
-   * @param event
-   */
   @FXML
-  public void rackPressed(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, true);
-    // System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " +
-    // selectedCoordinates[1]);
+  public void selectToExchange(MouseEvent event) {
+    if (exchangeTilesMode) {
+      Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+      Node node = (Node) event.getSource();
+      int helper[] = getPos(node, true);
+      if (player.getRackTile(helper[0]) != null
+          && !tilesToExchange.contains(player.getRackTile(helper[0]))) {
+        tilesToExchange.add(player.getRackTile(helper[0]));
+        rect[helper[0]].setStroke(Color.RED);
+      } else if (player.getRackTile(helper[0]) != null
+          && tilesToExchange.contains(player.getRackTile(helper[0]))) {
+        tilesToExchange.remove(player.getRackTile(helper[0]));
+        rect[helper[0]].setStroke(Color.BLACK);
+      }
+    }
   }
-
-  /**
-   * @deprecatede
-   * @param event
-   */
-  @FXML
-  public void rackDragged(MouseEvent event) {
-
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void rackReleased(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // targetCoordinates = getPos(node, true);
-    // // System.out.println("rackReleased at: " + targetCoordinates[0] + "; " +
-    // targetCoordinates[1]);
-    //
-    // if (targetCoordinates[0] == selectedCoordinates[0]
-    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-    // // System.out.println("deselect rack tile");
-    // } else if (selectedCoordinates[0] == -1) { // exchange tiles on rack
-    // player.reorganizeRackTile(selectedCoordinates[1], targetCoordinates[1]);
-    // // System.out.println("reorganizeRackTiles");
-    // } else if (selectedCoordinates[0] != -1) { // try to move tile from board to rack - sender!
-    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
-    // targetCoordinates[0], targetCoordinates[1]);
-    // // System.out.println(
-    // // "move tile from grid to rack: " + selectedCoordinates[0] + ", " + selectedCoordinates[1]);
-    // }
-    // resetCoordinates();
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void boardPressed(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, false);
-    // System.out
-    // .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void boardDragged(MouseEvent event) {
-
-  }
-
-  /**
-   * @deprecated
-   * @param event
-   */
-  @FXML
-  public void boardReleased(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // targetCoordinates = getPos(node, false);
-    // // System.out.println("boardRealeased at: " + targetCoordinates[0] + "; " +
-    // // targetCoordinates[1]);
-    // if (targetCoordinates[0] == selectedCoordinates[0]
-    // && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-    // // System.out.println("deselect grid tile");
-    // } else if (selectedCoordinates[0] != -1) { // exchange tiles on board
-    // sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
-    // targetCoordinates[0], targetCoordinates[1]);
-    // // System.out.println("exchange grid tiles");
-    // } else if (selectedCoordinates[0] == -1) { // move tile from rack to board
-    // // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
-    // // + targetCoordinates[0] + targetCoordinates[1]);
-    // player.moveToGameBoard(selectedCoordinates[1], targetCoordinates[0], targetCoordinates[1]);
-    // }
-    // resetCoordinates();
-  }
-
 
   /**
    * This method sets all coordinates for the helper arrays of the tile movements to -2. Thereby,
@@ -465,54 +428,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     selectedCoordinates[1] = -2;
     targetCoordinates[0] = -2;
     targetCoordinates[1] = -2;
-  }
-
-
-
-  /**
-   * @deprecated
-   * 
-   *             Listener method that is executed, when a rectangle in the GridPane 'rack' is
-   *             clicked. The method checks which tile was selected before and causes the right
-   *             action for the desired tile movement.
-   * 
-   * @param event
-   */
-  @FXML
-  public void rackClicked(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // int[] pos = getPos(node, true);
-    // int x = pos[0];
-    // int y = pos[1];
-    // // GUI test start:
-    // setSelectedTileOnRack(true);
-    // coordinates[0] = x;
-    // // GUI test ende.
-
-  }
-
-  /**
-   * @deprecated
-   * 
-   *             Listener method that is executed, when a rectangle in the GridPane 'grid' is
-   *             clicked. The method checks which tile was selected before and causes the right
-   *             action for the desired tile movement.
-   *
-   * @param event
-   */
-  @FXML
-  public void boardClicked(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // int[] pos = getPos(node, false);
-    // int x = pos[0];
-    // int y = pos[1];
-    // // GUI test start:
-    // if (selectedTileOnRack) {
-    // Tile t2 = new Tile(new Letter('A', 3, 5), new Field(3, 5, 1, 0));
-    // t2.setOnRack(true);
-    // moveToGamePanel(t2, x, y);
-    // }
-    // // GUI test ende.
   }
 
   /**
@@ -771,7 +686,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     System.out
         .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
-    sendMessage(m);
+    if (this.player.isHost()) {
+      this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
+    } else {
+      sendMessage(m);
+    }
   }
 
   @Override
@@ -782,7 +701,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendTileMessage(String nickName) {
-    Message m = new TileMessage(nickName, this.player.getRackTiles());
+    Message m = new TileMessage(nickName, tilesToExchange);
     sendMessage(m);
   }
 
@@ -863,21 +782,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     this.cp = cp;
   }
 
-  public static boolean isSelectedTileOnGrid() {
-    return selectedTileOnGrid;
-  }
-
-  public static void setSelectedTileOnGrid(boolean b) {
-    selectedTileOnGrid = b;
-  }
-
-  public static boolean isSelectedTileOnRack() {
-    return selectedTileOnRack;
-  }
-
-  public static void setSelectedTileOnRack(boolean selectedTileOnRack) {
-    GamePanelController.selectedTileOnRack = selectedTileOnRack;
-  }
 
   public static int[] getCoordinates() {
     return selectedCoordinates;

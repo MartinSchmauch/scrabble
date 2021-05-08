@@ -1,10 +1,5 @@
 package network.server;
 
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -14,6 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -21,6 +21,7 @@ import mechanic.PlayerData;
 import mechanic.Tile;
 import mechanic.Turn;
 import network.messages.AddTileMessage;
+import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameStatisticMessage;
@@ -28,6 +29,7 @@ import network.messages.InvalidMoveMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
+import network.messages.ResetTurnMessage;
 import network.messages.SendChatMessage;
 import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
@@ -107,6 +109,57 @@ public class Server {
   }
 
   /**
+   * This method is called, when a Turn should be resetet. All tiles are remove from the gameboard
+   * and the Tiles are added to the player Rack, if the current player is equal to the server.
+   * 
+   * @author lurny
+   */
+  public void resetTurnForEveryPlayer() {
+    List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
+    this.sendToAll((Message) new ResetTurnMessage(this.host, tileList));
+    // remove Tiles from UI Gameboard and domain Gameboard
+    for (Tile t : tileList) {
+      this.gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), false);
+      this.gameState.getGameBoard()
+          .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
+    }
+    // if this is the current player: add Tiles to Rack
+    if (this.host.equals(this.gameState.getCurrentPlayer())) {
+      for (Tile t : tileList) {
+        t.setField(this.player.getFreeRackField());
+        this.player.addTileToRack(t);
+        this.gpc.addTile(t);
+      }
+    }
+  }
+
+  /**
+   * This method is called to verify the turn.
+   */
+  public void handleCommitTurn(CommitTurnMessage m) {
+    Turn turn = this.getGameController().getTurn();
+    turn.endTurn();
+    String nextPlayer;
+
+    if (turn.isValid()) {
+      nextPlayer = this.getGameController().getNextPlayer();
+      // refill Rack with Tiles
+      List<Tile> tileList = this.gameController.drawTiles();
+      for (Tile t : tileList) {
+        t.setField(this.player.getFreeRackField());
+        this.player.addTileToRack(t);
+        this.gpc.addTile(t);
+      }
+      // send turnResponse Message
+      this.sendToAll(new TurnResponseMessage(this.getHost(), turn.isValid(), turn.getTurnScore(),
+          nextPlayer, this.getGameController().getTileBag().getRemaining()));
+    } else {
+      nextPlayer = null;
+    }
+
+  }
+
+  /**
    * Thread method that continuously checks for new clients trying to connect. When a new clients
    * connects, a new instance of ServerProtocol is created, moderating the client-server connection
    */
@@ -157,7 +210,7 @@ public class Server {
   }
 
   public boolean checkNickname(String nickname) {
-    return this.clients.keySet().contains(nickname)|| this.host.equals(nickname);
+    return this.clients.keySet().contains(nickname) || this.host.equals(nickname);
   }
 
   public void addClient(PlayerData player, ServerProtocol serverProtocol) {
@@ -339,7 +392,6 @@ public class Server {
               gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
               break;
             case ADD_TILE:
-              System.out.println("Hi Add");
               AddTileMessage atm = (AddTileMessage) m;
               if (atm.getNewYCoordinate() == -1) {
                 atm.getTile().setField(player.getRackField(atm.getNewXCoordinate()));
@@ -354,7 +406,6 @@ public class Server {
               gpc.addTile(atm.getTile());
               break;
             case REMOVE_TILE:
-              System.out.println("Hi Remove");
               RemoveTileMessage rtm = (RemoveTileMessage) m;
               if (rtm.getY() == -1) {
                 player.removeRackTile(rtm.getX());
@@ -368,8 +419,10 @@ public class Server {
               } else {
                 gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
+                gpc.indicatePlayerTurn(trm.getNextPlayer(), gameState.getCurrentPlayer());
                 gameState.setCurrentPlayer(trm.getNextPlayer());
-                gpc.indicatePlayerTurn(trm.getNextPlayer(), "TODO");
+                gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
+                    - gameController.getTurn().getLaydDownTiles().size());
                 gpc.startTimer();
               }
               break;
@@ -408,8 +461,8 @@ public class Server {
   }
 
   public void startGame() {
-    sendToAll(new StartGameMessage(host, 10));
-
+    sendToAll(new StartGameMessage(host, 10, this.gameController.getTileBag().getRemaining()
+        - this.gameState.getAllPlayers().size() * 7));
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
@@ -420,6 +473,8 @@ public class Server {
     gameState.setCurrentPlayer(host);
     distributeInitialTiles();
     this.gameController.setTurn(new Turn(this.host, this.gameController));
+    gpc.updateRemainingLetters(this.gameController.getTileBag().getRemaining()
+        - this.gameState.getAllPlayers().size() * 7);
   }
 
   public Player getPlayer() {

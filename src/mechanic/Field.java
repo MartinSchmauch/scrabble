@@ -189,9 +189,8 @@ public class Field implements Serializable {
       return false;
     } else {
       t = (Field) other;
-      if (t.gameBoard.equals(this.gameBoard) && t.letterMultiplier == this.letterMultiplier
-          && t.wordMultiplier == this.wordMultiplier && t.xCoordinate == this.xCoordinate
-          && t.yCoordinate == this.yCoordinate) {
+      if (t.letterMultiplier == this.letterMultiplier && t.wordMultiplier == this.wordMultiplier
+          && t.xCoordinate == this.xCoordinate && t.yCoordinate == this.yCoordinate) {
         return true;
       } else {
         return false;
