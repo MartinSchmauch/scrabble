@@ -107,6 +107,12 @@ public class Server {
     });
   }
 
+  /**
+   * This Method is used to Exchange Tiles via the Skip and change Button. It adds the Tiles you
+   * want to exchange to the tilebag and draws the same amount of new tiles.
+   * 
+   * @author lurny
+   */
   public void handleExchangeTiles(TileMessage m) {
     this.getGameController().addTilesToTileBag(m.getTiles());
     // If the host wants to perform the exchange
