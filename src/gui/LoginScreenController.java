@@ -105,13 +105,16 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * Lets a user access the user settings. If no user profile is present the system asks the user if
    * he wants to create one.
    * 
-   * @param s defines the Stage which is cloes if the user settings screen is launched
+   * @param s defines the Stage which is closes if the user settings screen is launched
    */
   public void openAccount(Stage s) {
     File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
     if (f.exists()) {
+      Stage newUserSettingsScreen = new Stage();
+      newUserSettingsScreen.setX(s.getScene().getWindow().getX());
+      newUserSettingsScreen.setY(s.getScene().getWindow().getY());
+      new UserSettingsScreen(this.player).start(newUserSettingsScreen);
       s.close();
-      new UserSettingsScreen(this.player).start(new Stage());
     } else {
       CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
       alert.setTitle("No profile created yet");
@@ -207,8 +210,16 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       stage.initStyle(StageStyle.UNDECORATED);
       stage.setTitle("Lobby");
       stage.setOnCloseRequest(e -> controller.close());
+      /**
+       * @author pkoenig
+       */
       stage.setX(LinkField.getScene().getWindow().getX());
       stage.setY(LinkField.getScene().getWindow().getY());
+      
+      /**
+       * @author nilbecke
+       */
+      
       stage.show();
 
       Stage s = (Stage) LinkField.getScene().getWindow();
