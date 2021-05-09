@@ -265,10 +265,6 @@ public class Server {
 
     Tile oldTile = this.gameState.getGameBoard()
         .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
-    // TODO Check why oldTile.field is null here. The following statement should be temporary
-    oldTile.setField(
-        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate()));
-
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
       if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate())) {
@@ -393,16 +389,6 @@ public class Server {
               break;
             case ADD_TILE:
               AddTileMessage atm = (AddTileMessage) m;
-              if (atm.getNewYCoordinate() == -1) {
-                atm.getTile().setField(player.getRackField(atm.getNewXCoordinate()));
-                atm.getTile().setOnRack(true);
-                atm.getTile().setOnGameBoard(false);
-              } else {
-                atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
-                    atm.getNewYCoordinate()));
-                atm.getTile().setOnRack(false);
-                atm.getTile().setOnGameBoard(true);
-              }
               gpc.addTile(atm.getTile());
               break;
             case REMOVE_TILE:

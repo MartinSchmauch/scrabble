@@ -151,7 +151,7 @@ public class Player {
 
   public Tile removeRackTile(int index) {
     Tile tile = rack[index].getTile();
-    rack[index].setTile(null);
+    rack[index].setTileOneDirection(null);
     return tile;
   }
 
@@ -214,9 +214,13 @@ public class Player {
         tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
 
     if (this.isHost()) {
+      server.sendToAll(rtm);
       server.getGameController().removeTileFromGameBoard(this.getNickname(),
           tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
-      server.sendToAll(rtm);
+
+      tile.setField(getRackField(newIndex));
+      tile.setOnRack(true);
+      tile.setOnGameBoard(false);
       AddTileMessage atm = new AddTileMessage(this.getNickname(), tile, newIndex, -1);
       server.updateServerUi(atm);
     } else {

@@ -25,7 +25,7 @@ public class Tile implements Serializable {
 
   public Tile(Letter letter, Field field) {
     this.letter = letter;
-    this.field = field;
+    setField(field);
     this.IS_JOKER = (letter.getCharacter() == '*');
   }
 
@@ -46,8 +46,13 @@ public class Tile implements Serializable {
    * @param tile
    */
   public void setField(Field field) {
-    this.field = field;
-    field.setTileOneDirection(this);
+    if (field == null) {
+      this.field.setTileOneDirection(null);
+      this.field = null;
+    } else {
+      this.field = field;
+      field.setTileOneDirection(this);
+    }
   }
 
   public void setOnlyField(Field field) {

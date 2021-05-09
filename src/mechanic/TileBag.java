@@ -29,7 +29,7 @@ public class TileBag {
     while (it.hasNext()) {
       Letter l = it.next();
       for (int i = 0; i < l.getCount(); i++) {
-        tiles.add(new Tile(l, null));
+        tiles.add(new Tile(l));
       }
     }
 
