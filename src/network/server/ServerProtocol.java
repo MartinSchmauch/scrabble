@@ -185,8 +185,7 @@ public class ServerProtocol extends Thread {
 
           case TILE:
             TileMessage tm = (TileMessage) m;
-            this.server.getGameController().addTilesToTileBag(tm.getTiles());
-            int amount = tm.getTiles().size();
+            this.server.handleExchangeTiles(tm);
 
 
             // TODO reset turn; turn is valid as well if laydowntiles is empty

@@ -115,6 +115,7 @@ public class Server {
       for (Tile t : m.getTiles()) {
         this.player.removeRackTile(t.getField().getxCoordinate());
       }
+      // add new tiles to Domain and UI
       Platform.runLater(new Runnable() {
         @Override
         public void run() {
@@ -127,6 +128,12 @@ public class Server {
           }
         }
       });
+    } else {
+      List<Tile> tileList;
+      String receiver = m.getFrom();
+      tileList = this.gameController.drawTiles(m.getTiles().size());
+      ServerProtocol client = this.clients.get(receiver);
+      client.sendToClient(new TileMessage(this.getHost(), tileList));
     }
   }
 

@@ -278,12 +278,16 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
           Optional<ButtonType> result = alert.showAndWait();
           if (result.get() == ButtonType.OK) {
-            sendTileMessage(this.player.getNickname());
+
             // remove Tiles from GUI
             for (Tile t : this.tilesToExchange) {
               // TODO bei dem gesetzten True koennte ein Fehler entstehen
               this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
+              this.player.removeRackTile(t.getField().getxCoordinate());
             }
+
+
+            sendTileMessage(this.player.getNickname());
           } else {
             alert.close();
           }
