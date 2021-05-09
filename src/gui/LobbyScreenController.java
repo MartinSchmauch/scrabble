@@ -299,7 +299,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     } else if (!this.player.isHost()) {
       this.player.getClientProtocol().disconnect();
     }
-    new LoginScreen().start(new Stage());
+    Stage newLoginStage = new Stage();
+    newLoginStage.setX(this.chat.getScene().getWindow().getX());
+    newLoginStage.setY(this.chat.getScene().getWindow().getY());
+    new LoginScreen().start(newLoginStage);
   }
 
 

@@ -207,6 +207,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       stage.initStyle(StageStyle.UNDECORATED);
       stage.setTitle("Lobby");
       stage.setOnCloseRequest(e -> controller.close());
+      stage.setX(LinkField.getScene().getWindow().getX());
+      stage.setY(LinkField.getScene().getWindow().getY());
       stage.show();
 
       Stage s = (Stage) LinkField.getScene().getWindow();
