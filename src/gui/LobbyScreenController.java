@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import game.GameSettings;
 import game.GameState;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -140,6 +142,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
    */
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public void startGameScreen() {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
@@ -160,7 +163,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       controller.initData(player);
       stage.setOnCloseRequest(e -> controller.close());
       stage.setTitle("Scrabble3");
-      stage.setResizable(false);
+      // stage.setResizable(false);
       stage.show();
 
       closeWindow();
@@ -239,16 +242,17 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
-    
+
     /**
-     * Will ensure, that every Player sees him on top and with a "YOU" 
+     * Will ensure, that every Player sees him on top and with a "YOU"
+     * 
      * @author pkoenig
      */
     // TODO tbd
     /**
      * @author nilbecke
      */
-    
+
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
         // Player connects

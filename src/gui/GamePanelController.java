@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import game.GameState;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -29,6 +32,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -66,6 +70,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
                                                                   // rack, row;column index
   private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
                                                                      // board, row;column index
+  private Scene scene;
 
 
 
@@ -95,6 +100,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private GridPane board, rack;
   @FXML
   private ProgressBar timeProgress;
+  @FXML
+  private Rectangle backgroundGamePanel;
 
   private static GamePanelController instance;
 
@@ -108,7 +115,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     return instance;
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
   public void initData(Player player) {
+    this.scene = this.board.getScene();
     this.player = player;
     cc = new ChatController(player);
     chat.setEditable(false);
@@ -148,6 +157,49 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
+    // backgroundGamePanel.heightProperty().bind(((StackPane)
+    // backgroundGamePanel.getParent()).heightProperty());
+    // backgroundGamePanel.widthProperty().bind(((StackPane)
+    // backgroundGamePanel.getParent()).widthProperty());
+    // backgroundGamePanel.heightProperty().bind(board.heightProperty());
+    // backgroundGamePanel.widthProperty().bind(board.widthProperty());
+
+    /**
+     * @author pkoenig
+     */
+    ChangeListener cl = new ChangeListener() {
+      public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+//      Double changeWidth = (Double)newValue - (Double)oldValue;
+     Double newWidth = (Double)newValue;
+     System.out.println("### WIDTH HAT SICH GEÄNDERT AUF " + newWidth + " ###");
+//     backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
+//     board.setPrefWidth(board.getPrefWidth() + changeWidth);
+//     backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
+//     board.setPrefHeight(board.getPrefWidth() + changeWidth);
+     
+     backgroundGamePanel.setWidth(newWidth / 1.9);
+     board.setPrefWidth(newWidth / 2.0);
+     board.setMaxWidth(newWidth / 2.0);
+     board.setMinWidth(newWidth / 2.0);
+     backgroundGamePanel.setHeight(newWidth / 1.9);
+     board.setPrefHeight(newWidth / 2.0);
+     board.setMaxHeight(newWidth / 2.0);
+     board.setMinHeight(newWidth / 2.0);
+   }
+ };
+    scene.widthProperty().addListener(cl);
+
+    scene.heightProperty().addListener(cl);
+//    backgroundGamePanel.setWidth(820);
+//    board.setPrefWidth(800);
+//    backgroundGamePanel.setHeight(820);
+//    board.setPrefHeight(800);
+
+
+    /**
+     * @author nilbecke
+     */
+
   }
 
   public void updateTimer(String min, String sec) {
@@ -683,8 +735,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out
-        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     if (this.player.isHost()) {
       this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
