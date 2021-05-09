@@ -196,7 +196,6 @@ public class ClientProtocol extends Thread {
                   JsonHandler jsonHandler = new JsonHandler();
                   jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
                   lpc.startGameScreen();
-                  gpc.initializeThread();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   break;

@@ -137,9 +137,16 @@ public class GameState implements Serializable {
     return this.scores.replace(player, oldScore, oldScore + turnScore);
   }
 
-  //public GameSettings getGameSettings() {
-    //return gameSettings;
-  //}
-
+  /**
+   * This Method initializes the scores for all players with zero.
+   * 
+   * @author lurny
+   * @param playerList
+   */
+  public void initializeScoresWithZero(List<PlayerData> playerList) {
+    for (PlayerData player : playerList) {
+      this.scores.put(player.getNickname(), 0);
+    }
+  }
 
 }

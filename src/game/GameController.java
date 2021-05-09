@@ -85,15 +85,16 @@ public class GameController {
   }
 
   /**
-   * This method gets the 7 initial tiles for the current player.
+   * This method gets the selected amount of tiles for the current player.
    * 
    * @author lurny
-   * @return ArrayList, that contains 7 tiles from tile bag
    */
-  public List<Tile> drawInitialTiles() {
+  public List<Tile> drawTiles(int amount) {
     List<Tile> tiles = new ArrayList<Tile>();
-    for (int i = 0; i < 7; i++) {
-      tiles.add(tileBag.drawTile());
+    for (int i = 0; i < amount; i++) {
+      if (!tileBag.isEmpty()) {
+        tiles.add(tileBag.drawTile());
+      }
     }
     return tiles;
   }
@@ -142,11 +143,11 @@ public class GameController {
       return false;
     }
 
-    Tile t = new Tile(tile.getLetter(), gameState.getGameBoard().getField(x, y));
-    t.setOnRack(false);
-    t.setOnGameBoard(true);
+    tile.setField(gameState.getGameBoard().getField(x, y));
+    tile.setOnRack(false);
+    tile.setOnGameBoard(true);
 
-    this.turn.addTileToTurn(t);
+    this.turn.addTileToTurn(tile);
 
     return true;
   }
@@ -170,9 +171,8 @@ public class GameController {
       return false;
     }
 
-    this.turn.moveTileInTurn(beforeField.getTile(), afterField);
     beforeField.getTile().setField(afterField);
-    beforeField.setTile(null);
+    beforeField.setTileOneDirection(null);
 
     return true;
   }
@@ -190,6 +190,8 @@ public class GameController {
     }
 
     this.turn.removeTileFromTurn(beforeField.getTile());
+    beforeField.getTile().setOnRack(true);
+    beforeField.getTile().setOnGameBoard(false);
     beforeField.setTile(null);
 
     return true;

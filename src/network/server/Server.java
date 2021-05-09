@@ -84,7 +84,7 @@ public class Server {
 
     // add Tiles to players
     for (ServerProtocol client : this.clients.values()) {
-      tileList = this.gameController.drawInitialTiles();
+      tileList = this.gameController.drawTiles(7);
       // UI
       client.sendToClient(new TileMessage(this.getHost(), tileList));
       // sollen die Racks nur lokal gespeichert werden?
@@ -95,7 +95,7 @@ public class Server {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        List<Tile> tileList = gameController.drawInitialTiles();
+        List<Tile> tileList = gameController.drawTiles(7);
 
         for (Tile t : tileList) {
           t.setField(player.getFreeRackField());
@@ -105,7 +105,42 @@ public class Server {
         }
       }
     });
+  }
 
+  /**
+   * This Method is used to Exchange Tiles via the Skip and change Button. It adds the Tiles you
+   * want to exchange to the tilebag and draws the same amount of new tiles.
+   * 
+   * @author lurny
+   */
+  public void handleExchangeTiles(TileMessage m) {
+    this.getGameController().addTilesToTileBag(m.getTiles());
+    // If the host wants to perform the exchange
+    if (m.getFrom().equals(this.getHost())) {
+      // delete Old tiles From Domain
+      for (Tile t : m.getTiles()) {
+        this.player.removeRackTile(t.getField().getxCoordinate());
+      }
+      // add new tiles to Domain and UI
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          List<Tile> tileList = gameController.drawTiles(m.getTiles().size());
+          for (Tile t : tileList) {
+            t.setField(player.getFreeRackField());
+            t.setOnGameBoard(false);
+            t.setOnRack(true);
+            gpc.addTile(t);
+          }
+        }
+      });
+    } else {
+      List<Tile> tileList;
+      String receiver = m.getFrom();
+      tileList = this.gameController.drawTiles(m.getTiles().size());
+      ServerProtocol client = this.clients.get(receiver);
+      client.sendToClient(new TileMessage(this.getHost(), tileList));
+    }
   }
 
   /**
@@ -265,10 +300,6 @@ public class Server {
 
     Tile oldTile = this.gameState.getGameBoard()
         .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
-    // TODO Check why oldTile.field is null here. The following statement should be temporary
-    oldTile.setField(
-        this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate()));
-
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
       if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate())) {
@@ -371,7 +402,6 @@ public class Server {
             case START_GAME:
               StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
-              gpc.initializeThread();
               gpc.startTimer();
               break;
             case GAME_STATISTIC:
@@ -393,16 +423,6 @@ public class Server {
               break;
             case ADD_TILE:
               AddTileMessage atm = (AddTileMessage) m;
-              if (atm.getNewYCoordinate() == -1) {
-                atm.getTile().setField(player.getRackField(atm.getNewXCoordinate()));
-                atm.getTile().setOnRack(true);
-                atm.getTile().setOnGameBoard(false);
-              } else {
-                atm.getTile().setField(gameState.getGameBoard().getField(atm.getNewXCoordinate(),
-                    atm.getNewYCoordinate()));
-                atm.getTile().setOnRack(false);
-                atm.getTile().setOnGameBoard(true);
-              }
               gpc.addTile(atm.getTile());
               break;
             case REMOVE_TILE:
@@ -475,6 +495,8 @@ public class Server {
     this.gameController.setTurn(new Turn(this.host, this.gameController));
     gpc.updateRemainingLetters(this.gameController.getTileBag().getRemaining()
         - this.gameState.getAllPlayers().size() * 7);
+
+    this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
   }
 
   public Player getPlayer() {
