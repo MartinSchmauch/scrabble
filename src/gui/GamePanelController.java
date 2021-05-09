@@ -162,10 +162,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     timeProgress.setProgress(progress);
   }
 
-  public void initializeThread() {
-    this.thread = new Thread(this);
-  }
-
   /**
    * Thread to countdown the maxmimum length of a turn.
    *
@@ -215,6 +211,17 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
   public void startTimer() {
+    if (this.thread != null && !this.thread.isInterrupted()) {
+      stopTimer();
+    }
+
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    this.thread = new Thread(this);
     this.min = 10;
     this.sec = 0;
     this.turnCountdown = true;
@@ -227,10 +234,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
 
-  @SuppressWarnings("deprecation")
   public void stopTimer() {
-    this.turnCountdown = false;
-    this.thread.stop();
+    this.thread.interrupt();
   }
 
   public int getMin() {

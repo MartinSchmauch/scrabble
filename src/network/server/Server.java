@@ -402,7 +402,6 @@ public class Server {
             case START_GAME:
               StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
-              gpc.initializeThread();
               gpc.startTimer();
               break;
             case GAME_STATISTIC:
@@ -444,7 +443,6 @@ public class Server {
                 gameState.setCurrentPlayer(trm.getNextPlayer());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
-                gpc.stopTimer();
                 gpc.startTimer();
               }
               break;
