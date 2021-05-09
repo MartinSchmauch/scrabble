@@ -424,6 +424,7 @@ public class Server {
                 // TODO please check if it is correct
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
+                gpc.stopTimer();
                 gpc.startTimer();
               }
               break;
@@ -476,6 +477,8 @@ public class Server {
     this.gameController.setTurn(new Turn(this.host, this.gameController));
     gpc.updateRemainingLetters(this.gameController.getTileBag().getRemaining()
         - this.gameState.getAllPlayers().size() * 7);
+
+    this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
   }
 
   public Player getPlayer() {
