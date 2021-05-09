@@ -192,6 +192,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       else if (this.server != null) {
         System.out.println("lösche das im Gamepanelcontroller Zeile 185");
         this.server.resetTurnForEveryPlayer();
+        // TODO für client implementieren
       } else {
         this.sec--;
       }
@@ -226,8 +227,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
 
+  @SuppressWarnings("deprecation")
   public void stopTimer() {
     this.turnCountdown = false;
+    this.thread.stop();
   }
 
   public int getMin() {
