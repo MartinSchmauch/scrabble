@@ -279,6 +279,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           Optional<ButtonType> result = alert.showAndWait();
           if (result.get() == ButtonType.OK) {
             sendTileMessage(this.player.getNickname());
+            // remove Tiles from GUI
+            for (Tile t : this.tilesToExchange) {
+              // TODO bei dem gesetzten True koennte ein Fehler entstehen
+              this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
+            }
           } else {
             alert.close();
           }
@@ -457,11 +462,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    */
 
-     /**
-      * Lets a player disconnect
-      * 
-      * @param nickname of the player disconnecting
-      */
+  /**
+   * Lets a player disconnect
+   * 
+   * @param nickname of the player disconnecting
+   */
   public void removeJoinedPlayer(String nickname) {
     // TODO
   }
@@ -612,6 +617,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
   }
 
+
   /**
    * This method is getting returned to the UI after the sendTileMove method has been triggered from
    * the UI. A visual confirmation for a valid turn is shown in the UI.
@@ -686,8 +692,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out
-        .println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
+    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     if (this.player.isHost()) {
       this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
@@ -705,7 +710,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @Override
   public void sendTileMessage(String nickName) {
     Message m = new TileMessage(nickName, tilesToExchange);
-    sendMessage(m);
+    if (this.player.isHost()) {
+      this.player.getServer().handleExchangeTiles((TileMessage) m);
+    } else {
+      sendMessage(m);
+    }
   }
 
   /**

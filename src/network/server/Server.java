@@ -84,7 +84,7 @@ public class Server {
 
     // add Tiles to players
     for (ServerProtocol client : this.clients.values()) {
-      tileList = this.gameController.drawInitialTiles();
+      tileList = this.gameController.drawTiles(7);
       // UI
       client.sendToClient(new TileMessage(this.getHost(), tileList));
       // sollen die Racks nur lokal gespeichert werden?
@@ -95,7 +95,7 @@ public class Server {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        List<Tile> tileList = gameController.drawInitialTiles();
+        List<Tile> tileList = gameController.drawTiles(7);
 
         for (Tile t : tileList) {
           t.setField(player.getFreeRackField());
@@ -105,7 +105,29 @@ public class Server {
         }
       }
     });
+  }
 
+  public void handleExchangeTiles(TileMessage m) {
+    this.getGameController().addTilesToTileBag(m.getTiles());
+    // If the host wants to perform the exchange
+    if (m.getFrom().equals(this.getHost())) {
+      // delete Old tiles From Domain
+      for (Tile t : m.getTiles()) {
+        this.player.removeRackTile(t.getField().getxCoordinate());
+      }
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+          List<Tile> tileList = gameController.drawTiles(m.getTiles().size());
+          for (Tile t : tileList) {
+            t.setField(player.getFreeRackField());
+            t.setOnGameBoard(false);
+            t.setOnRack(true);
+            gpc.addTile(t);
+          }
+        }
+      });
+    }
   }
 
   /**

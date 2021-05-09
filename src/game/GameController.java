@@ -85,15 +85,16 @@ public class GameController {
   }
 
   /**
-   * This method gets the 7 initial tiles for the current player.
+   * This method gets the selected amount of tiles for the current player.
    * 
    * @author lurny
-   * @return ArrayList, that contains 7 tiles from tile bag
    */
-  public List<Tile> drawInitialTiles() {
+  public List<Tile> drawTiles(int amount) {
     List<Tile> tiles = new ArrayList<Tile>();
-    for (int i = 0; i < 7; i++) {
-      tiles.add(tileBag.drawTile());
+    for (int i = 0; i < amount; i++) {
+      if (!tileBag.isEmpty()) {
+        tiles.add(tileBag.drawTile());
+      }
     }
     return tiles;
   }
