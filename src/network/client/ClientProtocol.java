@@ -217,24 +217,16 @@ public class ClientProtocol extends Thread {
                 case CONNECT:
                   ConnectMessage cMessage = (ConnectMessage) m;
                   gameState.joinGame(cMessage.getPlayerInfo());
-<<<<<<< HEAD
                   lsc.addJoinedPlayer(cMessage.getPlayerInfo());
-=======
-                  lpc.addJoinedPlayer(cMessage.getPlayerInfo());
                   break;
->>>>>>> refs/heads/help13
                 case DISCONNECT:
                   DisconnectMessage dMessage = (DisconnectMessage) m;
                   gameState.leaveGame(dMessage.getFrom());
-<<<<<<< HEAD
-                  lsc.removeJoinedPlayer(dMessage.getFrom());
-=======
                   if (!gameState.getGameRunning()) {
-                    lpc.removeJoinedPlayer(dMessage.getFrom());
+                    lsc.removeJoinedPlayer(dMessage.getFrom());
                   } else {
                     gpc.removeJoinedPlayer(dMessage.getFrom());
                   }
->>>>>>> refs/heads/help13
                 default:
                   break;
               }
