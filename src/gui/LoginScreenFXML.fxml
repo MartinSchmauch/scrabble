@@ -66,7 +66,7 @@
                         <Image url="@images/statistics.png" />
                      </image>
                   </ImageView>
-                  <Button layoutX="223.0" layoutY="334.0" minWidth="28.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="32.0" prefWidth="28.0" style="-fx-background-color: transparent;" text="Statistics">
+                  <Button fx:id="statistics" layoutX="223.0" layoutY="334.0" minWidth="28.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="32.0" prefWidth="28.0" style="-fx-background-color: transparent;" text="Statistics">
                      <tooltip>
                         <Tooltip text="Personal Statistics" />
                      </tooltip>

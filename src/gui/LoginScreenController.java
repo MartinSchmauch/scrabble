@@ -67,7 +67,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       join();
     } else {
       Button button = (Button) e.getSource();
-      Stage s = (Stage) button.getScene().getWindow();;
+      Stage s = (Stage) button.getScene().getWindow();
       switch (button.getText()) {
         case "Join":
           this.player.setHost(false);
@@ -90,6 +90,10 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           break;
         case "Account":
           openAccount(s);
+          break;
+        case "Statistics":
+          new UserStatisticsScreen(this.player).start(new Stage());
+          closeScreen();
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
@@ -140,7 +144,6 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
 
   /**
    * Opens Lobby as Host or Player.
-   * 
    * 
    */
 
@@ -209,12 +212,20 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       stage.setOnCloseRequest(e -> controller.close());
       stage.show();
 
-      Stage s = (Stage) LinkField.getScene().getWindow();
-      s.close();
+      closeScreen();
+
 
     } catch (IOException ioe) {
       ioe.printStackTrace();
     }
+  }
+
+  /**
+   * This methods closes the current screen. Gets called when another screen is to be opened.
+   */
+  public void closeScreen() {
+    Stage s = (Stage) LinkField.getScene().getWindow();
+    s.close();
   }
 
   /**
