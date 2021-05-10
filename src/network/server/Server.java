@@ -425,6 +425,7 @@ public class Server {
               StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
               gpc.startTimer();
+              gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
               break;
             case GAME_STATISTIC:
               GameStatisticMessage gsm = (GameStatisticMessage) m;
@@ -467,6 +468,7 @@ public class Server {
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
                 gpc.startTimer();
+                gpc.indicatePlayerTurn(trm.getNextPlayer());
               }
               break;
             case INVALID:
@@ -504,8 +506,10 @@ public class Server {
   }
 
   public void startGame() {
-    sendToAll(new StartGameMessage(host, 10, this.gameController.getTileBag().getRemaining()
-        - this.gameState.getAllPlayers().size() * 7));
+    gameState.setCurrentPlayer(host);
+    sendToAll(new StartGameMessage(host, 10,
+        this.gameController.getTileBag().getRemaining() - this.gameState.getAllPlayers().size() * 7,
+        this.gameState.getCurrentPlayer()));
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
@@ -513,7 +517,6 @@ public class Server {
     }
 
     gameState.setRunning(true);
-    gameState.setCurrentPlayer(host);
     distributeInitialTiles();
     this.gameController.setTurn(new Turn(this.host, this.gameController));
     gpc.updateRemainingLetters(this.gameController.getTileBag().getRemaining()

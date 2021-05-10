@@ -199,6 +199,7 @@ public class ClientProtocol extends Thread {
                   lsc.startGameScreen();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
+                  gpc.indicatePlayerTurn(sgMessage.getCurrrentPlayer());
                   break;
                 case GAME_STATISTIC:
                   GameStatisticMessage gsMessage = (GameStatisticMessage) m;

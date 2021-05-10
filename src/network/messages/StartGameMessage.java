@@ -10,11 +10,14 @@ public class StartGameMessage extends Message {
   private static final long serialVersionUID = 1L;
   private int countdown;
   private int remainingTilesInTileBag;
+  private String currrentPlayer;
 
-  public StartGameMessage(String from, int countdown, int remainingTilesInTileBag) {
+  public StartGameMessage(String from, int countdown, int remainingTilesInTileBag,
+      String currentPlayer) {
     super(MessageType.START_GAME, from);
     this.setCountdown(countdown);
     this.remainingTilesInTileBag = remainingTilesInTileBag;
+    this.currrentPlayer = currentPlayer;
   }
 
   public int getCountdown() {
@@ -27,6 +30,10 @@ public class StartGameMessage extends Message {
 
   public int getRemainingTilesInTileBag() {
     return remainingTilesInTileBag;
+  }
+
+  public String getCurrrentPlayer() {
+    return currrentPlayer;
   }
 
 }
