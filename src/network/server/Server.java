@@ -464,7 +464,7 @@ public class Server {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
               } else {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-                gpc.indicatePlayerTurn(trm.getNextPlayer(), gameState.getCurrentPlayer());
+                gpc.indicatePlayerTurn(trm.getNextPlayer());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
                 gpc.startTimer();

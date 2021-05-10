@@ -176,7 +176,7 @@ public class ClientProtocol extends Thread {
                   gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                   if (trm.getIsValid()) {
                     gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-                    gpc.indicatePlayerTurn(trm.getNextPlayer(), gameState.getCurrentPlayer());
+                    gpc.indicatePlayerTurn(trm.getNextPlayer());
                     gameState.setCurrentPlayer(trm.getNextPlayer()); // do we need to do this step -
                                                                      // fat client!
                     gpc.startTimer();
