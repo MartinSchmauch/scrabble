@@ -66,7 +66,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
                                                                   // rack, row;column index
   private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
                                                                      // board, row;column index
-
+  private final String REGULAR_SHUTDOWN = "Regular Shutdown";
   private int min;
   private int sec;
   private Thread thread;
@@ -79,7 +79,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private TextField chatInput;
   @FXML
   private Button sendButton, skipAndChangeButton, doneButton, leaveGameButton, settingsButton,
-      stopServerButton;
+      rulesButton;
   @FXML
   private ImageView image1, image2, image3, image4;
   @FXML
@@ -128,7 +128,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     if (player.isHost()) {
       gs = player.getServer().getGameState();
       players = gs.getAllPlayers();
-      stopServerButton.setDisable(false);
+      leaveGameButton.setText("Stop Server");
     } else {
       gs = player.getClientProtocol().getGameState();
       try {
@@ -136,7 +136,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       } catch (NullPointerException e) {
         return;
       }
-      stopServerButton.setDisable(true);
+      leaveGameButton.setText("Leave Game");
     }
 
     for (int i = 0; i <= 3; i++) {
@@ -271,9 +271,15 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         break;
       case "leaveGameButton":
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
-        alert.setTitle("Leave the current game");
-        alert.setHeaderText("Leave Game?");
-        alert.setContentText("Do you really want to leave the current game?");
+        if (player.isHost()) {
+          alert.setTitle("Leave the game and stop the server for all.");
+          alert.setHeaderText("Leave game and stop server?");
+          alert.setContentText("Do you really want to leave the game and stop the server?");
+        } else {
+          alert.setTitle("Leave the current game");
+          alert.setHeaderText("Leave Game?");
+          alert.setContentText("Do you really want to leave the current game?");
+        }
         alert.initStyle(StageStyle.UNDECORATED);
 
         alert.changeButtonText("Yes", ButtonType.OK);
@@ -281,18 +287,27 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          // TODO: send DisconnectMessage
-          System.out.println("disconnect!");
-        } else {
-          alert.close();
+          if (player.isHost()) {
+            player.getServer().stopServer();
+            // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
+            // sendMessage(m);
+          } else {
+            Message m = new DisconnectMessage(this.player.getNickname());
+            sendMessage(m);
+          }
+          // close(); // TODO: close method not neccesary anymore?
+          Button b = (Button) e.getSource();
+          Stage st = (Stage) (b.getScene().getWindow());
+          st.close();
+          new LoginScreen().start(new Stage());
         }
         break;
-      case "stopServerButton":
-        // TODO: send ShutdownMessage
+      case "rulesButton":
+        // TODO:
         break;
       case "sendButton":
       case "chatInput":
-        sendMessage();
+        sendMessageFromInput();
         break;
       case "skipAndChangeButton":
         if (!exchangeTilesMode) {
@@ -379,6 +394,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     selectedCoordinates[1]++;
 
     Dragboard db = node.startDragAndDrop(TransferMode.ANY);
+
     ClipboardContent cb = new ClipboardContent();
     cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
     db.setContent(cb);
@@ -488,7 +504,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * chat area.
    * 
    */
-  public void sendMessage() {
+  public void sendMessageFromInput() {
     this.cc.sendChatMessage(this.player.getNickname(), this.chatInput.getText());
     this.chatInput.setText("");
   }
@@ -540,15 +556,14 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    * @param nickName
    */
-  public void indicatePlayerTurn(String newPlayer, String oldPlayer) {
+  public void indicatePlayerTurn(String newPlayer) {
     String[] playerNames =
         {player1.getText(), player2.getText(), player3.getText(), player4.getText()};
     Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
     for (int i = 0; i < 4; i++) {
       if (playerNames[i].equals(newPlayer)) {
         rect[i].setVisible(true);
-      }
-      if (playerNames[i].equals(oldPlayer)) {
+      } else {
         rect[i].setVisible(false);
       }
     }
@@ -676,7 +691,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        CustomAlert alert = new CustomAlert(AlertType.WARNING);
+        CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
         alert.setTitle("Invalid Turn");
         alert.setHeaderText("Your turn was not valid");
         alert.setContentText(message);
@@ -687,6 +702,31 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         alert.show();
       }
     });
+  }
+
+  public void showShutdownMessage(String hostName, String reason) {
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        CustomAlert alert = new CustomAlert(AlertType.WARNING);
+        alert.setTitle("Server Shutdown");
+        alert.setHeaderText("Server stopped and game ended.");
+        alert.setContentText("The Server was shut down by '" + hostName + "'. \nReason: " + reason);
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        alert.getDialogPane().getStylesheets()
+            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+          Stage st = (Stage) rulesButton.getScene().getWindow(); // TODO: das muss schoener gehen
+                                                                 // als einen random knopf
+          st.close();
+          System.out.println("ok pressed");
+          alert.close();
+        }
+      }
+    });
+    new LoginScreen().start(new Stage());
   }
 
   /**
@@ -710,7 +750,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       System.out.println("Player " + nickName + "is not part of the GameBoard"); // TODO: exception
                                                                                  // handling
     }
-
   }
 
   /**

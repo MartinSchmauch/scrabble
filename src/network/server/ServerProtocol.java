@@ -67,7 +67,6 @@ public class ServerProtocol extends Thread {
 
     try {
       this.out.writeObject(m);
-      out.flush();
       out.reset();
     } catch (IOException e) {
       System.out.println("Client " + this.clientName + " removed (message delivery failed).");

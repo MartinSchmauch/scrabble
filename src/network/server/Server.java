@@ -439,6 +439,9 @@ public class Server {
               DisconnectMessage dm = (DisconnectMessage) m;
               gpc.removeJoinedPlayer(dm.getFrom());
               break;
+            case SHUTDOWN:
+              // TODO:
+              break;
             case SEND_CHAT_TEXT:
               SendChatMessage scm = (SendChatMessage) m;
               gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
