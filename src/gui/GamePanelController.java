@@ -78,7 +78,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @FXML
   private TextField chatInput;
   @FXML
-  private Button sendButton, skipAndChangeButton, doneButton;
+  private Button sendButton, skipAndChangeButton, doneButton, leaveGameButton, settingsButton,
+      stopServerButton;
   @FXML
   private ImageView image1, image2, image3, image4;
   @FXML
@@ -127,6 +128,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     if (player.isHost()) {
       gs = player.getServer().getGameState();
       players = gs.getAllPlayers();
+      stopServerButton.setDisable(false);
     } else {
       gs = player.getClientProtocol().getGameState();
       try {
@@ -134,6 +136,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       } catch (NullPointerException e) {
         return;
       }
+      stopServerButton.setDisable(true);
     }
 
     for (int i = 0; i <= 3; i++) {
@@ -263,6 +266,30 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
+      case "settingsButton":
+        // TODO: any settings here to be adjusted?
+        break;
+      case "leaveGameButton":
+        CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
+        alert.setTitle("Leave the current game");
+        alert.setHeaderText("Leave Game?");
+        alert.setContentText("Do you really want to leave the current game?");
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        alert.changeButtonText("Yes", ButtonType.OK);
+        alert.changeButtonText("No", ButtonType.CANCEL);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+          // TODO: send DisconnectMessage
+          System.out.println("disconnect!");
+        } else {
+          alert.close();
+        }
+        break;
+      case "stopServerButton":
+        // TODO: send ShutdownMessage
+        break;
       case "sendButton":
       case "chatInput":
         sendMessage();
@@ -275,18 +302,18 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         break;
       case "doneButton":
         if (exchangeTilesMode) {
-          CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
-          alert.setTitle("Skip & Exchange selected tiles");
-          alert.setHeaderText("Skip & Exchange?");
-          alert.setContentText(
+          CustomAlert alert2 = new CustomAlert(AlertType.CONFIRMATION);
+          alert2.setTitle("Skip & Exchange selected tiles");
+          alert2.setHeaderText("Skip & Exchange?");
+          alert2.setContentText(
               "Do you want to skip the current turn and exchange the selected tiles ");
-          alert.initStyle(StageStyle.UNDECORATED);
+          alert2.initStyle(StageStyle.UNDECORATED);
 
-          alert.changeButtonText("Yes", ButtonType.OK);
-          alert.changeButtonText("No", ButtonType.CANCEL);
+          alert2.changeButtonText("Yes", ButtonType.OK);
+          alert2.changeButtonText("No", ButtonType.CANCEL);
 
-          Optional<ButtonType> result = alert.showAndWait();
-          if (result.get() == ButtonType.OK) {
+          Optional<ButtonType> result2 = alert2.showAndWait();
+          if (result2.get() == ButtonType.OK) {
 
             // remove Tiles from GUI
             for (Tile t : this.tilesToExchange) {
@@ -297,7 +324,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
             sendTileMessage(this.player.getNickname());
           } else {
-            alert.close();
+            alert2.close();
           }
 
           skipAndChangeButton.setText("Skip & Exchange");
@@ -680,7 +707,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     } else if (player4.getText().equals(nickName)) {
       this.playerFourPoints.setText(newScore);
     } else {
-      System.out.println("Player " + nickName + "is not part of the GameBoard");
+      System.out.println("Player " + nickName + "is not part of the GameBoard"); // TODO: exception
+                                                                                 // handling
     }
 
   }
