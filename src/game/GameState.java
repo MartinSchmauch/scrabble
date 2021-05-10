@@ -27,6 +27,8 @@ public class GameState implements Serializable {
   private HashMap<String, Integer> scores;
   // private GameSettings gameSettings;
 
+
+
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
     this.host = host;
@@ -91,6 +93,10 @@ public class GameState implements Serializable {
 
   public PlayerData getPlayerData(String nickname) {
     return this.allPlayers.get(nickname);
+  }
+
+  public int getScore(String nickName) {
+    return this.scores.get(nickName);
   }
 
   public boolean joinGame(PlayerData player) {

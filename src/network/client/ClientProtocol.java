@@ -33,7 +33,7 @@ import util.JsonHandler;
 public class ClientProtocol extends Thread {
   private GameState gameState;
   private GamePanelController gpc;
-  private LobbyScreenController lpc;
+  private LobbyScreenController lsc;
   private Player player;
   private Message m;
   /**
@@ -186,7 +186,7 @@ public class ClientProtocol extends Thread {
                 case LOBBY_STATUS:
                   LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
                   gameState = lsMessage.getGameState();
-                  lpc.updateJoinedPlayers();
+                  lsc.updateJoinedPlayers();
                   break;
                 case START_GAME:
                   StartGameMessage sgMessage = (StartGameMessage) m;
@@ -195,7 +195,7 @@ public class ClientProtocol extends Thread {
                   // TODO replace with Server Game Settings (or important parts) eg. joker value
                   JsonHandler jsonHandler = new JsonHandler();
                   jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
-                  lpc.startGameScreen();
+                  lsc.startGameScreen();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   break;
@@ -206,7 +206,7 @@ public class ClientProtocol extends Thread {
                 case UPDATE_CHAT:
                   UpdateChatMessage ucMessage = (UpdateChatMessage) m;
                   if (!gameState.getGameRunning()) {
-                    lpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
+                    lsc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
                         ucMessage.getFrom());
                   } else {
                     gpc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
@@ -216,11 +216,11 @@ public class ClientProtocol extends Thread {
                 case CONNECT:
                   ConnectMessage cMessage = (ConnectMessage) m;
                   gameState.joinGame(cMessage.getPlayerInfo());
-                  lpc.addJoinedPlayer(cMessage.getPlayerInfo());
+                  lsc.addJoinedPlayer(cMessage.getPlayerInfo());
                 case DISCONNECT:
                   DisconnectMessage dMessage = (DisconnectMessage) m;
                   gameState.leaveGame(dMessage.getFrom());
-                  lpc.removeJoinedPlayer(dMessage.getFrom());
+                  lsc.removeJoinedPlayer(dMessage.getFrom());
                 default:
                   break;
               }
@@ -236,7 +236,7 @@ public class ClientProtocol extends Thread {
   }
 
   public void setLC(LobbyScreenController lc) {
-    this.lpc = lc;
+    this.lsc = lc;
   }
 
   /*
@@ -293,7 +293,7 @@ public class ClientProtocol extends Thread {
   }
 
   public void setLobbyScreenController(LobbyScreenController lsc) {
-    this.lpc = lsc;
+    this.lsc = lsc;
   }
 
   /**
@@ -327,4 +327,5 @@ public class ClientProtocol extends Thread {
   public void setPortFromServer(int portFromServer) {
     this.portFromServer = portFromServer;
   }
+
 }

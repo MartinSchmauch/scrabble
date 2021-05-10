@@ -67,14 +67,19 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
                                                                      // board, row;column index
 
-
+  private int min;
+  private int sec;
+  private Thread thread;
+  private double timeLeftBar;
+  private boolean turnCountdown;
 
   @FXML
   private TextArea chat;
   @FXML
   private TextField chatInput;
   @FXML
-  private Button sendButton, skipAndChangeButton, doneButton;
+  private Button sendButton, skipAndChangeButton, doneButton, leaveGameButton, settingsButton,
+      stopServerButton;
   @FXML
   private ImageView image1, image2, image3, image4;
   @FXML
@@ -98,16 +103,17 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   private static GamePanelController instance;
 
-  private int min;
-  private int sec;
-  private Thread thread;
-  private double timeLeftBar;
-  private boolean turnCountdown;
-
   public static GamePanelController getInstance() {
     return instance;
   }
 
+  /**
+   * This method initializes the GamePanelController and is being called upon creation of the
+   * Controller. Here all the labels on the UI are being reset and adapted to the current game
+   * state.
+   * 
+   * @param player
+   */
   public void initData(Player player) {
     this.player = player;
     cc = new ChatController(player);
@@ -122,6 +128,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     if (player.isHost()) {
       gs = player.getServer().getGameState();
       players = gs.getAllPlayers();
+      stopServerButton.setDisable(false);
     } else {
       gs = player.getClientProtocol().getGameState();
       try {
@@ -129,6 +136,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       } catch (NullPointerException e) {
         return;
       }
+      stopServerButton.setDisable(true);
     }
 
     for (int i = 0; i <= 3; i++) {
@@ -148,18 +156,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
-  }
-
-  public void updateTimer(String min, String sec) {
-    timer.setText(min + ":" + sec);
-  }
-
-  public void updateRemainingLetters(int number) {
-    remainingLetters.setText(String.valueOf(number));
-  }
-
-  public void updateProgressBar(Double progress) {
-    timeProgress.setProgress(progress);
   }
 
   /**
@@ -202,7 +198,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.turnCountdown = false;
       }
     }
-
   }
 
   /**
@@ -246,6 +241,18 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     return sec;
   }
 
+  public void updateTimer(String min, String sec) {
+    timer.setText(min + ":" + sec);
+  }
+
+  public void updateRemainingLetters(int number) {
+    remainingLetters.setText(String.valueOf(number));
+  }
+
+  public void updateProgressBar(Double progress) {
+    timeProgress.setProgress(progress);
+  }
+
   /**
    * 
    * Listener methods that are executed upon Player UI Interaction
@@ -259,6 +266,30 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
+      case "settingsButton":
+        // TODO: any settings here to be adjusted?
+        break;
+      case "leaveGameButton":
+        CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
+        alert.setTitle("Leave the current game");
+        alert.setHeaderText("Leave Game?");
+        alert.setContentText("Do you really want to leave the current game?");
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        alert.changeButtonText("Yes", ButtonType.OK);
+        alert.changeButtonText("No", ButtonType.CANCEL);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+          // TODO: send DisconnectMessage
+          System.out.println("disconnect!");
+        } else {
+          alert.close();
+        }
+        break;
+      case "stopServerButton":
+        // TODO: send ShutdownMessage
+        break;
       case "sendButton":
       case "chatInput":
         sendMessage();
@@ -271,18 +302,18 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         break;
       case "doneButton":
         if (exchangeTilesMode) {
-          CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
-          alert.setTitle("Skip & Exchange selected tiles");
-          alert.setHeaderText("Skip & Exchange?");
-          alert.setContentText(
+          CustomAlert alert2 = new CustomAlert(AlertType.CONFIRMATION);
+          alert2.setTitle("Skip & Exchange selected tiles");
+          alert2.setHeaderText("Skip & Exchange?");
+          alert2.setContentText(
               "Do you want to skip the current turn and exchange the selected tiles ");
-          alert.initStyle(StageStyle.UNDECORATED);
+          alert2.initStyle(StageStyle.UNDECORATED);
 
-          alert.changeButtonText("Yes", ButtonType.OK);
-          alert.changeButtonText("No", ButtonType.CANCEL);
+          alert2.changeButtonText("Yes", ButtonType.OK);
+          alert2.changeButtonText("No", ButtonType.CANCEL);
 
-          Optional<ButtonType> result = alert.showAndWait();
-          if (result.get() == ButtonType.OK) {
+          Optional<ButtonType> result2 = alert2.showAndWait();
+          if (result2.get() == ButtonType.OK) {
 
             // remove Tiles from GUI
             for (Tile t : this.tilesToExchange) {
@@ -291,14 +322,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
               this.player.removeRackTile(t.getField().getxCoordinate());
             }
 
-
             sendTileMessage(this.player.getNickname());
           } else {
-            alert.close();
+            alert2.close();
           }
 
           skipAndChangeButton.setText("Skip & Exchange");
-          Rectangle rect[] = {r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+          Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
           for (Rectangle r : rect) {
             r.setStroke(Color.BLACK);
           }
@@ -306,7 +336,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           exchangeTilesMode = false;
           skipAndChangeButton.setDisable(false);
         } else {
-          completeTurn();
+          sendCommitTurn(this.player.getNickname());
         }
         break;
       default:
@@ -315,7 +345,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * TODO
+   * Listener that is called, when a user starts a drag movement from a rack field. The coordinates
+   * of the event starting location are being saved for this drag event in the selectedCoordinates
+   * array.
+   * 
    * 
    * @param event
    */
@@ -323,8 +356,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void rackDragHandling(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
-
-    System.out.println("rackPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
 
     Dragboard db = node.startDragAndDrop(TransferMode.ANY);
     ClipboardContent cb = new ClipboardContent();
@@ -334,7 +365,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * TODO
+   * Listener method that is called, when a user starts a drag movement from a board field. The
+   * coordinates of the event starting location are being saved for this drag event in the
+   * selectedCoordinates array.
    * 
    * @param event
    */
@@ -345,9 +378,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     selectedCoordinates[0]++;
     selectedCoordinates[1]++;
 
-    System.out
-        .println("boardPressed at: " + selectedCoordinates[0] + "; " + selectedCoordinates[1]);
-
     Dragboard db = node.startDragAndDrop(TransferMode.ANY);
     ClipboardContent cb = new ClipboardContent();
     cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
@@ -357,7 +387,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * TODO
+   * Listener method that is called, when a user drags a tile over a tile. The transfer mode to be
+   * accepted upon a drop action can be of any type, since there is only one type in the game.
    * 
    * @param event
    */
@@ -367,7 +398,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * TODO
+   * Listener method that is called, when a user completes a drag&drop event by dropping the item on
+   * a rack field. For the different tile movement scenarios, the events are passed on to the
+   * backend.
    * 
    * @param event
    */
@@ -391,7 +424,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * TODO
+   * Listener method that is called, when a user completes a drag&drop event by dropping the item on
+   * a board field. For the different tile movement scenarios, the events are passed on to the
+   * backend.
    * 
    * @param event
    */
@@ -401,37 +436,37 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     targetCoordinates = getPos(node, false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
-    System.out.println("boardReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
 
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
-      // System.out.println("deselect grid tile");
     } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
       sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
           targetCoordinates[0], targetCoordinates[1]);
-      // System.out.println("exchange grid tiles");
     } else if (selectedCoordinates[1] == -1) { // move tile from rack to board
-      // System.out.println("rack to grid: coords, x, y: " + selectedCoordinates[0]
-      // + targetCoordinates[0] + targetCoordinates[1]);
       player.moveToGameBoard(selectedCoordinates[0], targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
   }
 
+  /**
+   * Listener method that is called when a field on the rack is clicked. When the exchangeTilesMode
+   * was selected before by clicking the Skip&Change button, the tile on the field is selected if
+   * there is a tile on the specific field.
+   * 
+   * @param event
+   */
   @FXML
   public void selectToExchange(MouseEvent event) {
     if (exchangeTilesMode) {
       Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
       Node node = (Node) event.getSource();
-      int helper[] = getPos(node, true);
-      if (player.getRackTile(helper[0]) != null
-          && !tilesToExchange.contains(player.getRackTile(helper[0]))) {
-        tilesToExchange.add(player.getRackTile(helper[0]));
-        rect[helper[0]].setStroke(Color.RED);
-      } else if (player.getRackTile(helper[0]) != null
-          && tilesToExchange.contains(player.getRackTile(helper[0]))) {
-        tilesToExchange.remove(player.getRackTile(helper[0]));
-        rect[helper[0]].setStroke(Color.BLACK);
+      int x = getPos(node, true)[0];
+      if (player.getRackTile(x) != null && !tilesToExchange.contains(player.getRackTile(x))) {
+        tilesToExchange.add(player.getRackTile(x));
+        rect[x].setStroke(Color.RED);
+      } else if (player.getRackTile(x) != null && tilesToExchange.contains(player.getRackTile(x))) {
+        tilesToExchange.remove(player.getRackTile(x));
+        rect[x].setStroke(Color.BLACK);
       }
     }
   }
@@ -460,13 +495,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   /**
    * 
-   */
-  public void completeTurn() {
-    sendCommitTurn(this.player.getNickname());
-  }
-
-  /**
-   * 
    * Methods to be used by the ClientProtocol to change the UI of the Client
    * 
    */
@@ -476,8 +504,19 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    * @param nickname of the player disconnecting
    */
-  public void removeJoinedPlayer(String nickname) {
-    // TODO
+  public void removeJoinedPlayer(String playerToBeRemoved) {
+    Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
+    Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    Text[] playerNameLabel = {player1, player2, player3, player4};
+    ImageView[] avatarImageView = {image1, image2, image3, image4};
+    for (int i = 0; i < 3; i++) {
+      if (playerNameLabel[i].getText().equals(playerToBeRemoved)) {
+        playerNameLabel[i].setText(null);
+        pointsLabel[i].setText(null);
+        playerLabel[i].setText(null);
+        avatarImageView[i].setImage(null);
+      }
+    }
   }
 
 
@@ -634,15 +673,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param nickName
    */
   public void indicateInvalidTurn(String nickName, String message) {
-    // if (player1.getText().equals(nickName)) {
-    // // TODO: zug r�ckg�ngig machen
-    // } else if (player2.getText().equals(nickName)) {
-    // // TODO: zug r�ckg�ngig machen
-    // } else if (player3.getText().equals(nickName)) {
-    // // TODO: zug r�ckg�ngig machen
-    // } else if (player4.getText().equals(nickName)) {
-    // // TODO: zug r�ckg�ngig machen
-    // }
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
@@ -666,8 +696,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param turnScore
    * @throws Exception
    */
-  public void updateScore(String nickName, int turnScore) {
-    String newScore = "";
+  public void updateScore(String nickName, int totalScore) {
+    String newScore = String.valueOf(totalScore);
     if (player1.getText().equals(nickName)) {
       this.playerOnePoints.setText(newScore);
     } else if (player2.getText().equals(nickName)) {
@@ -677,7 +707,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     } else if (player4.getText().equals(nickName)) {
       this.playerFourPoints.setText(newScore);
     } else {
-      System.out.println("Player " + nickName + "is not part of the GameBoard");
+      System.out.println("Player " + nickName + "is not part of the GameBoard"); // TODO: exception
+                                                                                 // handling
     }
 
   }
@@ -686,7 +717,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    * Methods to override sender interface methods; documentation in interface
    * 
-   * TODO: Sollte man die Methoden nicht doch lieber in ClientUi auslagern?
    */
 
   @Override
@@ -701,7 +731,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    System.out.println("method sendCommitTurn wurde aufgerufen, ausgel�st von " + nickName + "\n");
     Message m = new CommitTurnMessage(nickName);
     if (this.player.isHost()) {
       this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
