@@ -696,8 +696,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param turnScore
    * @throws Exception
    */
-  public void updateScore(String nickName, int turnScore) {
-    String newScore = "";
+  public void updateScore(String nickName, int totalScore) {
+    String newScore = String.valueOf(totalScore);
     if (player1.getText().equals(nickName)) {
       this.playerOnePoints.setText(newScore);
     } else if (player2.getText().equals(nickName)) {

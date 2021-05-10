@@ -210,6 +210,7 @@ public class Turn implements Serializable {
     if (this.isValid) {
       calculateTurnScore();
     }
+    System.out.println("Test");
   }
 
   public void setLaydDownTiles(List<Tile> laydDownTiles) {

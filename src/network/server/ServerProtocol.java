@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import mechanic.Turn;
 import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
@@ -16,7 +15,6 @@ import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.SendChatMessage;
 import network.messages.TileMessage;
-import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
 /**
@@ -157,30 +155,32 @@ public class ServerProtocol extends Thread {
             break;
           case COMMIT_TURN:
             CommitTurnMessage ctm = (CommitTurnMessage) m;
-            if (!ctm.getFrom().equals(server.getGameState().getCurrentPlayer())) {
-              break;
-            }
+            this.server.handleCommitTurn(ctm);
 
-            Turn turn = server.getGameController().getTurn();
-            turn.endTurn();
-            String nextPlayer;
-
-            if (turn.isValid()) {
-              nextPlayer = server.getGameController().getNextPlayer();
-              TileMessage trm =
-                  new TileMessage(server.getHost(), server.getGameController().drawTiles());
-              sendToClient(trm);
-            } else {
-              nextPlayer = null;
-            }
-
-            server.sendToAll(
-                new TurnResponseMessage(ctm.getFrom(), turn.isValid(), turn.getTurnScore(),
-                    nextPlayer, this.server.getGameController().getTileBag().getRemaining()));
-
-            sendInitialGameState();
-            running = false;
-            disconnect();
+            // if (!ctm.getFrom().equals(server.getGameState().getCurrentPlayer())) {
+            // break;
+            // }
+            //
+            // Turn turn = server.getGameController().getTurn();
+            // turn.endTurn();
+            // String nextPlayer;
+            //
+            // if (turn.isValid()) {
+            // nextPlayer = server.getGameController().getNextPlayer();
+            // TileMessage trm =
+            // new TileMessage(server.getHost(), server.getGameController().drawTiles());
+            // sendToClient(trm);
+            // } else {
+            // nextPlayer = null;
+            // }
+            //
+            // server.sendToAll(
+            // new TurnResponseMessage(ctm.getFrom(), turn.isValid(), turn.getTurnScore(),
+            // nextPlayer, this.server.getGameController().getTileBag().getRemaining()));
+            //
+            // sendInitialGameState();
+            // running = false;
+            // disconnect();
             break;
 
           case TILE:

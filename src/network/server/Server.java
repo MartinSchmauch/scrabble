@@ -172,24 +172,46 @@ public class Server {
    * This method is called to verify the turn.
    */
   public void handleCommitTurn(CommitTurnMessage m) {
+    String from = m.getFrom();
     Turn turn = this.getGameController().getTurn();
     turn.endTurn();
-    String nextPlayer;
+
+    for (Tile t : turn.getLaydDownTiles()) {
+      System.out.println(t.getLetter().getCharacter());
+    }
 
     if (turn.isValid()) {
-      nextPlayer = this.getGameController().getNextPlayer();
-      // refill Rack with Tiles
-      List<Tile> tileList = this.gameController.drawTiles();
-      for (Tile t : tileList) {
-        t.setField(this.player.getFreeRackField());
-        this.player.addTileToRack(t);
-        this.gpc.addTile(t);
+      for (Tile t : turn.getLaydDownTiles()) {
+        t.setPlayed(true);
       }
-      // send turnResponse Message
-      this.sendToAll(new TurnResponseMessage(this.getHost(), turn.isValid(), turn.getTurnScore(),
-          nextPlayer, this.getGameController().getTileBag().getRemaining()));
-    } else {
-      nextPlayer = null;
+      this.gameState.addScore(from, turn.getTurnScore());
+      this.getGameController()
+          .setTurn(new Turn(this.getGameController().getNextPlayer(), this.getGameController()));
+
+      if (m.getFrom().equals(this.getHost())) {
+        // add new tiles to Domain and UI
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+            List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
+            for (Tile t : tileList) {
+              t.setField(player.getFreeRackField());
+              t.setOnGameBoard(false);
+              t.setOnRack(true);
+              gpc.addTile(t);
+            }
+          }
+        });
+      }
+      this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
+          this.getGameController().getNextPlayer(),
+          this.getGameController().getTileBag().getRemaining()));
+      gameState.setCurrentPlayer(this.gameController.getNextPlayer());
+
+
+    } // turn is invalid
+    else {
+      System.out.println("handleCommitTurn is invalid:");
     }
 
   }
@@ -437,10 +459,8 @@ public class Server {
               if (!trm.getIsValid()) {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
               } else {
-                gameState.addScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.indicatePlayerTurn(trm.getNextPlayer(), gameState.getCurrentPlayer());
-                gameState.setCurrentPlayer(trm.getNextPlayer());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
                 gpc.startTimer();
