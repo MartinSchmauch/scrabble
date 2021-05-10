@@ -317,20 +317,35 @@
                                        <children>
                                           <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" stylesheets="@../../src/gui/Buttons.css" text="Leave Game">
                                              <HBox.margin>
-                                                <Insets left="10.0" right="10.0" />
+                                                <Insets right="10.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
                                           </Button>
                                           <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handle" stylesheets="@../../src/gui/Buttons.css" text="Settings">
                                              <HBox.margin>
                                                 <Insets left="10.0" right="10.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
                                           </Button>
                                           <Button fx:id="stopServerButton" mnemonicParsing="false" onAction="#handle" stylesheets="@../../src/gui/Buttons.css" text="Stop Server">
                                              <HBox.margin>
-                                                <Insets left="10.0" right="10.0" />
+                                                <Insets left="10.0" />
                                              </HBox.margin>
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
                                           </Button>
                                        </children>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <VBox.margin>
+                                          <Insets bottom="10.0" />
+                                       </VBox.margin>
                                     </HBox>
                                     <StackPane alignment="BOTTOM_CENTER" maxHeight="460.0" maxWidth="340.0" prefHeight="460.0" prefWidth="340.0">
                                        <children>
@@ -371,11 +386,11 @@
                                              </StackPane.margin>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets left="10.0" />
-                                       </padding>
                                     </StackPane>
                                  </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
                               </VBox>
                            </children>
                         </HBox>
