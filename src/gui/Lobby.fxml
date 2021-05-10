@@ -85,25 +85,37 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="player1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
                               </Label>
-                              <Label fx:id="player2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
                               </Label>
-                              <Label fx:id="player3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
                               </Label>
-                              <Label fx:id="player4" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
                               </Label>
                               <ImageView fx:id="pic1" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                                  <GridPane.margin>

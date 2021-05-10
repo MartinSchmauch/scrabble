@@ -126,6 +126,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.address = current.getServer().getInetAddress().getHostAddress();
       ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
       sendMessage(cm);
+      this.ip.setText("Link:  " + address);
     } else {
       this.player.getClientProtocol().setLC(this);
       this.address = connection;
@@ -133,8 +134,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.start.setDisable(true);
       this.settings.setOpacity(0.4);
       this.settings.setDisable(true);
+      this.ip.setText("");
     }
-    this.ip.setText("Link:  " + address);
+
   }
 
   /**
@@ -242,7 +244,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
         // Player connects
-        nicknames[i].setText(players.get(i).getNickname());
+        if (players.get(i).isHost()) {
+          nicknames[i].setText(players.get(i).getNickname() + " (Host)");
+        } else if (players.get(i).getNickname().equals(this.player.getNickname())) {
+          nicknames[i].setText(players.get(i).getNickname() + " (Me)");
+        } else {
+          nicknames[i].setText(players.get(i).getNickname());
+        }
         avatars[i]
             .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
       } else {
