@@ -209,6 +209,8 @@ public class Turn implements Serializable {
     this.isValid = calculateWords();
     if (this.isValid) {
       calculateTurnScore();
+    } else {
+      this.words = new ArrayList<Word>();
     }
     System.out.println("Test");
   }
