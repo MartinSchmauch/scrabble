@@ -298,7 +298,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
             // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
             // sendMessage(m);
           } else {
-            sendGameInfoMessage(this.player.getNickname() + " left the game.");
+            sendGameInfoMessage(this.player.getNickname() + " left the game");
             Message m = new DisconnectMessage(this.player.getNickname());
             sendMessage(m);
           }
@@ -565,7 +565,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     if (!sender.equals("")) {
       this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
     } else {
+      // this.chat.setStyle("-fx-font-weight:bold");
       this.chat.appendText("\n--" + this.cc.updateChat(message, dateTime, sender) + "--");
+      // this.chat.setStyle("-fx-font-weight:normal");
     }
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
