@@ -47,6 +47,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
       case "exit":
         Stage s = (Stage) b.getScene().getWindow();
         s.close();
+        new LoginScreen().start(new Stage());
         break;
       default:
         break;
