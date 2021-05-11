@@ -62,6 +62,21 @@ public class Turn implements Serializable {
     // wordTiles describes the Tiles that build the word
     List<Tile> wordTiles = new ArrayList<Tile>();
 
+    // skip turn
+    if (this.laydDownTiles.isEmpty()) {
+      return true;
+    }
+
+    Field starField =
+        this.getGameController().getGameState().getGameBoard().getField(8, 8);
+
+    // central star field must be covered
+    if (starField.getTile() == null) {
+      return false;
+    }
+
+    boolean containsPlayedTile = false;
+
     for (Tile t : this.laydDownTiles) {
       // find Top Letter
       while (t.getTopTile() != null) {
@@ -73,6 +88,9 @@ public class Turn implements Serializable {
       while (t.getBottomTile() != null) {
         t = t.getBottomTile();
         wordTiles.add(t);
+        if (!containsPlayedTile && t.isPlayed()) {
+          containsPlayedTile = true;
+        }
       }
 
       // Check if Word is larger than two characters
@@ -108,6 +126,9 @@ public class Turn implements Serializable {
       while (t.getRightTile() != null) {
         t = t.getRightTile();
         wordTiles.add(t);
+        if (!containsPlayedTile && t.isPlayed()) {
+          containsPlayedTile = true;
+        }
       }
       if (wordTiles.size() >= 2) {
         if (this.checkIfWordAlreadyExists(wordTiles) == false) {
@@ -121,9 +142,14 @@ public class Turn implements Serializable {
       }
       wordTiles.clear();
     }
+
+    if (!containsPlayedTile && starField.getTile().isPlayed()) {
+      return false;
+    }
+
     // verify words
     boolean help2 = false;
-    if (words != null) {
+    if (!this.words.isEmpty()) {
       for (Word tileList : this.words) {
 
         // String representation of the ArrayList "tileList"
