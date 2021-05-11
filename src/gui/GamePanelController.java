@@ -62,11 +62,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private static int selectedCoordinates[] = new int[2]; // row, column
   private static int targetCoordinates[] = new int[2]; // row, column
   private ChatController cc;
-  private static VisualTile rackTiles[][] = new VisualTile[2][6]; // location of visual tiles on
-                                                                  // rack, row;column index
-  private static VisualTile boardTiles[][] = new VisualTile[15][15]; // location of visual tiles on
-                                                                     // board, row;column index
-  private final String REGULAR_SHUTDOWN = "Regular Shutdown";
+
   private int min;
   private int sec;
   private Thread thread;
@@ -310,7 +306,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         break;
       case "rulesButton":
-        // TODO:
+        OpenExternalScreen
+            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
         break;
       case "sendButton":
       case "chatInput":
@@ -336,14 +333,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
           Optional<ButtonType> result2 = alert2.showAndWait();
           if (result2.get() == ButtonType.OK) {
-
             // remove Tiles from GUI
             for (Tile t : this.tilesToExchange) {
               // TODO bei dem gesetzten True koennte ein Fehler entstehen
               this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
               this.player.removeRackTile(t.getField().getxCoordinate());
             }
-
             sendTileMessage(this.player.getNickname());
           } else {
             alert2.close();
@@ -537,6 +532,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
+   * Method that sends a message that is supposed to appear in the chat area and informs the users
+   * about a game event e.g. a player left the game. Therefore the sender is left blank.
    * 
    * @param nickname
    * @param message
@@ -625,28 +622,26 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     int row = tile.getField().getyCoordinate();
 
     if (tile.isOnRack()) {
-
       row = 0;
       if (column > 5) { // case: tile is in the second row of the rack
         row = 1;
         column -= 6;
       }
-      rackTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, true);
-      rackTiles[row][column].setMouseTransparent(true);
-      rack.add(rackTiles[row][column], column, row);
-      GridPane.setHalignment(rackTiles[row][column], HPos.CENTER);
-      GridPane.setValignment(rackTiles[row][column], VPos.BOTTOM);
-      GridPane.setMargin(rackTiles[row][column], new Insets(0, 0, 5.5, 0));
-
+      VisualTile rackTile = new VisualTile(Character.toString(letter), tileValue, true);
+      rackTile.setMouseTransparent(true);
+      rack.add(rackTile, column, row);
+      GridPane.setHalignment(rackTile, HPos.CENTER);
+      GridPane.setValignment(rackTile, VPos.BOTTOM);
+      GridPane.setMargin(rackTile, new Insets(0, 0, 5.5, 0));
     } else {
       row -= 1;
       column -= 1;
-      boardTiles[row][column] = new VisualTile(Character.toString(letter), tileValue, false);
-      boardTiles[row][column].setMouseTransparent(true);
-      board.add(boardTiles[row][column], column, row);
-      GridPane.setHalignment(boardTiles[row][column], HPos.CENTER);
-      GridPane.setValignment(boardTiles[row][column], VPos.BOTTOM);
-      GridPane.setMargin(boardTiles[row][column], new Insets(0, 10, 8, 0));
+      VisualTile boardTile = new VisualTile(Character.toString(letter), tileValue, false);
+      boardTile.setMouseTransparent(true);
+      board.add(boardTile, column, row);
+      GridPane.setHalignment(boardTile, HPos.CENTER);
+      GridPane.setValignment(boardTile, VPos.BOTTOM);
+      GridPane.setMargin(boardTile, new Insets(0, 10, 8, 0));
     }
   }
 
@@ -746,6 +741,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     });
   }
 
+  /**
+   * This method is called, when the host decides to shut down the server. For the clients this
+   * method creates a warning alert and after confirmation, the game panel is closed.
+   * 
+   * @param hostName
+   * @param reason
+   */
   public void showShutdownMessage(String hostName, String reason) {
     Platform.runLater(new Runnable() {
       @Override
@@ -761,9 +763,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
           Stage st = (Stage) rulesButton.getScene().getWindow(); // TODO: das muss schoener gehen
-                                                                 // als einen random knopf
+                                                                 // als einen random knopf zu nehmen
           st.close();
-          System.out.println("ok pressed");
           alert.close();
         }
       }
@@ -903,16 +904,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     this.server = server;
   }
 
-
   public ClientProtocol getCp() {
     return cp;
   }
 
-
   public void setCp(ClientProtocol cp) {
     this.cp = cp;
   }
-
 
   public static int[] getCoordinates() {
     return selectedCoordinates;
