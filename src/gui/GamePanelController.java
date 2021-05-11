@@ -138,9 +138,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
         if (players.get(i).isHost()) {
-          playerNameLabel[i].setText(players.get(i).getNickname() /* + " (Host)" */);
+          playerNameLabel[i].setText(players.get(i).getNickname() + " (Host)");
         } else if (players.get(i).getNickname().equals(this.player.getNickname())) {
-          playerNameLabel[i].setText(players.get(i).getNickname() /* + " (Me)" */);
+          playerNameLabel[i].setText(players.get(i).getNickname() + " (Me)");
         } else {
           playerNameLabel[i].setText(players.get(i).getNickname());
         }
@@ -294,7 +294,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
             // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
             // sendMessage(m);
           } else {
-            sendGameInfoMessage(this.player.getNickname() + " left the game");
+            sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
             Message m = new DisconnectMessage(this.player.getNickname());
             sendMessage(m);
           }
@@ -446,8 +446,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void rackDropHandling(DragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
-    System.out.println("rackReleased at: " + targetCoordinates[0] + "; " + targetCoordinates[1]);
-
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
 
@@ -558,8 +556,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
     Text[] playerNameLabel = {player1, player2, player3, player4};
     ImageView[] avatarImageView = {image1, image2, image3, image4};
-    for (int i = 0; i < 3; i++) {
-      if (playerNameLabel[i].getText().equals(playerToBeRemoved)) {
+    for (int i = 0; i < players.size(); i++) {
+      if (players.get(i).getNickname().equals(playerToBeRemoved)) {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
         playerLabel[i].setText(null);
@@ -567,7 +565,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       }
     }
   }
-
 
   /**
    * Updates Lobbychat by using the updateChat method in the Chat Controller. The String that is
@@ -583,7 +580,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
     } else {
       // this.chat.setStyle("-fx-font-weight:bold");
-      this.chat.appendText("\n--" + this.cc.updateChat(message, dateTime, sender) + "--");
+      this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender) + "");
       // this.chat.setStyle("-fx-font-weight:normal");
     }
     this.chat.setScrollTop(Double.MAX_VALUE);
@@ -596,11 +593,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param nickName
    */
   public void indicatePlayerTurn(String newPlayer) {
-    String[] playerNames =
-        {player1.getText(), player2.getText(), player3.getText(), player4.getText()};
     Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
-    for (int i = 0; i < 4; i++) {
-      if (playerNames[i].equals(newPlayer)) {
+    for (int i = 0; i < players.size(); i++) {
+      if (players.get(i).getNickname().equals(newPlayer)) {
         rect[i].setVisible(true);
       } else {
         rect[i].setVisible(false);
@@ -773,25 +768,18 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   }
 
   /**
-   * this method updates the score of an Player and shows the new score in the UI
+   * This method updates the score of an Player on the UI and shows a new totalScore.
    * 
    * @param nickName
    * @param turnScore
-   * @throws Exception
    */
   public void updateScore(String nickName, int totalScore) {
     String newScore = String.valueOf(totalScore);
-    if (player1.getText().equals(nickName)) {
-      this.playerOnePoints.setText(newScore);
-    } else if (player2.getText().equals(nickName)) {
-      this.playerTwoPoints.setText(newScore);
-    } else if (player3.getText().equals(nickName)) {
-      this.playerThreePoints.setText(newScore);
-    } else if (player4.getText().equals(nickName)) {
-      this.playerFourPoints.setText(newScore);
-    } else {
-      System.out.println("Player " + nickName + "is not part of the GameBoard"); // TODO: exception
-                                                                                 // handling
+    Text playerPoints[] = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    for (int i = 0; i < players.size(); i++) {
+      if (players.get(i).getNickname().equals(nickName)) {
+        playerPoints[i].setText(newScore);
+      }
     }
   }
 

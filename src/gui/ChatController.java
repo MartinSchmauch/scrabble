@@ -36,9 +36,12 @@ public class ChatController {
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     if (!sender.equals("")) {
       newChatMessage = newChatMessage + sender + ", ";
+      newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
+      newChatMessage += message;
+    } else {
+      newChatMessage = newChatMessage + dateTime.format(dtf) + ": --";
+      newChatMessage += message + "--";
     }
-    newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
-    newChatMessage += message;
     return newChatMessage;
   }
 
