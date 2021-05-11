@@ -1,31 +1,13 @@
 {
-<<<<<<< HEAD
   "nickname" : "martin",
   "avatar" : "/avatars/avatar2.png",
-=======
-  "nickname" : "user 1",
-  "avatar" : "/avatars/avatar8.png",
->>>>>>> refs/heads/develop_endGame_and_finalizeMVP
   "volume" : 60,
   "customGameSettings" : null,
-<<<<<<< HEAD
   "host" : false,
-=======
-  "clientProtocol" : null,
->>>>>>> refs/heads/develop_endGame_and_finalizeMVP
   "playerInfo" : {
-<<<<<<< HEAD
     "nickname" : "martin",
     "avatar" : "/avatars/avatar2.png",
-=======
-    "nickname" : "user 1",
-    "avatar" : "/avatars/avatar8.png",
->>>>>>> refs/heads/develop_endGame_and_finalizeMVP
     "host" : false
   },
-<<<<<<< HEAD
   "clientProtocol" : null
-=======
-  "host" : false
->>>>>>> refs/heads/develop_endGame_and_finalizeMVP
 }
