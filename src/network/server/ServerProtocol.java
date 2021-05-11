@@ -92,7 +92,13 @@ public class ServerProtocol extends Thread {
     Message m;
     try {
       m = (Message) in.readObject();
-      if (m.getMessageType() == MessageType.CONNECT) {
+      if (this.server.getGameState().getGameRunning()) {
+        Message rmsg = new ConnectionRefusedMessage(server.getHost(), "Game already started.");
+        out.writeObject(rmsg);
+        out.flush();
+        out.reset();
+        disconnect();
+      } else if (m.getMessageType() == MessageType.CONNECT) {
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();

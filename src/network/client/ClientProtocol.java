@@ -79,6 +79,8 @@ public class ClientProtocol extends Thread {
         ConnectMessage cm = (ConnectMessage) m;
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
+      } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED) {
+        this.clientSocket.close();
         /**
          * @author pkoenig
          */
