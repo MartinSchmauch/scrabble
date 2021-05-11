@@ -217,7 +217,6 @@ public class Server {
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
-      gameState.setCurrentPlayer(this.gameController.getNextPlayer());
 
 
     } // turn is invalid
@@ -439,6 +438,10 @@ public class Server {
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
               gpc.updateRemainingLetters(sgm.getRemainingTilesInTileBag());
+              if (!host.equals(sgm.getCurrrentPlayer())) {
+                gpc.changeDoneStatus(false);
+                gpc.changeSkipAndChangeStatus(false);
+              }
               break;
             case GAME_STATISTIC:
               GameStatisticMessage gsm = (GameStatisticMessage) m;
@@ -482,6 +485,8 @@ public class Server {
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                 gpc.startTimer();
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
+                gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
+                gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
               }
               break;
             case INVALID:
@@ -519,7 +524,7 @@ public class Server {
   }
 
   public void startGame() {
-    gameState.setCurrentPlayer(host);
+    gameState.setCurrentPlayer(this.gameController.getNextPlayer());
     sendToAll(new StartGameMessage(host, 10,
         this.gameController.getTileBag().getRemaining() - this.gameState.getAllPlayers().size() * 7,
         this.gameState.getCurrentPlayer()));

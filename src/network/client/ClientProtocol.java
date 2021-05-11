@@ -1,14 +1,14 @@
 /** @author lurny */
 package network.client;
 
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -183,6 +183,8 @@ public class ClientProtocol extends Thread {
                     if (trm.getFrom().equals(player.getNickname())) {
 
                     }
+                    gpc.changeDoneStatus(trm.getNextPlayer().equals(player.getNickname()));
+                    gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(player.getNickname()));
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
@@ -203,6 +205,10 @@ public class ClientProtocol extends Thread {
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   gpc.indicatePlayerTurn(sgMessage.getCurrrentPlayer());
+                  if (!player.getNickname().equals(sgMessage.getCurrrentPlayer())) {
+                    gpc.changeDoneStatus(false);
+                    gpc.changeSkipAndChangeStatus(false);
+                  }
                   break;
                 case GAME_STATISTIC:
                   GameStatisticMessage gsMessage = (GameStatisticMessage) m;

@@ -85,6 +85,9 @@ public class Turn implements Serializable {
       }
       // Go from Top to Bottom to build word
       wordTiles.add(t);
+      if (t.isPlayed()) {
+        containsPlayedTile = true;
+      }
       while (t.getBottomTile() != null) {
         t = t.getBottomTile();
         wordTiles.add(t);
@@ -123,6 +126,9 @@ public class Turn implements Serializable {
       }
       // Go from left to right to build word
       wordTiles.add(t);
+      if (t.isPlayed()) {
+        containsPlayedTile = true;
+      }
       while (t.getRightTile() != null) {
         t = t.getRightTile();
         wordTiles.add(t);
