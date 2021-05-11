@@ -181,13 +181,14 @@ public class Server {
     }
 
     if (turn.isValid()) {
+      int remainingTiles =
+          this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
       for (Tile t : turn.getLaydDownTiles()) {
         t.setPlayed(true);
       }
       this.gameState.addScore(from, turn.getTurnScore());
       String nextPlayer = this.getGameController().getNextPlayer();
-      this.getGameController()
-          .setTurn(new Turn(nextPlayer, this.getGameController()));
+      this.getGameController().setTurn(new Turn(nextPlayer, this.getGameController()));
 
       if (m.getFrom().equals(this.getHost())) {
         // add new tiles to Domain and UI
@@ -214,8 +215,9 @@ public class Server {
         }
       }
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
-          nextPlayer, this.getGameController().getTileBag().getRemaining()));
+          nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
+      gameState.setCurrentPlayer(this.gameController.getNextPlayer());
 
 
     } // turn is invalid
@@ -436,6 +438,7 @@ public class Server {
               lsc.startGameScreen();
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
+              gpc.updateRemainingLetters(sgm.getRemainingTilesInTileBag());
               break;
             case GAME_STATISTIC:
               GameStatisticMessage gsm = (GameStatisticMessage) m;
@@ -474,8 +477,9 @@ public class Server {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
               } else {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-                gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
-                    - gameController.getTurn().getLaydDownTiles().size());
+                gpc.indicatePlayerTurn(trm.getNextPlayer());
+                System.out.println("remainingTiles " + trm.getRemainingTilesInTileBag());
+                gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                 gpc.startTimer();
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
               }
@@ -519,17 +523,15 @@ public class Server {
     sendToAll(new StartGameMessage(host, 10,
         this.gameController.getTileBag().getRemaining() - this.gameState.getAllPlayers().size() * 7,
         this.gameState.getCurrentPlayer()));
+    System.out.println("groeße: " + this.gameState.getAllPlayers().size());
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-
     gameState.setRunning(true);
     distributeInitialTiles();
     this.gameController.setTurn(new Turn(this.host, this.gameController));
-    gpc.updateRemainingLetters(this.gameController.getTileBag().getRemaining()
-        - this.gameState.getAllPlayers().size() * 7);
 
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
   }
