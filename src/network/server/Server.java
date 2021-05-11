@@ -202,6 +202,15 @@ public class Server {
             }
           }
         });
+      } else {
+        List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
+        TileMessage tm = new TileMessage(from, tileList);
+        this.clients.get(from).sendToClient((Message) tm);
+        try {
+          Thread.sleep(50);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
           this.getGameController().getNextPlayer(),
@@ -212,6 +221,7 @@ public class Server {
     } // turn is invalid
     else {
       System.out.println("handleCommitTurn is invalid:");
+      this.getGameController().getTurn().getWords().clear();
     }
 
   }

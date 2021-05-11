@@ -155,31 +155,6 @@ public class ServerProtocol extends Thread {
           case COMMIT_TURN:
             CommitTurnMessage ctm = (CommitTurnMessage) m;
             this.server.handleCommitTurn(ctm);
-
-            // if (!ctm.getFrom().equals(server.getGameState().getCurrentPlayer())) {
-            // break;
-            // }
-            //
-            // Turn turn = server.getGameController().getTurn();
-            // turn.endTurn();
-            // String nextPlayer;
-            //
-            // if (turn.isValid()) {
-            // nextPlayer = server.getGameController().getNextPlayer();
-            // TileMessage trm =
-            // new TileMessage(server.getHost(), server.getGameController().drawTiles());
-            // sendToClient(trm);
-            // } else {
-            // nextPlayer = null;
-            // }
-            //
-            // server.sendToAll(
-            // new TurnResponseMessage(ctm.getFrom(), turn.isValid(), turn.getTurnScore(),
-            // nextPlayer, this.server.getGameController().getTileBag().getRemaining()));
-            //
-            // sendInitialGameState();
-            // running = false;
-            // disconnect();
             break;
 
           case TILE:

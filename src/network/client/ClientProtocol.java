@@ -178,8 +178,11 @@ public class ClientProtocol extends Thread {
                     gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                     gpc.indicatePlayerTurn(trm.getNextPlayer());
                     gameState.setCurrentPlayer(trm.getNextPlayer()); // do we need to do this step -
-                                                                     // fat client!
+                                                                     // // fat client!
                     gpc.startTimer();
+                    if (trm.getFrom().equals(player.getNickname())) {
+
+                    }
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
