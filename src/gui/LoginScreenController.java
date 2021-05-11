@@ -80,20 +80,17 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         case "Exit":
           System.exit(0);
           break;
-        case "Tutorial":
+        case "Info":
           OpenExternalScreen
               .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
           break;
-
         case "Settings":
-          // new SettingsScreen().start(new Stage());
-          break;
         case "Account":
           openAccount(s);
           break;
         case "Statistics":
-          new UserStatisticsScreen(this.player).start(new Stage());
           closeScreen();
+          new UserStatisticsScreen(this.player).start(new Stage());
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
@@ -169,8 +166,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       if (!this.player.getClientProtocol().isOK()) {
         CustomAlert alert = new CustomAlert(AlertType.ERROR);
         alert.setTitle("Error");
-        alert.setHeaderText(null);
-        alert.setContentText("Could not establish connection.");
+        alert.setHeaderText("Could not establish connection.");
+        alert.setContentText("Check Link and try again.");
         alert.show();
         return;
       }
