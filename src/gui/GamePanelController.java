@@ -141,7 +141,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
-        playerNameLabel[i].setText(players.get(i).getNickname());
+        if (players.get(i).isHost()) {
+          playerNameLabel[i].setText(players.get(i).getNickname() + " (Host)");
+        } else if (players.get(i).getNickname().equals(this.player.getNickname())) {
+          playerNameLabel[i].setText(players.get(i).getNickname() + " (Me)");
+        } else {
+          playerNameLabel[i].setText(players.get(i).getNickname());
+        }
         pointsLabel[i].setText("0");
         playerLabel[i].setText("Points: ");
         avatarImageView[i]
@@ -292,6 +298,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
             // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
             // sendMessage(m);
           } else {
+            sendGameInfoMessage(this.player.getNickname() + " left the game.");
             Message m = new DisconnectMessage(this.player.getNickname());
             sendMessage(m);
           }
@@ -511,6 +518,15 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   /**
    * 
+   * @param nickname
+   * @param message
+   */
+  public void sendGameInfoMessage(String message) {
+    this.cc.sendChatMessage("", message);
+  }
+
+  /**
+   * 
    * Methods to be used by the ClientProtocol to change the UI of the Client
    * 
    */
@@ -546,7 +562,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param dateTime
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
-    this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
+    if (!sender.equals("")) {
+      this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
+    } else {
+      this.chat.appendText("\n--" + this.cc.updateChat(message, dateTime, sender) + "--");
+    }
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
 

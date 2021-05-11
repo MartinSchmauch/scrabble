@@ -26,6 +26,7 @@ public class ChatController {
    * updates the chat field with a given message.
    *
    * @author mschmauch
+   * 
    * @param message content of message
    * @param dateTime time, message was sent
    * @param sender username of player sending message
@@ -33,11 +34,12 @@ public class ChatController {
   public String updateChat(String message, LocalDateTime dateTime, String sender) {
     String newChatMessage = "";
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
-    newChatMessage = newChatMessage + sender + ", ";
+    if (!sender.equals("")) {
+      newChatMessage = newChatMessage + sender + ", ";
+    }
     newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
     newChatMessage += message;
     return newChatMessage;
-
   }
 
   /**
