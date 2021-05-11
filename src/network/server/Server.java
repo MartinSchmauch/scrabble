@@ -185,8 +185,9 @@ public class Server {
         t.setPlayed(true);
       }
       this.gameState.addScore(from, turn.getTurnScore());
+      String nextPlayer = this.getGameController().getNextPlayer();
       this.getGameController()
-          .setTurn(new Turn(this.getGameController().getNextPlayer(), this.getGameController()));
+          .setTurn(new Turn(nextPlayer, this.getGameController()));
 
       if (m.getFrom().equals(this.getHost())) {
         // add new tiles to Domain and UI
@@ -213,15 +214,14 @@ public class Server {
         }
       }
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
-          this.getGameController().getNextPlayer(),
-          this.getGameController().getTileBag().getRemaining()));
-      gameState.setCurrentPlayer(this.gameController.getNextPlayer());
+          nextPlayer, this.getGameController().getTileBag().getRemaining()));
+      gameState.setCurrentPlayer(nextPlayer);
 
 
     } // turn is invalid
     else {
       System.out.println("handleCommitTurn is invalid:");
-      this.getGameController().getTurn().getWords().clear();
+      sendToAll(new InvalidMoveMessage(from, "Invalid Turn. Try Again."));
     }
 
   }
@@ -474,7 +474,6 @@ public class Server {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
               } else {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-                gpc.indicatePlayerTurn(trm.getNextPlayer());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag()
                     - gameController.getTurn().getLaydDownTiles().size());
                 gpc.startTimer();

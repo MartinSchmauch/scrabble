@@ -1,10 +1,10 @@
 package mechanic;
 
+import game.GameController;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import game.GameController;
 
 /**
  * An object of this class is used for each player turn. It is used to find all words that emerge
@@ -210,7 +210,7 @@ public class Turn implements Serializable {
     if (this.isValid) {
       calculateTurnScore();
     } else {
-      this.words = new ArrayList<Word>();
+      this.words.clear();
     }
     System.out.println("Test");
   }
