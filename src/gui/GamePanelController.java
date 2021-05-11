@@ -142,9 +142,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
         if (players.get(i).isHost()) {
-          playerNameLabel[i].setText(players.get(i).getNickname() + " (Host)");
+          playerNameLabel[i].setText(players.get(i).getNickname() /* + " (Host)" */);
         } else if (players.get(i).getNickname().equals(this.player.getNickname())) {
-          playerNameLabel[i].setText(players.get(i).getNickname() + " (Me)");
+          playerNameLabel[i].setText(players.get(i).getNickname() /* + " (Me)" */);
         } else {
           playerNameLabel[i].setText(players.get(i).getNickname());
         }
