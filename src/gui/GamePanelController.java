@@ -319,7 +319,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       case "skipAndChangeButton":
         if (!exchangeTilesMode) {
           exchangeTilesMode = true;
-          skipAndChangeButton.setDisable(true);
+          changeSkipAndChangeStatus(false);
         }
         break;
       case "doneButton":
@@ -356,7 +356,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           }
           tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
           exchangeTilesMode = false;
-          skipAndChangeButton.setDisable(false);
+          changeSkipAndChangeStatus(true);
         } else {
           sendCommitTurn(this.player.getNickname());
         }
@@ -364,6 +364,26 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       default:
         break;
     }
+  }
+
+  /**
+   * This method sets the Disable property of the skipAndChange Button. When you set toBeActivated
+   * on 'true', the Button is being activated.
+   * 
+   * @param toBeActivated
+   */
+  public void changeSkipAndChangeStatus(boolean toBeActivated) {
+    skipAndChangeButton.setDisable(!toBeActivated);
+  }
+
+  /**
+   * This method sets the Disable property of the done Button. When you set toBeActivated on 'true',
+   * the Button is being activated.
+   * 
+   * @param toBeActivated
+   */
+  public void changeDoneStatus(boolean toBeActivated) {
+    doneButton.setDisable(!toBeActivated);
   }
 
   /**
