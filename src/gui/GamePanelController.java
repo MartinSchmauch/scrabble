@@ -46,6 +46,7 @@ import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
+import network.messages.ResetTurnMessage;
 import network.messages.TileMessage;
 import network.server.Server;
 
@@ -230,12 +231,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
-      }
-      // Send it
-      else if (this.server != null) {
-        System.out.println("lösche das im Gamepanelcontroller Zeile 185");
-        this.server.resetTurnForEveryPlayer();
-        // TODO für client implementieren
+        this.sendResetTurnForEveryPlayer(player.getNickname());
       } else {
         this.sec--;
       }
@@ -249,6 +245,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.turnCountdown = false;
       }
     }
+
   }
 
   /**
@@ -268,8 +265,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
 
     this.thread = new Thread(this);
-    this.min = 10;
-    this.sec = 0;
+    this.min = 0;
+    this.sec = 10;
     this.turnCountdown = true;
     this.thread.start();
   }
@@ -853,6 +850,20 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     Message m = new CommitTurnMessage(nickName);
     if (this.player.isHost()) {
       this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
+    } else {
+      sendMessage(m);
+    }
+  }
+
+  /**
+   * This Message is used to Reset the current turn for every player.
+   * 
+   * @author lurny
+   */
+  public void sendResetTurnForEveryPlayer(String nickName) {
+    Message m = new ResetTurnMessage(nickName, null);
+    if (this.player.isHost()) {
+      this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
     } else {
       sendMessage(m);
     }

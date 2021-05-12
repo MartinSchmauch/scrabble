@@ -158,7 +158,7 @@ public class Server {
    * 
    * @author lurny
    */
-  public void resetTurnForEveryPlayer() {
+  public void resetTurnForEveryPlayer(ResetTurnMessage m) {
     List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
     this.sendToAll((Message) new ResetTurnMessage(this.host, tileList));
     // remove Tiles from UI Gameboard and domain Gameboard
