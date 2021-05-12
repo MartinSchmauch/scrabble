@@ -207,6 +207,8 @@ public class ClientProtocol extends Thread {
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   gpc.indicatePlayerTurn(sgMessage.getCurrrentPlayer());
+                  gpc.updateChat("-- " + sgMessage.getCurrrentPlayer() + ", you begin! --", null,
+                      "");
                   if (!player.getNickname().equals(sgMessage.getCurrrentPlayer())) {
                     gpc.changeDoneStatus(false);
                     gpc.changeSkipAndChangeStatus(false);

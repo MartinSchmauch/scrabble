@@ -32,16 +32,21 @@ public class ChatController {
    * @param sender username of player sending message
    */
   public String updateChat(String message, LocalDateTime dateTime, String sender) {
-    String newChatMessage = "";
+    String newChatMessage = "\n";
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");
     if (!sender.equals("")) {
       newChatMessage = newChatMessage + sender + ", ";
       newChatMessage = newChatMessage + dateTime.format(dtf) + ": ";
       newChatMessage += message;
     } else {
-      newChatMessage = newChatMessage + dateTime.format(dtf) + ": --";
-      newChatMessage += message + "--";
+      if (dateTime != null) {
+        newChatMessage = newChatMessage + dateTime.format(dtf) + ": --";
+        newChatMessage += message + "--";
+      } else {
+        newChatMessage += message;
+      }
     }
+
     return newChatMessage;
   }
 

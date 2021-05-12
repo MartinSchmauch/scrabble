@@ -1,6 +1,7 @@
 package mechanic;
 
 import game.GameController;
+import game.GameSettings;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class Turn implements Serializable {
   private int turnScore;
   private boolean isValid;
   private GameController gameController;
+  private String stringRepresentation;
   private static String baseDir = System.getProperty("user.dir")
       + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
   private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
@@ -32,6 +34,7 @@ public class Turn implements Serializable {
     this.words = new ArrayList<Word>();
     this.laydDownTiles = new ArrayList<Tile>();
     this.turnScore = 0;
+    this.stringRepresentation = "not calculated";
   }
 
   public boolean addTileToTurn(Tile t) {
@@ -59,11 +62,9 @@ public class Turn implements Serializable {
    * Scrabble Words. If one word does not exists the method returns false.
    */
   public boolean calculateWords() {
-    // wordTiles describes the Tiles that build the word
-    List<Tile> wordTiles = new ArrayList<Tile>();
-
     // skip turn
     if (this.laydDownTiles.isEmpty()) {
+      stringRepresentation = "Turn skipped.";
       return true;
     }
 
@@ -72,90 +73,155 @@ public class Turn implements Serializable {
 
     // central star field must be covered
     if (starField.getTile() == null) {
+      stringRepresentation = "Invalid: Star field not covered.";
       return false;
     }
+      
+    // word list describes the Tiles that build the word
+    List<Tile> word = new ArrayList<Tile>();
 
-    boolean containsPlayedTile = false;
+    int playedTiles = 0;
+    int scoredTiles = 0;
+    boolean horizontal = false;
+    boolean vertical = false;
+    CALCULATE_MAIN_WORD: {
+      Tile t = this.laydDownTiles.get(0);
+      Tile pivotTile = t;
+      word.add(pivotTile);
 
-    for (Tile t : this.laydDownTiles) {
-      // find Top Letter
-      while (t.getTopTile() != null) {
-        t = t.getTopTile();
-        // System.out.println("i am here");
-      }
-      // Go from Top to Bottom to build word
-      wordTiles.add(t);
-      if (t.isPlayed()) {
-        containsPlayedTile = true;
-      }
-      while (t.getBottomTile() != null) {
-        t = t.getBottomTile();
-        wordTiles.add(t);
-        if (!containsPlayedTile && t.isPlayed()) {
-          containsPlayedTile = true;
-        }
-      }
-
-      // Check if Word is larger than two characters
-      if (wordTiles.size() >= 2) {
-        if (this.checkIfWordAlreadyExists(wordTiles) == false) {
-          // Make Deep Copy of ArrayList wordTiles
-          List<Tile> helpList = new ArrayList<Tile>();
-          for (Tile element : wordTiles) {
-            helpList.add(element);
-          }
-          this.words.add(new Word(helpList));
-        }
-      }
-      wordTiles.clear();
-    }
-
-    wordTiles.clear();
-    for (Tile t : this.laydDownTiles) {
-
-      // find leftest Letter
-      while (t.getLeftTile() != null) {
-        // System.out.println("IN TURN:");
-        // System.out.println(t);
-
-        t = t.getLeftTile();
-        // System.out.println(t);
-        // System.out.println("t.getField().getTile()");
-        // System.out.println(t.getField().getTile());
-        // System.out.println("------------");
-      }
-      // Go from left to right to build word
-      wordTiles.add(t);
-      if (t.isPlayed()) {
-        containsPlayedTile = true;
-      }
+      // check horizontal
       while (t.getRightTile() != null) {
         t = t.getRightTile();
-        wordTiles.add(t);
-        if (!containsPlayedTile && t.isPlayed()) {
-          containsPlayedTile = true;
+        word.add(t);
+        if (t.isPlayed()) {
+          playedTiles++;
         }
       }
-      if (wordTiles.size() >= 2) {
-        if (this.checkIfWordAlreadyExists(wordTiles) == false) {
-          // Make Deep Copy of ArrayList wordTiles
-          List<Tile> helpList = new ArrayList<Tile>();
-          for (Tile element : wordTiles) {
-            helpList.add(element);
-          }
-          this.words.add(new Word(helpList));
+      t = pivotTile;
+      while (t.getLeftTile() != null) {
+        t = t.getLeftTile();
+        word.add(0, t);
+        if (t.isPlayed()) {
+          playedTiles++;
         }
       }
-      wordTiles.clear();
-    }
+      
+      if(word.size() > 1) {
+        // System.out.println("horizontal " + word.toString());
+        horizontal = true;
+        break CALCULATE_MAIN_WORD;
+      }
+  
+      // check vertical
+      t = pivotTile;
+      while (t.getTopTile() != null) {
+        t = t.getTopTile();
+        word.add(0, t);
+        if (t.isPlayed()) {
+          playedTiles++;
+        }
+      }
+      t = pivotTile;
+      while (t.getBottomTile() != null) {
+        t = t.getBottomTile();
+        word.add(t);
+        if (t.isPlayed()) {
+          playedTiles++;
+        }
+      }
 
-    if (!containsPlayedTile && starField.getTile().isPlayed()) {
+      if (word.size() > 1) {
+        // System.out.println("vertical " + word.toString());
+        vertical = true;
+        break CALCULATE_MAIN_WORD;
+      }
+
+      // System.out.println("isolated");
+      stringRepresentation = "Invalid: Single letter is not a word.";
       return false;
     }
 
-    // verify words
-    boolean help2 = false;
+    // add main word to word list
+    this.words.add(new Word(word));
+    scoredTiles += word.size();
+    word.clear();
+
+    // find additional words
+    if (vertical) {
+      for (Tile t : this.laydDownTiles) {
+        Tile pivotTile = t;
+        word.add(pivotTile);
+        while (t.getRightTile() != null) {
+          t = t.getRightTile();
+          if (!t.isPlayed()) {
+            stringRepresentation = "Invalid: No continous word played.";
+            return false;
+          }
+          playedTiles++;
+          word.add(t);
+        }
+        t = pivotTile;
+        while (t.getLeftTile() != null) {
+          t = t.getLeftTile();
+          if (!t.isPlayed()) {
+            stringRepresentation = "Invalid: No continous word played.";
+            return false;
+          }
+          playedTiles++;
+          word.add(0, t);
+        }
+
+        if (word.size() > 1) {
+          this.words.add(new Word(word));
+          scoredTiles += word.size();
+        }
+
+        word.clear();
+      }
+    } else if (horizontal) {
+      for (Tile t : this.laydDownTiles) {
+        Tile pivotTile = t;
+        word.add(pivotTile);
+        while (t.getBottomTile() != null) {
+          t = t.getBottomTile();
+          if (!t.isPlayed()) {
+            stringRepresentation = "Invalid: No continous word played.";
+            return false;
+          }
+          playedTiles++;
+          word.add(t);
+        }
+        t = pivotTile;
+        while (t.getTopTile() != null) {
+          t = t.getTopTile();
+          if (!t.isPlayed()) {
+            stringRepresentation = "Invalid: No continous word played.";
+            return false;
+          }
+          playedTiles++;
+          word.add(0, t);
+        }
+
+        if (word.size() > 1) {
+          this.words.add(new Word(word));
+          scoredTiles += word.size();
+        }
+
+        word.clear();
+      }
+    }
+
+    // checks if there are unconnected tiles or words
+    if (scoredTiles - playedTiles < this.laydDownTiles.size()
+        || playedTiles == 0 && starField.getTile().isPlayed()) {
+      stringRepresentation = "Invalid: Separate words.";
+      return false;
+    }
+
+    // verify words with dictionary
+    boolean inDictionary = false;
     if (!this.words.isEmpty()) {
+      stringRepresentation = this.words.toString();
       for (Word tileList : this.words) {
 
         // String representation of the ArrayList "tileList"
@@ -163,14 +229,16 @@ public class Turn implements Serializable {
 
         for (String s : this.gameController.getDictionary()) {
           if (wordString.equalsIgnoreCase(s)) {
-            help2 = true;
+            inDictionary = true;
+            break;
           }
         }
 
-        if (help2 == false) {
-          return help2;
+        if (!inDictionary) {
+          stringRepresentation += "\n" + wordString + " not in dictionary.";
+          return false;
         }
-        help2 = false;
+        inDictionary = false;
 
       }
       return true;
@@ -187,15 +255,23 @@ public class Turn implements Serializable {
    */
   public int calculateTurnScore() {
     // calculate word score
+    if (this.laydDownTiles.size() == 7) {
+      this.turnScore = GameSettings.getBingo();
+    }
+
     for (Word w : this.words) {
       int localWordMultiplier = 1;
       int singleWordScore = 0;
+      this.stringRepresentation += "\n";
 
       for (Tile t : w.getTiles()) {
         singleWordScore += t.getValue() * t.getField().getLetterMultiplier();
+        this.stringRepresentation += t.getLetter().getCharacter() + "["
+            + t.getValue() * t.getField().getLetterMultiplier() + "] ";
         localWordMultiplier = localWordMultiplier * t.getField().getWordMultiplier();
       }
       singleWordScore = singleWordScore * localWordMultiplier;
+      this.stringRepresentation += ("* " + localWordMultiplier + " = " + singleWordScore);
       this.turnScore = this.turnScore + singleWordScore;
     }
 
@@ -209,30 +285,6 @@ public class Turn implements Serializable {
     return this.turnScore;
   }
 
-  /** Methods checks, if a new Word already exists in the List Turn.words */
-  public boolean checkIfWordAlreadyExists(List<Tile> wordTiles) {
-    boolean check = false;
-    for (Word w : this.words) {
-      if (w.getTiles().size() == wordTiles.size()) {
-        check = true;
-        for (int i = 0; i < wordTiles.size(); i++) {
-          if (w.getTiles().get(i).getField().getxCoordinate() == wordTiles.get(i).getField()
-              .getxCoordinate()
-              && w.getTiles().get(i).getField().getyCoordinate() == wordTiles.get(i).getField()
-                  .getyCoordinate()) {
-            check = check & true;
-          } else {
-            check = false;
-          }
-        }
-        if (check) {
-          return check;
-        }
-      }
-    }
-    return check;
-  }
-
   /**
    * Ends the current turn and calculates turn score.
    */
@@ -244,7 +296,6 @@ public class Turn implements Serializable {
     } else {
       this.words.clear();
     }
-    System.out.println("Test");
   }
 
   public void setLaydDownTiles(List<Tile> laydDownTiles) {
@@ -301,6 +352,10 @@ public class Turn implements Serializable {
 
   public GameController getGameController() {
     return gameController;
+  }
+
+  public String toString() {
+    return stringRepresentation;
   }
 
 

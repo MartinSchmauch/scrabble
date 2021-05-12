@@ -1,5 +1,6 @@
 package mechanic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class Word {
   private List<Tile> tiles;
 
   public Word(List<Tile> tiles) {
-    this.tiles = tiles;
+    this.tiles = new ArrayList<Tile>(tiles);
   }
 
   public List<Tile> getTiles() {

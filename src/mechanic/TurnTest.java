@@ -30,38 +30,19 @@ public class TurnTest {
     GameState gs1 = new GameState(pd1, null);
     GameController gc1 = new GameController(gs1);
 
-    tile1 = new Tile(new Letter('C', 1, 1), l1);
-    tile2 = new Tile(new Letter('L', 1, 1), l2);
-    tile3 = new Tile(new Letter('O', 1, 1), l3);
-    tile4 = new Tile(new Letter('S', 1, 1), l4);
-    tile5 = new Tile(new Letter('E', 1, 1), l5);
+    tile1 = new Tile(new Letter('C', 1, 1));
+    tile2 = new Tile(new Letter('L', 1, 1));
+    tile3 = new Tile(new Letter('O', 1, 1));
+    tile4 = new Tile(new Letter('S', 1, 1));
+    tile5 = new Tile(new Letter('E', 1, 1));
 
-    GameBoard gb = new GameBoard(15);
-    gb.getField(1, 1).setTile(tile1);
-    gb.getField(1, 1).setLetterMultiplier(1);
-    gb.getField(1, 1).setWordMultiplier(2);
+    GameBoard gb = gs1.getGameBoard();
 
-    gb.getField(2, 1).setTile(tile2);
-    gb.getField(2, 1).setLetterMultiplier(2);
-    gb.getField(2, 1).setWordMultiplier(1);
-
-    gb.getField(3, 1).setTile(tile3);
-    gb.getField(3, 1).setLetterMultiplier(1);
-    gb.getField(3, 1).setWordMultiplier(1);
-
-    gb.getField(4, 1).setTile(tile4);
-    gb.getField(4, 1).setLetterMultiplier(1);
-    gb.getField(4, 1).setWordMultiplier(1);
-
-    gb.getField(5, 1).setTile(tile5);
-    gb.getField(5, 1).setLetterMultiplier(1);
-    gb.getField(5, 1).setWordMultiplier(1);
-
-    tile1.setField(gb.getField(1, 1));
-    tile2.setField(gb.getField(2, 1));
-    tile3.setField(gb.getField(3, 1));
-    tile4.setField(gb.getField(4, 1));
-    tile5.setField(gb.getField(5, 1));
+    tile1.setField(gb.getField(4, 8));
+    tile2.setField(gb.getField(5, 8));
+    tile3.setField(gb.getField(6, 8));
+    tile4.setField(gb.getField(7, 8));
+    tile5.setField(gb.getField(8, 8));
 
     turn = new Turn("TestPlayer", gc1);
 
@@ -91,21 +72,34 @@ public class TurnTest {
     t1 = new Tile(new Letter('T', 1, 1));
     e = new Tile(new Letter('E', 1, 1));
 
-    GameBoard gb2 = new GameBoard(15);
-    gb2.getField(1, 3).setTile(h);
-    gb2.getField(2, 3).setTile(o);
-    gb2.getField(3, 3).setTile(r);
-    gb2.getField(4, 3).setTile(n);
-    gb2.getField(3, 1).setTile(f);
-    gb2.getField(3, 2).setTile(a);
-    gb2.getField(3, 4).setTile(m);
-    gb2.getField(4, 4).setTile(o2);
-    gb2.getField(5, 4).setTile(b);
-    gb2.getField(1, 5).setTile(p);
-    gb2.getField(2, 5).setTile(a2);
-    gb2.getField(3, 5).setTile(s);
-    gb2.getField(4, 5).setTile(t1);
-    gb2.getField(5, 5).setTile(e);
+    f.setPlayed(true);
+    a.setPlayed(true);
+    r.setPlayed(true);
+    m.setPlayed(true);
+    s.setPlayed(true);
+    h.setPlayed(true);
+    o.setPlayed(true);
+    n.setPlayed(true);
+    p.setPlayed(true);
+    a2.setPlayed(true);
+    t1.setPlayed(true);
+    e.setPlayed(true);
+
+    GameBoard gb2 = gs2.getGameBoard();
+    gb2.getField(4, 7).setTile(h);
+    gb2.getField(5, 7).setTile(o);
+    gb2.getField(6, 7).setTile(r);
+    gb2.getField(7, 7).setTile(n);
+    gb2.getField(6, 5).setTile(f);
+    gb2.getField(6, 6).setTile(a);
+    gb2.getField(6, 8).setTile(m);
+    gb2.getField(7, 8).setTile(o2);
+    gb2.getField(8, 8).setTile(b);
+    gb2.getField(4, 9).setTile(p);
+    gb2.getField(5, 9).setTile(a2);
+    gb2.getField(6, 9).setTile(s);
+    gb2.getField(7, 9).setTile(t1);
+    gb2.getField(8, 9).setTile(e);
 
     turn2 = new Turn("TestPlayer2", gc2);
     turn2.addTileToTurn(o2);
@@ -124,6 +118,7 @@ public class TurnTest {
     turn.calculateWords();
     turn.calculateTurnScore();
     assertEquals(12, turn.getTurnScore());
+    System.out.println(turn);
   }
 
   /**
@@ -134,14 +129,10 @@ public class TurnTest {
   @Test
   public void calculateWordsTest2() {
     assertEquals(true, turn2.calculateWords());
-  }
-
-  @Test
-  public void calculateWordScoreTest2() {
-    turn2.calculateWords();
     turn2.calculateTurnScore();
-    assertEquals(8, turn2.getTurnScore());
+    assertEquals(15, turn2.getTurnScore());
+    // mob 6 Punkte (Double Word), not 5 Punkte (2x Double Letter), be 4 Punkte (Double Word)
+    System.out.println(turn2);
   }
-
 
 }

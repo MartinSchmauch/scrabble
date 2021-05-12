@@ -185,10 +185,7 @@ public class Server {
     String from = m.getFrom();
     Turn turn = this.getGameController().getTurn();
     turn.endTurn();
-
-    for (Tile t : turn.getLaydDownTiles()) {
-      System.out.println(t.getLetter().getCharacter());
-    }
+    sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
     if (turn.isValid()) {
       int remainingTiles =
@@ -228,12 +225,11 @@ public class Server {
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
 
-
-    } // turn is invalid
-    else {
-      System.out.println("handleCommitTurn is invalid:");
-      sendToAll(new InvalidMoveMessage(from, "Invalid Turn. Try Again."));
     }
+    // else { // turn is invalid
+    // sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from), null,
+    // this.gameController.getTileBag().getRemaining()));
+    // }
 
   }
 
@@ -448,6 +444,7 @@ public class Server {
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
               gpc.updateRemainingLetters(sgm.getRemainingTilesInTileBag());
+              gpc.updateChat("-- " + sgm.getCurrrentPlayer() + ", you begin! --", null, "");
               if (!host.equals(sgm.getCurrrentPlayer())) {
                 gpc.changeDoneStatus(false);
                 gpc.changeSkipAndChangeStatus(false);
@@ -497,6 +494,8 @@ public class Server {
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
                 gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
                 gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
+                sendToAll(new UpdateChatMessage("",
+                    "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
               }
               break;
             case INVALID:
