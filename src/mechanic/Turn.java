@@ -26,6 +26,8 @@ public class Turn implements Serializable {
   private static String baseDir = System.getProperty("user.dir")
       + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
   private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
+  private boolean containedStarTiles;
+  private List<Tile> starTiles;
 
 
   public Turn(String player, GameController gamecontroller) {
@@ -35,6 +37,8 @@ public class Turn implements Serializable {
     this.laydDownTiles = new ArrayList<Tile>();
     this.turnScore = 0;
     this.stringRepresentation = "not calculated";
+    this.containedStarTiles = false;
+    this.starTiles = new ArrayList<Tile>();
   }
 
   public boolean addTileToTurn(Tile t) {
@@ -75,24 +79,22 @@ public class Turn implements Serializable {
       stringRepresentation = "Invalid: Star field not covered.";
       return false;
     }
-    boolean containsStars = false;
-    ArrayList<Tile> starTiles = new ArrayList<Tile>();
     for (Tile t : this.laydDownTiles) {
       if (t.getLetter().getCharacter() == '*') {
-        containsStars = true;
-        starTiles.add(t);
+        this.containedStarTiles = true;
+        this.starTiles.add(t);
       }
     }
-    if (containsStars) {
+    if (this.containedStarTiles) {
       int maxScore = 0;
       int maxIndex = -1;
-      for (int i = 0; i < Math.pow(26, starTiles.size()); i++) {
+      for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
         for (int k = 0; k < starTiles.size(); k++) {
           if (k == 0) {
-            starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / 1) % 26)));
+            this.starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / 1) % 26)));
           }
           else {
-            starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / (k*26)) % 26)));
+            this.starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / (k*26)) % 26)));
           }
         }
         if (calculateWordsHelper()) {
@@ -106,12 +108,12 @@ public class Turn implements Serializable {
         return false;
       }
       else {
-        for (int k = 0; k < starTiles.size(); k++) {
+        for (int k = 0; k < this.starTiles.size(); k++) {
           if (k == 0) {
-            starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / 1) % 26)));
+            this.starTiles.get(this.starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / 1) % 26)));
           }
           else {
-            starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / (k*26)) % 26)));
+            this.starTiles.get(this.starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / (k*26)) % 26)));
           }
         }
         calculateWordsHelper();
@@ -420,6 +422,34 @@ public class Turn implements Serializable {
 
   public String toString() {
     return stringRepresentation;
+  }
+
+  /**
+   * @return the containedStarTiles
+   */
+  public boolean isContainedStarTiles() {
+    return containedStarTiles;
+  }
+
+  /**
+   * @param containedStarTiles the containedStarTiles to set
+   */
+  public void setContainedStarTiles(boolean containedStarTiles) {
+    this.containedStarTiles = containedStarTiles;
+  }
+
+  /**
+   * @return the starTiles
+   */
+  public List<Tile> getStarTiles() {
+    return starTiles;
+  }
+
+  /**
+   * @param starTiles the starTiles to set
+   */
+  public void setStarTiles(List<Tile> starTiles) {
+    this.starTiles = starTiles;
   }
 
 

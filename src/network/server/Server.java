@@ -221,6 +221,17 @@ public class Server {
           e.printStackTrace();
         }
       }
+      if (turn.isContainedStarTiles()) {
+        for (Tile t : turn.getStarTiles()) {
+          this.sendToAll(new RemoveTileMessage(from, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          this.sendToAll(new AddTileMessage(from, t, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
+        }
+      }
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
