@@ -55,7 +55,7 @@ public class UserSettingsScreen extends Application {
   public synchronized void start(Stage stage) {
 
     try {
-      this.root = FXMLLoader.load(getClass().getResource("/UserSettings.fxml"));
+      this.root = FXMLLoader.load(getClass().getResource("UserSettings.fxml"));
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.initStyle(StageStyle.UNDECORATED);

@@ -113,9 +113,9 @@ public class LoginScreen extends Application {
       }
     }
 
-    Font.loadFont(getClass().getResourceAsStream("/Scrabble.ttf"), 14);
+    Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
-      this.root = FXMLLoader.load(getClass().getResource("/LoginScreenFXML.fxml"));
+      this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
     }
