@@ -1,10 +1,10 @@
 package gui;
 
-import game.GameState;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import game.GameState;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -862,12 +862,17 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
   public void sendResetTurnForEveryPlayer(String nickName) {
-    Message m = new ResetTurnMessage(nickName, null);
+    System.out.println("Test1");
     if (this.player.isHost()) {
+      Message m = new ResetTurnMessage(this.player.getNickname(), null);
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
-    } else {
-      sendMessage(m);
     }
+    // if (this.player.isHost()) {
+    // this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+    // }
+    // else {
+    // sendMessage(m);
+    // }
   }
 
   @Override

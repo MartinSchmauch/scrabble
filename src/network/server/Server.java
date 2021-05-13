@@ -158,6 +158,7 @@ public class Server {
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
+    System.out.println("Test");
     List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
     this.sendToAll((Message) new ResetTurnMessage(m.getFrom(), tileList));
     // remove Tiles from domain Gameboard
@@ -206,7 +207,7 @@ public class Server {
       }
       this.gameState.addScore(from, turn.getTurnScore());
       String nextPlayer = this.getGameController().getNextPlayer();
-      
+
       if (m.getFrom().equals(this.getHost())) {
         // add new tiles to Domain and UI
         Platform.runLater(new Runnable() {
@@ -604,8 +605,8 @@ public class Server {
   public void endGame() {
     Turn turn = this.gameController.getTurn();
     sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
-        this.gameState.getScore(turn.getPlayer()),
-        null, this.gameController.getTileBag().getRemaining()));
+        this.gameState.getScore(turn.getPlayer()), null,
+        this.gameController.getTileBag().getRemaining()));
 
     try {
       Thread.sleep(2000);

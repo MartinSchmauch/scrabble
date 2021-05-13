@@ -13,7 +13,6 @@ import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
-import network.messages.ResetTurnMessage;
 import network.messages.SendChatMessage;
 import network.messages.TileMessage;
 import network.messages.UpdateChatMessage;
@@ -167,20 +166,11 @@ public class ServerProtocol extends Thread {
           case TILE:
             TileMessage tm = (TileMessage) m;
             this.server.handleExchangeTiles(tm);
-
-
-
-            // TODO reset turn; turn is valid as well if laydowntiles is empty
-            // this.server.getGameController().getTurn().endTurn();
-            // Turn skipTurn = server.getGameController().getTurn();
-            // server.sendToAll(new TurnResponseMessage(tm.getFrom(), skipTurn.isValid(),
-            // skipTurn.getTurnScore(), server.getGameController().getNextPlayer(),
-            // this.server.getGameController().getTileBag().getRemaining()));
             break;
-          case RESET_TURN:
-            ResetTurnMessage rtMessage = (ResetTurnMessage) m;
-            this.server.resetTurnForEveryPlayer(rtMessage);
-            break;
+          // case RESET_TURN:
+          // ResetTurnMessage rtMessage = (ResetTurnMessage) m;
+          // this.server.resetTurnForEveryPlayer(rtMessage);
+          // break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;
             UpdateChatMessage ucm =
