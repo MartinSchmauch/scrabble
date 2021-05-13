@@ -105,6 +105,11 @@ public class Turn implements Serializable {
         }
       }
       if (maxIndex == -1) {
+        this.stringRepresentation = "Invalid: No word with joker tile found.";
+        for (Tile t : starTiles) {
+          t.setLetter(GameSettings.getLetters().get('*'));
+        }
+        this.starTiles.clear();
         return false;
       }
       else {
