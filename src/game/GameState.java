@@ -1,5 +1,6 @@
 package game;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,9 +40,9 @@ public class GameState implements Serializable {
     JsonHandler jsonHandler = new JsonHandler();
 
     if (customGameSettings != null) {
-      jsonHandler.loadGameSettings(customGameSettings);
+      jsonHandler.loadGameSettings(new File(customGameSettings));
     } else {
-      jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
+      jsonHandler.loadGameSettings(new File("resources/defaultGameSettings.json"));
       System.out.println("!");
     }
 

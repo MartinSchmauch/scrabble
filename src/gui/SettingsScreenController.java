@@ -223,7 +223,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         OpenExternalScreen.open(GameSettings.getDictionary());
         break;
       case "restore":
-        new JsonHandler().loadGameSettings("resources/defaultGameSettings.json");
+        new JsonHandler().loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
         setUpLabels();
         break;
       case "exit":
@@ -248,7 +248,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     GameSettings.setMaxScore(Integer.parseInt(score.getText()));
     GameSettings.setGameBoardSize(Integer.parseInt(size.getText()));
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
-    new JsonHandler().saveGameSettings("resources/gameSettingsTest.json");
+    new JsonHandler().saveGameSettings(new File(FileParameters.datadir + "gameSettingsTest.json"));
 
   }
 

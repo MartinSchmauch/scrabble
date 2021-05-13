@@ -8,9 +8,15 @@ package network.messages;
  */
 public class CommitTurnMessage extends Message {
   private static final long serialVersionUID = 1L;
+  private boolean tilesLeftOnRack;
 
-  public CommitTurnMessage(String from) {
+  public CommitTurnMessage(String from, boolean tilesLeftOnRack) {
     super(MessageType.COMMIT_TURN, from);
+    this.tilesLeftOnRack = tilesLeftOnRack;
+  }
+
+  public boolean getTilesLeftOnRack() {
+    return tilesLeftOnRack;
   }
 
 }

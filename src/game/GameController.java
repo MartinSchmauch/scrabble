@@ -27,6 +27,7 @@ import mechanic.Turn;
 public class GameController {
   private GameState gameState;
   private TileBag tileBag;
+  private List<Turn> turns;
   private Turn turn;
   private int currentPlayerIndex;
   private HashSet<String> dictionary;
@@ -40,6 +41,7 @@ public class GameController {
     fillDictionary();
     this.gameState = gameState;
     this.tileBag = new TileBag();
+    this.turns = new ArrayList<Turn>();
   }
 
   /**
@@ -70,6 +72,7 @@ public class GameController {
 
   public void newTurn() {
     this.turn = new Turn(gameState.getCurrentPlayer(), this);
+    this.turns.add(0, this.turn);
   }
 
   public HashSet<String> getDictionary() {
@@ -82,6 +85,10 @@ public class GameController {
 
   public void setTurn(Turn turn) {
     this.turn = turn;
+  }
+
+  public List<Turn> getTurns() {
+    return turns;
   }
 
   /**
