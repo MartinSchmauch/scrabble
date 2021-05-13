@@ -114,13 +114,13 @@ public class Server {
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
-    String nextPlayer = this.gameController.getNextPlayer();
-    this.gameController.getTurn().endTurn();
+    // String nextPlayer = this.gameController.getNextPlayer();
 
-    this.sendToAll(new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
-        this.gameState.getScore(m.getFrom()), nextPlayer,
-        this.gameController.getTileBag().getRemaining()));
-    this.gameState.setCurrentPlayer(nextPlayer);
+    // this.sendToAll(new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
+    // this.gameState.getScore(m.getFrom()), nextPlayer,
+    // this.gameController.getTileBag().getRemaining()));
+    // this.gameState.setCurrentPlayer(nextPlayer);
+
 
     this.getGameController().addTilesToTileBag(m.getTiles());
     // If the host wants to perform the exchange
@@ -148,7 +148,13 @@ public class Server {
       tileList = this.gameController.drawTiles(m.getTiles().size());
       ServerProtocol client = this.clients.get(receiver);
       client.sendToClient(new TileMessage(this.getHost(), tileList));
+      try {
+        Thread.sleep(50);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
+    this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
   }
 
   /**
@@ -234,14 +240,16 @@ public class Server {
       }
       if (turn.isContainedStarTiles()) {
         for (Tile t : turn.getStarTiles()) {
-          this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(), t.getField().getyCoordinate()));
+          this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(),
+              t.getField().getyCoordinate()));
 
           try {
             Thread.sleep(50);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          this.sendToAll(new AddTileMessage(from, t, t.getField().getxCoordinate(), t.getField().getyCoordinate()));
+          this.sendToAll(new AddTileMessage(from, t, t.getField().getxCoordinate(),
+              t.getField().getyCoordinate()));
           try {
             Thread.sleep(50);
           } catch (InterruptedException e) {
