@@ -1,20 +1,14 @@
 /** @author lurny */
 package network.client;
 
-<<<<<<< HEAD
-import game.GameState;
-import gui.FileParameters;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
 import java.io.File;
-=======
->>>>>>> refs/heads/help14
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 import game.GameState;
+import gui.FileParameters;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
@@ -208,7 +202,8 @@ public class ClientProtocol extends Thread {
                   gameState.setRunning(true);
                   // TODO replace with Server Game Settings (or important parts) eg. joker value
                   JsonHandler jsonHandler = new JsonHandler();
-                  jsonHandler.loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
+                  jsonHandler.loadGameSettings(
+                      new File(FileParameters.datadir + "defaultGameSettings.json"));
                   lsc.startGameScreen();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
