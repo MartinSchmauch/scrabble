@@ -13,6 +13,8 @@ public class FileParameters {
   public final static String sep = System.getProperty("file.separator");
   public final static String datadir = System.getProperty("user.dir") + sep + "resources";
 
+  public final static String generaldir = datadir + sep + "general";
+
   public final static String fxmlPath =
       datadir + sep + "fxml" + sep + "Test_MainGamePanel_Martin.fxml";
 }

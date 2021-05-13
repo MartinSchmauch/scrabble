@@ -38,7 +38,7 @@ public class Player {
   private GamePanelController gpc = null;
 
   static final int TILE_COUNT_PER_PLAY = 7;
-  static final int RACK_FIELDS = 7;
+  static final int RACK_FIELDS = 12;
 
   public Player(String nickname) {
     this.info = new PlayerData(nickname);

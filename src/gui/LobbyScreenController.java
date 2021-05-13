@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import game.GameSettings;
 import game.GameState;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

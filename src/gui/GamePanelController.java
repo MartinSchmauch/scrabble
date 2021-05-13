@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
@@ -149,8 +151,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         pointsLabel[i].setText("0");
         playerLabel[i].setText("Points: ");
-        avatarImageView[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        // "file:" + FileParameters.datadir + players.get(i).getAvatar())
+        avatarImageView[i].setImage(new Image("file:" + FileParameters.generaldir + "tile.png"));
       } else {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
@@ -435,6 +437,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   @FXML
   public void rackDragHandling(MouseEvent event) {
+    Image image = new Image("file:" + FileParameters.generaldir + "tile.png");
+    rulesButton.getScene().setCursor(new ImageCursor(image));
+
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
 
@@ -501,6 +506,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
   /**
