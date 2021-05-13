@@ -117,10 +117,9 @@ public class Server {
     String nextPlayer = this.gameController.getNextPlayer();
     this.gameController.getTurn().endTurn();
 
-    this.sendToAll(
-        new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
-            this.gameState.getScore(m.getFrom()),
-            nextPlayer, this.gameController.getTileBag().getRemaining()));
+    this.sendToAll(new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
+        this.gameState.getScore(m.getFrom()), nextPlayer,
+        this.gameController.getTileBag().getRemaining()));
     this.gameState.setCurrentPlayer(nextPlayer);
 
     this.getGameController().addTilesToTileBag(m.getTiles());
@@ -160,22 +159,34 @@ public class Server {
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
     List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
-    this.sendToAll((Message) new ResetTurnMessage(this.host, tileList));
-    // remove Tiles from UI Gameboard and domain Gameboard
-    for (Tile t : tileList) {
-      this.gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), false);
-      this.gameState.getGameBoard()
-          .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
-    }
-    // if this is the current player: add Tiles to Rack
-    if (this.host.equals(this.gameState.getCurrentPlayer())) {
-      for (Tile t : tileList) {
-        this.player.addTileToRack(t);
-        this.gpc.addTile(t);
+    this.sendToAll((Message) new ResetTurnMessage(m.getFrom(), tileList));
+    // remove Tiles from domain Gameboard
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        for (Tile t : gameController.getTurn().getLaydDownTiles()) {
+          gameState.getGameBoard()
+              .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
+        }
+        // if this is the current player: add Tiles to Rack
+        if (host.equals(gameState.getCurrentPlayer())) {
+          for (Tile t : gameController.getTurn().getLaydDownTiles()) {
+            player.addTileToRack(t);
+            gpc.addTile(t);
+          }
+        }
+        gameState.setCurrentPlayer(gameController.getNextPlayer());
+        gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
+        try {
+          Thread.sleep(50);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        sendToAll(new TurnResponseMessage(m.getFrom(), true, gameState.getScore(m.getFrom()),
+            gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+
       }
-    }
-    this.gameController.getTurn().getLaydDownTiles().clear();
-    this.gameController.getTurn().endTurn();
+    });
   }
 
   /**
@@ -222,13 +233,15 @@ public class Server {
       }
       if (turn.isContainedStarTiles()) {
         for (Tile t : turn.getStarTiles()) {
-          this.sendToAll(new RemoveTileMessage(from, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
+          this.sendToAll(new RemoveTileMessage(from, t.getField().getyCoordinate(),
+              t.getField().getxCoordinate()));
           try {
             Thread.sleep(50);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          this.sendToAll(new AddTileMessage(from, t, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
+          this.sendToAll(new AddTileMessage(from, t, t.getField().getyCoordinate(),
+              t.getField().getxCoordinate()));
         }
       }
 
@@ -528,6 +541,12 @@ public class Server {
                 gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
                 sendToAll(new UpdateChatMessage("",
                     "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
+              }
+              break;
+            case RESET_TURN:
+              ResetTurnMessage resetM = (ResetTurnMessage) m;
+              for (Tile t : resetM.getTiles()) {
+                gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), false);
               }
               break;
             case INVALID:

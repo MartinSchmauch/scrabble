@@ -1,16 +1,22 @@
 /** @author lurny */
 package network.client;
 
+<<<<<<< HEAD
 import game.GameState;
 import gui.FileParameters;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
 import java.io.File;
+=======
+>>>>>>> refs/heads/help14
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -168,9 +174,7 @@ public class ClientProtocol extends Thread {
                   TileMessage trMessage = (TileMessage) m;
 
                   for (Tile t : trMessage.getTiles()) {
-                    t.setField(player.getFreeRackField());
-                    t.setOnGameBoard(false);
-                    t.setOnRack(true);
+                    player.addTileToRack(t);
                     gpc.addTile(t);
                   }
                   break;

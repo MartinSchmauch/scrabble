@@ -263,7 +263,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
     this.thread = new Thread(this);
     this.min = 0;
-    this.sec = 10;
+    this.sec = 20;
     this.turnCountdown = true;
     this.thread.start();
   }
