@@ -30,7 +30,7 @@ public class CustomAlert extends Alert {
   public CustomAlert(AlertType arg0) {
     super(arg0);
     this.getDialogPane().getStylesheets()
-        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+        .add(getClass().getResource("/DialogPaneButtons.css").toExternalForm());
     this.initStyle(StageStyle.UNDECORATED);
     DialogPane dp = this.getDialogPane();
     dp.getScene().getRoot().setOnMousePressed(new EventHandler<MouseEvent>() {

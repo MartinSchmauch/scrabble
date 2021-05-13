@@ -4,10 +4,17 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>scrabble3</groupId>
 	<artifactId>scrabble3</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0</version>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
+		<finalName>SCRABBLE3</finalName>
+		<resources>
+			<resource>
+				<directory>resources</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -21,8 +28,29 @@
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>0.0.1</version>
 				<configuration>
-					<mainClass>HelloFX</mainClass>
+					<mainClass>game.MainApp</mainClass>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.3.0</version>
+
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -58,4 +86,7 @@
 			<version>21.0</version>
 		</dependency>
 	</dependencies>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 </project>

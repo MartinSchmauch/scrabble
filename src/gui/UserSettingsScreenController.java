@@ -82,7 +82,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
       case "save":
       case "exit":
         this.player.setNickname(this.namefield.getText());
-        new JsonHandler().savePlayerProfile("resources/playerProfileTest.json", this.player);
+        new JsonHandler().savePlayerProfile(
+            new File(FileParameters.datadir + "playerProfileTest.json"), this.player);
 
         if (SettingsScreenController.getInstance() != null) {
           SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
@@ -158,7 +159,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
       JsonHandler jh = new JsonHandler();
-      this.player = jh.loadPlayerProfile("resources/playerProfile.json");
+      this.player = jh.loadPlayerProfile(new File("resources/playerProfile.json"));
       new File(FileParameters.datadir + ("/playerProfileTest.json")).delete();
       System.exit(0);
     } else {
