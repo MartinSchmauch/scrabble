@@ -195,8 +195,7 @@ public class Server {
       }
       this.gameState.addScore(from, turn.getTurnScore());
       String nextPlayer = this.getGameController().getNextPlayer();
-      this.getGameController().setTurn(new Turn(nextPlayer, this.getGameController()));
-
+      
       if (m.getFrom().equals(this.getHost())) {
         // add new tiles to Domain and UI
         Platform.runLater(new Runnable() {
@@ -232,9 +231,26 @@ public class Server {
           this.sendToAll(new AddTileMessage(from, t, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
         }
       }
+
+      // check end game criteria
+      boolean fiveScorelessRounds = true;
+      for (int i = 0; i < 5; i++) {
+        if (this.getGameController().getTurns().get(i).getTurnScore() > 0) {
+          fiveScorelessRounds = false;
+          break;
+        }
+      }
+
+      if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
+          || fiveScorelessRounds) {
+        endGame();
+        return;
+      }
+
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
+      this.getGameController().newTurn();
 
     }
     // else { // turn is invalid
@@ -556,9 +572,24 @@ public class Server {
     }
     gameState.setRunning(true);
     distributeInitialTiles();
-    this.gameController.setTurn(new Turn(this.host, this.gameController));
+    this.gameController.newTurn();
 
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
+  }
+
+  public void endGame() {
+    Turn turn = this.gameController.getTurn();
+    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
+        this.gameState.getScore(turn.getPlayer()),
+        null, this.gameController.getTileBag().getRemaining()));
+
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    sendToAll(new GameStatisticMessage(this.host, null));
   }
 
   public Player getPlayer() {

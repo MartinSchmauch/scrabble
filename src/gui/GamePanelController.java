@@ -1,10 +1,10 @@
 package gui;
 
+import game.GameState;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import game.GameState;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -848,7 +848,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    Message m = new CommitTurnMessage(nickName);
+    Message m = new CommitTurnMessage(nickName, this.player.getRackTiles().isEmpty());
     if (this.player.isHost()) {
       this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
     } else {
