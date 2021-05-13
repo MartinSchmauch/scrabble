@@ -158,7 +158,6 @@ public class ClientProtocol extends Thread {
                   // if this is the current player: add Tiles to Rack
                   if (player.getNickname().equals(gameState.getCurrentPlayer())) {
                     for (Tile t : tileList) {
-                      t.setField(player.getFreeRackField());
                       player.addTileToRack(t);
                       gpc.addTile(t);
                     }
