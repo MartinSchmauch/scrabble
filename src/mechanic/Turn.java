@@ -91,10 +91,10 @@ public class Turn implements Serializable {
       for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
         for (int k = 0; k < starTiles.size(); k++) {
           if (k == 0) {
-            this.starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / 1) % 26)));
+            this.starTiles.get(starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / 1) % 26))));
           }
           else {
-            this.starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / (k*26)) % 26)));
+            this.starTiles.get(starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / (k*26)) % 26))));
           }
         }
         if (calculateWordsHelper()) {
@@ -110,10 +110,10 @@ public class Turn implements Serializable {
       else {
         for (int k = 0; k < this.starTiles.size(); k++) {
           if (k == 0) {
-            this.starTiles.get(this.starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / 1) % 26)));
+            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / 1) % 26))));
           }
           else {
-            this.starTiles.get(this.starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / (k*26)) % 26)));
+            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / (k*26)) % 26))));
           }
         }
         calculateWordsHelper();

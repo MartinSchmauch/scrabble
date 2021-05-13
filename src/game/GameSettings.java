@@ -110,6 +110,10 @@ public class GameSettings {
   public static HashMap<Character, Letter> getLetters() {
     return letters;
   }
+  
+  public static Letter getLetterForChar(char c) {
+    return letters.get(c);
+  }
 
 
   public static List<Field> getSpecialFields() {
