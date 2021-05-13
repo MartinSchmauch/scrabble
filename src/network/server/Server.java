@@ -223,13 +223,18 @@ public class Server {
       }
       if (turn.isContainedStarTiles()) {
         for (Tile t : turn.getStarTiles()) {
-          this.sendToAll(new RemoveTileMessage(from, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
+          this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(), t.getField().getyCoordinate()));
           try {
             Thread.sleep(50);
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          this.sendToAll(new AddTileMessage(from, t, t.getField().getyCoordinate(), t.getField().getxCoordinate()));
+          this.sendToAll(new AddTileMessage(from, t, t.getField().getxCoordinate(), t.getField().getyCoordinate()));
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
         }
       }
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
