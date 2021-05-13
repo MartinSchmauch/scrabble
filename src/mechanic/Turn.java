@@ -95,10 +95,6 @@ public class Turn implements Serializable {
             starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((i / (k*26)) % 26)));
           }
         }
-        for (Tile t : starTiles) {
-          System.out.print(t.getLetter().getCharacter());
-        }
-        System.out.println();
         if (calculateWordsHelper()) {
           if (maxScore < calculateTurnScore()) {
             maxScore = getTurnScore();
@@ -110,7 +106,6 @@ public class Turn implements Serializable {
         return false;
       }
       else {
-        System.out.println("FINAL");
         for (int k = 0; k < starTiles.size(); k++) {
           if (k == 0) {
             starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / 1) % 26)));
@@ -119,10 +114,6 @@ public class Turn implements Serializable {
             starTiles.get(starTiles.size() - k - 1).getLetter().setCharacter((char) ('A' + ((maxIndex / (k*26)) % 26)));
           }
         }
-        for (Tile t : starTiles) {
-          System.out.print(t.getLetter().getCharacter());
-        }
-        System.out.println();
         calculateWordsHelper();
         return true;
       }
