@@ -18,6 +18,7 @@ public class Turn implements Serializable {
   private static final long serialVersionUID = 1L;
   String player;
   private List<Tile> laydDownTiles;
+  private List<Field> laydDownFields;
   private List<Word> words; // Array, that contains all words, that result from the lay down letters
   private int turnScore;
   private boolean isValid;
@@ -35,6 +36,7 @@ public class Turn implements Serializable {
     this.laydDownTiles = new ArrayList<Tile>();
     this.turnScore = 0;
     this.stringRepresentation = "not calculated";
+    this.laydDownFields = new ArrayList<Field>();
   }
 
   public boolean addTileToTurn(Tile t) {
@@ -62,6 +64,9 @@ public class Turn implements Serializable {
    * Scrabble Words. If one word does not exists the method returns false.
    */
   public boolean calculateWords() {
+    for (Tile t : this.laydDownTiles) {
+      this.laydDownFields.add(t.getField());
+    }
     // skip turn
     if (this.laydDownTiles.isEmpty()) {
       stringRepresentation = "Turn skipped.";
@@ -346,7 +351,7 @@ public class Turn implements Serializable {
       }
       res.words.add(new Word(temp));
     }
-
+    res.laydDownFields = this.laydDownFields;
     return res;
   }
 

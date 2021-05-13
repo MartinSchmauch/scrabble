@@ -411,7 +411,7 @@ public class AIplayer extends Player {
   public void updateFilteredCombinationList() {
     ArrayList<Character> charsOnRack = new ArrayList<Character>();
     this.currentTwoTilesCombinations = (TreeSet<AIcombination>) this.twoTilesCombinations.clone();
-    for (int i = 0; i < RACK_FIELDS; i++) {
+    for (int i = 0; i < TILE_COUNT_PER_PLAY; i++) {
       charsOnRack.add(this.getRackTile(i).getLetter().getCharacter());
     }
 
