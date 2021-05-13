@@ -233,11 +233,16 @@ public class Server {
       }
 
       // check end game criteria
-      boolean fiveScorelessRounds = true;
-      for (int i = 0; i < 5; i++) {
-        if (this.getGameController().getTurns().get(i).getTurnScore() > 0) {
-          fiveScorelessRounds = false;
-          break;
+      List<Turn> turns = this.getGameController().getTurns();
+      boolean fiveScorelessRounds = false;
+
+      if (turns.size() > 5) {
+        fiveScorelessRounds = true;
+        for (int i = 0; i < 5; i++) {
+          if (turns.get(i).getTurnScore() > 0) {
+            fiveScorelessRounds = false;
+            break;
+          }
         }
       }
 
