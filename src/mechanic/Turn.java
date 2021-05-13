@@ -27,6 +27,8 @@ public class Turn implements Serializable {
   private static String baseDir = System.getProperty("user.dir")
       + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
   private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
+  private boolean containedStarTiles;
+  private List<Tile> starTiles;
 
 
   public Turn(String player, GameController gamecontroller) {
@@ -37,7 +39,9 @@ public class Turn implements Serializable {
     this.turnScore = 0;
     this.stringRepresentation = "not calculated";
     this.laydDownFields = new ArrayList<Field>();
-  }
+    this.containedStarTiles = false;
+    this.starTiles = new ArrayList<Tile>();
+}
 
   public boolean addTileToTurn(Tile t) {
     if (!this.laydDownTiles.contains(t)) {
@@ -59,7 +63,7 @@ public class Turn implements Serializable {
 
 
   /**
-   * The calculateWords() method is used to find all words, that emerge from the layd down tiles
+   * The calculateWords() method is used to find all words (via calculateWordsHelper(), that emerge from the layd down tiles
    * after a turn is commited. After all words are found, every word is verified with Collins
    * Scrabble Words. If one word does not exists the method returns false.
    */
@@ -73,17 +77,69 @@ public class Turn implements Serializable {
       return true;
     }
 
-    Field starField =
-        this.getGameController().getGameState().getGameBoard().getField(8, 8);
+    Field starField = this.getGameController().getGameState().getGameBoard().getField(8, 8);
 
     // central star field must be covered
     if (starField.getTile() == null) {
       stringRepresentation = "Invalid: Star field not covered.";
       return false;
     }
-      
+    for (Tile t : this.laydDownTiles) {
+      if (t.getLetter().getCharacter() == '*') {
+        this.containedStarTiles = true;
+        this.starTiles.add(t);
+      }
+    }
+    if (this.containedStarTiles) {
+      int maxScore = 0;
+      int maxIndex = -1;
+      for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
+        for (int k = 0; k < starTiles.size(); k++) {
+          if (k == 0) {
+            this.starTiles.get(starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / 1) % 26))));
+          }
+          else {
+            this.starTiles.get(starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / (k*26)) % 26))));
+          }
+        }
+        if (calculateWordsHelper()) {
+          if (maxScore < calculateTurnScore()) {
+            maxScore = getTurnScore();
+            maxIndex = i;
+          }
+        }
+      }
+      if (maxIndex == -1) {
+        return false;
+      }
+      else {
+        for (int k = 0; k < this.starTiles.size(); k++) {
+          if (k == 0) {
+            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / 1) % 26))));
+          }
+          else {
+            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / (k*26)) % 26))));
+          }
+        }
+        calculateWordsHelper();
+        return true;
+      }
+    }
+    else {
+      return calculateWordsHelper();
+    }
+  }
+
+  /**
+   * The calculateWords() method is used to find all words, that emerge from the layd down tiles
+   * after a turn is commited. After all words are found, every word is verified with Collins
+   * Scrabble Words. If one word does not exists the method returns false.
+   */
+  public boolean calculateWordsHelper() {
+    Field starField = this.getGameController().getGameState().getGameBoard().getField(8, 8);
     // word list describes the Tiles that build the word
     List<Tile> word = new ArrayList<Tile>();
+    this.words = new ArrayList<Word>();
 
     int playedTiles = 0;
     int scoredTiles = 0;
@@ -110,13 +166,13 @@ public class Turn implements Serializable {
           playedTiles++;
         }
       }
-      
-      if(word.size() > 1) {
+
+      if (word.size() > 1) {
         // System.out.println("horizontal " + word.toString());
         horizontal = true;
         break CALCULATE_MAIN_WORD;
       }
-  
+
       // check vertical
       t = pivotTile;
       while (t.getTopTile() != null) {
@@ -254,11 +310,12 @@ public class Turn implements Serializable {
   /**
    * This method is used to calculate the turn score resulting from all emerging Words. It is
    * called, if the method calculateWords returns true. After the score is calculated relevant
-   * special fields become normal fields with the multiplier 1.
+   * special fields WILL NOT BECOME normal fields with the multiplier 1.
    * 
    * @return
    */
   public int calculateTurnScore() {
+    this.turnScore = 0;
     // calculate word score
     if (this.laydDownTiles.size() == 7) {
       this.turnScore = GameSettings.getBingo();
@@ -280,13 +337,13 @@ public class Turn implements Serializable {
       this.turnScore = this.turnScore + singleWordScore;
     }
 
-    // set all multipliers to 1
-    for (Word w : words) {
-      for (Tile t : w.getTiles()) {
-        t.getField().setLetterMultiplier(1);
-        t.getField().setWordMultiplier(1);
-      }
-    }
+//    // set all multipliers to 1
+//    for (Word w : words) {
+//      for (Tile t : w.getTiles()) {
+//        t.getField().setLetterMultiplier(1);
+//        t.getField().setWordMultiplier(1);
+//      }
+//    }
     return this.turnScore;
   }
 
@@ -298,6 +355,14 @@ public class Turn implements Serializable {
     this.isValid = calculateWords();
     if (this.isValid) {
       calculateTurnScore();
+    
+    // set all multipliers to 1
+    for (Word w : words) {
+      for (Tile t : w.getTiles()) {
+        t.getField().setLetterMultiplier(1);
+        t.getField().setWordMultiplier(1);
+      }
+    }
     } else {
       this.words.clear();
     }
@@ -352,6 +417,7 @@ public class Turn implements Serializable {
       res.words.add(new Word(temp));
     }
     res.laydDownFields = this.laydDownFields;
+    res.stringRepresentation = this.stringRepresentation;
     return res;
   }
 
@@ -361,6 +427,34 @@ public class Turn implements Serializable {
 
   public String toString() {
     return stringRepresentation;
+  }
+
+  /**
+   * @return the containedStarTiles
+   */
+  public boolean isContainedStarTiles() {
+    return containedStarTiles;
+  }
+
+  /**
+   * @param containedStarTiles the containedStarTiles to set
+   */
+  public void setContainedStarTiles(boolean containedStarTiles) {
+    this.containedStarTiles = containedStarTiles;
+  }
+
+  /**
+   * @return the starTiles
+   */
+  public List<Tile> getStarTiles() {
+    return starTiles;
+  }
+
+  /**
+   * @param starTiles the starTiles to set
+   */
+  public void setStarTiles(List<Tile> starTiles) {
+    this.starTiles = starTiles;
   }
 
 

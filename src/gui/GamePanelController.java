@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import game.GameState;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,9 +13,9 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -32,7 +30,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -63,7 +60,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private ClientProtocol cp;
   private Server server;
   private static boolean exchangeTilesMode = false;
-  private static List<Tile> tilesToExchange = new ArrayList<Tile>();
+  private List<Tile> tilesToExchange = new ArrayList<Tile>();
   private static int selectedCoordinates[] = new int[2]; // row, column
   private static int targetCoordinates[] = new int[2]; // row, column
   private ChatController cc;
@@ -175,33 +172,33 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     /**
      * @author pkoenig
      */
-//    ChangeListener cl = new ChangeListener() {
-//      public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-////      Double changeWidth = (Double)newValue - (Double)oldValue;
-//     Double newWidth = (Double)newValue;
-//     System.out.println("### WIDTH HAT SICH GEÄNDERT AUF " + newWidth + " ###");
-//     backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
-//     board.setPrefWidth(board.getPrefWidth() + changeWidth);
-//     backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
-//     board.setPrefHeight(board.getPrefWidth() + changeWidth);
-     
-//     backgroundGamePanel.setWidth(newWidth / 1.9);
-//     board.setPrefWidth(newWidth / 2.0);
-//     board.setMaxWidth(newWidth / 2.0);
-//     board.setMinWidth(newWidth / 2.0);
-//     backgroundGamePanel.setHeight(newWidth / 1.9);
-////     board.setPrefHeight(newWidth / 2.0);
-////     board.setMaxHeight(newWidth / 2.0);
-////     board.setMinHeight(newWidth / 2.0);
-//   }
-// };
-//    scene.widthProperty().addListener(cl);
-//
-//    scene.heightProperty().addListener(cl);
-////    backgroundGamePanel.setWidth(820);
-//    board.setPrefWidth(800);
-//    backgroundGamePanel.setHeight(820);
-//    board.setPrefHeight(800);
+    // ChangeListener cl = new ChangeListener() {
+    // public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+    //// Double changeWidth = (Double)newValue - (Double)oldValue;
+    // Double newWidth = (Double)newValue;
+    // System.out.println("### WIDTH HAT SICH GEÄNDERT AUF " + newWidth + " ###");
+    // backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
+    // board.setPrefWidth(board.getPrefWidth() + changeWidth);
+    // backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
+    // board.setPrefHeight(board.getPrefWidth() + changeWidth);
+
+    // backgroundGamePanel.setWidth(newWidth / 1.9);
+    // board.setPrefWidth(newWidth / 2.0);
+    // board.setMaxWidth(newWidth / 2.0);
+    // board.setMinWidth(newWidth / 2.0);
+    // backgroundGamePanel.setHeight(newWidth / 1.9);
+    //// board.setPrefHeight(newWidth / 2.0);
+    //// board.setMaxHeight(newWidth / 2.0);
+    //// board.setMinHeight(newWidth / 2.0);
+    // }
+    // };
+    // scene.widthProperty().addListener(cl);
+    //
+    // scene.heightProperty().addListener(cl);
+    //// backgroundGamePanel.setWidth(820);
+    // board.setPrefWidth(800);
+    // backgroundGamePanel.setHeight(820);
+    // board.setPrefHeight(800);
 
 
     /**
@@ -266,7 +263,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
     this.thread = new Thread(this);
     this.min = 0;
-    this.sec = 10;
+    this.sec = 20;
     this.turnCountdown = true;
     this.thread.start();
   }
@@ -367,35 +364,37 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         break;
       case "doneButton":
         if (exchangeTilesMode) {
-          CustomAlert alert2 = new CustomAlert(AlertType.CONFIRMATION);
-          alert2.setTitle("Skip & Exchange selected tiles");
-          alert2.setHeaderText("Skip & Exchange?");
-          alert2.setContentText(
-              "Do you want to skip the current turn and exchange the selected tiles ");
-          alert2.initStyle(StageStyle.UNDECORATED);
+          if (!this.tilesToExchange.isEmpty()) {
+            CustomAlert alert2 = new CustomAlert(AlertType.CONFIRMATION);
+            alert2.setTitle("Skip & Exchange selected tiles");
+            alert2.setHeaderText("Skip & Exchange?");
+            alert2.setContentText(
+                "Do you want to skip the current turn and exchange the selected tiles ");
+            alert2.initStyle(StageStyle.UNDECORATED);
 
-          alert2.changeButtonText("Yes", ButtonType.OK);
-          alert2.changeButtonText("No", ButtonType.CANCEL);
+            alert2.changeButtonText("Yes", ButtonType.OK);
+            alert2.changeButtonText("No", ButtonType.CANCEL);
 
-          Optional<ButtonType> result2 = alert2.showAndWait();
-          if (result2.get() == ButtonType.OK) {
-            // remove Tiles from GUI
-            for (Tile t : this.tilesToExchange) {
-              // TODO bei dem gesetzten True koennte ein Fehler entstehen
-              this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
-              this.player.removeRackTile(t.getField().getxCoordinate());
+            Optional<ButtonType> result2 = alert2.showAndWait();
+            if (result2.get() == ButtonType.OK) {
+              // remove Tiles from GUI
+              for (Tile t : this.tilesToExchange) {
+                // TODO bei dem gesetzten True koennte ein Fehler entstehen
+                this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
+                this.player.removeRackTile(t.getField().getxCoordinate());
+              }
+              sendTileMessage(this.player.getNickname());
+            } else {
+              alert2.close();
             }
-            sendTileMessage(this.player.getNickname());
-          } else {
-            alert2.close();
+
+            Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+            for (Rectangle r : rect) {
+              r.setStroke(Color.BLACK);
+            }
+            tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
           }
 
-          skipAndChangeButton.setText("Skip & Exchange");
-          Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
-          for (Rectangle r : rect) {
-            r.setStroke(Color.BLACK);
-          }
-          tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
           exchangeTilesMode = false;
           changeSkipAndChangeStatus(true);
         } else {
@@ -437,6 +436,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   @FXML
   public void rackDragHandling(MouseEvent event) {
+    // Image image = new Image(System.getProperty("user.dir") + "/ressources/general/tile.png");
+    // rulesButton.getScene().setCursor(new ImageCursor(image));
+
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
 
@@ -503,6 +505,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
   /**
@@ -625,9 +628,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     if (!sender.equals("")) {
       this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
     } else {
-      // this.chat.setStyle("-fx-font-weight:bold");
       this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender) + "");
-      // this.chat.setStyle("-fx-font-weight:normal");
     }
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
@@ -847,7 +848,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendCommitTurn(String nickName) {
-    Message m = new CommitTurnMessage(nickName);
+    Message m = new CommitTurnMessage(nickName, this.player.getRackTiles().isEmpty());
     if (this.player.isHost()) {
       this.player.getServer().handleCommitTurn((CommitTurnMessage) m);
     } else {
@@ -861,12 +862,17 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @author lurny
    */
   public void sendResetTurnForEveryPlayer(String nickName) {
-    Message m = new ResetTurnMessage(nickName, null);
+    System.out.println("Test1");
     if (this.player.isHost()) {
+      Message m = new ResetTurnMessage(this.player.getNickname(), null);
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
-    } else {
-      sendMessage(m);
     }
+    // if (this.player.isHost()) {
+    // this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+    // }
+    // else {
+    // sendMessage(m);
+    // }
   }
 
   @Override

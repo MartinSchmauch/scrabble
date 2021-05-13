@@ -4,6 +4,7 @@ package util;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.io.Files;
 import game.GameSettings;
 import mechanic.Field;
 import mechanic.Letter;
@@ -45,10 +47,10 @@ public class JsonHandler {
 
   /** This method loads a player profile from a file. */
 
-  public Player loadPlayerProfile(String path) {
+  public Player loadPlayerProfile(File file) {
     Player player = null;
     try {
-      player = objectMapper.readValue(new File(path), Player.class);
+      player = objectMapper.readValue(file, Player.class);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -58,9 +60,9 @@ public class JsonHandler {
 
   /** This method saves a player profile to a file. */
 
-  public boolean savePlayerProfile(String path, Player player) {
+  public boolean savePlayerProfile(File file, Player player) {
     try {
-      objectMapper.writeValue(new File(path), player);
+      objectMapper.writeValue(file, player);
     } catch (IOException e) {
       e.printStackTrace();
       return false;
@@ -75,9 +77,9 @@ public class JsonHandler {
    * class.
    */
 
-  public void loadGameSettings(String path) {
+  public void loadGameSettings(File file) {
     try {
-      JsonNode jsonNode = objectMapper.readTree(new File(path));
+      JsonNode jsonNode = objectMapper.readTree(file);
 
       Map.Entry<String, JsonNode> letterNode;
 
@@ -133,7 +135,7 @@ public class JsonHandler {
    * This method writes all defined GameSettings to a Json File from the static GameSettings class.
    */
 
-  public void saveGameSettings(String path) {
+  public void saveGameSettings(File file) {
     JsonNodeFactory factory = JsonNodeFactory.instance;
     ObjectNode rootNode = factory.objectNode();
 
@@ -172,14 +174,25 @@ public class JsonHandler {
 
     FileWriter fileWriter;
     try {
-      fileWriter = new FileWriter(path);
+      fileWriter = new FileWriter(file);
       fileWriter.write(rootNode.toPrettyString());
       fileWriter.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
-
-
   }
+
+
+  /** taken from https://www.baeldung.com/convert-input-stream-to-a-file */
+  public void writeFileFromStream(InputStream in, String path) {
+    try {
+      byte[] buffer = new byte[in.available()];
+      in.read(buffer);
+      Files.write(buffer, new File(path));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
+
 }
 

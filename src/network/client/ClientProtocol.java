@@ -1,14 +1,16 @@
 /** @author lurny */
 package network.client;
 
-import game.GameState;
-import gui.GamePanelController;
-import gui.LobbyScreenController;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import game.GameState;
+import gui.FileParameters;
+import gui.GamePanelController;
+import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.Field;
 import mechanic.Player;
@@ -156,7 +158,6 @@ public class ClientProtocol extends Thread {
                   // if this is the current player: add Tiles to Rack
                   if (player.getNickname().equals(gameState.getCurrentPlayer())) {
                     for (Tile t : tileList) {
-                      t.setField(player.getFreeRackField());
                       player.addTileToRack(t);
                       gpc.addTile(t);
                     }
@@ -166,9 +167,7 @@ public class ClientProtocol extends Thread {
                   TileMessage trMessage = (TileMessage) m;
 
                   for (Tile t : trMessage.getTiles()) {
-                    t.setField(player.getFreeRackField());
-                    t.setOnGameBoard(false);
-                    t.setOnRack(true);
+                    player.addTileToRack(t);
                     gpc.addTile(t);
                   }
                   break;
@@ -202,7 +201,8 @@ public class ClientProtocol extends Thread {
                   gameState.setRunning(true);
                   // TODO replace with Server Game Settings (or important parts) eg. joker value
                   JsonHandler jsonHandler = new JsonHandler();
-                  jsonHandler.loadGameSettings("resources/defaultGameSettings.json");
+                  jsonHandler.loadGameSettings(
+                      new File(FileParameters.datadir + "defaultGameSettings.json"));
                   lsc.startGameScreen();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());

@@ -37,4 +37,9 @@ public class Letter implements Serializable {
   public int getCount() {
     return this.count;
   }
+  
+  public void setCharacter(char c) {
+    this.character = c;
+  }
+  
 }

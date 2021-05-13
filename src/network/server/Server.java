@@ -114,14 +114,13 @@ public class Server {
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
-    String nextPlayer = this.gameController.getNextPlayer();
-    this.gameController.getTurn().endTurn();
+    // String nextPlayer = this.gameController.getNextPlayer();
 
-    this.sendToAll(
-        new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
-            this.gameState.getScore(m.getFrom()),
-            nextPlayer, this.gameController.getTileBag().getRemaining()));
-    this.gameState.setCurrentPlayer(nextPlayer);
+    // this.sendToAll(new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
+    // this.gameState.getScore(m.getFrom()), nextPlayer,
+    // this.gameController.getTileBag().getRemaining()));
+    // this.gameState.setCurrentPlayer(nextPlayer);
+
 
     this.getGameController().addTilesToTileBag(m.getTiles());
     // If the host wants to perform the exchange
@@ -149,7 +148,13 @@ public class Server {
       tileList = this.gameController.drawTiles(m.getTiles().size());
       ServerProtocol client = this.clients.get(receiver);
       client.sendToClient(new TileMessage(this.getHost(), tileList));
+      try {
+        Thread.sleep(50);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
     }
+    this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
   }
 
   /**
@@ -159,23 +164,36 @@ public class Server {
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
+    System.out.println("Test");
     List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
-    this.sendToAll((Message) new ResetTurnMessage(this.host, tileList));
-    // remove Tiles from UI Gameboard and domain Gameboard
-    for (Tile t : tileList) {
-      this.gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), false);
-      this.gameState.getGameBoard()
-          .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
-    }
-    // if this is the current player: add Tiles to Rack
-    if (this.host.equals(this.gameState.getCurrentPlayer())) {
-      for (Tile t : tileList) {
-        this.player.addTileToRack(t);
-        this.gpc.addTile(t);
+    this.sendToAll((Message) new ResetTurnMessage(m.getFrom(), tileList));
+    // remove Tiles from domain Gameboard
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        for (Tile t : gameController.getTurn().getLaydDownTiles()) {
+          gameState.getGameBoard()
+              .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
+        }
+        // if this is the current player: add Tiles to Rack
+        if (host.equals(gameState.getCurrentPlayer())) {
+          for (Tile t : gameController.getTurn().getLaydDownTiles()) {
+            player.addTileToRack(t);
+            gpc.addTile(t);
+          }
+        }
+        gameState.setCurrentPlayer(gameController.getNextPlayer());
+        gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
+        try {
+          Thread.sleep(50);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        sendToAll(new TurnResponseMessage(m.getFrom(), true, gameState.getScore(m.getFrom()),
+            gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+
       }
-    }
-    this.gameController.getTurn().getLaydDownTiles().clear();
-    this.gameController.getTurn().endTurn();
+    });
   }
 
   /**
@@ -195,7 +213,6 @@ public class Server {
       }
       this.gameState.addScore(from, turn.getTurnScore());
       String nextPlayer = this.getGameController().getNextPlayer();
-      this.getGameController().setTurn(new Turn(nextPlayer, this.getGameController()));
 
       if (m.getFrom().equals(this.getHost())) {
         // add new tiles to Domain and UI
@@ -221,9 +238,50 @@ public class Server {
           e.printStackTrace();
         }
       }
+      if (turn.isContainedStarTiles()) {
+        for (Tile t : turn.getStarTiles()) {
+          this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(),
+              t.getField().getyCoordinate()));
+
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          this.sendToAll(new AddTileMessage(from, t, t.getField().getxCoordinate(),
+              t.getField().getyCoordinate()));
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+
+      // check end game criteria
+      List<Turn> turns = this.getGameController().getTurns();
+      boolean fiveScorelessRounds = false;
+
+      if (turns.size() > 5) {
+        fiveScorelessRounds = true;
+        for (int i = 0; i < 5; i++) {
+          if (turns.get(i).getTurnScore() > 0) {
+            fiveScorelessRounds = false;
+            break;
+          }
+        }
+      }
+
+      if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
+          || fiveScorelessRounds) {
+        endGame();
+        return;
+      }
+
       this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
+      this.getGameController().newTurn();
 
     }
     // else { // turn is invalid
@@ -498,6 +556,12 @@ public class Server {
                     "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
               }
               break;
+            case RESET_TURN:
+              ResetTurnMessage resetM = (ResetTurnMessage) m;
+              for (Tile t : resetM.getTiles()) {
+                gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), false);
+              }
+              break;
             case INVALID:
               InvalidMoveMessage imm = (InvalidMoveMessage) m;
               gpc.indicateInvalidTurn(imm.getFrom(), imm.getReason());
@@ -545,9 +609,24 @@ public class Server {
     }
     gameState.setRunning(true);
     distributeInitialTiles();
-    this.gameController.setTurn(new Turn(this.host, this.gameController));
+    this.gameController.newTurn();
 
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
+  }
+
+  public void endGame() {
+    Turn turn = this.gameController.getTurn();
+    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
+        this.gameState.getScore(turn.getPlayer()), null,
+        this.gameController.getTileBag().getRemaining()));
+
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    sendToAll(new GameStatisticMessage(this.host, null));
   }
 
   public Player getPlayer() {

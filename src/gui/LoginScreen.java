@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -62,12 +63,23 @@ public class LoginScreen extends Application {
 
   @Override
   public void start(Stage stage) {
+    if (new File(FileParameters.datadir).mkdir()) {
+      InputStream in = getClass().getResourceAsStream("/playerProfile.json");
+      new JsonHandler().writeFileFromStream(in, FileParameters.datadir + "playerProfile.json");
+      in = getClass().getResourceAsStream("/defaultGameSettings.json");
+      new JsonHandler().writeFileFromStream(in,
+          FileParameters.datadir + "defaultGameSettings.json");
+    }
 
-    if (new File(FileParameters.datadir + ("/playerProfileTest.json")).exists()) {
-      currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfileTest.json");
+    if (new File(FileParameters.datadir + "playerProfileTest.json").exists()) {
+      System.out.println(FileParameters.datadir);
+      currentPlayer =
+          new JsonHandler()
+              .loadPlayerProfile(new File(FileParameters.datadir + "playerProfileTest.json"));
       setFirstLaunch(true);
     } else {
-      currentPlayer = new JsonHandler().loadPlayerProfile("resources/playerProfile.json");
+      currentPlayer =
+          new JsonHandler().loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
       System.out.println("spot reached");
       if (!alreadyLaunched) {
         System.out.println("already launched");
@@ -82,11 +94,11 @@ public class LoginScreen extends Application {
         alert.changeButtonText("Continue as Guest", ButtonType.CANCEL);
 
         alert.getDialogPane().getStylesheets()
-            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+            .add(getClass().getResource("/DialogPaneButtons.css").toExternalForm());
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
+          File f = new File(FileParameters.datadir + "playerProfileTest.json");
           try {
             f.createNewFile();
           } catch (IOException e) {
