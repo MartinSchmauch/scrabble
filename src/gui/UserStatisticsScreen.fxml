@@ -68,7 +68,7 @@
                   </Label>
                   <Label fx:id="key" layoutX="20.0" layoutY="168.0" prefHeight="32.0" prefWidth="283.0" text="key">
                      <font>
-                        <Font size="14.0" />
+                        <Font name="System Bold" size="14.0" />
                      </font>
                   </Label>
                   <Label fx:id="value1" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="205.0" prefHeight="112.0" prefWidth="310.0" style="-fx-text-fill: linear-gradient(to right, #218f33, #83d490);" text="mainValue">
@@ -76,7 +76,7 @@
                         <Font size="40.0" />
                      </font>
                   </Label>
-                  <Label fx:id="value2" alignment="CENTER_RIGHT" layoutX="210.0" layoutY="308.0" prefHeight="39.0" prefWidth="97.0" text="secondValue" />
+                  <Label fx:id="value2" alignment="CENTER_RIGHT" layoutX="131.0" layoutY="308.0" prefHeight="39.0" prefWidth="177.0" text="secondValue" />
                   <Button fx:id="prev" layoutX="22.0" layoutY="347.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" />
                   <Button fx:id="next" layoutX="74.0" layoutY="347.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" />
                </children>
@@ -91,6 +91,7 @@
                   <Image url="@images/avatar.png" />
                </image>
             </ImageView>
+            <Label fx:id="scroller" layoutX="399.0" layoutY="168.0" text="1/6" />
          </children>
       </AnchorPane>
    </center>

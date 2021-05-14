@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.Player;
+import mechanic.PlayerStatistics;
 
 /**
  * This Class handles all User Inputs concerning the user statistics screen launchable from the
@@ -22,9 +23,12 @@ import mechanic.Player;
 public class UserStatisticsScreenController implements EventHandler<ActionEvent> {
 
   private UserStatisticsScreen uss;
+  private PlayerStatistics ps;
   private Player player;
   private String[] stats =
       {"Total Score", "Wins", "Best Word", "Best Turn", "Played Tiles", "Good invested time"};
+  private String[] values1 = new String[6];
+  private String[] values2 = new String[6];
   private byte indicator = 0;
 
   @FXML
@@ -37,6 +41,8 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
   private Label value2;
   @FXML
   private Label key;
+  @FXML
+  private Label scroller;
   @FXML
   private Button next;
   @FXML
@@ -51,7 +57,9 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
   public void initialize() {
     this.uss = UserStatisticsScreen.getInstance();
     this.player = uss.getPlayer();
+    this.ps = this.player.getPlayerInfo().getPlayerStatistics();
     setUpLabels();
+    calculateStatistics();
     this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
   }
 
@@ -102,8 +110,9 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
       }
     }
     this.key.setText(this.stats[indicator]);
-    this.value1.setText("Value1 for " + this.key.getText());
-    this.value2.setText("Value2 for " + this.key.getText());
+    this.value1.setText(this.values1[indicator]);
+    this.value2.setText(this.values2[indicator]);
+    this.scroller.setText(this.indicator + 1 + "/6");
   }
 
   /**
@@ -113,7 +122,28 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
 
     this.nickname.setText(player.getNickname());
     this.key.setText(this.stats[indicator]);
-    this.value1.setText("Value1 for " + this.key.getText());
-    this.value2.setText("Value2 for " + this.key.getText());
+    this.value1.setText(this.ps.getScore() + "");
+    this.value2.setText("Average Score: " + this.ps.getScore() / this.ps.getGameCount());
+  }
+
+  /**
+   * Calculates all user statistics and saves them in the designated values1/2 array.
+   */
+
+  public void calculateStatistics() {
+
+    this.values1[0] = this.ps.getScore() + "";
+    this.values1[1] = this.ps.getWins() + "";
+    this.values1[2] = this.ps.getBestWord();
+    this.values1[3] = this.ps.getBestTurn() + " points";
+    this.values1[4] = this.ps.getPlayedTiles() + "";
+    this.values1[5] = this.ps.getPlayTime() + " min";
+
+    this.values2[0] = "Average Score: " + this.ps.getScore() / this.ps.getGameCount();
+    this.values2[1] = "Winrate: " + (this.ps.getWins() * 100) / this.ps.getGameCount() + " %";
+    this.values2[2] = "";
+    this.values2[3] = "";
+    this.values2[4] = "Average Played Tiles: " + this.ps.getPlayedTiles() / this.ps.getGameCount();
+    this.values2[5] = "Average Gametime: " + this.ps.getPlayTime() / this.ps.getGameCount();
   }
 }

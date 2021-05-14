@@ -25,6 +25,7 @@ import network.server.Server;
 public class Player {
 
   private PlayerData info;
+
   private int volume;
   private String customGameSettings;
 
@@ -56,11 +57,14 @@ public class Player {
 
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
-      @JsonProperty("volume") int volume) {
+      @JsonProperty("volume") int volume, @JsonProperty("gameCount") int gameCount,
+      @JsonProperty("bestTurn") int bestTurn, @JsonProperty("score") int score,
+      @JsonProperty("bestWord") String bestWord, @JsonProperty("playTime") int playTime,
+      @JsonProperty("wins") int wins, @JsonProperty("playedTiles") int playedTiles) {
     info = new PlayerData(nickname);
     info.setAvatar(avatar);
     this.volume = volume;
-
+    info.setStatistics(gameCount, bestTurn, bestWord, score, playTime, wins, playedTiles);
     this.rack = new Field[RACK_FIELDS];
     for (int i = 0; i < RACK_FIELDS; i++) {
       this.rack[i] = new Field(i, -1);
@@ -90,6 +94,7 @@ public class Player {
   public String getAvatar() {
     return this.info.getAvatar();
   }
+
 
 
   /*

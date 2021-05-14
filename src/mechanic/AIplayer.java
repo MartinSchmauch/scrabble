@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import game.GameController;
-import game.GameSettings;
-import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
+import game.GameController;
 
 /**
  * 
@@ -158,7 +157,7 @@ public class AIplayer extends Player {
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    super(nickname, avatar, volume);
+    super(nickname, avatar, volume, 0, 0, 0, "", 0, 0, 0);
   }
 
 
@@ -861,11 +860,11 @@ public class AIplayer extends Player {
         }
       }
       if (isOnCombinationList) {
-//        System.out.print("nextTiles:");
-//        for (Tile t : current) {
-//        System.out.print(" " + t.getLetter().getCharacter());
-//        }
-//        System.out.println();
+        // System.out.print("nextTiles:");
+        // for (Tile t : current) {
+        // System.out.print(" " + t.getLetter().getCharacter());
+        // }
+        // System.out.println();
         return current;
       }
     }
@@ -901,7 +900,7 @@ public class AIplayer extends Player {
             if (k + this.numberOfCombinationSize - 1 > numOfTiles - 1) {
               break;
             }
-            //c = 0;
+            // c = 0;
             isOnCombinationList = false;
             numberOfCOmbinationsAlreadyCovered = 0;
             for (AIcombination a : this.twoTilesCombinations.descendingSet()) {
@@ -936,11 +935,11 @@ public class AIplayer extends Player {
             }
           }
           if (isOnCombinationList) {
-//             System.out.print("nextTiles:");
-//             for (Tile t : current) {
-//             System.out.print(" " + t.getLetter().getCharacter());
-//             }
-//             System.out.println();
+            // System.out.print("nextTiles:");
+            // for (Tile t : current) {
+            // System.out.print(" " + t.getLetter().getCharacter());
+            // }
+            // System.out.println();
             return current;
           }
         }
