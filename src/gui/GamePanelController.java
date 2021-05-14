@@ -683,7 +683,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       board.add(boardTile, column, row);
       GridPane.setHalignment(boardTile, HPos.CENTER);
       GridPane.setValignment(boardTile, VPos.BOTTOM);
-      GridPane.setMargin(boardTile, new Insets(0, 10, 8, 0));
+      // GridPane.setMargin(boardTile, new Insets(0, 10, 8, 0));
     }
   }
 
@@ -863,16 +863,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   public void sendResetTurnForEveryPlayer(String nickName) {
     System.out.println("Test1");
+    Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
-      Message m = new ResetTurnMessage(this.player.getNickname(), null);
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+    } else {
+      sendMessage(m);
     }
-    // if (this.player.isHost()) {
-    // this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
-    // }
-    // else {
-    // sendMessage(m);
-    // }
   }
 
   @Override
@@ -942,7 +938,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * Closes the Game and stops the server.
    */
   public void close() {
-    if (this.player.getServer() != null) {
+    if (this.player.getServer() != null) { // TODO: this.player.isHost() nutzen?
       this.player.getServer().stopServer();
       // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
       // sendMessage(m);
