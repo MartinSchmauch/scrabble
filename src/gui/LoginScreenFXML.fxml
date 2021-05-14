@@ -68,7 +68,7 @@
                         </Tooltip>
                      </tooltip>
                   </Label>
-                  <Label layoutX="19.0" layoutY="369.0" text="Eary Alpha Testphase" />
+                  <Label layoutX="19.0" layoutY="369.0" text="v 1.0" />
                   <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="17.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;">
                      <image>
                         <Image url="@images/About.png" />

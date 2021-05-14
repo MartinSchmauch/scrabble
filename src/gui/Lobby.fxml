@@ -34,10 +34,10 @@
                         </Tooltip>
                      </tooltip>
                   </Label>
-                  <Label layoutX="20.0" layoutY="369.0" text="Eary Alpha Testphase" />
+                  <Label layoutX="20.0" layoutY="369.0" text="v 1.0" />
                   <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="45.0" layoutX="20.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;">
                      <image>
-                        <Image url="@images/Questionmark.png" />
+                        <Image url="@images/About.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="71.0" fitWidth="72.0" layoutX="85.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" rotate="-16.4">
@@ -85,7 +85,7 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="player1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
@@ -93,7 +93,7 @@
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="player2" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="98.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
@@ -101,7 +101,7 @@
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="player3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player3" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>
@@ -109,7 +109,7 @@
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="player4" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
+                              <Label fx:id="player4" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="95.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
                                  <padding>
                                     <Insets bottom="3.0" />
                                  </padding>

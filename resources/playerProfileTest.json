@@ -1,13 +1,21 @@
 {
   "nickname" : "martin",
-  "avatar" : "/avatars/avatar2.png",
+  "avatar" : "/avatars/avatar3.png",
   "volume" : 60,
   "customGameSettings" : null,
   "host" : false,
+  "clientProtocol" : null,
+  "gameCount" : 34,
+  "bestTurn" : 46,
+  "bestWord" : "hello",
+  "score" : 10000,
+  "playTime" : 476,
+  "wins" : 2,
+  "playedTiles" : 7830,
   "playerInfo" : {
     "nickname" : "martin",
-    "avatar" : "/avatars/avatar2.png",
+    "avatar" : "/avatars/avatar3.png",
     "host" : false
-  },
-  "clientProtocol" : null
+   
+  }
 }
