@@ -332,20 +332,20 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          if (player.isHost()) {
-            player.getServer().stopServer();
-            // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
-            // sendMessage(m);
-          } else {
-            sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
-            Message m = new DisconnectMessage(this.player.getNickname());
-            sendMessage(m);
-          }
-          // close(); // TODO: close method not neccesary anymore?
-          Button b = (Button) e.getSource();
-          Stage st = (Stage) (b.getScene().getWindow());
-          st.close();
-          new LoginScreen().start(new Stage());
+          // if (player.isHost()) {
+          // player.getServer().stopServer();
+          // // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
+          // // sendMessage(m);
+          // } else {
+          // sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
+          // Message m = new DisconnectMessage(this.player.getNickname());
+          // sendMessage(m);
+          // }
+          close(); // TODO: close method not neccesary anymore?
+          // Button b = (Button) e.getSource();
+          // Stage st = (Stage) (b.getScene().getWindow());
+          // st.close();
+          // new LoginScreen().start(new Stage());
         }
         break;
       case "rulesButton":
@@ -944,9 +944,24 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void close() {
     if (this.player.getServer() != null) {
       this.player.getServer().stopServer();
+      // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
+      // sendMessage(m);
     } else if (!this.player.isHost()) {
-      this.player.getClientProtocol().disconnect();
+      Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
+      for (int i = 0; i < players.size(); i++) {
+        if (players.get(i).getNickname().equals(this.player.getNickname())) {
+          if (rect[i].isVisible()) {
+            sendResetTurnForEveryPlayer(this.player.getNickname()); // TODO:
+          }
+        }
+      }
+      sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
+      // this.player.getClientProtocol().disconnect(); // in DisconnectMessage included?
+      Message m = new DisconnectMessage(this.player.getNickname());
+      sendMessage(m);
     }
+    Stage st = (Stage) (rulesButton.getScene().getWindow());
+    st.close();
     new LoginScreen().start(new Stage());
   }
 
