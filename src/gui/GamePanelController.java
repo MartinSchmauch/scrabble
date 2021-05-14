@@ -674,7 +674,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       rack.add(rackTile, column, row);
       GridPane.setHalignment(rackTile, HPos.CENTER);
       GridPane.setValignment(rackTile, VPos.BOTTOM);
-      GridPane.setMargin(rackTile, new Insets(0, 0, 5.5, 0));
+      GridPane.setMargin(rackTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
@@ -683,7 +683,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       board.add(boardTile, column, row);
       GridPane.setHalignment(boardTile, HPos.CENTER);
       GridPane.setValignment(boardTile, VPos.BOTTOM);
-      // GridPane.setMargin(boardTile, new Insets(0, 10, 8, 0));
+      GridPane.setMargin(boardTile, new Insets(0, 0, 3, 0));
     }
   }
 
