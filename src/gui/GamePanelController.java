@@ -228,7 +228,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
-        this.sendResetTurnForEveryPlayer(player.getNickname());
+        this.sendResetTurn();
       } else {
         this.sec--;
       }
@@ -868,6 +868,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
     } else {
       sendMessage(m);
+    }
+  }
+
+  public void sendResetTurn() {
+    Message m = new ResetTurnMessage(this.player.getNickname(), null);
+    if (this.player.isHost()) {
+      this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
     }
   }
 

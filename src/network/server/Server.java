@@ -164,9 +164,10 @@ public class Server {
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
-    System.out.println("Test");
+    String from = this.gameState.getCurrentPlayer();
     List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
-    this.sendToAll((Message) new ResetTurnMessage(m.getFrom(), tileList));
+    System.out.println(from + "  " + tileList.size());
+    this.sendToAll((Message) new ResetTurnMessage(from, tileList));
     // remove Tiles from domain Gameboard
     Platform.runLater(new Runnable() {
       @Override
@@ -189,7 +190,7 @@ public class Server {
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
-        sendToAll(new TurnResponseMessage(m.getFrom(), true, gameState.getScore(m.getFrom()),
+        sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
             gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
 
       }
