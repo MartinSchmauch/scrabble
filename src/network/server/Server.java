@@ -353,6 +353,9 @@ public class Server {
   public void removeClient(String player) {
     this.gameState.leaveGame(player);
     this.clients.remove(player);
+    if (this.gameState.getAllPlayers().size() <= 1) {
+      endGame();
+    }
   }
 
   /** Handles move from rack to gameBoard (with AddTileMessage). */
@@ -625,7 +628,7 @@ public class Server {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-
+    this.gameState.setRunning(false);
     sendToAll(new GameStatisticMessage(this.host, null));
   }
 

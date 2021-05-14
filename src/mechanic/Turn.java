@@ -86,7 +86,7 @@ public class Turn implements Serializable {
       }
     }
     if (this.containedStarTiles) {
-      int maxScore = 0;
+      int maxScore = -1;
       int maxIndex = -1;
       for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
         for (int k = 0; k < starTiles.size(); k++) {
