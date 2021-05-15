@@ -56,7 +56,7 @@ public class ServerProtocol extends Thread {
   public void sendInitialGameState() {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
 
-    this.sendToClient(m);
+    this.server.sendToAll(m);
 
   }
 
@@ -137,7 +137,6 @@ public class ServerProtocol extends Thread {
 
       while (running) {
         m = (Message) in.readObject();
-
         switch (m.getMessageType()) {
           case DISCONNECT:
             server.removeClient(m.getFrom());

@@ -1,11 +1,12 @@
 {
-  "nickname" : "play",
-  "avatar" : "/avatars/avatar2.png",
+  "nickname" : "test2",
+  "avatar" : "/avatars/avatar5.png",
   "volume" : 60,
   "customGameSettings" : null,
   "playerInfo" : {
-    "nickname" : "play",
-    "avatar" : "/avatars/avatar2.png",
+    "nickname" : "test2",
+    "avatar" : "/avatars/avatar5.png",
+    "host" : false,
     "playerStatistics" : {
       "gameCount" : 0,
       "bestTurn" : 0,
@@ -14,9 +15,8 @@
       "score" : 0,
       "wins" : 0,
       "playedTiles" : 0
-    },
-    "host" : false
+    }
   },
-  "host" : false,
-  "clientProtocol" : null
+  "clientProtocol" : null,
+  "host" : false
 }

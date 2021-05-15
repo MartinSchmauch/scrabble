@@ -104,7 +104,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "leavelobby":
         sendMessage(new DisconnectMessage(this.player.getNickname()));
         close();
-
         break;
       case "send":
       case "input":
@@ -257,7 +256,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param index represents the position of the player to be removed.
    */
   public void removePlayer(int index) {
-
+    System.out.println("removed");
     String nickname = this.players.get(index).getNickname();
 
     CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
@@ -275,8 +274,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     if (result.get() == ButtonType.OK) {
       if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
         this.player.getServer().getGameState().leaveGame(nickname);
+        this.player.getServer().getServerProtocol().sendInitialGameState();
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);
+        System.out.println("dm " + dm.getFrom());
         sendMessage(dm);
       }
       updateJoinedPlayers();
@@ -340,7 +341,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public boolean sendMessage(Message m) {
     if (this.player.isHost()) {
       this.player.getServer().sendToAll(m);
-
     } else {
       this.player.getClientProtocol().sendToServer(m);
     }
@@ -476,7 +476,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Closes the Lobby and stops the server.
    */
   public void close() {
-
     if (this.player.getServer() != null) {
       this.player.getServer().stopServer();
     } else if (!this.player.isHost()) {

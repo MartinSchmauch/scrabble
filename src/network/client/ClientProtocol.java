@@ -243,11 +243,15 @@ public class ClientProtocol extends Thread {
                   if (gameState != null) {
                     DisconnectMessage dMessage = (DisconnectMessage) m;
                     gameState.leaveGame(dMessage.getFrom());
+
                     if (!gameState.getGameRunning()) {
                       if (lsc != null) {
-
-                        lsc.removeJoinedPlayer(dMessage.getFrom());
-                        lsc.close();
+                        if (dMessage.getFrom().equals(player.getNickname())) {
+                          lsc.removeJoinedPlayer(dMessage.getFrom());
+                          lsc.close();
+                        } else {
+                          lsc.updateJoinedPlayers();
+                        }
                       }
                     } else {
                       if (gpc != null) {
@@ -289,6 +293,7 @@ public class ClientProtocol extends Thread {
   }
 
   public void sendToServer(Message message) {
+    System.out.println("client send " + m.getFrom());
     try {
       this.out.writeObject(message);
       this.out.flush();
