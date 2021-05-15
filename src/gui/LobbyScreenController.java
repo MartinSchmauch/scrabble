@@ -102,8 +102,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "leavelobby":
-        sendMessage(new DisconnectMessage(this.player.getNickname()));
         close();
+
         break;
       case "send":
       case "input":
@@ -274,6 +274,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     if (result.get() == ButtonType.OK) {
       if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
         this.player.getServer().getGameState().leaveGame(nickname);
+        this.player.getServer().removeClient(nickname);
         this.player.getServer().getServerProtocol().sendInitialGameState();
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);
@@ -477,8 +478,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void close() {
     if (this.player.getServer() != null) {
+      for (PlayerData p : players) {
+        if (!p.isHost()) {
+          sendMessage(new DisconnectMessage(p.getNickname()));
+        }
+      }
+      sendMessage(new DisconnectMessage(this.player.getNickname()));
       this.player.getServer().stopServer();
     } else if (!this.player.isHost()) {
+      sendMessage(new DisconnectMessage(this.player.getNickname()));
       this.player.getClientProtocol().disconnect();
     }
     closeWindow();
