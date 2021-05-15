@@ -93,10 +93,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   private GridPane gp;
 
 
-  public void showStatistics() {
-
-  }
-
 
   /**
    * Handles all user inputs in the LobbyScreen.
@@ -108,7 +104,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "leavelobby":
         sendMessage(new DisconnectMessage(this.player.getNickname()));
         close();
-        closeWindow();
+
         break;
       case "send":
       case "input":
@@ -137,12 +133,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         addAiPlayer(Character.getNumericValue(s.charAt(3)));
         break;
       case "remove1":
-        removePlayer(1);
+      case "remove2":
+      case "remove3":
+        removePlayer(Character.getNumericValue(s.charAt(6)));
         break;
       default:
         break;
     }
   }
+
 
 
   public void initData(Player current, String connection) {
@@ -165,8 +164,20 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     } else {
       this.player.getClientProtocol().setLC(this);
       this.address = connection;
-
+      this.ip.setText("");
+      this.start.setDisable(true);
+      this.settings.setDisable(true);
     }
+
+
+
+  }
+
+  /**
+   * This methods gets called if a user clicks on the avatar or username of another player to show
+   * the statistics of the user.
+   */
+  public void showStatistics() {
 
   }
 
@@ -185,27 +196,59 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     } catch (UnknownHostException e) {
       e.printStackTrace();
     }
-    switch (index) {
+
+
+  }
+
+  /**
+   * Updates the "+" and "-" buttons according to the current lobby state. Only gets called by host.
+   */
+
+  public void updateButtons() {
+    int playersJoined = this.player.getServer().getGameState().getAllPlayers().size();
+    switch (playersJoined) {
+      // Only Host
       case 1:
+        this.remove1.setOpacity(0);
+        this.remove1.setDisable(true);
+        this.add1.setOpacity(1);
+        this.add1.setDisable(false);
+        this.add2.setOpacity(0);
+        this.add2.setDisable(true);
+        break;
+      case 2:
         this.add1.setDisable(true);
         this.add1.setOpacity(0);
         this.add2.setDisable(false);
         this.add2.setOpacity(1);
+        this.add3.setDisable(true);
+        this.add3.setOpacity(0);
+        this.remove1.setDisable(false);
+        this.remove1.setOpacity(1);
+        this.remove2.setDisable(true);
+        this.remove2.setOpacity(0);
+        this.remove3.setDisable(true);
+        this.remove3.setOpacity(0);
         break;
-      case 2:
+      case 3:
         this.add2.setDisable(true);
         this.add2.setOpacity(0);
         this.add3.setDisable(false);
         this.add3.setOpacity(1);
+        this.remove2.setDisable(false);
+        this.remove2.setOpacity(1);
+        this.remove3.setDisable(true);
+        this.remove3.setOpacity(0);
         break;
-      case 3:
+      case 4:
         this.add3.setDisable(true);
         this.add3.setOpacity(0);
+        this.remove3.setDisable(false);
+        this.remove3.setOpacity(1);
         break;
       default:
         break;
     }
-
   }
 
   /**
@@ -230,8 +273,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      DisconnectMessage dm = new DisconnectMessage(nickname);
-      sendMessage(dm);
+      if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
+        this.player.getServer().getGameState().leaveGame(nickname);
+      } else {
+        DisconnectMessage dm = new DisconnectMessage(nickname);
+        sendMessage(dm);
+      }
+      updateJoinedPlayers();
     } else {
       alert.close();
     }
@@ -328,8 +376,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * 
    */
   public void updateJoinedPlayers() {
+
     GameState gs;
     if (player.isHost()) {
+      updateButtons();
       gs = player.getServer().getGameState();
       players = gs.getAllPlayers();
     } else {
@@ -340,6 +390,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         return;
       }
     }
+    updateLabels(this.players);
+  }
+
+  public void updateLabels(List<PlayerData> list) {
 
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
@@ -358,7 +412,14 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       if (i < players.size()) {
         // Player connects
         if (players.get(i).isHost()) {
-          nicknames[i].setText(players.get(i).getNickname() + " (Host)");
+          if (i != 0) {
+            PlayerData swap = players.get(0);
+            players.set(0, players.get(i));
+            players.set(i, swap);
+            updateLabels(players);
+          } else {
+            nicknames[i].setText(players.get(i).getNickname() + " (Host)");
+          }
         } else if (players.get(i).getNickname().equals(this.player.getNickname())) {
           nicknames[i].setText(players.get(i).getNickname() + " (Me)");
         } else {
@@ -415,11 +476,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Closes the Lobby and stops the server.
    */
   public void close() {
+
     if (this.player.getServer() != null) {
       this.player.getServer().stopServer();
     } else if (!this.player.isHost()) {
       this.player.getClientProtocol().disconnect();
     }
+    closeWindow();
     /**
      * @author pkoenig
      */

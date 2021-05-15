@@ -124,7 +124,7 @@
                               <ImageView fx:id="pic2" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                               <ImageView fx:id="pic3" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                               <ImageView fx:id="pic4" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
-                              <Button fx:id="add1" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="+" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                              <Button fx:id="add1" disable="true" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" stylesheets="@Buttons.css" text="+" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                                  <GridPane.margin>
                                     <Insets right="7.0" top="10.0" />
                                  </GridPane.margin>
@@ -166,17 +166,6 @@
                                     <Tooltip text="Add AI Player" />
                                  </tooltip>
                               </Button>
-                              <Button fx:id="remove1" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="-" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                                 <GridPane.margin>
-                                    <Insets left="7.0" top="10.0" />
-                                 </GridPane.margin>
-                                 <padding>
-                                    <Insets bottom="-1.0" left="2.0" right="3.0" top="-2.0" />
-                                 </padding>
-                                 <tooltip>
-                                    <Tooltip text="Remove Player" />
-                                 </tooltip>
-                              </Button>
                               <Button fx:id="remove3" alignment="CENTER" contentDisplay="CENTER" disable="true" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" stylesheets="@Buttons.css" text="-" GridPane.rowIndex="3" GridPane.valignment="TOP">
                                  <GridPane.margin>
                                     <Insets left="7.0" top="10.0" />
@@ -198,6 +187,17 @@
                                  <tooltip>
                                     <Tooltip text="Remove Player" />
                                  </tooltip>
+                              </Button>
+                              <Button fx:id="remove1" disable="true" mnemonicParsing="false" onAction="#handle" opacity="0.0" stylesheets="@Buttons.css" text="-" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                                 <tooltip>
+                                    <Tooltip text="Remove Player" />
+                                 </tooltip>
+                                 <GridPane.margin>
+                                    <Insets left="7.0" top="10.0" />
+                                 </GridPane.margin>
+                                 <padding>
+                                    <Insets bottom="-1.0" left="2.0" right="3.0" top="-2.0" />
+                                 </padding>
                               </Button>
                            </children>
                         </GridPane>

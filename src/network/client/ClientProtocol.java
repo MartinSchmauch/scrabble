@@ -125,7 +125,9 @@ public class ClientProtocol extends Thread {
                 case SHUTDOWN:
                   ShutdownMessage sMessage = (ShutdownMessage) m;
                   disconnect();
-                  gpc.showShutdownMessage(sMessage.getFrom(), sMessage.getReason());
+                  if (gpc != null) {
+                    gpc.showShutdownMessage(sMessage.getFrom(), sMessage.getReason());
+                  }
                   break;
                 case ADD_TILE:
                   AddTileMessage atMessage = (AddTileMessage) m;
@@ -238,17 +240,19 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case DISCONNECT:
+                  if (gameState != null) {
+                    DisconnectMessage dMessage = (DisconnectMessage) m;
+                    gameState.leaveGame(dMessage.getFrom());
+                    if (!gameState.getGameRunning()) {
+                      if (lsc != null) {
 
-                  DisconnectMessage dMessage = (DisconnectMessage) m;
-                  gameState.leaveGame(dMessage.getFrom());
-                  if (!gameState.getGameRunning()) {
-                    if (lsc != null) {
-                      lsc.removeJoinedPlayer(dMessage.getFrom());
-                      lsc.close();
-                    }
-                  } else {
-                    if (gpc != null) {
-                      gpc.removeJoinedPlayer(dMessage.getFrom());
+                        lsc.removeJoinedPlayer(dMessage.getFrom());
+                        lsc.close();
+                      }
+                    } else {
+                      if (gpc != null) {
+                        gpc.removeJoinedPlayer(dMessage.getFrom());
+                      }
                     }
                   }
                 default:
