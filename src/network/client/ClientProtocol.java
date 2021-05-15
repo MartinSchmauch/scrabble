@@ -293,7 +293,7 @@ public class ClientProtocol extends Thread {
   }
 
   public void sendToServer(Message message) {
-    System.out.println("client send " + m.getFrom());
+
     try {
       this.out.writeObject(message);
       this.out.flush();

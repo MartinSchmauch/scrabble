@@ -194,6 +194,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         player.getServer().setLobbyScreenController(controller);
       } else {
         player.getClientProtocol().setLobbyScreenController(controller);
+
       }
       controller.initData(player, connection);
 
@@ -221,15 +222,14 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
        */
       stage.setX(LinkField.getScene().getWindow().getX());
       stage.setY(LinkField.getScene().getWindow().getY());
-      
+
       /**
        * @author nilbecke
        */
-      
+
       stage.show();
 
       closeScreen();
-
 
     } catch (IOException ioe) {
       ioe.printStackTrace();

@@ -148,7 +148,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     instance = this;
     this.player = current;
 
-
     this.countdown.setText(5 + "");
     this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
@@ -166,9 +165,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.ip.setText("");
       this.start.setDisable(true);
       this.settings.setDisable(true);
+
     }
-
-
 
   }
 
@@ -256,7 +254,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param index represents the position of the player to be removed.
    */
   public void removePlayer(int index) {
-    System.out.println("removed");
     String nickname = this.players.get(index).getNickname();
 
     CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
@@ -278,7 +275,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.player.getServer().getServerProtocol().sendInitialGameState();
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);
-        System.out.println("dm " + dm.getFrom());
+
         sendMessage(dm);
       }
       updateJoinedPlayers();
@@ -392,6 +389,19 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       }
     }
     updateLabels(this.players);
+
+    // Kicks a player instantly if the lobby is full.
+    if (players.size() == 5) {
+
+      if (players.get(1).getNickname().equals(this.player.getNickname())) {
+        close();
+        CustomAlert alert = new CustomAlert(AlertType.ERROR);
+        alert.setTitle("Lobby Full");
+        alert.setHeaderText("Lobby already full!");
+        alert.setContentText("Try another link or try again later");
+        alert.show();
+      }
+    }
   }
 
   public void updateLabels(List<PlayerData> list) {
