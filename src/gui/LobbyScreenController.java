@@ -3,8 +3,11 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import game.GameSettings;
 import game.GameState;
 import javafx.concurrent.Task;
@@ -14,12 +17,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
@@ -64,6 +70,18 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button settings;
   @FXML
+  private Button add1;
+  @FXML
+  private Button add2;
+  @FXML
+  private Button add3;
+  @FXML
+  private Button remove1;
+  @FXML
+  private Button remove2;
+  @FXML
+  private Button remove3;
+  @FXML
   private ImageView pic1;
   @FXML
   private ImageView pic2;
@@ -71,6 +89,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   private ImageView pic3;
   @FXML
   private ImageView pic4;
+  @FXML
+  private GridPane gp;
+
+
+  public void showStatistics() {
+
+  }
 
 
   /**
@@ -88,7 +113,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "send":
       case "input":
         this.cc.sendChatMessage(this.player.getNickname(), this.input.getText());
-
         // Reset the Textlabel
         this.input.setText("");
         break;
@@ -107,6 +131,14 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
         break;
+      case "add1":
+      case "add2":
+      case "add3":
+        addAiPlayer(Character.getNumericValue(s.charAt(3)));
+        break;
+      case "remove1":
+        removePlayer(1);
+        break;
       default:
         break;
     }
@@ -114,8 +146,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
 
   public void initData(Player current, String connection) {
+
     instance = this;
     this.player = current;
+
 
     this.countdown.setText(5 + "");
     this.chat.setEditable(false);
@@ -127,17 +161,83 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
       sendMessage(cm);
       this.ip.setText("Link:  " + address);
+
     } else {
       this.player.getClientProtocol().setLC(this);
       this.address = connection;
-      this.start.setOpacity(0.4);
-      this.start.setDisable(true);
-      this.settings.setOpacity(0.4);
-      this.settings.setDisable(true);
-      this.ip.setText("");
+
     }
 
   }
+
+  /**
+   * This method adds an AI Player to the Lobby. Gets called when the host clicks on the "+" button.
+   * Can only be called by the host. in the Lobby.
+   * 
+   * @param index defines in which slot the ai player needs to be put.
+   */
+  public void addAiPlayer(int index) {
+    Player p = new Player("AI " + index);
+    p.setHost(false);
+    p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
+    try {
+      p.connect(InetAddress.getLocalHost().getHostAddress());
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
+    switch (index) {
+      case 1:
+        this.add1.setDisable(true);
+        this.add1.setOpacity(0);
+        this.add2.setDisable(false);
+        this.add2.setOpacity(1);
+        break;
+      case 2:
+        this.add2.setDisable(true);
+        this.add2.setOpacity(0);
+        this.add3.setDisable(false);
+        this.add3.setOpacity(1);
+        break;
+      case 3:
+        this.add3.setDisable(true);
+        this.add3.setOpacity(0);
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  /**
+   * "Kicks" a player. Can only be called by host. Requires confirmation before kick.
+   * 
+   * @param index represents the position of the player to be removed.
+   */
+  public void removePlayer(int index) {
+
+    String nickname = this.players.get(index).getNickname();
+
+    CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
+    alert.setTitle("Are you sure?");
+    alert.setHeaderText(null);
+    alert.setContentText("Are you sure you want to remove " + nickname + " from the Lobby?");
+
+    alert.changeButtonText("Remove", ButtonType.OK);
+    alert.changeButtonText("Cancel", ButtonType.CANCEL);
+
+    alert.getDialogPane().getStylesheets()
+        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      DisconnectMessage dm = new DisconnectMessage(nickname);
+      sendMessage(dm);
+    } else {
+      alert.close();
+    }
+
+  }
+
 
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
@@ -223,7 +323,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Lets a player disconnect or connect.
+   * Lets a player disconnect or connect. Also updates the "remove" button depending on the amount
+   * of players joined.
    * 
    */
   public void updateJoinedPlayers() {

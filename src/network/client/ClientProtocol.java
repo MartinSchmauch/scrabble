@@ -191,9 +191,11 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case LOBBY_STATUS:
-                  LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
-                  gameState = lsMessage.getGameState();
-                  lsc.updateJoinedPlayers();
+                  if (lsc != null) {
+                    LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
+                    gameState = lsMessage.getGameState();
+                    lsc.updateJoinedPlayers();
+                  }
                   break;
                 case START_GAME:
                   StartGameMessage sgMessage = (StartGameMessage) m;
@@ -229,17 +231,25 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case CONNECT:
-                  ConnectMessage cMessage = (ConnectMessage) m;
-                  gameState.joinGame(cMessage.getPlayerInfo());
-                  lsc.addJoinedPlayer(cMessage.getPlayerInfo());
+                  if (lsc != null) {
+                    ConnectMessage cMessage = (ConnectMessage) m;
+                    gameState.joinGame(cMessage.getPlayerInfo());
+                    lsc.addJoinedPlayer(cMessage.getPlayerInfo());
+                  }
                   break;
                 case DISCONNECT:
+
                   DisconnectMessage dMessage = (DisconnectMessage) m;
                   gameState.leaveGame(dMessage.getFrom());
                   if (!gameState.getGameRunning()) {
-                    lsc.removeJoinedPlayer(dMessage.getFrom());
+                    if (lsc != null) {
+                      lsc.removeJoinedPlayer(dMessage.getFrom());
+                      lsc.close();
+                    }
                   } else {
-                    gpc.removeJoinedPlayer(dMessage.getFrom());
+                    if (gpc != null) {
+                      gpc.removeJoinedPlayer(dMessage.getFrom());
+                    }
                   }
                 default:
                   break;
