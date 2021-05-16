@@ -79,7 +79,6 @@ public class LoginScreen extends Application {
     } else {
       currentPlayer = new JsonHandler()
           .loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
-      System.out.println("spot reached");
       if (!alreadyLaunched) {
         System.out.println("already launched");
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);

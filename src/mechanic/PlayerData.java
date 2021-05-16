@@ -61,6 +61,7 @@ public class PlayerData implements Serializable {
    */
 
   public void setStatistics(int gc, int bs, String bw, int s, int pt1, int w, int pt2) {
+
     this.statistics.setGameCount(gc);
     this.statistics.setBestTurn(bs);
     this.statistics.setBestWord(bw);

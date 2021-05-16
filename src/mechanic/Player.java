@@ -64,6 +64,7 @@ public class Player {
     info = new PlayerData(nickname);
     info.setAvatar(avatar);
     this.volume = volume;
+
     info.setStatistics(gameCount, bestTurn, bestWord, score, playTime, wins, playedTiles);
     this.rack = new Field[RACK_FIELDS];
     for (int i = 0; i < RACK_FIELDS; i++) {
