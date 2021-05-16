@@ -2,6 +2,13 @@
   "nickname" : "xXScrabbleSlayerXx",
   "avatar" : "/avatars/avatar5.png",
   "volume" : 60,
+  "gameCount" : 2345,
+  "bestTurn" : 4,
+  "bestWord" : "hello",
+  "playTime" : 4,
+  "score" : 234235,
+  "wins" : 24,
+  "playedTiles" : 0,
   "customGameSettings" : null,
   "playerInfo" : {
     "nickname" : "xXScrabbleSlayerXx",

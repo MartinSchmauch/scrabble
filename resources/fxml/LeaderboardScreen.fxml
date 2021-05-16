@@ -17,7 +17,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0">
+            <AnchorPane layoutX="505.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0">
                <children>
                   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" style="-fx-background-color: linear-gradient(to right, #218f33, #83d490);">
                      <children>
@@ -43,12 +43,12 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="262.0" prefHeight="400.0" prefWidth="338.0">
+            <AnchorPane layoutX="767.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="356.0">
                <children>
                   <Button fx:id="leave" layoutX="243.0" layoutY="360.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Leave Game" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="100.0" layoutX="18.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 45px;" width="100.0" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="125.0" layoutX="117.0" layoutY="88.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 45px;" width="100.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" layoutX="216.0" layoutY="138.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 45px;" width="100.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="75.0" layoutX="216.0" layoutY="138.0" stroke="BLACK" strokeType="INSIDE" style="-fx-arc-width: 45px; -fx-fill: #ffffff;" width="100.0" />
                   <Label fx:id="fourth" alignment="CENTER" layoutX="12.0" layoutY="224.0" prefHeight="19.0" prefWidth="305.0" style="-fx-border-color: linear-gradient(to right, #218f33, #83d490); -fx-border-radius: 25px;" text="-" />
                   <Label fx:id="first" alignment="CENTER" layoutX="106.0" layoutY="56.0" prefHeight="18.0" prefWidth="119.0" text="-">
                      <font>
@@ -101,6 +101,11 @@
                   </GridPane>
                </children>
             </AnchorPane>
+            <ImageView disable="true" fitHeight="744.0" fitWidth="1262.0" layoutX="347.0" layoutY="13.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/ScrabbleBoard.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>
