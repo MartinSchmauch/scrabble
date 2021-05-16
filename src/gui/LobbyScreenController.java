@@ -264,8 +264,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     alert.changeButtonText("Remove", ButtonType.OK);
     alert.changeButtonText("Cancel", ButtonType.CANCEL);
 
-    alert.getDialogPane().getStylesheets()
-        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
@@ -283,6 +281,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       alert.close();
     }
 
+  }
+
+  public void refuseConnection() {
+    closeWindow();
+    CustomAlert alert = new CustomAlert(AlertType.ERROR);
+    alert.setTitle("Lobby full");
+    alert.setHeaderText("Lobby Full!");
+    alert.setContentText("Try another Link or try again later");
+    alert.show();
   }
 
 

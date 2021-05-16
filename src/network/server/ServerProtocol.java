@@ -100,6 +100,10 @@ public class ServerProtocol extends Thread {
         out.reset();
         disconnect();
       } else if (m.getMessageType() == MessageType.CONNECT) {
+        if (server.getGameState().getAllPlayers().size() >= 4) {
+          sendToClient(new ConnectionRefusedMessage(m.getFrom(), "Lobby full"));
+          return;
+        }
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();

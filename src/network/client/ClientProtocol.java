@@ -82,6 +82,7 @@ public class ClientProtocol extends Thread {
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
       } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED) {
+
         this.clientSocket.close();
         /**
          * @author pkoenig
@@ -120,6 +121,12 @@ public class ClientProtocol extends Thread {
                 case CONNECTION_REFUSED:
                   ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
                   System.out.println("cp, l 115");
+                  lsc.refuseConnection();
+                  try {
+                    clientSocket.close();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
                   // tbImplemented
                   break;
                 case SHUTDOWN:

@@ -176,7 +176,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         CustomAlert alert = new CustomAlert(AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Could not establish connection.");
-        alert.setContentText("Check Link and try again.");
+        alert.setContentText("Incorrect link or lobby already full.");
         alert.show();
         return;
       }
