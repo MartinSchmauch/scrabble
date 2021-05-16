@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -41,7 +42,8 @@ public class UserStatisticsScreen extends Application {
   public void start(Stage stage) {
 
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("UserStatisticsScreen.fxml"));
+      Parent root = FXMLLoader
+          .load(new File(FileParameters.fxmlPath + "UserStatisticsScreen.fxml").toURI().toURL());
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.initStyle(StageStyle.UNDECORATED);

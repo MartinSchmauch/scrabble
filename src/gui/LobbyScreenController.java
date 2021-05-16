@@ -294,7 +294,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
-      FXMLLoader loader = new FXMLLoader(new File(FileParameters.fxmlPath).toURI().toURL());
+      FXMLLoader loader = new FXMLLoader(
+          new File(FileParameters.fxmlPath + "Test_MainGamePanel_Martin.fxml").toURI().toURL());
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
@@ -389,10 +390,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       }
     }
     updateLabels(this.players);
-
+    // TODO NOT WORKING!!
     // Kicks a player instantly if the lobby is full.
     if (players.size() == 5) {
-
       if (players.get(1).getNickname().equals(this.player.getNickname())) {
         close();
         CustomAlert alert = new CustomAlert(AlertType.ERROR);
@@ -400,6 +400,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         alert.setHeaderText("Lobby already full!");
         alert.setContentText("Try another link or try again later");
         alert.show();
+        return;
       }
     }
   }

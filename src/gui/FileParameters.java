@@ -15,6 +15,5 @@ public class FileParameters {
 
   public final static String generaldir = datadir + "general";
 
-  public final static String fxmlPath =
-      datadir + "fxml" + sep + "Test_MainGamePanel_Martin.fxml";
+  public final static String fxmlPath = datadir + "fxml" + sep;
 }
