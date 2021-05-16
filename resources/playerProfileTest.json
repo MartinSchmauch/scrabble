@@ -2,27 +2,20 @@
   "nickname" : "xXScrabbleSlayerXx",
   "avatar" : "/avatars/avatar5.png",
   "volume" : 60,
-  "gameCount" : 2345,
-  "bestTurn" : 4,
-  "bestWord" : "hello",
-  "playTime" : 4,
-  "score" : 234235,
-  "wins" : 24,
-  "playedTiles" : 0,
   "customGameSettings" : null,
   "playerInfo" : {
     "nickname" : "xXScrabbleSlayerXx",
     "avatar" : "/avatars/avatar5.png",
-    "host" : false,
     "playerStatistics" : {
-      "gameCount" : 0,
-      "bestTurn" : 0,
-      "bestWord" : null,
-      "playTime" : 0,
-      "score" : 0,
-      "wins" : 0,
+      "gameCount" : 234,
+      "bestTurn" : 234,
+      "bestWord" : "hello",
+      "playTime" : 324,
+      "score" : 234,
+      "wins" : 2,
       "playedTiles" : 0
-    }
+    },
+    "host" : false
   },
   "host" : false,
   "clientProtocol" : null
