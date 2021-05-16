@@ -150,13 +150,14 @@ public class ClientProtocol extends Thread {
                 case RESET_TURN:
                   ResetTurnMessage resetTMessage = (ResetTurnMessage) m;
                   List<Tile> tileList = resetTMessage.getTiles();
+                  System.out.println(resetTMessage.getFrom() + "  " + tileList.size());
                   // remove Tiles from UI Gameboard and domain Gameboard
                   for (Tile t : tileList) {
                     gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
                         false);
                   }
                   // if this is the current player: add Tiles to Rack
-                  if (player.getNickname().equals(gameState.getCurrentPlayer())) {
+                  if (player.getNickname().equals(resetTMessage.getFrom())) {
                     for (Tile t : tileList) {
                       player.addTileToRack(t);
                       gpc.addTile(t);

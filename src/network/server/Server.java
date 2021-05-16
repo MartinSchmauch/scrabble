@@ -114,14 +114,6 @@ public class Server {
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
-    // String nextPlayer = this.gameController.getNextPlayer();
-
-    // this.sendToAll(new TurnResponseMessage(m.getFrom(), this.gameController.getTurn().isValid(),
-    // this.gameState.getScore(m.getFrom()), nextPlayer,
-    // this.gameController.getTileBag().getRemaining()));
-    // this.gameState.setCurrentPlayer(nextPlayer);
-
-
     this.getGameController().addTilesToTileBag(m.getTiles());
     // If the host wants to perform the exchange
     if (m.getFrom().equals(this.getHost())) {
