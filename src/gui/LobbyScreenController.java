@@ -301,8 +301,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
-      FXMLLoader loader = new FXMLLoader(
-          new File(FileParameters.fxmlPath + "Test_MainGamePanel_Martin.fxml").toURI().toURL());
+      FXMLLoader loader =
+          new FXMLLoader(new File(FileParameters.fxmlPath + "MainGameScreen.fxml").toURI().toURL());
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();

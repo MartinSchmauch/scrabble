@@ -28,7 +28,7 @@
 
 <StackPane maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
    <children>
-      <ImageView fitHeight="850.0" fitWidth="1600.0" opacity="0.1" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
+      <ImageView fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
          <image>
             <Image url="@images/ScrabbleBoard.png" />
          </image>
@@ -41,10 +41,15 @@
                      <children>
                         <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="700.0">
                            <children>
-                              <HBox alignment="BOTTOM_CENTER" layoutX="-14.0" layoutY="21.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="539.0" prefWidth="750.0">
+                              <HBox alignment="BOTTOM_CENTER" layoutX="-14.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="559.0" prefWidth="750.0">
                                  <children>
                                     <VBox alignment="BOTTOM_CENTER" prefHeight="460.0" prefWidth="360.0">
                                        <children>
+                                          <Pane prefHeight="22.0" prefWidth="370.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Version 1.0.0" />
+                                             </children>
+                                          </Pane>
                                           <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="SCRABBLE" textAlignment="CENTER">
                                              <font>
                                                 <Font name="Arial Bold" size="46.0" />
@@ -55,7 +60,7 @@
                                           </Text>
                                           <StackPane alignment="BOTTOM_CENTER" prefHeight="450.0" prefWidth="370.0">
                                              <children>
-                                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" />
+                                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" />
                                                 <VBox alignment="TOP_CENTER" prefHeight="460.0" prefWidth="370.0">
                                                    <children>
                                                       <VBox prefHeight="296.0" prefWidth="370.0">
@@ -318,11 +323,11 @@
                                           <Insets right="10.0" />
                                        </padding>
                                     </VBox>
-                                    <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+                                    <VBox alignment="BOTTOM_CENTER" prefHeight="544.0" prefWidth="330.0">
                                        <children>
-                                          <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0">
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="101.0" prefWidth="330.0">
                                              <children>
-                                                <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" prefHeight="33.0" prefWidth="110.0" stylesheets="@../../src/gui/Buttons.css" text="Leave Game">
+                                                <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" prefHeight="33.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Leave Game">
                                                    <HBox.margin>
                                                       <Insets right="5.0" />
                                                    </HBox.margin>
@@ -330,7 +335,7 @@
                                                       <Font size="15.0" />
                                                    </font>
                                                 </Button>
-                                                <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handle" prefWidth="110.0" stylesheets="@../../src/gui/Buttons.css" text="Settings">
+                                                <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handle" prefWidth="110.0" stylesheets="@Buttons.css" text="Settings">
                                                    <HBox.margin>
                                                       <Insets left="5.0" right="5.0" />
                                                    </HBox.margin>
@@ -338,7 +343,7 @@
                                                       <Font size="15.0" />
                                                    </font>
                                                 </Button>
-                                                <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#handle" prefWidth="110.0" stylesheets="@../../src/gui/Buttons.css" text="Rules">
+                                                <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#handle" prefWidth="110.0" stylesheets="@Buttons.css" text="Rules">
                                                    <HBox.margin>
                                                       <Insets left="5.0" />
                                                    </HBox.margin>
@@ -351,20 +356,20 @@
                                                 <Insets />
                                              </opaqueInsets>
                                              <VBox.margin>
-                                                <Insets bottom="10.0" />
+                                                <Insets top="10.0" />
                                              </VBox.margin>
                                           </HBox>
                                           <StackPane alignment="BOTTOM_CENTER" maxHeight="460.0" maxWidth="340.0" prefHeight="460.0" prefWidth="340.0">
                                              <children>
-                                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="440.0" stroke="BLACK" strokeType="INSIDE" width="330.0" />
+                                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="330.0" />
                                                 <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="359.0" prefWidth="330.0">
                                                    <children>
-                                                      <TextArea fx:id="chat" maxHeight="1.7976931348623157E308" maxWidth="300.0" prefHeight="345.0" prefWidth="300.0" promptText="Welcome to the chat!" styleClass=".text-area .text {     -fx-line-spacing: 30px;}" wrapText="true">
+                                                      <TextArea fx:id="chat" maxHeight="1.7976931348623157E308" maxWidth="300.0" prefHeight="345.0" prefWidth="300.0" promptText="Welcome to the chat!" wrapText="true">
                                                          <font>
                                                             <Font size="15.0" />
                                                          </font>
                                                       </TextArea>
-                                                      <HBox alignment="CENTER" maxWidth="300.0" prefHeight="60.0" prefWidth="240.0">
+                                                      <HBox alignment="CENTER" maxWidth="308.0" prefHeight="63.0" prefWidth="308.0">
                                                          <children>
                                                             <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="250.0" onAction="#handle" prefHeight="60.0" prefWidth="230.0" promptText="Message...">
                                                                <font>
@@ -374,7 +379,7 @@
                                                                   <Insets bottom="2.0" right="2.0" top="2.0" />
                                                                </HBox.margin>
                                                             </TextField>
-                                                            <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="60.0" mnemonicParsing="false" onAction="#handle" prefHeight="34.0" prefWidth="52.0" stylesheets="@../../src/gui/Buttons.css" text="Send" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                                                            <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="60.0" mnemonicParsing="false" onAction="#handle" prefHeight="34.0" prefWidth="52.0" stylesheets="@Buttons.css" text="Send" textAlignment="CENTER" HBox.hgrow="ALWAYS">
                                                                <font>
                                                                   <Font size="11.0" />
                                                                </font>
@@ -415,7 +420,7 @@
                               </Text>
                               <StackPane prefHeight="160.0" prefWidth="600.0">
                                  <children>
-                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="WHITE" height="160.0" stroke="BLACK" strokeType="INSIDE" width="520.0" />
+                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="160.0" stroke="BLACK" strokeType="INSIDE" width="520.0" />
                                     <GridPane fx:id="rack" alignment="CENTER" maxHeight="140.0" maxWidth="500.0" prefHeight="130.0" prefWidth="500.0" vgap="8.0">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
@@ -430,25 +435,25 @@
                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                       </rowConstraints>
                                        <children>
-                                          <Rectangle fx:id="r1" fill="#ffffff00" height="60.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r4" fill="#ffffff00" height="60.0" layoutX="106.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r3" fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r2" fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r0" fill="#ffffff00" height="60.0" layoutX="344.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r5" fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r6" fill="#ffffff00" height="60.0" layoutX="427.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r7" fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r8" fill="#ffffff00" height="60.0" layoutX="94.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r9" fill="#ffffff00" height="60.0" layoutX="178.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r10" fill="#ffffff00" height="60.0" layoutX="261.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                          <Rectangle fx:id="r11" fill="#ffffff00" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r1" fill="WHITE" height="60.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r4" fill="WHITE" height="60.0" layoutX="106.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r3" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r2" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r0" fill="WHITE" height="60.0" layoutX="344.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r5" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r6" fill="WHITE" height="60.0" layoutX="427.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r7" fill="WHITE" height="60.0" layoutX="10.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r8" fill="WHITE" height="60.0" layoutX="94.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r9" fill="WHITE" height="60.0" layoutX="178.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r10" fill="WHITE" height="60.0" layoutX="261.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r11" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                                        </children>
                                     </GridPane>
                                  </children>
                               </StackPane>
                               <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0">
                                  <children>
-                                    <Button fx:id="skipAndChangeButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@../../src/gui/Buttons.css" text="Skip &amp; Change">
+                                    <Button fx:id="skipAndChangeButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Skip &amp; Change">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -456,7 +461,7 @@
                                           <Insets right="20.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@../../src/gui/Buttons.css" text="Done">
+                                    <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Done">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -483,7 +488,7 @@
             </Pane>
             <StackPane prefHeight="820.0" prefWidth="820.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                <children>
-                  <Rectangle fx:id="backgroundGamePanel" arcHeight="15.0" arcWidth="15.0" fill="WHITE" height="820.0" stroke="BLACK" strokeType="INSIDE" width="820.0" />
+                  <Rectangle fx:id="backgroundGamePanel" arcHeight="15.0" arcWidth="15.0" fill="#ffffff00" height="820.0" stroke="BLACK" strokeType="INSIDE" width="820.0" />
                   <GridPane fx:id="board" alignment="CENTER" maxHeight="800.0" maxWidth="800.0" minHeight="400.0" minWidth="400.0" prefHeight="800.0" prefWidth="800.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
