@@ -26,12 +26,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <StackPane maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
    <children>
       <ImageView fitHeight="850.0" fitWidth="1600.0" opacity="0.1" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT">
          <image>
-            <Image url="@/gui/images/ScrabbleBoard.png" />
+            <Image url="@images/ScrabbleBoard.png" />
          </image>
       </ImageView>
       <AnchorPane fx:id="parentPane" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-image: url(&quot;ScrabbleBoard.png&quot;);" stylesheets="@../src/gui/Buttons.css">
