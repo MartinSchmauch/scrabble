@@ -17,6 +17,7 @@ public class PlayerData implements Serializable {
 
 
   private static final long serialVersionUID = 1L;
+  private PlayerStatistics statistics;
   private boolean isHost;
   private String nickname;
   private String avatar;
@@ -25,6 +26,7 @@ public class PlayerData implements Serializable {
 
   public PlayerData(String nickname) {
     this.nickname = nickname;
+    statistics = new PlayerStatistics();
   }
 
   public String getNickname() {
@@ -38,6 +40,35 @@ public class PlayerData implements Serializable {
   public String getAvatar() {
 
     return this.avatar;
+  }
+
+  public PlayerStatistics getPlayerStatistics() {
+    return this.statistics;
+  }
+
+  /**
+   * This method initializes all user statistics.
+   * 
+   * @author nilbecke
+   * 
+   * @param gc represents the amount of games played.
+   * @param bs represents most points scored by a single turn.
+   * @param bw represents the highest scoring word.
+   * @param s represents the total score throughout all games.
+   * @param pt1 represents the total play time represented in minutes.
+   * @param w represents the total amount of wins.
+   * @param pt2 represents the sum of all tiles ever played.
+   */
+
+  public void setStatistics(int gc, int bs, String bw, int s, int pt1, int w, int pt2) {
+
+    this.statistics.setGameCount(gc);
+    this.statistics.setBestTurn(bs);
+    this.statistics.setBestWord(bw);
+    this.statistics.setScore(s);
+    this.statistics.setPlayTime(pt1);
+    this.statistics.setWins(w);
+    this.statistics.setPlayedTiles(pt2);
   }
 
   /** @author nilbecke */

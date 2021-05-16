@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import game.GameSettings;
 
@@ -41,7 +42,8 @@ public class SettingsScreen extends Application {
   @Override
   public void start(Stage stage) {
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("SettingsScreenFXML.fxml"));
+      Parent root = FXMLLoader
+          .load(new File(FileParameters.fxmlPath + "SettingsScreenFXML.fxml").toURI().toURL());
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.initStyle(StageStyle.UNDECORATED);

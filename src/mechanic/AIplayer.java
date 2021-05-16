@@ -5,12 +5,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import game.GameController;
-import game.GameSettings;
-import java.util.concurrent.TimeUnit;
 import com.google.common.base.Stopwatch;
+import game.GameController;
 
 /**
  * 
@@ -158,7 +157,7 @@ public class AIplayer extends Player {
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    super(nickname, avatar, volume);
+    super(nickname, avatar, volume, 0, 0, 0, "", 0, 0, 0);
   }
 
   public void generateTwoTilesCombinations() { // Version 2.0 (runtime about 5 sec compared to 2
@@ -393,7 +392,8 @@ public class AIplayer extends Player {
     for (int i = 0; i < turnWithMaximumScore.getLaydDownTiles().size(); i++) {
       maximumLocation[i].setTile(turnWithMaximumScore.getLaydDownTiles().get(i));
       this.setRackTileToNone(maximumIndicesOnRack.get(i));
-      System.out.println("Tile newly layed down: " + turnWithMaximumScore.getLaydDownTiles().get(i));
+      System.out
+          .println("Tile newly layed down: " + turnWithMaximumScore.getLaydDownTiles().get(i));
     }
     System.out.println("----------------------");
     for (Word w : turnWithMaximumScore.getWords()) {

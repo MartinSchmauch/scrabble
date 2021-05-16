@@ -11,8 +11,7 @@ import javafx.scene.text.Text;
 
 
 /**
- * 
- * @author Martin
+ * @author mschmauc
  * 
  *         This class represents a tile on the MainGamePanelScreen and the constructor is being
  *         called, when a new tile needs to be genereated. The tile consists of a Parent container,
@@ -20,47 +19,56 @@ import javafx.scene.text.Text;
  */
 public class VisualTile extends Parent {
 
-  private static final int TILE_WIDTH = 55;
-  private static final int TILE_HEIGHT = 55;
+  private static final int RACK_TILE_SIZE = 60;
+  private static final int BOARD_TILE_SIZE = 50;
 
   private Rectangle shape;
-
-  public Rectangle getShape() {
-    return shape;
-  }
-
   private Text letterText;
   private Text valueText;
 
 
   public VisualTile(String letter, int value, boolean onRack) {
     StackPane sP = new StackPane();
-    sP.setPrefSize(TILE_WIDTH, TILE_HEIGHT);
+    sP.setAlignment(Pos.CENTER);
+
+    letterText = new Text(letter);
+    valueText = new Text(String.valueOf(value));
+
     if (onRack) {
-      shape = new Rectangle(TILE_WIDTH, TILE_HEIGHT);
+      shape = new Rectangle(RACK_TILE_SIZE - 5, RACK_TILE_SIZE - 5);
+      sP.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
+      letterText.setFont(Font.font(32));
+      valueText.setFont(Font.font(16));
+      if (letter.equals("Q")) {
+        valueText.setFont(Font.font(14));
+      }
     } else {
-      shape = new Rectangle(TILE_WIDTH - 10, TILE_HEIGHT - 10);
+      shape = new Rectangle(BOARD_TILE_SIZE - 5, BOARD_TILE_SIZE - 5);
+      sP.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
+      letterText.setFont(Font.font(26));
+      valueText.setFont(Font.font(14));
+      if (letter.equals("Q")) {
+        valueText.setFont(Font.font(11));
+      }
     }
     shape.setArcHeight(10);
     shape.setArcWidth(10);
     shape.setFill(Color.rgb(226, 189, 160));
 
-    letterText = new Text(letter);
-    letterText.setFont(Font.font(32));
-
-    valueText = new Text(String.valueOf(value));
-    valueText.setFont(Font.font(16));
-    double rightMargin = 4.5;
-    double bottomMargin = 4.5;
-
     sP.getChildren().addAll(shape, letterText, valueText);
-    sP.setAlignment(Pos.CENTER);
+
     StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
+
+    double rightMargin = 3;
+    double bottomMargin = 3;
     StackPane.setMargin(valueText, new Insets(0, bottomMargin, rightMargin, 0));
 
     getChildren().add(sP);
   }
 
+  public Rectangle getShape() {
+    return shape;
+  }
 
   public void setShape(Rectangle shape) {
     this.shape = shape;

@@ -82,6 +82,7 @@ public class ClientProtocol extends Thread {
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
       } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED) {
+
         this.clientSocket.close();
         /**
          * @author pkoenig
@@ -120,12 +121,20 @@ public class ClientProtocol extends Thread {
                 case CONNECTION_REFUSED:
                   ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
                   System.out.println("cp, l 115");
+                  lsc.refuseConnection();
+                  try {
+                    clientSocket.close();
+                  } catch (IOException e) {
+                    e.printStackTrace();
+                  }
                   // tbImplemented
                   break;
                 case SHUTDOWN:
                   ShutdownMessage sMessage = (ShutdownMessage) m;
                   disconnect();
-                  gpc.showShutdownMessage(sMessage.getFrom(), sMessage.getReason());
+                  if (gpc != null) {
+                    gpc.showShutdownMessage(sMessage.getFrom(), sMessage.getReason());
+                  }
                   break;
                 case ADD_TILE:
                   AddTileMessage atMessage = (AddTileMessage) m;
@@ -150,13 +159,14 @@ public class ClientProtocol extends Thread {
                 case RESET_TURN:
                   ResetTurnMessage resetTMessage = (ResetTurnMessage) m;
                   List<Tile> tileList = resetTMessage.getTiles();
+                  System.out.println(resetTMessage.getFrom() + "  " + tileList.size());
                   // remove Tiles from UI Gameboard and domain Gameboard
                   for (Tile t : tileList) {
                     gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
                         false);
                   }
                   // if this is the current player: add Tiles to Rack
-                  if (player.getNickname().equals(gameState.getCurrentPlayer())) {
+                  if (player.getNickname().equals(resetTMessage.getFrom())) {
                     for (Tile t : tileList) {
                       player.addTileToRack(t);
                       gpc.addTile(t);
@@ -191,9 +201,11 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case LOBBY_STATUS:
-                  LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
-                  gameState = lsMessage.getGameState();
-                  lsc.updateJoinedPlayers();
+                  if (lsc != null) {
+                    LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
+                    gameState = lsMessage.getGameState();
+                    lsc.updateJoinedPlayers();
+                  }
                   break;
                 case START_GAME:
                   StartGameMessage sgMessage = (StartGameMessage) m;
@@ -229,17 +241,31 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case CONNECT:
-                  ConnectMessage cMessage = (ConnectMessage) m;
-                  gameState.joinGame(cMessage.getPlayerInfo());
-                  lsc.addJoinedPlayer(cMessage.getPlayerInfo());
+                  if (lsc != null) {
+                    ConnectMessage cMessage = (ConnectMessage) m;
+                    gameState.joinGame(cMessage.getPlayerInfo());
+                    lsc.addJoinedPlayer(cMessage.getPlayerInfo());
+                  }
                   break;
                 case DISCONNECT:
-                  DisconnectMessage dMessage = (DisconnectMessage) m;
-                  gameState.leaveGame(dMessage.getFrom());
-                  if (!gameState.getGameRunning()) {
-                    lsc.removeJoinedPlayer(dMessage.getFrom());
-                  } else {
-                    gpc.removeJoinedPlayer(dMessage.getFrom());
+                  if (gameState != null) {
+                    DisconnectMessage dMessage = (DisconnectMessage) m;
+                    gameState.leaveGame(dMessage.getFrom());
+
+                    if (!gameState.getGameRunning()) {
+                      if (lsc != null) {
+                        if (dMessage.getFrom().equals(player.getNickname())) {
+                          lsc.removeJoinedPlayer(dMessage.getFrom());
+                          lsc.close();
+                        } else {
+                          lsc.updateJoinedPlayers();
+                        }
+                      }
+                    } else {
+                      if (gpc != null) {
+                        gpc.removeJoinedPlayer(dMessage.getFrom());
+                      }
+                    }
                   }
                 default:
                   break;
@@ -275,6 +301,7 @@ public class ClientProtocol extends Thread {
   }
 
   public void sendToServer(Message message) {
+
     try {
       this.out.writeObject(message);
       this.out.flush();

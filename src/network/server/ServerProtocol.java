@@ -13,6 +13,7 @@ import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
+import network.messages.ResetTurnMessage;
 import network.messages.SendChatMessage;
 import network.messages.TileMessage;
 import network.messages.UpdateChatMessage;
@@ -55,7 +56,7 @@ public class ServerProtocol extends Thread {
   public void sendInitialGameState() {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
 
-    this.sendToClient(m);
+    this.server.sendToAll(m);
 
   }
 
@@ -99,6 +100,10 @@ public class ServerProtocol extends Thread {
         out.reset();
         disconnect();
       } else if (m.getMessageType() == MessageType.CONNECT) {
+        if (server.getGameState().getAllPlayers().size() >= 4) {
+          sendToClient(new ConnectionRefusedMessage(m.getFrom(), "Lobby full"));
+          return;
+        }
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
@@ -136,7 +141,6 @@ public class ServerProtocol extends Thread {
 
       while (running) {
         m = (Message) in.readObject();
-
         switch (m.getMessageType()) {
           case DISCONNECT:
             server.removeClient(m.getFrom());
@@ -167,10 +171,10 @@ public class ServerProtocol extends Thread {
             TileMessage tm = (TileMessage) m;
             this.server.handleExchangeTiles(tm);
             break;
-          // case RESET_TURN:
-          // ResetTurnMessage rtMessage = (ResetTurnMessage) m;
-          // this.server.resetTurnForEveryPlayer(rtMessage);
-          // break;
+          case RESET_TURN:
+            ResetTurnMessage rtMessage = (ResetTurnMessage) m;
+            this.server.resetTurnForEveryPlayer(rtMessage);
+            break;
           case SEND_CHAT_TEXT:
             SendChatMessage scm = (SendChatMessage) m;
             UpdateChatMessage ucm =

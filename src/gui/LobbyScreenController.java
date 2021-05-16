@@ -3,8 +3,11 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import game.GameSettings;
 import game.GameState;
 import javafx.concurrent.Task;
@@ -14,12 +17,15 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
@@ -64,6 +70,18 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button settings;
   @FXML
+  private Button add1;
+  @FXML
+  private Button add2;
+  @FXML
+  private Button add3;
+  @FXML
+  private Button remove1;
+  @FXML
+  private Button remove2;
+  @FXML
+  private Button remove3;
+  @FXML
   private ImageView pic1;
   @FXML
   private ImageView pic2;
@@ -71,6 +89,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   private ImageView pic3;
   @FXML
   private ImageView pic4;
+  @FXML
+  private GridPane gp;
+
 
 
   /**
@@ -81,14 +102,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "leavelobby":
-        sendMessage(new DisconnectMessage(this.player.getNickname()));
         close();
-        closeWindow();
+
         break;
       case "send":
       case "input":
         this.cc.sendChatMessage(this.player.getNickname(), this.input.getText());
-
         // Reset the Textlabel
         this.input.setText("");
         break;
@@ -107,13 +126,25 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "settings":
         new SettingsScreen(this.gs).start(new Stage());
         break;
+      case "add1":
+      case "add2":
+      case "add3":
+        addAiPlayer(Character.getNumericValue(s.charAt(3)));
+        break;
+      case "remove1":
+      case "remove2":
+      case "remove3":
+        removePlayer(Character.getNumericValue(s.charAt(6)));
+        break;
       default:
         break;
     }
   }
 
 
+
   public void initData(Player current, String connection) {
+
     instance = this;
     this.player = current;
 
@@ -127,17 +158,140 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       ConnectMessage cm = new ConnectMessage(this.player.getPlayerInfo());
       sendMessage(cm);
       this.ip.setText("Link:  " + address);
+
     } else {
       this.player.getClientProtocol().setLC(this);
       this.address = connection;
-      this.start.setOpacity(0.4);
-      this.start.setDisable(true);
-      this.settings.setOpacity(0.4);
-      this.settings.setDisable(true);
       this.ip.setText("");
+      this.start.setDisable(true);
+      this.settings.setDisable(true);
+
     }
 
   }
+
+  /**
+   * This methods gets called if a user clicks on the avatar or username of another player to show
+   * the statistics of the user.
+   */
+  public void showStatistics() {
+
+  }
+
+  /**
+   * This method adds an AI Player to the Lobby. Gets called when the host clicks on the "+" button.
+   * Can only be called by the host. in the Lobby.
+   * 
+   * @param index defines in which slot the ai player needs to be put.
+   */
+  public void addAiPlayer(int index) {
+    Player p = new Player("AI " + index);
+    p.setHost(false);
+    p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
+    try {
+      p.connect(InetAddress.getLocalHost().getHostAddress());
+    } catch (UnknownHostException e) {
+      e.printStackTrace();
+    }
+
+
+  }
+
+  /**
+   * Updates the "+" and "-" buttons according to the current lobby state. Only gets called by host.
+   */
+
+  public void updateButtons() {
+    int playersJoined = this.player.getServer().getGameState().getAllPlayers().size();
+    switch (playersJoined) {
+      // Only Host
+      case 1:
+        this.remove1.setOpacity(0);
+        this.remove1.setDisable(true);
+        this.add1.setOpacity(1);
+        this.add1.setDisable(false);
+        this.add2.setOpacity(0);
+        this.add2.setDisable(true);
+        break;
+      case 2:
+        this.add1.setDisable(true);
+        this.add1.setOpacity(0);
+        this.add2.setDisable(false);
+        this.add2.setOpacity(1);
+        this.add3.setDisable(true);
+        this.add3.setOpacity(0);
+        this.remove1.setDisable(false);
+        this.remove1.setOpacity(1);
+        this.remove2.setDisable(true);
+        this.remove2.setOpacity(0);
+        this.remove3.setDisable(true);
+        this.remove3.setOpacity(0);
+        break;
+      case 3:
+        this.add2.setDisable(true);
+        this.add2.setOpacity(0);
+        this.add3.setDisable(false);
+        this.add3.setOpacity(1);
+        this.remove2.setDisable(false);
+        this.remove2.setOpacity(1);
+        this.remove3.setDisable(true);
+        this.remove3.setOpacity(0);
+        break;
+      case 4:
+        this.add3.setDisable(true);
+        this.add3.setOpacity(0);
+        this.remove3.setDisable(false);
+        this.remove3.setOpacity(1);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
+   * "Kicks" a player. Can only be called by host. Requires confirmation before kick.
+   * 
+   * @param index represents the position of the player to be removed.
+   */
+  public void removePlayer(int index) {
+    String nickname = this.players.get(index).getNickname();
+
+    CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
+    alert.setTitle("Are you sure?");
+    alert.setHeaderText(null);
+    alert.setContentText("Are you sure you want to remove " + nickname + " from the Lobby?");
+
+    alert.changeButtonText("Remove", ButtonType.OK);
+    alert.changeButtonText("Cancel", ButtonType.CANCEL);
+
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == ButtonType.OK) {
+      if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
+        this.player.getServer().getGameState().leaveGame(nickname);
+        this.player.getServer().removeClient(nickname);
+        this.player.getServer().getServerProtocol().sendInitialGameState();
+      } else {
+        DisconnectMessage dm = new DisconnectMessage(nickname);
+
+        sendMessage(dm);
+      }
+      updateJoinedPlayers();
+    } else {
+      alert.close();
+    }
+
+  }
+
+  public void refuseConnection() {
+    closeWindow();
+    CustomAlert alert = new CustomAlert(AlertType.ERROR);
+    alert.setTitle("Lobby full");
+    alert.setHeaderText("Lobby Full!");
+    alert.setContentText("Try another Link or try again later");
+    alert.show();
+  }
+
 
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
@@ -147,7 +301,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
-      FXMLLoader loader = new FXMLLoader(new File(FileParameters.fxmlPath).toURI().toURL());
+      FXMLLoader loader = new FXMLLoader(
+          new File(FileParameters.fxmlPath + "Test_MainGamePanel_Martin.fxml").toURI().toURL());
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
@@ -192,7 +347,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public boolean sendMessage(Message m) {
     if (this.player.isHost()) {
       this.player.getServer().sendToAll(m);
-
     } else {
       this.player.getClientProtocol().sendToServer(m);
     }
@@ -223,12 +377,15 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Lets a player disconnect or connect.
+   * Lets a player disconnect or connect. Also updates the "remove" button depending on the amount
+   * of players joined.
    * 
    */
   public void updateJoinedPlayers() {
+
     GameState gs;
     if (player.isHost()) {
+      updateButtons();
       gs = player.getServer().getGameState();
       players = gs.getAllPlayers();
     } else {
@@ -239,6 +396,23 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         return;
       }
     }
+    updateLabels(this.players);
+    // TODO NOT WORKING!!
+    // Kicks a player instantly if the lobby is full.
+    if (players.size() == 5) {
+      if (players.get(1).getNickname().equals(this.player.getNickname())) {
+        close();
+        CustomAlert alert = new CustomAlert(AlertType.ERROR);
+        alert.setTitle("Lobby Full");
+        alert.setHeaderText("Lobby already full!");
+        alert.setContentText("Try another link or try again later");
+        alert.show();
+        return;
+      }
+    }
+  }
+
+  public void updateLabels(List<PlayerData> list) {
 
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
@@ -257,7 +431,14 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       if (i < players.size()) {
         // Player connects
         if (players.get(i).isHost()) {
-          nicknames[i].setText(players.get(i).getNickname() + " (Host)");
+          if (i != 0) {
+            PlayerData swap = players.get(0);
+            players.set(0, players.get(i));
+            players.set(i, swap);
+            updateLabels(players);
+          } else {
+            nicknames[i].setText(players.get(i).getNickname() + " (Host)");
+          }
         } else if (players.get(i).getNickname().equals(this.player.getNickname())) {
           nicknames[i].setText(players.get(i).getNickname() + " (Me)");
         } else {
@@ -315,10 +496,18 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void close() {
     if (this.player.getServer() != null) {
+      for (PlayerData p : players) {
+        if (!p.isHost()) {
+          sendMessage(new DisconnectMessage(p.getNickname()));
+        }
+      }
+      sendMessage(new DisconnectMessage(this.player.getNickname()));
       this.player.getServer().stopServer();
     } else if (!this.player.isHost()) {
+      sendMessage(new DisconnectMessage(this.player.getNickname()));
       this.player.getClientProtocol().disconnect();
     }
+    closeWindow();
     /**
      * @author pkoenig
      */

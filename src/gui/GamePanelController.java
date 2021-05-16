@@ -228,7 +228,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
-        this.sendResetTurnForEveryPlayer(player.getNickname());
+        this.sendResetTurn();
       } else {
         this.sec--;
       }
@@ -332,20 +332,20 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          if (player.isHost()) {
-            player.getServer().stopServer();
-            // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
-            // sendMessage(m);
-          } else {
-            sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
-            Message m = new DisconnectMessage(this.player.getNickname());
-            sendMessage(m);
-          }
-          // close(); // TODO: close method not neccesary anymore?
-          Button b = (Button) e.getSource();
-          Stage st = (Stage) (b.getScene().getWindow());
-          st.close();
-          new LoginScreen().start(new Stage());
+          // if (player.isHost()) {
+          // player.getServer().stopServer();
+          // // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
+          // // sendMessage(m);
+          // } else {
+          // sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
+          // Message m = new DisconnectMessage(this.player.getNickname());
+          // sendMessage(m);
+          // }
+          close(); // TODO: close method not neccesary anymore?
+          // Button b = (Button) e.getSource();
+          // Stage st = (Stage) (b.getScene().getWindow());
+          // st.close();
+          // new LoginScreen().start(new Stage());
         }
         break;
       case "rulesButton":
@@ -674,7 +674,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       rack.add(rackTile, column, row);
       GridPane.setHalignment(rackTile, HPos.CENTER);
       GridPane.setValignment(rackTile, VPos.BOTTOM);
-      GridPane.setMargin(rackTile, new Insets(0, 0, 5.5, 0));
+      GridPane.setMargin(rackTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
@@ -683,7 +683,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       board.add(boardTile, column, row);
       GridPane.setHalignment(boardTile, HPos.CENTER);
       GridPane.setValignment(boardTile, VPos.BOTTOM);
-      GridPane.setMargin(boardTile, new Insets(0, 10, 8, 0));
+      GridPane.setMargin(boardTile, new Insets(0, 0, 3, 0));
     }
   }
 
@@ -863,16 +863,19 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   public void sendResetTurnForEveryPlayer(String nickName) {
     System.out.println("Test1");
+    Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
-      Message m = new ResetTurnMessage(this.player.getNickname(), null);
+      this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+    } else {
+      sendMessage(m);
+    }
+  }
+
+  public void sendResetTurn() {
+    Message m = new ResetTurnMessage(this.player.getNickname(), null);
+    if (this.player.isHost()) {
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
     }
-    // if (this.player.isHost()) {
-    // this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
-    // }
-    // else {
-    // sendMessage(m);
-    // }
   }
 
   @Override
@@ -942,11 +945,26 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * Closes the Game and stops the server.
    */
   public void close() {
-    if (this.player.getServer() != null) {
+    if (this.player.getServer() != null) { // TODO: this.player.isHost() nutzen?
       this.player.getServer().stopServer();
+      // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
+      // sendMessage(m);
     } else if (!this.player.isHost()) {
-      this.player.getClientProtocol().disconnect();
+      Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
+      for (int i = 0; i < players.size(); i++) {
+        if (players.get(i).getNickname().equals(this.player.getNickname())) {
+          if (rect[i].isVisible()) {
+            sendResetTurnForEveryPlayer(this.player.getNickname()); // TODO:
+          }
+        }
+      }
+      sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
+      // this.player.getClientProtocol().disconnect(); // in DisconnectMessage included?
+      Message m = new DisconnectMessage(this.player.getNickname());
+      sendMessage(m);
     }
+    Stage st = (Stage) (rulesButton.getScene().getWindow());
+    st.close();
     new LoginScreen().start(new Stage());
   }
 

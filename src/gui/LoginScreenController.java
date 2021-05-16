@@ -81,11 +81,11 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           System.exit(0);
           break;
         case "Info":
-          OpenExternalScreen
-              .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
+          OpenExternalScreen.open(FileParameters.datadir + "/fxml/images/ScrabbleRules.pdf");
           break;
         case "Settings":
         case "Account":
+          closeScreen();
           openAccount(s);
           break;
         case "Statistics":
@@ -115,7 +115,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
       newUserSettingsScreen.setX(s.getScene().getWindow().getX());
       newUserSettingsScreen.setY(s.getScene().getWindow().getY());
       new UserSettingsScreen(this.player).start(newUserSettingsScreen);
-      s.close();
+      // s.close();
     } else {
       CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
       alert.setTitle("No profile created yet");
@@ -176,14 +176,15 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         CustomAlert alert = new CustomAlert(AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Could not establish connection.");
-        alert.setContentText("Check Link and try again.");
+        alert.setContentText("Incorrect link or lobby already full.");
         alert.show();
         return;
       }
     }
 
     try {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("Lobby.fxml"));
+      FXMLLoader loader =
+          new FXMLLoader(new File(FileParameters.fxmlPath + "Lobby.fxml").toURI().toURL());
 
       Stage stage = new Stage(StageStyle.DECORATED);
       Parent root = loader.load();
@@ -194,6 +195,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         player.getServer().setLobbyScreenController(controller);
       } else {
         player.getClientProtocol().setLobbyScreenController(controller);
+
       }
       controller.initData(player, connection);
 
@@ -221,15 +223,14 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
        */
       stage.setX(LinkField.getScene().getWindow().getX());
       stage.setY(LinkField.getScene().getWindow().getY());
-      
+
       /**
        * @author nilbecke
        */
-      
+
       stage.show();
 
       closeScreen();
-
 
     } catch (IOException ioe) {
       ioe.printStackTrace();
@@ -240,6 +241,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * This methods closes the current screen. Gets called when another screen is to be opened.
    */
   public void closeScreen() {
+
     Stage s = (Stage) LinkField.getScene().getWindow();
     s.close();
   }
