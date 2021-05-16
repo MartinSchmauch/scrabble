@@ -346,7 +346,7 @@ public class Server {
   public void removeClient(String player) {
     this.gameState.leaveGame(player);
     this.clients.remove(player);
-    if (this.gameState.getAllPlayers().size() <= 1) {
+    if (this.gameState.getAllPlayers().size() < 1) {
       endGame();
     }
   }
