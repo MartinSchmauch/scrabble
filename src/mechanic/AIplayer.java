@@ -134,9 +134,9 @@ public class AIplayer extends Player {
 
   }
 
-  public AIplayer(String nickname, int maxNumOfTiles, GameController gc, AiLevel level) {
+  public AIplayer(String nickname, GameController gc, AiLevel level) {
     super(nickname);
-    this.maxNumOfTiles = maxNumOfTiles;
+    this.maxNumOfTiles = 7;
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
     this.ailevel = level;
@@ -149,7 +149,6 @@ public class AIplayer extends Player {
       GameController gc) {
     super(nickname);
     this.maxNumOfTiles = maxNumOfTiles;
-    // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
     this.twoTilesCombinations = new TreeSet<AIcombination>();
     this.numberOfCombinationsToUse = numberOfCombinationsToUse;
@@ -316,11 +315,13 @@ public class AIplayer extends Player {
 
   public Turn generateIdealTurn(GameBoard gb) {
     System.out.println("AI is running...");
-    Stopwatch timeOverall = Stopwatch.createStarted();
+    // Stopwatch timeOverall = Stopwatch.createStarted();
     HashSet<Field[]> possibleLocations;
+    Field[] maximumLocation = null;
+    ArrayList<Integer> maximumIndicesOnRack = null;
     Turn currentTurn;
     int maximumScore = 0;
-    Field[] layedDownFieldsWithMaximumScore = null;
+    // Field[] layedDownFieldsWithMaximumScore = null;
     ArrayList<Tile> currentLayedDownTiles;
     ArrayList<Integer> indicesOnRack;
     Turn turnWithMaximumScore = null;
@@ -329,10 +330,10 @@ public class AIplayer extends Player {
 
     for (int k = 2; k <= this.maxNumOfTiles; k++) {
       // System.out
-      // .println("### NEW POSSIBLE LOCATIONS ARE GENERATED FOR TILENUMBER" + k + " ... ###");
-      Stopwatch sw = Stopwatch.createStarted();
+      // // .println("### NEW POSSIBLE LOCATIONS ARE GENERATED FOR TILENUMBER" + k + " ... ###");
+      // Stopwatch sw = Stopwatch.createStarted();
       possibleLocations = getValidTilePositionsForNumOfTiles(gb, k);
-      sw.stop();
+      // sw.stop();
       // System.out.println("----- possible locations generated in "
       // + sw.elapsed(TimeUnit.MILLISECONDS) + " milliseconds -----\n");
 
@@ -343,8 +344,8 @@ public class AIplayer extends Player {
         // }
         // System.out.println(
         // " with index " + locationIndex + " out of " + possibleLocations.size() + " ... ###");
-        sw.reset();
-        sw.start();
+        // sw.reset();
+        // sw.start();
 
         currentLayedDownTiles = null;
         indicesOnRack = new ArrayList<Integer>();
@@ -361,9 +362,13 @@ public class AIplayer extends Player {
           currentTurn.setLaydDownTiles(currentLayedDownTiles);
           if (currentTurn.calculateWords() && maximumScore < currentTurn.calculateTurnScore()) {
             maximumScore = currentTurn.getTurnScore();
+            maximumLocation = currentLocation;
+            maximumIndicesOnRack = indicesOnRack;
             // layedDownTileListWithMaximumScore = currentLayedDownTiles;
-            layedDownFieldsWithMaximumScore = currentLocation;
+            // layedDownFieldsWithMaximumScore = currentLocation;
+
             turnWithMaximumScore = currentTurn.getDeepCopy();
+
             // System.out.println("NEW MAXIMUM SCORE: " + maximumScore);
             // for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
             // System.out.println("Tile newly layed down: " + t);
@@ -373,7 +378,7 @@ public class AIplayer extends Player {
           this.cleanupGameboardAndRack(currentLayedDownTiles, indicesOnRack);
           // }
         }
-        sw.stop();
+        // sw.stop();
         // System.out.println("----- current location handled in " +
         // sw.elapsed(TimeUnit.MILLISECONDS)
         // + " milliseconds -----\n");
@@ -385,20 +390,22 @@ public class AIplayer extends Player {
     System.out.println();
     System.out.println();
     System.out.println("Maximum score: " + maximumScore);
-    for (Tile t : turnWithMaximumScore.getLaydDownTiles()) {
-      System.out.println("Tile newly layed down: " + t);
+    for (int i = 0; i < turnWithMaximumScore.getLaydDownTiles().size(); i++) {
+      maximumLocation[i].setTile(turnWithMaximumScore.getLaydDownTiles().get(i));
+      this.setRackTileToNone(maximumIndicesOnRack.get(i));
+      System.out.println("Tile newly layed down: " + turnWithMaximumScore.getLaydDownTiles().get(i));
     }
     System.out.println("----------------------");
     for (Word w : turnWithMaximumScore.getWords()) {
       System.out.println(w.toString());
     }
     System.out.println("----------------------");
-    for (Field f : layedDownFieldsWithMaximumScore) {
-      System.out.println(f);
-    }
-    timeOverall.stop();
-    System.out.println("\n AI finished in " + timeOverall.elapsed(TimeUnit.SECONDS) + " seconds ( "
-        + timeOverall.elapsed(TimeUnit.MINUTES) + " minutes)\n");
+    // for (Field f : layedDownFieldsWithMaximumScore) {
+    // System.out.println(f);
+    // }
+    // timeOverall.stop();
+    // System.out.println("\n AI finished in " + timeOverall.elapsed(TimeUnit.SECONDS) + " seconds
+    // ("+ timeOverall.elapsed(TimeUnit.MINUTES) + " minutes)\n");
     System.out.println("RACKTILES (AT BEGINN OF TURN)");
     for (Tile t : this.getRackTiles()) {
       System.out.println(t.getLetter().getCharacter());

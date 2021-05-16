@@ -68,9 +68,6 @@ public class Turn implements Serializable {
    * Scrabble Words. If one word does not exists the method returns false.
    */
   public boolean calculateWords() {
-    for (Tile t : this.laydDownTiles) {
-      this.laydDownFields.add(t.getField());
-    }
     // skip turn
     if (this.laydDownTiles.isEmpty()) {
       stringRepresentation = "Turn skipped.";
@@ -395,6 +392,10 @@ public class Turn implements Serializable {
   public boolean isValid() {
     return isValid;
   }
+  
+  public boolean setValid(boolean valid) {
+    return isValid;
+  }
 
   /**
    * @author pkoenig
@@ -402,6 +403,9 @@ public class Turn implements Serializable {
    */
   public Turn getDeepCopy() {
     Turn res = new Turn(this.getPlayer(), this.gameController);
+    for (Tile t : this.laydDownTiles) {
+      res.laydDownFields.add(t.getField());
+    }
     res.player = this.player;
     res.isValid = this.isValid;
     for (Tile t : this.laydDownTiles) {
@@ -416,7 +420,6 @@ public class Turn implements Serializable {
       }
       res.words.add(new Word(temp));
     }
-    res.laydDownFields = this.laydDownFields;
     res.stringRepresentation = this.stringRepresentation;
     return res;
   }
@@ -427,6 +430,20 @@ public class Turn implements Serializable {
 
   public String toString() {
     return stringRepresentation;
+  }
+  
+  public String[] toStringArray() {
+    String[] res = new String[5];
+    res[0] = this.stringRepresentation;
+    for (Field f : this.laydDownFields) { // list of fields
+      res[1] = res[1] + ", " + f;
+    }
+    res[2] = this.turnScore + "";
+    res[3] = this.containedStarTiles + "";
+    for (Tile t : this.starTiles) {
+      res[4] = res[4] + ", " + t;
+    }
+    return res;
   }
 
   /**
