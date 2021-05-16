@@ -800,8 +800,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         alert.setContentText("The Server was shut down by '" + hostName + "'. \nReason: " + reason);
         alert.initStyle(StageStyle.UNDECORATED);
 
-        alert.getDialogPane().getStylesheets()
-            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
           Stage st = (Stage) rulesButton.getScene().getWindow(); // TODO: das muss schoener gehen
