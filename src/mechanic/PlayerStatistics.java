@@ -25,6 +25,7 @@ public class PlayerStatistics implements Serializable {
    */
 
   public void setGameCount(int count) {
+
     this.gameCount = count;
   }
 

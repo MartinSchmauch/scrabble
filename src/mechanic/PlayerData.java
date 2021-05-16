@@ -46,7 +46,22 @@ public class PlayerData implements Serializable {
     return this.statistics;
   }
 
+  /**
+   * This method initializes all user statistics.
+   * 
+   * @author nilbecke
+   * 
+   * @param gc represents the amount of games played.
+   * @param bs represents most points scored by a single turn.
+   * @param bw represents the highest scoring word.
+   * @param s represents the total score throughout all games.
+   * @param pt1 represents the total play time represented in minutes.
+   * @param w represents the total amount of wins.
+   * @param pt2 represents the sum of all tiles ever played.
+   */
+
   public void setStatistics(int gc, int bs, String bw, int s, int pt1, int w, int pt2) {
+
     this.statistics.setGameCount(gc);
     this.statistics.setBestTurn(bs);
     this.statistics.setBestWord(bw);

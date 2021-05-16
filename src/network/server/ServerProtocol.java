@@ -56,7 +56,7 @@ public class ServerProtocol extends Thread {
   public void sendInitialGameState() {
     LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
 
-    this.sendToClient(m);
+    this.server.sendToAll(m);
 
   }
 
@@ -100,6 +100,10 @@ public class ServerProtocol extends Thread {
         out.reset();
         disconnect();
       } else if (m.getMessageType() == MessageType.CONNECT) {
+        if (server.getGameState().getAllPlayers().size() >= 4) {
+          sendToClient(new ConnectionRefusedMessage(m.getFrom(), "Lobby full"));
+          return;
+        }
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
@@ -137,7 +141,6 @@ public class ServerProtocol extends Thread {
 
       while (running) {
         m = (Message) in.readObject();
-
         switch (m.getMessageType()) {
           case DISCONNECT:
             server.removeClient(m.getFrom());

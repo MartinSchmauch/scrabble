@@ -73,14 +73,12 @@ public class LoginScreen extends Application {
 
     if (new File(FileParameters.datadir + "playerProfileTest.json").exists()) {
       System.out.println(FileParameters.datadir);
-      currentPlayer =
-          new JsonHandler()
-              .loadPlayerProfile(new File(FileParameters.datadir + "playerProfileTest.json"));
+      currentPlayer = new JsonHandler()
+          .loadPlayerProfile(new File(FileParameters.datadir + "playerProfileTest.json"));
       setFirstLaunch(true);
     } else {
-      currentPlayer =
-          new JsonHandler().loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
-      System.out.println("spot reached");
+      currentPlayer = new JsonHandler()
+          .loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
       if (!alreadyLaunched) {
         System.out.println("already launched");
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
@@ -92,9 +90,6 @@ public class LoginScreen extends Application {
 
         alert.changeButtonText("Create Account", ButtonType.OK);
         alert.changeButtonText("Continue as Guest", ButtonType.CANCEL);
-
-        alert.getDialogPane().getStylesheets()
-            .add(getClass().getResource("/DialogPaneButtons.css").toExternalForm());
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -115,7 +110,8 @@ public class LoginScreen extends Application {
 
     Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
-      this.root = FXMLLoader.load(getClass().getResource("LoginScreenFXML.fxml"));
+      this.root = FXMLLoader
+          .load(new File(FileParameters.fxmlPath + "LoginScreenFXML.fxml").toURI().toURL());
     } catch (IOException e) {
       e.printStackTrace();
     }

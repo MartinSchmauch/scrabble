@@ -92,6 +92,10 @@ public class GameState implements Serializable {
     return new ArrayList<PlayerData>(this.allPlayers.values());
   }
 
+  public void addPlayer(PlayerData p) {
+    this.allPlayers.put(this.host.getNickname(), p);
+  }
+
   public PlayerData getPlayerData(String nickname) {
     return this.allPlayers.get(nickname);
   }

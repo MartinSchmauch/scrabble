@@ -1,21 +1,29 @@
 {
-  "nickname" : "martin",
-  "avatar" : "/avatars/avatar3.png",
+  "nickname" : "to Be kicked45",
+  "avatar" : "/avatars/avatar5.png",
   "volume" : 60,
+  "gameCount" : 123,
+  "bestTurn" : 123,
+  "bestWord" : "abc",
+  "playTime" : 123,
+  "score" : 123,
+  "wins" : 123,
+  "playedTiles" : 123,
   "customGameSettings" : null,
-  "host" : false,
-  "clientProtocol" : null,
-  "gameCount" : 34,
-  "bestTurn" : 46,
-  "bestWord" : "hello",
-  "score" : 10000,
-  "playTime" : 476,
-  "wins" : 2,
-  "playedTiles" : 7830,
   "playerInfo" : {
-    "nickname" : "martin",
-    "avatar" : "/avatars/avatar3.png",
-    "host" : false
-   
-  }
+    "nickname" : "to Be kicked45",
+    "avatar" : "/avatars/avatar5.png",
+    "host" : false,
+    "playerStatistics" : {
+      "gameCount" : 123,
+      "bestTurn" : 123,
+      "bestWord" : "abc",
+      "playTime" : 123,
+      "score" : 123,
+      "wins" : 123,
+      "playedTiles" : 123
+    }
+  },
+  "host" : false,
+  "clientProtocol" : null
 }

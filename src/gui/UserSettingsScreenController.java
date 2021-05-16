@@ -153,8 +153,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     alert.changeButtonText("Delete", ButtonType.OK);
     alert.changeButtonText("Cancel", ButtonType.CANCEL);
 
-    alert.getDialogPane().getStylesheets()
-        .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
