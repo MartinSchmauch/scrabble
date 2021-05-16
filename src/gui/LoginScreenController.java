@@ -90,7 +90,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           break;
         case "Statistics":
           closeScreen();
-          new UserStatisticsScreen(this.player).start(new Stage());
+          new LeaderboardScreen(null).start(new Stage());
+          // new UserStatisticsScreen(this.player).start(new Stage());
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
