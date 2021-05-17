@@ -96,6 +96,38 @@ public class Player {
     return this.info.getAvatar();
   }
 
+  public PlayerStatistics getStatistics() {
+    return this.info.getPlayerStatistics();
+  }
+
+  public int getGameCount() {
+    return getStatistics().getGameCount();
+  }
+
+  public int getBestTurn() {
+    return this.getStatistics().getBestTurn();
+  }
+
+  public String getBestWord() {
+    return this.getStatistics().getBestWord();
+  }
+
+  public int getPlayTime() {
+    return this.getStatistics().getPlayTime();
+  }
+
+  public int getScore() {
+    return this.getStatistics().getScore();
+  }
+
+  public int getWins() {
+    return this.getStatistics().getWins();
+  }
+
+  public int getPlayedTiles() {
+    return this.getStatistics().getPlayedTiles();
+  }
+
 
 
   /*
