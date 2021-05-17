@@ -90,6 +90,10 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           break;
         case "Statistics":
           closeScreen();
+          // No games have been played.
+          if (this.player.getGameCount() == 0) {
+            this.player.getPlayerInfo().getPlayerStatistics().setGameCount(-1);
+          }
           new UserStatisticsScreen(this.player).start(new Stage());
           break;
         default:

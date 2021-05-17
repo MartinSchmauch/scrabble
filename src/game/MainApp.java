@@ -17,8 +17,8 @@ public class MainApp {
    * 
    * @param args Arguments of class
    */
+
   public static void main(String[] args) {
     LoginScreen.main(args);
   }
-
 }
