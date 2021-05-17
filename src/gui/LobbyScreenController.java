@@ -8,6 +8,8 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import game.GameSettings;
 import game.GameState;
 import javafx.concurrent.Task;
@@ -267,7 +269,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
+      Pattern p = Pattern.compile("AI\\s.");
+      Matcher m = p.matcher(nickname);
+      if (m.matches()) {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
         this.player.getServer().getServerProtocol().sendInitialGameState();

@@ -81,7 +81,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
       // Save changes and exit screen
       case "save":
       case "exit":
-        this.player.setNickname(this.namefield.getText());
+
+        textfieldToLabel();
         new JsonHandler().savePlayerProfile(
             new File(FileParameters.datadir + "playerProfileTest.json"), this.player);
 
@@ -142,9 +143,6 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
    * 
    */
   public void deletePlayerProfile() {
-
-
-
     CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
     alert.setTitle("Are you sure?");
     alert.setHeaderText("Are you sure you want to delete your Profile?");
@@ -202,8 +200,22 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   public void textfieldToLabel() {
     this.namefield.setOpacity(0);
     if (this.namefield.getText().length() > 0) {
-      this.nickname.setText(this.namefield.getText());
-      this.player.setNickname(this.nickname.getText());
+      if (this.namefield.getText().substring(0, 2).contentEquals("AI")) {
+        CustomAlert alert = new CustomAlert(AlertType.ERROR);
+        alert.setTitle("Invalid name");
+        alert.setHeaderText("Username not valid");
+        alert.setContentText("Usernames starting with \"AI\" are reserved for AI");
+        alert.showAndWait();
+      } else {
+        this.nickname.setText(this.namefield.getText());
+        this.player.setNickname(this.nickname.getText());
+      }
+    } else {
+      CustomAlert alert = new CustomAlert(AlertType.INFORMATION);
+      alert.setTitle("Invalid name");
+      alert.setHeaderText("Username not valid");
+      alert.setContentText("Username reset, because you entered nothing as username.");
+      alert.showAndWait();
     }
     cu.setText("Change Username");
   }
