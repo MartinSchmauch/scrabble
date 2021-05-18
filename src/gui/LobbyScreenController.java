@@ -86,6 +86,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button remove3;
   @FXML
+  private Button tutorial;
+  @FXML
   private ImageView pic1;
   @FXML
   private ImageView pic2;
@@ -105,9 +107,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
+      case "tutorial":
+        OpenExternalScreen.open(FileParameters.datadir + "/ScrabbleRules.pdf");
+        break;
       case "leavelobby":
         close();
-
         break;
       case "send":
       case "input":

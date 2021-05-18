@@ -170,13 +170,16 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <Label fx:id="dic0" text="dic0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label fx:id="valid" alignment="CENTER_RIGHT" disable="true" opacity="0.0" prefHeight="31.0" prefWidth="220.0" text="File not valid (use .csv)" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                        <Label fx:id="dic0" prefHeight="34.0" prefWidth="97.0" text="dic0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="9.0" />
+                           </font></Label>
+                        <Label fx:id="valid" alignment="CENTER_RIGHT" disable="true" opacity="0.0" prefHeight="31.0" prefWidth="220.0" text="File not valid (use .txt)" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <font>
                               <Font size="7.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tpptf" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
+                        <TextField fx:id="tpptf" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
                         <TextField fx:id="mstf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="btf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="tpptf1" layoutX="151.0" layoutY="15.0" onAction="#handle" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" />

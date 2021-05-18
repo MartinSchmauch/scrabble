@@ -57,6 +57,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Label valid;
   @FXML
+  private Label tor;
+  @FXML
   private ImageView avatar;
   @FXML
   private Button user;
@@ -220,8 +222,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         chooseFile();
         break;
       case "dic2":
-        System.out.println(FileParameters.datadir + GameSettings.getDictionary());
-        OpenExternalScreen.open(FileParameters.datadir + GameSettings.getDictionary());
+
+        OpenExternalScreen.open(GameSettings.getDictionary());
         break;
       case "restore":
         new JsonHandler()
@@ -246,10 +248,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    GameSettings.setMaxOvertime(Integer.parseInt(overtime.getText()));
     GameSettings.setMaxScore(Integer.parseInt(score.getText()));
-    GameSettings.setGameBoardSize(Integer.parseInt(size.getText()));
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
+    GameSettings.setTilesOnRack(Integer.parseInt(this.tor.getText()));
     new JsonHandler()
         .saveGameSettings(new File(FileParameters.datadir + "customGameSettings.json"));
 
@@ -298,27 +299,32 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void setUpLabels() {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
-    this.overtime.setText(GameSettings.getMaxOvertime() + "");
+    this.tor.setText(GameSettings.getTilesOnRack() + "");
     this.score.setText(GameSettings.getMaxScore() + "");
-    this.size.setText(GameSettings.getGameBoardSize() + "");
     this.bingo.setText(GameSettings.getBingo() + "");
     this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
         + GameSettings.getAiDifficulty().substring(1));
     this.dic0.setText(GameSettings.getDictionary());
+
   }
 
   /**
-   * Lets a user choose a new dictionary to be used
+   * Lets a user choose a new dictionary to be used.
    */
   public void chooseFile() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Choose Dictionary");
-    File f = fileChooser.showOpenDialog(new Stage());
-    if (f != null && f.getPath().equals("*.txt")) {
-      GameSettings.setDictionary(f.getPath());
-      this.valid.setOpacity(0);
-    } else {
-      this.valid.setOpacity(1);
+    try {
+      File f = fileChooser.showOpenDialog(new Stage());
+      String extension = f.getPath().substring(f.getPath().length() - 3);
+      if (f != null && extension.equals("txt")) {
+        GameSettings.setDictionary(f.getPath());
+        this.valid.setOpacity(0);
+      } else {
+        this.valid.setOpacity(1);
+      }
+    } catch (NullPointerException e) { // No file selected.
+      return;
     }
   }
 

@@ -133,7 +133,6 @@ public class JsonHandler {
       }
       GameSettings.setBingo(jsonNode.get("bingo").asInt());
       GameSettings.setAiDifficulty(jsonNode.get("difficulty").asText());
-      System.out.println(jsonNode);
       GameSettings.setTilesOnRack(jsonNode.get("tilesOnRack").asInt());
       GameSettings.setLetters(letters);
       GameSettings.setSpecialFields(specialFields);
