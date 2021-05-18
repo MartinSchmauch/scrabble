@@ -1,13 +1,99 @@
 package game;
 
+/**
+ * This class holds data for one player for one Game. It is later used to fill the
+ * LeaderboardScreen.
+ * 
+ * @author lurny
+ */
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameStatistic implements Serializable {
 
   private static final long serialVersionUID = 1L;
+  private int bestTurn;
+  private List<String> bestWords;
+  private int averageTimeperTurn;
+  private int playTime;
+  private int score;
+  private int position;
+  private int playedTiles;
+  private List<String> allPlayers;
+
+
 
   public GameStatistic() {
+    this.bestWords = new ArrayList<String>();
+    this.allPlayers = new ArrayList<String>();
 
   }
+
+  public int getBestTurn() {
+    return bestTurn;
+  }
+
+  public void setBestTurn(int bestTurn) {
+    this.bestTurn = bestTurn;
+  }
+
+  public List<String> getBestWords() {
+    return bestWords;
+  }
+
+  public void setBestWords(List<String> bestWords) {
+    this.bestWords = bestWords;
+  }
+
+  public int getAverageTimeperTurn() {
+    return averageTimeperTurn;
+  }
+
+  public void setAverageTimeperTurn(int averageTimeperTurn) {
+    this.averageTimeperTurn = averageTimeperTurn;
+  }
+
+  public int getPlayTime() {
+    return playTime;
+  }
+
+  public void setPlayTime(int playTime) {
+    this.playTime = playTime;
+  }
+
+  public int getScore() {
+    return score;
+  }
+
+  public void setScore(int score) {
+    this.score = score;
+  }
+
+  public int getPosition() {
+    return position;
+  }
+
+  public void setPosition(int position) {
+    this.position = position;
+  }
+
+  public int getPlayedTiles() {
+    return playedTiles;
+  }
+
+  public void setPlayedTiles(int playedTiles) {
+    this.playedTiles = playedTiles;
+  }
+
+  public List<String> getAllPlayers() {
+    return allPlayers;
+  }
+
+  public void setAllPlayers(List<String> allPlayers) {
+    this.allPlayers = allPlayers;
+  }
+
 
 }

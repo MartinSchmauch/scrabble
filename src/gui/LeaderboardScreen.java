@@ -2,7 +2,8 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
-import game.GameState;
+import java.util.HashMap;
+import game.GameStatistic;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mechanic.Player;
 
 /**
  * This class launches the leaderboard screen after a game has finished. Get's initialized with the
@@ -25,10 +27,12 @@ public class LeaderboardScreen extends Application {
 
   private double xoffset;
   private double yoffset;
-  private static GameState gs;
+  private static HashMap<String, GameStatistic> gameStatistics = new HashMap<>();
+  private static Player player;
 
-  public LeaderboardScreen(GameState current) {
-    gs = current;
+  public LeaderboardScreen(HashMap<String, GameStatistic> gameStatistic, Player p) {
+    gameStatistics = gameStatistic;
+    player = p;
   }
 
 
@@ -68,8 +72,14 @@ public class LeaderboardScreen extends Application {
 
   }
 
-  public static GameState getGameState() {
-    return gs;
+  public static HashMap<String, GameStatistic> getGameStatistic() {
+    return gameStatistics;
+  }
+
+
+
+  public static Player getPlayer() {
+    return player;
   }
 
 }

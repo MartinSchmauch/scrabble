@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -13,13 +14,16 @@ import game.GameController;
 import game.GameSettings;
 import game.GameState;
 import gui.GamePanelController;
+import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
 import mechanic.Turn;
+import mechanic.Word;
 import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
@@ -60,6 +64,7 @@ public class Server {
 
   private String host;
   private HashMap<String, ServerProtocol> clients = new HashMap<>();
+
 
   /**
    * Initializes Server with host and customGameSettings. If customGameSettings are null, the
@@ -505,6 +510,8 @@ public class Server {
               break;
             case GAME_STATISTIC:
               GameStatisticMessage gsm = (GameStatisticMessage) m;
+              System.out.println("check");
+              new LeaderboardScreen(gameState.getGameStatistics(), player).start(new Stage());
               break;
             // TODO
             default:
@@ -609,13 +616,26 @@ public class Server {
     this.gameController.newTurn();
 
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
+
+    for (PlayerData client : gameState.getAllPlayers()) {
+      this.gameState.addGameStatistics(client.getNickname());
+    }
   }
 
+  /**
+   * This method is called, when the game is finished and opens the statistics screen.
+   * 
+   * @author ldreyer
+   */
   public void endGame() {
+    System.out.println("Test1");
     Turn turn = this.gameController.getTurn();
     sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
         this.gameState.getScore(turn.getPlayer()), null,
         this.gameController.getTileBag().getRemaining()));
+    calculateGameStatistics();
+    System.out.println("Test2");
+    // TODO wenn players das Spiel verlassen müssen sie aus der Liste entfernt werden
 
     try {
       Thread.sleep(2000);
@@ -623,8 +643,55 @@ public class Server {
       e.printStackTrace();
     }
     this.gameState.setRunning(false);
-    sendToAll(new GameStatisticMessage(this.host, null));
+    sendToAll(new GameStatisticMessage(this.host, this.gameState.getGameStatistics()));
   }
+
+  /**
+   * This method is used to calculate relevant gameStatistics.
+   * 
+   * @author lurny
+   */
+  public void calculateGameStatistics() {
+    for (Turn t : this.gameController.getTurns()) {
+      String p = t.getPlayer();
+      if (this.gameState.getGameStatisticsOfPlayer(p).getBestTurn() < t.getTurnScore()) {
+        this.gameState.getGameStatisticsOfPlayer(p).setBestTurn(t.getTurnScore());
+        List<String> wordList = new ArrayList<String>();
+        for (Word word : t.getWords()) {
+          wordList.add(word.toString());
+        }
+        this.gameState.getGameStatisticsOfPlayer(p).setBestWords(wordList);
+        this.gameState.getGameStatisticsOfPlayer(p)
+            .setPlayedTiles(this.gameState.getGameStatisticsOfPlayer(p).getPlayedTiles()
+                + t.getLaydDownTiles().size());
+      }
+    }
+    // for each player
+
+    List<String> playersList = new ArrayList<String>();
+    for (PlayerData client : gameState.getAllPlayers()) {
+      this.gameState.getGameStatisticsOfPlayer(client.getNickname())
+          .setScore(gameState.getScore(client.getNickname()));
+      playersList.add(client.getNickname());
+    }
+    boolean swap = true;
+    while (swap) {
+      swap = false;
+      for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
+        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
+            .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
+          Collections.swap(playersList, i, i + 1);
+          swap = true;
+        }
+      }
+    }
+    for (String p : playersList) {
+      this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
+    }
+
+  }
+
+
 
   public Player getPlayer() {
     return player;

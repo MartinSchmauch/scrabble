@@ -6,12 +6,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 import game.GameState;
+import game.GameStatistic;
 import gui.FileParameters;
 import gui.GamePanelController;
+import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.Tile;
@@ -221,10 +225,6 @@ public class ClientProtocol extends Thread {
                     gpc.changeSkipAndChangeStatus(false);
                   }
                   break;
-                case GAME_STATISTIC:
-                  GameStatisticMessage gsMessage = (GameStatisticMessage) m;
-                  // tbImplemented
-                  break;
                 case UPDATE_CHAT:
                   UpdateChatMessage ucMessage = (UpdateChatMessage) m;
                   if (!gameState.getGameRunning()) {
@@ -241,6 +241,12 @@ public class ClientProtocol extends Thread {
                     gameState.joinGame(cMessage.getPlayerInfo());
                     lsc.addJoinedPlayer(cMessage.getPlayerInfo());
                   }
+                  break;
+                case GAME_STATISTIC:
+                  GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+                  new LeaderboardScreen(gsMessage.getGameStatistics(), player).start(new Stage());
+                  HashMap<String, GameStatistic> gs = gsMessage.getGameStatistics();
+                  System.out.println("Hallo: ");
                   break;
                 case DISCONNECT:
                   if (gameState != null) {

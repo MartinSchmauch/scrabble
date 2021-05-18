@@ -27,6 +27,7 @@ public class GameState implements Serializable {
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
   private HashMap<String, Integer> scores;
+  private HashMap<String, GameStatistic> gameStatistics = new HashMap<>();
   // private GameSettings gameSettings;
 
 
@@ -156,6 +157,18 @@ public class GameState implements Serializable {
     for (PlayerData player : playerList) {
       this.scores.put(player.getNickname(), 0);
     }
+  }
+
+  public HashMap<String, GameStatistic> getGameStatistics() {
+    return gameStatistics;
+  }
+
+  public GameStatistic getGameStatisticsOfPlayer(String player) {
+    return gameStatistics.get(player);
+  }
+
+  public void addGameStatistics(String player) {
+    this.gameStatistics.put(player, new GameStatistic());
   }
 
 }
