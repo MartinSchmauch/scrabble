@@ -224,6 +224,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         break;
       case "restore":
         new JsonHandler().loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
+        this.currentPlayer.setCustomGameSettings(null);
         setUpLabels();
         break;
       case "exit":
@@ -250,6 +251,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
     new JsonHandler()
         .saveGameSettings(new File(FileParameters.datadir + "customGameSettings.json"));
+    this.currentPlayer.setCustomGameSettings(FileParameters.datadir + "customGameSettings.json");
+    new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
+        this.currentPlayer);
 
   }
 
@@ -303,6 +307,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
         + GameSettings.getAiDifficulty().substring(1));
     this.dic0.setText(GameSettings.getDictionary());
+    this.letter.setText(GameSettings.getLetters().get('A').getCharacter() + "");
+    this.letterValue.setText(GameSettings.getLetters().get('A').getLetterValue() + "");
+    this.letterAmount.setText(GameSettings.getLetters().get('A').getCount() + "");
   }
 
   /**
@@ -338,9 +345,15 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    * the letters Hashmap.
    */
   public void updateValueOrCount() {
-    GameSettings.getLetters().put(this.letter.getText().charAt(0),
+    GameSettings.getLetters().replace(this.letter.getText().charAt(0),
         new Letter(this.letter.getText().charAt(0), Integer.parseInt(letterValue.getText()),
             Integer.parseInt(letterAmount.getText())));
+
+    if (this.letter.getText().charAt(0) == '*') {
+      for (Letter l : GameSettings.getLetters().values()) {
+        l.setJokerValue(Integer.parseInt(this.letterValue.getText()));
+      }
+    }
   }
 
   /**
@@ -350,18 +363,22 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    * @param direction indicates if the letter is to be incremented or decremented.
    */
 
-  public void updateLetterLabel(Character current, boolean direction) {
+  public void updateLetterLabel(char current, boolean direction) {
     if (direction) {
-      if (current < 'Z') {
+      if (current < 'Z' && current != '*') {
         current++;
-      } else {
+      } else if (current == '*') {
         current = 'A';
+      } else {
+        current = '*';
       }
     } else {
-      if (current > 'A') {
+      if (current > 'A' && current != '*') {
         current--;
-      } else {
+      } else if (current == '*') {
         current = 'Z';
+      } else {
+        current = '*';
       }
     }
     this.letter.setText(current + "");

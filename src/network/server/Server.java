@@ -70,7 +70,6 @@ public class Server {
     this.host = host.getNickname();
     this.player = host;
     this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
-    this.gameController = new GameController(this.gameState);
     this.lsc = LobbyScreenController.getLobbyInstance();
   }
 
@@ -593,6 +592,8 @@ public class Server {
   }
 
   public void startGame() {
+    gameState.setUpGameboard();
+    this.gameController = new GameController(gameState);
     gameState.setCurrentPlayer(this.gameController.getNextPlayer());
     sendToAll(new StartGameMessage(host, 10,
         this.gameController.getTileBag().getRemaining() - this.gameState.getAllPlayers().size() * 7,

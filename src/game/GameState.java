@@ -46,8 +46,6 @@ public class GameState implements Serializable {
       jsonHandler.loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
       System.out.println("!");
     }
-
-    setUpGameboard();
   }
 
   /**

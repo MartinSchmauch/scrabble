@@ -344,7 +344,7 @@ public class Player {
   public void host() {
 
     this.getPlayerInfo().setHost(true);
-    this.server = new Server(this, null);
+    this.server = new Server(this, this.customGameSettings);
 
     Runnable r = new Runnable() {
       public void run() {

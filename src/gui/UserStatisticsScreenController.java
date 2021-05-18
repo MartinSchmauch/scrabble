@@ -75,8 +75,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
         new LoginScreen().start(new Stage());
         break;
       case "rules":
-        OpenExternalScreen
-            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
+        OpenExternalScreen.open(FileParameters.datadir + "/ScrabbleRules.pdf");
         break;
       case "prev":
         updateStatistics(false);
