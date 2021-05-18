@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import game.GameStatistic;
@@ -42,8 +41,7 @@ public class LeaderboardScreen extends Application {
     Parent root = null;
     Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
-      root = FXMLLoader
-          .load(new File(FileParameters.fxmlPath + "LeaderboardScreen.fxml").toURI().toURL());
+      root = FXMLLoader.load(getClass().getResource("/fxml/LeaderboardScreen.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
     }
