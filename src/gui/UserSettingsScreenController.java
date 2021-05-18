@@ -84,7 +84,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
 
         textfieldToLabel();
         new JsonHandler().savePlayerProfile(
-            new File(FileParameters.datadir + "playerProfileTest.json"), this.player);
+            new File(FileParameters.datadir + "playerProfile.json"), this.player);
 
         if (SettingsScreenController.getInstance() != null) {
           SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
@@ -102,8 +102,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
         new LoginScreen().start(newLoginStage);
         break;
       case "tut":
-        OpenExternalScreen
-            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
+        OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
         break;
       case "next":
         updateAvatar(true);
@@ -127,12 +126,13 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   public void setUp() {
     if (this.player.getNickname().equals("Guest")) {
       this.player.setNickname("ScrabbleGamer");
-      this.player.setAvatar("\\avatars\\avatar0.png");
+      this.player.setAvatar("/avatars/avatar0.png");
     }
     this.nickname.setText(this.player.getNickname());
     this.volbar.setValue((double) this.player.getVolume());
     this.vol.setText((int) this.volbar.getValue() + "");
-    this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
+    this.avatar.setImage(
+        new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
     this.namefield.setText(this.player.getNickname());
   }
 
@@ -156,8 +156,9 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
       JsonHandler jh = new JsonHandler();
-      this.player = jh.loadPlayerProfile(new File("resources/playerProfile.json"));
-      new File(FileParameters.datadir + ("/playerProfileTest.json")).delete();
+      this.player =
+          jh.loadPlayerProfile(new File(FileParameters.datadir + "defaultPlayerProfile.json"));
+      new File(FileParameters.datadir + "playerProfile.json").delete();
       System.exit(0);
     } else {
       alert.close();
@@ -173,7 +174,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     if (LoginScreenController.getInstance() != null) {
       LoginScreenController.getInstance().setUsername(this.player.getNickname());
       LoginScreenController.getInstance()
-          .setAvatar("file:" + FileParameters.datadir + this.player.getAvatar());
+          .setAvatar(getClass().getResource(this.player.getAvatar()).toExternalForm());
     }
   }
 
@@ -242,7 +243,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
       }
     }
     this.player.setAvatar("/avatars/avatar" + this.currentAvatar + ".png");
-    this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
+    this.avatar
+        .setImage(new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
   }
 
   public void disableDeletion() {

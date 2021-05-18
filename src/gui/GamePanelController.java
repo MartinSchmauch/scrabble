@@ -150,8 +150,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         pointsLabel[i].setText("0");
         playerLabel[i].setText("Points: ");
-        avatarImageView[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        avatarImageView[i].setImage(
+            new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
       } else {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
@@ -228,7 +228,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.min--;
       } else if (this.sec == 0 & this.min == 0) {
         this.turnCountdown = false;
-        this.sendResetTurnForEveryPlayer(player.getNickname());
+        this.sendResetTurn();
       } else {
         this.sec--;
       }
@@ -349,8 +349,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         break;
       case "rulesButton":
-        OpenExternalScreen
-            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
+        OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
         break;
       case "sendButton":
       case "chatInput":
@@ -800,8 +799,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         alert.setContentText("The Server was shut down by '" + hostName + "'. \nReason: " + reason);
         alert.initStyle(StageStyle.UNDECORATED);
 
-        alert.getDialogPane().getStylesheets()
-            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
           Stage st = (Stage) rulesButton.getScene().getWindow(); // TODO: das muss schoener gehen
@@ -868,6 +866,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
     } else {
       sendMessage(m);
+    }
+  }
+
+  public void sendResetTurn() {
+    Message m = new ResetTurnMessage(this.player.getNickname(), null);
+    if (this.player.isHost()) {
+      this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
     }
   }
 

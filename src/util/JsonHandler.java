@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.Files;
 import game.GameSettings;
+import gui.FileParameters;
 import mechanic.Field;
 import mechanic.Letter;
 import mechanic.Player;
@@ -95,6 +96,11 @@ public class JsonHandler {
                 letterNode.getValue().get("count").asInt()));
       }
 
+      int jokerValue = letters.get('*').getLetterValue();
+      for (Letter l : letters.values()) {
+        l.setJokerValue(jokerValue);
+      }
+
       JsonNode fieldNode;
       int wordMultiplier;
       int letterMultiplier;
@@ -120,7 +126,11 @@ public class JsonHandler {
       GameSettings.setTimePerPlayer(jsonNode.get("timePerPlayer").asInt());
       GameSettings.setMaxOvertime(jsonNode.get("maxOvertime").asInt());
       GameSettings.setMaxScore(jsonNode.get("maxScore").asInt());
-      GameSettings.setDictionary(jsonNode.get("dictionary").asText());
+      if (jsonNode.get("dictionary").asText().equals("CollinsScrabbleWords")) {
+        GameSettings.setDictionary(FileParameters.datadir + "CollinsScrabbleWords.txt");
+      } else {
+        GameSettings.setDictionary(jsonNode.get("dictionary").asText());
+      }
       GameSettings.setBingo(jsonNode.get("bingo").asInt());
       GameSettings.setAiDifficulty(jsonNode.get("difficulty").asText());
       GameSettings.setLetters(letters);

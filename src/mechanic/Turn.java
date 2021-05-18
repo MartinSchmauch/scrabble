@@ -2,7 +2,6 @@ package mechanic;
 
 import game.GameController;
 import game.GameSettings;
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +17,12 @@ public class Turn implements Serializable {
   private static final long serialVersionUID = 1L;
   String player;
   private List<Tile> laydDownTiles;
+  private List<Field> laydDownFields;
   private List<Word> words; // Array, that contains all words, that result from the lay down letters
   private int turnScore;
   private boolean isValid;
   private GameController gameController;
   private String stringRepresentation;
-  private static String baseDir = System.getProperty("user.dir")
-      + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
-  private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
   private boolean containedStarTiles;
   private List<Tile> starTiles;
 
@@ -37,9 +34,10 @@ public class Turn implements Serializable {
     this.laydDownTiles = new ArrayList<Tile>();
     this.turnScore = 0;
     this.stringRepresentation = "not calculated";
+    this.laydDownFields = new ArrayList<Field>();
     this.containedStarTiles = false;
     this.starTiles = new ArrayList<Tile>();
-  }
+}
 
   public boolean addTileToTurn(Tile t) {
     if (!this.laydDownTiles.contains(t)) {
@@ -86,7 +84,7 @@ public class Turn implements Serializable {
       }
     }
     if (this.containedStarTiles) {
-      int maxScore = 0;
+      int maxScore = -1;
       int maxIndex = -1;
       for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
         for (int k = 0; k < starTiles.size(); k++) {
@@ -395,6 +393,10 @@ public class Turn implements Serializable {
   public boolean isValid() {
     return isValid;
   }
+  
+  public boolean setValid(boolean valid) {
+    return isValid;
+  }
 
   /**
    * @author pkoenig
@@ -402,6 +404,9 @@ public class Turn implements Serializable {
    */
   public Turn getDeepCopy() {
     Turn res = new Turn(this.getPlayer(), this.gameController);
+    for (Tile t : this.laydDownTiles) {
+      res.laydDownFields.add(t.getField());
+    }
     res.player = this.player;
     res.isValid = this.isValid;
     for (Tile t : this.laydDownTiles) {
@@ -417,7 +422,6 @@ public class Turn implements Serializable {
       res.words.add(new Word(temp));
     }
     res.stringRepresentation = this.stringRepresentation;
-
     return res;
   }
 
@@ -427,6 +431,20 @@ public class Turn implements Serializable {
 
   public String toString() {
     return stringRepresentation;
+  }
+  
+  public String[] toStringArray() {
+    String[] res = new String[5];
+    res[0] = this.stringRepresentation;
+    for (Field f : this.laydDownFields) { // list of fields
+      res[1] = res[1] + ", " + f;
+    }
+    res[2] = this.turnScore + "";
+    res[3] = this.containedStarTiles + "";
+    for (Tile t : this.starTiles) {
+      res[4] = res[4] + ", " + t;
+    }
+    return res;
   }
 
   /**

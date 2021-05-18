@@ -178,7 +178,7 @@ public class Player {
   }
 
   /**
-   * This method adds a List of tileson the player´s rack.
+   * This method adds a List of tileson the player's rack.
    * 
    * @author lurny
    */

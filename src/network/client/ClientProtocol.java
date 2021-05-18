@@ -30,7 +30,6 @@ import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
-import util.JsonHandler;
 
 public class ClientProtocol extends Thread {
   private GameState gameState;
@@ -159,13 +158,14 @@ public class ClientProtocol extends Thread {
                 case RESET_TURN:
                   ResetTurnMessage resetTMessage = (ResetTurnMessage) m;
                   List<Tile> tileList = resetTMessage.getTiles();
+                  System.out.println(resetTMessage.getFrom() + "  " + tileList.size());
                   // remove Tiles from UI Gameboard and domain Gameboard
                   for (Tile t : tileList) {
                     gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
                         false);
                   }
                   // if this is the current player: add Tiles to Rack
-                  if (player.getNickname().equals(gameState.getCurrentPlayer())) {
+                  if (player.getNickname().equals(resetTMessage.getFrom())) {
                     for (Tile t : tileList) {
                       player.addTileToRack(t);
                       gpc.addTile(t);
@@ -210,10 +210,6 @@ public class ClientProtocol extends Thread {
                   StartGameMessage sgMessage = (StartGameMessage) m;
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
-                  // TODO replace with Server Game Settings (or important parts) eg. joker value
-                  JsonHandler jsonHandler = new JsonHandler();
-                  jsonHandler.loadGameSettings(
-                      new File(FileParameters.datadir + "defaultGameSettings.json"));
                   lsc.startGameScreen();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());

@@ -1,7 +1,6 @@
 package gui;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -30,6 +29,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mechanic.AIplayer;
 import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.ConnectMessage;
@@ -187,7 +187,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param index defines in which slot the ai player needs to be put.
    */
   public void addAiPlayer(int index) {
-    Player p = new Player("AI " + index);
+    AIplayer p = new AIplayer("AI " + index, this.getPlayer().getServer().getGameController(),
+        AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
     try {
@@ -300,13 +301,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+
   public void startGameScreen() {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
-      FXMLLoader loader = new FXMLLoader(
-          new File(FileParameters.fxmlPath + "Test_MainGamePanel_Martin.fxml").toURI().toURL());
+      FXMLLoader loader =
+          new FXMLLoader(getClass().getResource("/fxml/MainGameScreen.fxml"));
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
@@ -448,8 +449,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         } else {
           nicknames[i].setText(players.get(i).getNickname());
         }
-        avatars[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        avatars[i].setImage(
+            new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
       } else {
         // Player disconnects
         nicknames[i].setText("");

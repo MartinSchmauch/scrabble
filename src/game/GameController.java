@@ -1,7 +1,6 @@
 package game;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,11 +31,6 @@ public class GameController {
   private int currentPlayerIndex;
   private HashSet<String> dictionary;
 
-
-  private static String baseDir = System.getProperty("user.dir")
-      + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
-  private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
-
   public GameController(GameState gameState) {
     fillDictionary();
     this.gameState = gameState;
@@ -53,7 +47,7 @@ public class GameController {
   public void fillDictionary() {
     this.dictionary = new HashSet<String>();
 
-    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(GameSettings.getDictionary()))) {
       Pattern p = Pattern.compile("\\w*");
       String line;
       while ((line = br.readLine()) != null) {
