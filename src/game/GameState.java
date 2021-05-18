@@ -1,11 +1,11 @@
 package game;
 
-import gui.FileParameters;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import gui.FileParameters;
 import mechanic.Field;
 import mechanic.GameBoard;
 import mechanic.PlayerData;
@@ -44,7 +44,6 @@ public class GameState implements Serializable {
       jsonHandler.loadGameSettings(new File(customGameSettings));
     } else {
       jsonHandler.loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
-      System.out.println("!");
     }
 
     setUpGameboard();
