@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -196,9 +197,8 @@ public class JsonHandler {
   /** taken from https://www.baeldung.com/convert-input-stream-to-a-file */
   public void writeFileFromStream(InputStream in, String path) {
     try {
-      byte[] buffer = new byte[in.available()];
-      in.read(buffer);
-      Files.write(buffer, new File(path));
+      java.nio.file.Files.copy(in, new File(path).toPath(), StandardCopyOption.REPLACE_EXISTING);
+      in.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
