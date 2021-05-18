@@ -220,10 +220,12 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         chooseFile();
         break;
       case "dic2":
-        OpenExternalScreen.open(GameSettings.getDictionary());
+        System.out.println(FileParameters.datadir + GameSettings.getDictionary());
+        OpenExternalScreen.open(FileParameters.datadir + GameSettings.getDictionary());
         break;
       case "restore":
-        new JsonHandler().loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
+        new JsonHandler()
+            .loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
         setUpLabels();
         break;
       case "exit":
@@ -311,7 +313,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Choose Dictionary");
     File f = fileChooser.showOpenDialog(new Stage());
-    if (f != null && f.getPath().equals("*.csv")) {
+    if (f != null && f.getPath().equals("*.txt")) {
       GameSettings.setDictionary(f.getPath());
       this.valid.setOpacity(0);
     } else {
@@ -320,15 +322,28 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Changes the AI Difficulty between easy and hard.
+   * Changes the AI Difficulty between easy, medium, hard and unbeatable.
    */
   public void changeAi() {
-    if (this.ai.getText().equals("Easy")) {
-      this.ai.setText("Hard");
-      GameSettings.setAiDifficulty("hard");
-    } else {
-      this.ai.setText("Easy");
-      GameSettings.setAiDifficulty("easy");
+    switch (this.ai.getText()) {
+      case "Easy":
+        this.ai.setText("Medium");
+        GameSettings.setAiDifficulty("MEDIUM");
+        break;
+      case "Medium":
+        this.ai.setText("Hard");
+        GameSettings.setAiDifficulty("HIGH");
+        break;
+      case "Hard":
+        this.ai.setText("Unbeatable");
+        GameSettings.setAiDifficulty("Unbeatable");
+        break;
+      case "Unbeatable":
+        this.ai.setText("Easy");
+        GameSettings.setAiDifficulty("LOW");
+        break;
+      default:
+        break;
     }
   }
 

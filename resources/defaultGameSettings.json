@@ -5,6 +5,7 @@
   "dictionary" : "resources/dict.csv",
   "bingo" : 50,
   "difficulty": "easy",
+  "tilesOnRack" : 7,
   "letters" : {
     "A" : {
       "letterValue" : 1,

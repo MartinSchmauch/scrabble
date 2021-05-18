@@ -125,6 +125,7 @@ public class JsonHandler {
       GameSettings.setAiDifficulty(jsonNode.get("difficulty").asText());
       GameSettings.setLetters(letters);
       GameSettings.setSpecialFields(specialFields);
+      GameSettings.setTilesOnRack(jsonNode.get("tilesOnRack").asInt());
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -145,6 +146,7 @@ public class JsonHandler {
     rootNode.put("dictionary", GameSettings.getDictionary());
     rootNode.put("bingo", GameSettings.getBingo());
     rootNode.put("difficulty", GameSettings.getAiDifficulty());
+    rootNode.put("tilesOnRack", GameSettings.getTilesOnRack());
 
     ObjectNode letter = factory.objectNode();
     ObjectNode letterInfo;
