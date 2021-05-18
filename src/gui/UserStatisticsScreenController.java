@@ -60,7 +60,8 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
     this.ps = this.player.getPlayerInfo().getPlayerStatistics();
     setUpLabels();
     calculateStatistics();
-    this.avatar.setImage(new Image("file:" + FileParameters.datadir + this.player.getAvatar()));
+    this.avatar.setImage(
+        new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
   }
 
 

@@ -150,8 +150,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         pointsLabel[i].setText("0");
         playerLabel[i].setText("Points: ");
-        avatarImageView[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        avatarImageView[i].setImage(
+            new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
       } else {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
@@ -349,8 +349,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         break;
       case "rulesButton":
-        OpenExternalScreen
-            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
+        OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
         break;
       case "sendButton":
       case "chatInput":

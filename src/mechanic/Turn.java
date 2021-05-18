@@ -2,7 +2,6 @@ package mechanic;
 
 import game.GameController;
 import game.GameSettings;
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,6 @@ public class Turn implements Serializable {
   private boolean isValid;
   private GameController gameController;
   private String stringRepresentation;
-  private static String baseDir = System.getProperty("user.dir")
-      + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
-  private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
   private boolean containedStarTiles;
   private List<Tile> starTiles;
 

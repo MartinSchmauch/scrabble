@@ -2,7 +2,7 @@
   "timePerPlayer" : 1500,
   "maxOvertime" : 600,
   "maxScore" : -1,
-  "dictionary" : "resources/dict.csv",
+  "dictionary" : "CollinsScrabbleWords",
   "bingo" : 50,
   "difficulty": "easy",
   "letters" : {

@@ -129,8 +129,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     instance = this;
     this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
     this.username.setText(this.currentPlayer.getNickname());
-    this.avatar
-        .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
+    this.avatar.setImage(
+        new Image(getClass().getResource(this.currentPlayer.getAvatar()).toExternalForm()));
 
 
     setUpLabels();
@@ -248,7 +248,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     GameSettings.setMaxScore(Integer.parseInt(score.getText()));
     GameSettings.setGameBoardSize(Integer.parseInt(size.getText()));
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
-    new JsonHandler().saveGameSettings(new File(FileParameters.datadir + "gameSettingsTest.json"));
+    new JsonHandler()
+        .saveGameSettings(new File(FileParameters.datadir + "customGameSettings.json"));
 
   }
 

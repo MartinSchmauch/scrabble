@@ -1,7 +1,6 @@
 package gui;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -298,13 +297,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+
   public void startGameScreen() {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
       FXMLLoader loader =
-          new FXMLLoader(new File(FileParameters.fxmlPath + "MainGameScreen.fxml").toURI().toURL());
+          new FXMLLoader(getClass().getResource("/fxml/MainGameScreen.fxml"));
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
@@ -446,8 +445,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         } else {
           nicknames[i].setText(players.get(i).getNickname());
         }
-        avatars[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        avatars[i].setImage(
+            new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
       } else {
         // Player disconnects
         nicknames[i].setText("");

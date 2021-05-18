@@ -48,7 +48,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   @FXML
   public void initialize() {
     this.username.setText(currentPlayer.getNickname());
-    this.avatar.setImage(new Image("file:" + FileParameters.datadir + currentPlayer.getAvatar()));
+    this.avatar
+        .setImage(new Image(getClass().getResource(currentPlayer.getAvatar()).toExternalForm()));
 
   }
 
@@ -81,7 +82,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           System.exit(0);
           break;
         case "Info":
-          OpenExternalScreen.open(FileParameters.datadir + "/fxml/images/ScrabbleRules.pdf");
+          OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
           break;
         case "Settings":
         case "Account":
@@ -187,8 +188,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     }
 
     try {
-      FXMLLoader loader =
-          new FXMLLoader(new File(FileParameters.fxmlPath + "Lobby.fxml").toURI().toURL());
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Lobby.fxml"));
 
       Stage stage = new Stage(StageStyle.DECORATED);
       Parent root = loader.load();

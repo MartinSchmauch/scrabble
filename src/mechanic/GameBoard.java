@@ -1,5 +1,6 @@
 package mechanic;
 
+import game.GameSettings;
 import java.io.File;
 
 /**
@@ -22,7 +23,7 @@ public class GameBoard {
         this.fields[i][j].setGameBoard(this);
       }
     }
-    File file = new File("resources" + File.separator + "CollinsScrabbleWords.txt");
+    File file = new File(GameSettings.getDictionary());
     this.setWordlist(new Wordlist(file));
   }
 

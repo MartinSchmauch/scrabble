@@ -30,7 +30,6 @@ import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
-import util.JsonHandler;
 
 public class ClientProtocol extends Thread {
   private GameState gameState;
@@ -211,10 +210,6 @@ public class ClientProtocol extends Thread {
                   StartGameMessage sgMessage = (StartGameMessage) m;
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
-                  // TODO replace with Server Game Settings (or important parts) eg. joker value
-                  JsonHandler jsonHandler = new JsonHandler();
-                  jsonHandler.loadGameSettings(
-                      new File(FileParameters.datadir + "defaultGameSettings.json"));
                   lsc.startGameScreen();
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
