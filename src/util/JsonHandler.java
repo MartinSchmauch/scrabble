@@ -95,6 +95,11 @@ public class JsonHandler {
                 letterNode.getValue().get("count").asInt()));
       }
 
+      int jokerValue = letters.get('*').getLetterValue();
+      for (Letter l : letters.values()) {
+        l.setJokerValue(jokerValue);
+      }
+
       JsonNode fieldNode;
       int wordMultiplier;
       int letterMultiplier;

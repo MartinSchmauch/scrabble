@@ -1,7 +1,6 @@
 package mechanic;
 
 import java.io.Serializable;
-import game.GameSettings;
 
 /**
  * The Tile class is essential part of the domain model. It has a Field attribute that refers to the
@@ -72,7 +71,7 @@ public class Tile implements Serializable {
     if (!IS_JOKER) {
       return this.letter.getLetterValue();
     } else {
-      return GameSettings.getLetters().get('*').getLetterValue();
+      return this.letter.getJokerValue();
     }
   }
 

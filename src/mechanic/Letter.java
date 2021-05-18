@@ -18,6 +18,7 @@ public class Letter implements Serializable {
   private char character;
 
   private int value;
+  private int jokerValue;
   private int count;
 
   public Letter(char letter, int letterValue, int count) {
@@ -38,8 +39,12 @@ public class Letter implements Serializable {
     return this.count;
   }
   
-  public void setCharacter(char c) {
-    this.character = c;
+  public int getJokerValue() {
+    return this.jokerValue;
   }
-  
+
+  public void setJokerValue(int jokerValue) {
+    this.jokerValue = jokerValue;
+  }
+
 }
