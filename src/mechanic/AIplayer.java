@@ -28,7 +28,7 @@ public class AIplayer extends Player {
   // count)
   private final int numberOfCombinationSize = 2; // currently only 2 is supported
 
-  enum AiLevel {
+  public enum AiLevel {
     LOW, MEDIUM, HIGH, Unbeatable
   }
 
