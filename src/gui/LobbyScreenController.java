@@ -1,12 +1,15 @@
 package gui;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import game.GameSettings;
 import game.GameState;
 import javafx.concurrent.Task;
@@ -33,6 +36,7 @@ import mechanic.PlayerData;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
+import util.JsonHandler;
 
 /**
  * Handles all User inputs in the Lobby Screen as well as the connection of players.
@@ -82,6 +86,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button remove3;
   @FXML
+  private Button tutorial;
+  @FXML
   private ImageView pic1;
   @FXML
   private ImageView pic2;
@@ -101,9 +107,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
+      case "tutorial":
+        OpenExternalScreen.open(FileParameters.datadir + "/ScrabbleRules.pdf");
+        break;
       case "leavelobby":
         close();
-
         break;
       case "send":
       case "input":
@@ -147,7 +155,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     instance = this;
     this.player = current;
-
+    new JsonHandler()
+        .loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
     this.countdown.setText(5 + "");
     this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
@@ -268,7 +277,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
+      Pattern p = Pattern.compile("AI\\s.");
+      Matcher m = p.matcher(nickname);
+      if (m.matches()) {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
         this.player.getServer().getServerProtocol().sendInitialGameState();
@@ -302,8 +313,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
-      FXMLLoader loader =
-          new FXMLLoader(getClass().getResource("/fxml/MainGameScreen.fxml"));
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainGameScreen.fxml"));
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();

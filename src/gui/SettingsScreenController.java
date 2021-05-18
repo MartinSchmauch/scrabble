@@ -57,6 +57,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Label valid;
   @FXML
+  private Label tor;
+  @FXML
   private ImageView avatar;
   @FXML
   private Button user;
@@ -220,10 +222,12 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         chooseFile();
         break;
       case "dic2":
+
         OpenExternalScreen.open(GameSettings.getDictionary());
         break;
       case "restore":
-        new JsonHandler().loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
+        new JsonHandler()
+            .loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
         this.currentPlayer.setCustomGameSettings(null);
         setUpLabels();
         break;
@@ -245,10 +249,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    GameSettings.setMaxOvertime(Integer.parseInt(overtime.getText()));
     GameSettings.setMaxScore(Integer.parseInt(score.getText()));
-    GameSettings.setGameBoardSize(Integer.parseInt(size.getText()));
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
+    GameSettings.setTilesOnRack(Integer.parseInt(this.tor.getText()));
     new JsonHandler()
         .saveGameSettings(new File(FileParameters.datadir + "customGameSettings.json"));
     this.currentPlayer.setCustomGameSettings(FileParameters.datadir + "customGameSettings.json");
@@ -300,43 +303,61 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void setUpLabels() {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
-    this.overtime.setText(GameSettings.getMaxOvertime() + "");
+    this.tor.setText(GameSettings.getTilesOnRack() + "");
     this.score.setText(GameSettings.getMaxScore() + "");
-    this.size.setText(GameSettings.getGameBoardSize() + "");
     this.bingo.setText(GameSettings.getBingo() + "");
     this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
         + GameSettings.getAiDifficulty().substring(1));
     this.dic0.setText(GameSettings.getDictionary());
+
     this.letter.setText(GameSettings.getLetters().get('A').getCharacter() + "");
     this.letterValue.setText(GameSettings.getLetters().get('A').getLetterValue() + "");
     this.letterAmount.setText(GameSettings.getLetters().get('A').getCount() + "");
   }
 
   /**
-   * Lets a user choose a new dictionary to be used
+   * Lets a user choose a new dictionary to be used.
    */
   public void chooseFile() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Choose Dictionary");
-    File f = fileChooser.showOpenDialog(new Stage());
-    if (f != null && f.getPath().equals("*.csv")) {
-      GameSettings.setDictionary(f.getPath());
-      this.valid.setOpacity(0);
-    } else {
-      this.valid.setOpacity(1);
+    try {
+      File f = fileChooser.showOpenDialog(new Stage());
+      String extension = f.getPath().substring(f.getPath().length() - 3);
+      if (f != null && extension.equals("txt")) {
+        GameSettings.setDictionary(f.getPath());
+        this.valid.setOpacity(0);
+      } else {
+        this.valid.setOpacity(1);
+      }
+    } catch (NullPointerException e) { // No file selected.
+      return;
     }
   }
 
   /**
-   * Changes the AI Difficulty between easy and hard.
+   * Changes the AI Difficulty between easy, medium, hard and unbeatable.
    */
   public void changeAi() {
-    if (this.ai.getText().equals("Easy")) {
-      this.ai.setText("Hard");
-      GameSettings.setAiDifficulty("hard");
-    } else {
-      this.ai.setText("Easy");
-      GameSettings.setAiDifficulty("easy");
+    switch (this.ai.getText()) {
+      case "Easy":
+        this.ai.setText("Medium");
+        GameSettings.setAiDifficulty("MEDIUM");
+        break;
+      case "Medium":
+        this.ai.setText("Hard");
+        GameSettings.setAiDifficulty("HIGH");
+        break;
+      case "Hard":
+        this.ai.setText("Unbeatable");
+        GameSettings.setAiDifficulty("Unbeatable");
+        break;
+      case "Unbeatable":
+        this.ai.setText("Easy");
+        GameSettings.setAiDifficulty("LOW");
+        break;
+      default:
+        break;
     }
   }
 

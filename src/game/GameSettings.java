@@ -25,6 +25,15 @@ public class GameSettings {
   private static String ai;
   private static HashMap<Character, Letter> letters;
   private static List<Field> specialFields;
+  private static int tilesOnRack;
+
+  public static int getTilesOnRack() {
+    return tilesOnRack;
+  }
+
+  public static void setTilesOnRack(int tiles) {
+    tilesOnRack = tiles;
+  }
 
   public static String getAiDifficulty() {
     return ai;
@@ -110,7 +119,7 @@ public class GameSettings {
   public static HashMap<Character, Letter> getLetters() {
     return letters;
   }
-  
+
   public static Letter getLetterForChar(char c) {
     return letters.get(c);
   }

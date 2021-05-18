@@ -1,10 +1,11 @@
 {
-  "timePerPlayer" : 1500,
+  "timePerPlayer" : 1502,
   "maxOvertime" : 600,
   "maxScore" : -1,
   "dictionary" : "CollinsScrabbleWords",
   "bingo" : 50,
   "difficulty": "easy",
+  "tilesOnRack" : 7,
   "letters" : {
     "A" : {
       "letterValue" : 1,
