@@ -59,6 +59,8 @@ public class Server {
 
   private GamePanelController gpc;
   private LobbyScreenController lsc;
+  private boolean semaphore;
+
 
   private boolean running;
 
@@ -72,6 +74,7 @@ public class Server {
    */
 
   public Server(Player host, String customGameSettings) {
+    this.semaphore = true;
     this.host = host.getNickname();
     this.player = host;
     this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
@@ -118,39 +121,41 @@ public class Server {
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
-    this.getGameController().addTilesToTileBag(m.getTiles());
-    // If the host wants to perform the exchange
-    if (m.getFrom().equals(this.getHost())) {
-      // delete Old tiles From Domain
-      for (Tile t : m.getTiles()) {
-        this.player.removeRackTile(t.getField().getxCoordinate());
-      }
-      // add new tiles to Domain and UI
-      Platform.runLater(new Runnable() {
-        @Override
-        public void run() {
-          List<Tile> tileList = gameController.drawTiles(m.getTiles().size());
-          for (Tile t : tileList) {
-            t.setField(player.getFreeRackField());
-            t.setOnGameBoard(false);
-            t.setOnRack(true);
-            gpc.addTile(t);
-          }
+    if (semaphore) {
+      this.getGameController().addTilesToTileBag(m.getTiles());
+      // If the host wants to perform the exchange
+      if (m.getFrom().equals(this.getHost())) {
+        // delete Old tiles From Domain
+        for (Tile t : m.getTiles()) {
+          this.player.removeRackTile(t.getField().getxCoordinate());
         }
-      });
-    } else {
-      List<Tile> tileList;
-      String receiver = m.getFrom();
-      tileList = this.gameController.drawTiles(m.getTiles().size());
-      ServerProtocol client = this.clients.get(receiver);
-      client.sendToClient(new TileMessage(this.getHost(), tileList));
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+        // add new tiles to Domain and UI
+        Platform.runLater(new Runnable() {
+          @Override
+          public void run() {
+            List<Tile> tileList = gameController.drawTiles(m.getTiles().size());
+            for (Tile t : tileList) {
+              t.setField(player.getFreeRackField());
+              t.setOnGameBoard(false);
+              t.setOnRack(true);
+              gpc.addTile(t);
+            }
+          }
+        });
+      } else {
+        List<Tile> tileList;
+        String receiver = m.getFrom();
+        tileList = this.gameController.drawTiles(m.getTiles().size());
+        ServerProtocol client = this.clients.get(receiver);
+        client.sendToClient(new TileMessage(this.getHost(), tileList));
+        try {
+          Thread.sleep(50);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
+      this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
     }
-    this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
   }
 
   /**
@@ -160,43 +165,47 @@ public class Server {
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
-    String from = this.gameState.getCurrentPlayer();
-    List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
-    System.out.println(from + "  " + tileList.size());
-    this.sendToAll((Message) new ResetTurnMessage(from, tileList));
-    // remove Tiles from domain Gameboard
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        for (Tile t : gameController.getTurn().getLaydDownTiles()) {
-          gameState.getGameBoard()
-              .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
-        }
-        // if this is the current player: add Tiles to Rack
-        if (host.equals(gameState.getCurrentPlayer())) {
+    if (semaphore) {
+      String from = this.gameState.getCurrentPlayer();
+      List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
+      System.out.println(from + "  " + tileList.size());
+      this.sendToAll((Message) new ResetTurnMessage(from, tileList));
+      // remove Tiles from domain Gameboard
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
           for (Tile t : gameController.getTurn().getLaydDownTiles()) {
-            player.addTileToRack(t);
-            gpc.addTile(t);
+            gameState.getGameBoard()
+                .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate())
+                .setTile(null);
           }
-        }
-        gameState.setCurrentPlayer(gameController.getNextPlayer());
-        gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
-        try {
-          Thread.sleep(50);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
-            gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+          // if this is the current player: add Tiles to Rack
+          if (host.equals(gameState.getCurrentPlayer())) {
+            for (Tile t : gameController.getTurn().getLaydDownTiles()) {
+              player.addTileToRack(t);
+              gpc.addTile(t);
+            }
+          }
+          gameState.setCurrentPlayer(gameController.getNextPlayer());
+          gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
+              gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
 
-      }
-    });
+        }
+      });
+    }
   }
 
   /**
    * This method is called to verify the turn.
    */
   public void handleCommitTurn(CommitTurnMessage m) {
+    this.semaphore = false;
     String from = m.getFrom();
     Turn turn = this.getGameController().getTurn();
     turn.endTurn();
@@ -281,6 +290,8 @@ public class Server {
       this.getGameController().newTurn();
 
     }
+
+    this.semaphore = true;
     // else { // turn is invalid
     // sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from), null,
     // this.gameController.getTileBag().getRemaining()));
