@@ -117,27 +117,42 @@
                               <RowConstraints />
                            </rowConstraints>
                         </GridPane>
-                        <Label prefHeight="18.0" prefWidth="99.0" text="Time per Player" />
+                        <Label prefHeight="18.0" prefWidth="140.0" text="Time per Player" />
                         <Label id="durationLabel" fx:id="time" prefHeight="42.0" prefWidth="103.0" text="30" GridPane.columnIndex="1">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font></Label>
                         <Label text="Max Score" GridPane.rowIndex="1" />
-                        <Label fx:id="score" prefHeight="37.0" prefWidth="89.0" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="score" prefHeight="37.0" prefWidth="89.0" text="100" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <Label text="Difficulty" GridPane.rowIndex="3" />
                         <Label text="Bingo" GridPane.rowIndex="2" />
                         <Label text="Dictionary" GridPane.rowIndex="4" />
                         <Button fx:id="dic1" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <Button fx:id="dif" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Change" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <Button fx:id="dic2" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="View" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <Label fx:id="bingo" prefHeight="52.0" prefWidth="86.0" text="500" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label fx:id="ai" prefHeight="42.0" prefWidth="89.0" text="Easy" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label fx:id="bingo" prefHeight="52.0" prefWidth="86.0" text="500" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
+                        <Label fx:id="ai" prefHeight="42.0" prefWidth="89.0" text="Easy" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <Label text="Letter" GridPane.rowIndex="7" />
-                        <Label fx:id="letter" text="A" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Label fx:id="letter" text="A" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <Label fx:id="letterValue" prefHeight="18.0" prefWidth="26.0" text="1" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
                         </Label>
                         <Label fx:id="letterAmount" prefHeight="18.0" prefWidth="37.0" text="9" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <GridPane.margin>
@@ -146,6 +161,9 @@
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
                         </Label>
                         <Label text="Value/ Amout" GridPane.rowIndex="8" />
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
@@ -179,18 +197,38 @@
                               <Font size="7.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="tpptf" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
-                        <TextField fx:id="mstf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="btf" onAction="#handle" opacity="0.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="tpptf1" layoutX="151.0" layoutY="15.0" onAction="#handle" onMouseClicked="#handle" opacity="0.0" stylesheets="@LoginStyle.css" />
+                        <TextField fx:id="tpptf" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="0.0" prefHeight="27.0" prefWidth="44.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" />
+                        <TextField fx:id="mstf" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handle" opacity="0.0" prefHeight="31.0" prefWidth="44.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="13.0" />
+                           </font></TextField>
+                        <TextField fx:id="btf" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#handle" opacity="0.0" prefHeight="27.0" prefWidth="44.0" stylesheets="@LoginStyle.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label text="Tiles on rack" GridPane.rowIndex="6" />
-                        <Label fx:id="tor" text="7" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label fx:id="tor" text="7" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font></Label>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
                            <children>
                               <Button fx:id="torDown" alignment="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&lt;" />
                               <Button fx:id="torUp" alignment="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="&gt;" />
                            </children>
                         </HBox>
+                        <Label text="seconds" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                           <GridPane.margin>
+                              <Insets left="45.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="points" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="45.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <Label text="points" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="45.0" />
+                           </GridPane.margin>
+                        </Label>
                      </children>
                   </GridPane>
                   <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="460.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
@@ -221,6 +259,11 @@
                   <Button fx:id="restore" layoutX="14.0" layoutY="458.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Restore Defaults" />
                </children>
             </AnchorPane>
+            <ImageView disable="true" fitHeight="744.0" fitWidth="1266.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/ScrabbleBoard.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </center>

@@ -99,6 +99,10 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button dic2;
   @FXML
+  private Button torUp;
+  @FXML
+  private Button torDown;
+  @FXML
   private Button letterDown;
   @FXML
   private Button letterUp;
@@ -133,8 +137,6 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar.setImage(
         new Image(getClass().getResource(this.currentPlayer.getAvatar()).toExternalForm()));
-
-
     setUpLabels();
 
   }
@@ -147,7 +149,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "user":
-        showUserProfile();
+        // showUserProfile();
         break;
       case "tppUp":
         updateLabel(this.time, Integer.parseInt(time.getText()) + 1);
@@ -175,6 +177,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         break;
       case "ms":
         labelTextfield(this.score, this.mstf, (Button) e.getSource());
+        break;
       case "sUp":
         updateLabel(this.size, Integer.parseInt(size.getText()) + 1);
         break;
@@ -222,8 +225,13 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         chooseFile();
         break;
       case "dic2":
-
         OpenExternalScreen.open(GameSettings.getDictionary());
+        break;
+      case "torUp":
+        updateTilesOnRack(1);
+        break;
+      case "torDown":
+        updateTilesOnRack(-1);
         break;
       case "restore":
         new JsonHandler()
@@ -277,12 +285,13 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     } else { // Textfield to Label
       trigger.setText("Change");
       tf.setOpacity(0);
+      int newValue = -1;
       try {
-        Integer.parseInt(tf.getText());
+        newValue = Integer.parseInt(tf.getText());
       } catch (NumberFormatException e) {
         tf.setText(lbl.getText());
       }
-      if (!tf.getText().equals("")) {
+      if (!tf.getText().equals("") && newValue >= 0) {
         lbl.setText(tf.getText());
       }
       lbl.setOpacity(1);
@@ -416,7 +425,25 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void updateLabel(Label toBeUpdated, int update) {
     if (update >= 0) {
       toBeUpdated.setText(update + "");
+    } else {
+      toBeUpdated.setText(0 + "");
     }
+  }
+
+  /**
+   * This method
+   * 
+   * @param input
+   */
+
+  public void updateTilesOnRack(int input) {
+    int newValue = Integer.parseInt(this.tor.getText()) + input;
+    if (newValue <= 0) {
+      return;
+    } else if (newValue > 10) {
+      newValue = 10;
+    }
+    updateLabel(this.tor, newValue);
   }
 
   /**
