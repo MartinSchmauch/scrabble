@@ -71,15 +71,6 @@
                <children>
                   <Button fx:id="leavelobby" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="90.0" stylesheets="@Buttons.css" text="Leave Lobby" />
                   <Button fx:id="start" layoutX="276.0" layoutY="362.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Start" />
-                  <TextArea fx:id="chat" layoutX="23.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;" wrapText="true">
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="3.0" />
-                     </padding>
-                  </TextArea>
-                  <TextField fx:id="input" layoutX="24.0" layoutY="295.0" onAction="#handle" />
                   <Button fx:id="send" layoutX="178.0" layoutY="294.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="49.0" stylesheets="@Buttons.css" text="Send" />
                   <Label fx:id="countdown" layoutX="240.0" layoutY="366.0" text="10" />
                   <VBox alignment="TOP_CENTER" layoutX="240.0" layoutY="20.0" prefHeight="323.0" prefWidth="100.0" style="-fx-border-radius: 24px; -fx-border-color: #218f33; -fx-background-color: transparent;">
@@ -220,6 +211,20 @@
                   <Button fx:id="settings" layoutX="149.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="78.0" stylesheets="@Buttons.css" text="Settings" />
                </children>
             </AnchorPane>
+            <ImageView disable="true" fitHeight="722.0" fitWidth="1266.0" layoutX="-200.0" opacity="0.1" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/ScrabbleBoard.png" />
+               </image>
+            </ImageView>
+            <TextArea fx:id="chat" layoutX="113.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;" wrapText="true">
+               <font>
+                  <Font size="10.0" />
+               </font>
+               <padding>
+                  <Insets bottom="3.0" />
+               </padding>
+            </TextArea>
+            <TextField fx:id="input" layoutX="113.0" layoutY="296.0" onAction="#handle" />
          </children>
       </AnchorPane>
    </center>
