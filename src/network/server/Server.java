@@ -127,6 +127,7 @@ public class Server {
   public void handleExchangeTiles(TileMessage m) {
     this.semaphoreCommit = false;
     if (this.semaphoreReset && sem) {
+      this.sem = false;
       this.getGameController().addTilesToTileBag(m.getTiles());
       // If the host wants to perform the exchange
       if (m.getFrom().equals(this.getHost())) {
@@ -159,6 +160,7 @@ public class Server {
           e.printStackTrace();
         }
       }
+      this.sem = true;
       this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
     }
   }
