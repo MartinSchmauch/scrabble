@@ -152,40 +152,22 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         // showUserProfile();
         break;
       case "tppUp":
-        updateLabel(this.time, Integer.parseInt(time.getText()) + 1);
+        updateLabel(this.time, Integer.parseInt(time.getText()) + 10);
         break;
       case "tppDown":
-        updateLabel(this.time, Integer.parseInt(time.getText()) - 1);
+        updateLabel(this.time, Integer.parseInt(time.getText()) - 10);
         break;
       case "tpp":
         labelTextfield(this.time, this.tpptf, (Button) e.getSource());
         break;
-      case "moDown":
-        updateLabel(this.overtime, Integer.parseInt(overtime.getText()) - 1);
-        break;
-      case "moUp":
-        updateLabel(this.overtime, Integer.parseInt(overtime.getText()) + 1);
-        break;
-      case "mo":
-        labelTextfield(this.overtime, this.motf, (Button) e.getSource());
-        break;
       case "msUp":
-        updateLabel(this.score, Integer.parseInt(score.getText()) + 1);
+        updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
         break;
       case "msDown":
-        updateLabel(this.score, Integer.parseInt(score.getText()) - 1);
+        updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
         break;
       case "ms":
         labelTextfield(this.score, this.mstf, (Button) e.getSource());
-        break;
-      case "sUp":
-        updateLabel(this.size, Integer.parseInt(size.getText()) + 1);
-        break;
-      case "sDown":
-        updateLabel(this.size, Integer.parseInt(size.getText()) - 1);
-        break;
-      case "s":
-        labelTextfield(this.size, this.stf, (Button) e.getSource());
         break;
       case "bUp":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) + 1);
@@ -315,10 +297,23 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.tor.setText(GameSettings.getTilesOnRack() + "");
     this.score.setText(GameSettings.getMaxScore() + "");
     this.bingo.setText(GameSettings.getBingo() + "");
-    this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
-        + GameSettings.getAiDifficulty().substring(1));
-    this.dic0.setText(GameSettings.getDictionary());
+    String input = GameSettings.getAiDifficulty();
+    switch (input) {
+      case "LOW":
+        this.ai.setText("Easy");
+        break;
+      case "MEDIUM":
+        this.ai.setText("Medium");
+        break;
+      case "HARD":
+        this.ai.setText("Hard");
+        break;
+      default:
+        this.ai.setText("Unbeatable");
+        break;
+    }
 
+    this.dic0.setText(GameSettings.getDictionary());
     this.letter.setText(GameSettings.getLetters().get('A').getCharacter() + "");
     this.letterValue.setText(GameSettings.getLetters().get('A').getLetterValue() + "");
     this.letterAmount.setText(GameSettings.getLetters().get('A').getCount() + "");
