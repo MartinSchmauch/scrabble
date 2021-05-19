@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import mechanic.Player;
+import mechanic.PlayerData;
 import mechanic.PlayerStatistics;
 
 /**
@@ -24,7 +24,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
 
   private UserStatisticsScreen uss;
   private PlayerStatistics ps;
-  private Player player;
+  private PlayerData player;
   private String[] stats =
       {"Total Score", "Wins", "Best Word", "Best Turn", "Played Tiles", "Good invested time"};
   private String[] values1 = new String[6];
@@ -57,11 +57,11 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
   public void initialize() {
     this.uss = UserStatisticsScreen.getInstance();
     this.player = uss.getPlayer();
-    this.ps = this.player.getPlayerInfo().getPlayerStatistics();
+    this.ps = this.player.getPlayerStatistics();
     setUpLabels();
     calculateStatistics();
-    this.avatar.setImage(
-        new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
+    this.avatar
+        .setImage(new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
   }
 
 
@@ -72,7 +72,9 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
       case "exit":
         Stage s = (Stage) b.getScene().getWindow();
         s.close();
-        new LoginScreen().start(new Stage());
+        if (UserStatisticsScreen.getLobby()) {
+          new LoginScreen().start(new Stage());
+        }
         break;
       case "rules":
         OpenExternalScreen.open(FileParameters.datadir + "/ScrabbleRules.pdf");
