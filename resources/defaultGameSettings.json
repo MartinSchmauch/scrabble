@@ -4,7 +4,7 @@
   "maxScore" : -1,
   "dictionary" : "CollinsScrabbleWords",
   "bingo" : 50,
-  "difficulty": "easy",
+  "difficulty": "LOW",
   "tilesOnRack" : 7,
   "letters" : {
     "A" : {

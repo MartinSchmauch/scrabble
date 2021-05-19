@@ -99,6 +99,10 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button dic2;
   @FXML
+  private Button torUp;
+  @FXML
+  private Button torDown;
+  @FXML
   private Button letterDown;
   @FXML
   private Button letterUp;
@@ -133,8 +137,6 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar.setImage(
         new Image(getClass().getResource(this.currentPlayer.getAvatar()).toExternalForm()));
-
-
     setUpLabels();
 
   }
@@ -147,42 +149,25 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "user":
-        showUserProfile();
+        // showUserProfile();
         break;
       case "tppUp":
-        updateLabel(this.time, Integer.parseInt(time.getText()) + 1);
+        updateLabel(this.time, Integer.parseInt(time.getText()) + 10);
         break;
       case "tppDown":
-        updateLabel(this.time, Integer.parseInt(time.getText()) - 1);
+        updateLabel(this.time, Integer.parseInt(time.getText()) - 10);
         break;
       case "tpp":
         labelTextfield(this.time, this.tpptf, (Button) e.getSource());
         break;
-      case "moDown":
-        updateLabel(this.overtime, Integer.parseInt(overtime.getText()) - 1);
-        break;
-      case "moUp":
-        updateLabel(this.overtime, Integer.parseInt(overtime.getText()) + 1);
-        break;
-      case "mo":
-        labelTextfield(this.overtime, this.motf, (Button) e.getSource());
-        break;
       case "msUp":
-        updateLabel(this.score, Integer.parseInt(score.getText()) + 1);
+        updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
         break;
       case "msDown":
-        updateLabel(this.score, Integer.parseInt(score.getText()) - 1);
+        updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
         break;
       case "ms":
         labelTextfield(this.score, this.mstf, (Button) e.getSource());
-      case "sUp":
-        updateLabel(this.size, Integer.parseInt(size.getText()) + 1);
-        break;
-      case "sDown":
-        updateLabel(this.size, Integer.parseInt(size.getText()) - 1);
-        break;
-      case "s":
-        labelTextfield(this.size, this.stf, (Button) e.getSource());
         break;
       case "bUp":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) + 1);
@@ -222,8 +207,13 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         chooseFile();
         break;
       case "dic2":
-
         OpenExternalScreen.open(GameSettings.getDictionary());
+        break;
+      case "torUp":
+        updateTilesOnRack(1);
+        break;
+      case "torDown":
+        updateTilesOnRack(-1);
         break;
       case "restore":
         new JsonHandler()
@@ -277,12 +267,13 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     } else { // Textfield to Label
       trigger.setText("Change");
       tf.setOpacity(0);
+      int newValue = -1;
       try {
-        Integer.parseInt(tf.getText());
+        newValue = Integer.parseInt(tf.getText());
       } catch (NumberFormatException e) {
         tf.setText(lbl.getText());
       }
-      if (!tf.getText().equals("")) {
+      if (!tf.getText().equals("") && newValue >= 0) {
         lbl.setText(tf.getText());
       }
       lbl.setOpacity(1);
@@ -306,10 +297,23 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.tor.setText(GameSettings.getTilesOnRack() + "");
     this.score.setText(GameSettings.getMaxScore() + "");
     this.bingo.setText(GameSettings.getBingo() + "");
-    this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
-        + GameSettings.getAiDifficulty().substring(1));
-    this.dic0.setText(GameSettings.getDictionary());
+    String input = GameSettings.getAiDifficulty();
+    switch (input) {
+      case "LOW":
+        this.ai.setText("Easy");
+        break;
+      case "MEDIUM":
+        this.ai.setText("Medium");
+        break;
+      case "HARD":
+        this.ai.setText("Hard");
+        break;
+      default:
+        this.ai.setText("Unbeatable");
+        break;
+    }
 
+    this.dic0.setText(GameSettings.getDictionary());
     this.letter.setText(GameSettings.getLetters().get('A').getCharacter() + "");
     this.letterValue.setText(GameSettings.getLetters().get('A').getLetterValue() + "");
     this.letterAmount.setText(GameSettings.getLetters().get('A').getCount() + "");
@@ -416,7 +420,25 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void updateLabel(Label toBeUpdated, int update) {
     if (update >= 0) {
       toBeUpdated.setText(update + "");
+    } else {
+      toBeUpdated.setText(0 + "");
     }
+  }
+
+  /**
+   * This method
+   * 
+   * @param input
+   */
+
+  public void updateTilesOnRack(int input) {
+    int newValue = Integer.parseInt(this.tor.getText()) + input;
+    if (newValue <= 0) {
+      return;
+    } else if (newValue > 10) {
+      newValue = 10;
+    }
+    updateLabel(this.tor, newValue);
   }
 
   /**

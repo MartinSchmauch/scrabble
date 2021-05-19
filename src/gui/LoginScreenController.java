@@ -65,7 +65,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     }
     this.player = currentPlayer;
     if (e.getSource().getClass() != Button.class) {
-      join();
+      startLobby();
     } else {
       Button button = (Button) e.getSource();
       Stage s = (Stage) button.getScene().getWindow();
@@ -95,7 +95,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           if (this.player.getGameCount() == 0) {
             this.player.getPlayerInfo().getPlayerStatistics().setGameCount(-1);
           }
-          new UserStatisticsScreen(this.player).start(new Stage());
+          new UserStatisticsScreen(this.player.getPlayerInfo(), true).start(new Stage());
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
@@ -287,26 +287,5 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     return this.LinkField.getText();
   }
 
-  /**
-   * Handles the process when a player is trying to join a game via link. It can be accessed via
-   * "enter" after an input in the LinkField or via a press on the "Join" Button.
-   **/
-  public void join() {
 
-    String gameID = LinkField.getText();
-    Alert connection;
-    if (gameID.length() == 0) {
-      connection = new Alert(AlertType.ERROR);
-      connection.setTitle("Connection Error");
-      connection.setHeaderText(null);
-      connection.setContentText("Must enter a Link");
-      connection.show();
-    } else {
-      connection = new Alert(AlertType.CONFIRMATION);
-      connection.setTitle("Connecting to game");
-      connection.setHeaderText(null);
-      connection.setContentText("Connecting to \"" + gameID + "\"");
-    }
-    // connection.show();
-  }
 }

@@ -60,13 +60,18 @@
                         <Tooltip text="Show Tutorial" />
                      </tooltip>
                   </Button>
+                  <Button fx:id="copy" layoutX="101.0" layoutY="346.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Copy Link">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </Button>
                </children>
             </AnchorPane>
             <AnchorPane fx:id="leave" layoutX="86.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="356.0">
                <children>
                   <Button fx:id="leavelobby" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="90.0" stylesheets="@Buttons.css" text="Leave Lobby" />
                   <Button fx:id="start" layoutX="276.0" layoutY="362.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Start" />
-                  <TextArea fx:id="chat" layoutX="23.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;">
+                  <TextArea fx:id="chat" layoutX="23.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;" wrapText="true">
                      <font>
                         <Font size="10.0" />
                      </font>
@@ -122,13 +127,17 @@
                                     <Font size="9.0" />
                                  </font>
                               </Label>
-                              <ImageView fx:id="pic1" fitHeight="54.0" fitWidth="48.0" onMouseClicked="#showStatistics" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+                              <ImageView fx:id="pic1" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin></ImageView>
                               <ImageView fx:id="pic2" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
                               <ImageView fx:id="pic3" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP" />
                               <ImageView fx:id="pic4" fitHeight="54.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+                              <Button fx:id="profile0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="92.0" prefWidth="111.0" text="Button" />
+                              <Button fx:id="profile1" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="82.0" prefWidth="104.0" text="Button" GridPane.rowIndex="1" />
+                              <Button fx:id="profile2" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="95.0" prefWidth="122.0" text="Button" GridPane.rowIndex="2" />
+                              <Button fx:id="profile3" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="106.0" prefWidth="127.0" text="Button" GridPane.rowIndex="3" />
                               <Button fx:id="add1" disable="true" graphicTextGap="0.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" stylesheets="@Buttons.css" text="+" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="TOP">
                                  <GridPane.margin>
                                     <Insets right="7.0" top="10.0" />

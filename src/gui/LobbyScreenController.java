@@ -27,6 +27,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -88,6 +90,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button tutorial;
   @FXML
+  private Button profile0;
+  @FXML
+  private Button profile1;
+  @FXML
+  private Button profile2;
+  @FXML
+  private Button profile3;
+  @FXML
+  private Button copy;
+  @FXML
   private ImageView pic1;
   @FXML
   private ImageView pic2;
@@ -144,6 +156,17 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "remove3":
         removePlayer(Character.getNumericValue(s.charAt(6)));
         break;
+      case "profile1":
+      case "profile2":
+      case "profile0":
+      case "profile3":
+        showStatistics(Character.getNumericValue(s.charAt(7)));
+        break;
+      case "copy":
+        ClipboardContent content = new ClipboardContent();
+        content.putString(this.ip.getText().substring(7));
+        Clipboard.getSystemClipboard().setContent(content);
+        break;
       default:
         break;
     }
@@ -174,7 +197,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.ip.setText("");
       this.start.setDisable(true);
       this.settings.setDisable(true);
-
+      this.copy.setDisable(true);
+      this.copy.setOpacity(0);
     }
 
   }
@@ -182,9 +206,20 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * This methods gets called if a user clicks on the avatar or username of another player to show
    * the statistics of the user.
+   * 
+   * @param index defines in which position the user is placed.
    */
-  public void showStatistics() {
-
+  public void showStatistics(int index) {
+    if (index > players.size() - 1) {
+      return;
+    }
+    if (players.get(index) != null) {
+      Pattern p = Pattern.compile("AI\\s.");
+      Matcher m = p.matcher(players.get(index).getNickname());
+      if (!m.matches()) {
+        new UserStatisticsScreen(players.get(index), false).start(new Stage());
+      }
+    }
   }
 
   /**
