@@ -872,7 +872,15 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void sendResetTurn() {
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
-      this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+      if (this.player.getServer().getGameState().getCurrentPlayer()
+          .equals(this.player.getNickname())) {
+        this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+      }
+    } else {
+      if (this.player.getClientProtocol().getGameState().getCurrentPlayer()
+          .equals(this.player.getNickname())) {
+        sendMessage(m);
+      }
     }
   }
 

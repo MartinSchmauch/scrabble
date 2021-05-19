@@ -121,7 +121,6 @@ public class Server {
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
-    this.gpc.stopTimer();
     this.getGameController().addTilesToTileBag(m.getTiles());
     // If the host wants to perform the exchange
     if (m.getFrom().equals(this.getHost())) {
@@ -164,7 +163,6 @@ public class Server {
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
-    this.gpc.stopTimer();
     String from = this.gameState.getCurrentPlayer();
     List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
     System.out.println(from + "  " + tileList.size());
@@ -202,7 +200,6 @@ public class Server {
    * This method is called to verify the turn.
    */
   public void handleCommitTurn(CommitTurnMessage m) {
-    this.gpc.stopTimer();
     String from = m.getFrom();
     Turn turn = this.getGameController().getTurn();
     turn.endTurn();
