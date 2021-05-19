@@ -61,6 +61,7 @@ public class Server {
   private LobbyScreenController lsc;
   private boolean semaphoreCommit;
   private boolean semaphoreReset;
+  private boolean sem;
 
 
   private boolean running;
@@ -76,6 +77,7 @@ public class Server {
 
   public Server(Player host, String customGameSettings) {
     this.semaphoreCommit = true;
+    this.sem = true;
     this.semaphoreReset = true;
     this.host = host.getNickname();
     this.player = host;
@@ -124,7 +126,7 @@ public class Server {
    */
   public void handleExchangeTiles(TileMessage m) {
     this.semaphoreCommit = false;
-    if (this.semaphoreReset) {
+    if (this.semaphoreReset && sem) {
       this.getGameController().addTilesToTileBag(m.getTiles());
       // If the host wants to perform the exchange
       if (m.getFrom().equals(this.getHost())) {
@@ -169,7 +171,8 @@ public class Server {
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
     this.semaphoreCommit = false;
-    if (this.semaphoreReset) {
+    if (this.semaphoreReset && sem) {
+      this.sem = false;
       String from = this.gameState.getCurrentPlayer();
       List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
       System.out.println(from + "  " + tileList.size());
@@ -575,6 +578,7 @@ public class Server {
                     "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
                 semaphoreCommit = true;
                 semaphoreReset = true;
+                sem = true;
               }
               break;
             case RESET_TURN:
