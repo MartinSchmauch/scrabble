@@ -776,7 +776,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         alert.initStyle(StageStyle.UNDECORATED);
 
         alert.getDialogPane().getStylesheets()
-            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+            .add(getClass().getResource("/fxml/DialogPaneButtons.css").toExternalForm());
         alert.show();
       }
     });
