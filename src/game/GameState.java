@@ -64,6 +64,9 @@ public class GameState implements Serializable {
       this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
           .setWordMultiplier(f.getWordMultiplier());
     }
+
+    Field starField = GameSettings.getStarField();
+    GameSettings.setStarField(gb.getField(starField.getxCoordinate(), starField.getyCoordinate()));
   }
 
 

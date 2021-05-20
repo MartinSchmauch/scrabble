@@ -103,6 +103,7 @@ public class JsonHandler {
       }
 
       JsonNode fieldNode;
+      Field field;
       int wordMultiplier;
       int letterMultiplier;
       List<Field> specialFields = new ArrayList<Field>();
@@ -120,8 +121,13 @@ public class JsonHandler {
           letterMultiplier = fieldNode.get("letterMultiplier").asInt();
         }
 
-        specialFields.add(new Field(letterMultiplier, wordMultiplier,
-            fieldNode.get("xCoordinate").asInt(), fieldNode.get("yCoordinate").asInt()));
+        field = new Field(letterMultiplier, wordMultiplier, fieldNode.get("xCoordinate").asInt(),
+            fieldNode.get("yCoordinate").asInt());
+        specialFields.add(field);
+        
+        if (fieldNode.has("starField") && fieldNode.get("starField").asBoolean()) {
+          GameSettings.setStarField(field);
+        }
       }
 
       GameSettings.setTimePerPlayer(jsonNode.get("timePerPlayer").asInt());
@@ -181,6 +187,9 @@ public class JsonHandler {
       field.put("yCoordinate", f.getyCoordinate());
       field.put("wordMultiplier", f.getWordMultiplier());
       field.put("letterMultiplier", f.getLetterMultiplier());
+      if (GameSettings.getStarField() != null && GameSettings.getStarField().equals(f)) {
+        field.put("starField", true);
+      }
       specialFields.add(field);
     }
 

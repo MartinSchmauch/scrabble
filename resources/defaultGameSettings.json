@@ -120,7 +120,8 @@
     "xCoordinate" : 8,
     "yCoordinate" : 8,
     "wordMultiplier" : 2,
-    "letterMultiplier" : 1
+    "letterMultiplier" : 1,
+	    "starField" : true
   }, {
     "xCoordinate" : 2,
     "yCoordinate" : 2,

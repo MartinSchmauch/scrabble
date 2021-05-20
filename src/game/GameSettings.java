@@ -20,12 +20,13 @@ public class GameSettings {
   private static int timePerPlayer = 5;
   private static int maxOvertime;
   private static int maxScore;
+  private static int tilesOnRack;
   private static String dictionary;
   private static int bingo;
   private static String ai;
   private static HashMap<Character, Letter> letters;
   private static List<Field> specialFields;
-  private static int tilesOnRack;
+  private static Field starField;
 
   public static int getTilesOnRack() {
     return tilesOnRack;
@@ -132,6 +133,14 @@ public class GameSettings {
 
   public static void setSpecialFields(List<Field> specialFields) {
     GameSettings.specialFields = specialFields;
+  }
+
+  public static void setStarField(Field starField) {
+    GameSettings.starField = starField;
+  }
+
+  public static Field getStarField() {
+    return starField;
   }
 
 }

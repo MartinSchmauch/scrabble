@@ -70,10 +70,8 @@ public class Turn implements Serializable {
       return true;
     }
 
-    Field starField = this.getGameController().getGameState().getGameBoard().getField(8, 8);
-
     // central star field must be covered
-    if (starField.getTile() == null) {
+    if (GameSettings.getStarField() != null && GameSettings.getStarField().getTile() == null) {
       stringRepresentation = "Invalid: Star field not covered.";
       return false;
     }
@@ -132,9 +130,10 @@ public class Turn implements Serializable {
    * The calculateWords() method is used to find all words, that emerge from the layd down tiles
    * after a turn is commited. After all words are found, every word is verified with Collins
    * Scrabble Words. If one word does not exists the method returns false.
+   * 
+   * @author ldreyer, lurny
    */
   public boolean calculateWordsHelper() {
-    Field starField = this.getGameController().getGameState().getGameBoard().getField(8, 8);
     // word list describes the Tiles that build the word
     List<Tile> word = new ArrayList<Tile>();
     this.words = new ArrayList<Word>();
@@ -272,7 +271,8 @@ public class Turn implements Serializable {
 
     // checks if there are unconnected tiles or words
     if (scoredTiles - playedTiles < this.laydDownTiles.size()
-        || playedTiles == 0 && starField.getTile().isPlayed()) {
+        || playedTiles == 0 && GameSettings.getStarField() != null
+            && GameSettings.getStarField().getTile().isPlayed()) {
       stringRepresentation = "Invalid: Separate words.";
       return false;
     }
@@ -309,13 +309,14 @@ public class Turn implements Serializable {
    * This method is used to calculate the turn score resulting from all emerging Words. It is
    * called, if the method calculateWords returns true. After the score is calculated relevant
    * special fields WILL NOT BECOME normal fields with the multiplier 1.
-   * 
-   * @return
+   *
+   * @author lurny
+   * @return turnScore
    */
   public int calculateTurnScore() {
     this.turnScore = 0;
     // calculate word score
-    if (this.laydDownTiles.size() == 7) {
+    if (this.laydDownTiles.size() == GameSettings.getTilesOnRack()) {
       this.turnScore = GameSettings.getBingo();
     }
 

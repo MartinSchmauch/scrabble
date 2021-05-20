@@ -1,8 +1,5 @@
 package mechanic;
 
-import game.GameSettings;
-import java.io.File;
-
 /**
  * The GameBoard class contains all GameBoard fields in a two-dimensional array. The arrays start at
  * zero while the general coordinate system is implemented starting at one. This is respected in the
@@ -23,8 +20,8 @@ public class GameBoard {
         this.fields[i][j].setGameBoard(this);
       }
     }
-    File file = new File(GameSettings.getDictionary());
-    this.setWordlist(new Wordlist(file));
+    // File file = new File(GameSettings.getDictionary());
+    // this.setWordlist(new Wordlist(file));
   }
 
   public Field getField(int xCoordinate, int yCoordinate) {
