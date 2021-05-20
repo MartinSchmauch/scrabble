@@ -14,6 +14,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
@@ -24,11 +25,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -448,18 +446,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void rackDragHandling(MouseEvent event) {
-    // Image image = new Image(System.getProperty("user.dir") + "/ressources/general/tile.png");
-    // rulesButton.getScene().setCursor(new ImageCursor(image));
-
+  public void rackDragStarted(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
-
-    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
-    ClipboardContent cb = new ClipboardContent();
-    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
-    db.setContent(cb);
-    event.consume();
+    Image image =
+        new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+    rulesButton.getScene().setCursor(new ImageCursor(image));
+    node.startFullDrag();
   }
 
   /**
@@ -470,30 +463,37 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void boardDragHandling(MouseEvent event) {
+  public void boardDragStarted(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, false);
     selectedCoordinates[0]++;
     selectedCoordinates[1]++;
-
-    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
-
-    ClipboardContent cb = new ClipboardContent();
-    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
-    db.setContent(cb);
-
-    event.consume();
+    Image image =
+        new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+    rulesButton.getScene().setCursor(new ImageCursor(image));
+    node.startFullDrag();
   }
 
   /**
-   * Listener method that is called, when a user drags a tile over a tile. The transfer mode to be
-   * accepted upon a drop action can be of any type, since there is only one type in the game.
    * 
    * @param event
    */
   @FXML
-  public void DragOverHandling(DragEvent event) {
-    event.acceptTransferModes(TransferMode.ANY);
+  public void test2(MouseDragEvent event) {
+    // Node node = (Node) event.getSource();
+    // selectedCoordinates = getPos(node, true);
+    // System.out.println("node entered: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
+  }
+
+  /**
+   * 
+   * @param event
+   */
+  @FXML
+  public void test3(MouseDragEvent event) {
+    // Node node = (Node) event.getSource();
+    // selectedCoordinates = getPos(node, true);
+    // System.out.println("node exited: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
   }
 
   /**
@@ -504,9 +504,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void rackDropHandling(DragEvent event) {
+  public void rackDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
 
@@ -518,7 +519,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
-    rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
   /**
@@ -529,12 +529,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void boardDropHandling(DragEvent event) {
+  public void boardDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
-
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
     } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
@@ -544,6 +544,18 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       player.moveToGameBoard(selectedCoordinates[0], targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
+  }
+
+  @FXML
+  public void mousePressed(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    node.setMouseTransparent(true);
+  }
+
+  @FXML
+  public void mouseReleased(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    node.setMouseTransparent(false);
   }
 
   /**
