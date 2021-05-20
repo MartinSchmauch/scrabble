@@ -157,7 +157,7 @@ public class AIplayer extends Player {
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    super(nickname, avatar, volume, 0, 0, 0, "", 0, 0, 0);
+    super(nickname, avatar, volume, null, 0, 0, 0, null, 0, 0, 0);
   }
 
   public void generateTwoTilesCombinations() { // Version 2.0 (runtime about 5 sec compared to 2

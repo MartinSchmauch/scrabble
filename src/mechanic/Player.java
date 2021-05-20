@@ -29,13 +29,9 @@ public class Player {
   private int volume;
   private String customGameSettings;
 
-  @JsonIgnore
   private Field[] rack;
-  @JsonIgnore
   private ClientProtocol client = null;
-  @JsonIgnore
   private Server server = null;
-  @JsonIgnore
   private GamePanelController gpc = null;
 
   static final int TILE_COUNT_PER_PLAY = 7;
@@ -57,13 +53,16 @@ public class Player {
 
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
-      @JsonProperty("volume") int volume, @JsonProperty("gameCount") int gameCount,
+      @JsonProperty("volume") int volume,
+      @JsonProperty("customGameSettings") String customGameSettings,
+      @JsonProperty("gameCount") int gameCount,
       @JsonProperty("bestTurn") int bestTurn, @JsonProperty("score") int score,
       @JsonProperty("bestWord") String bestWord, @JsonProperty("playTime") int playTime,
       @JsonProperty("wins") int wins, @JsonProperty("playedTiles") int playedTiles) {
     info = new PlayerData(nickname);
     info.setAvatar(avatar);
     this.volume = volume;
+    this.customGameSettings = customGameSettings;
 
     info.setStatistics(gameCount, bestTurn, bestWord, score, playTime, wins, playedTiles);
     this.rack = new Field[RACK_FIELDS];
@@ -76,6 +75,7 @@ public class Player {
    * PLAYER INFO
    */
 
+  @JsonIgnore
   public PlayerData getPlayerInfo() {
     return this.info;
   }
@@ -100,30 +100,37 @@ public class Player {
     return this.info.getPlayerStatistics();
   }
 
+  @JsonIgnore
   public int getGameCount() {
     return getStatistics().getGameCount();
   }
 
+  @JsonIgnore
   public int getBestTurn() {
     return this.getStatistics().getBestTurn();
   }
 
+  @JsonIgnore
   public String getBestWord() {
     return this.getStatistics().getBestWord();
   }
 
+  @JsonIgnore
   public int getPlayTime() {
     return this.getStatistics().getPlayTime();
   }
 
+  @JsonIgnore
   public int getScore() {
     return this.getStatistics().getScore();
   }
 
+  @JsonIgnore
   public int getWins() {
     return this.getStatistics().getWins();
   }
 
+  @JsonIgnore
   public int getPlayedTiles() {
     return this.getStatistics().getPlayedTiles();
   }
@@ -158,7 +165,6 @@ public class Player {
     return rack[i];
   }
 
-  @JsonIgnore
   public Field getRackField(int index) {
     return rack[index];
   }
@@ -314,6 +320,7 @@ public class Player {
    * NETWORK
    */
 
+  @JsonIgnore
   public boolean isHost() {
     return this.info.isHost();
   }
@@ -326,10 +333,12 @@ public class Player {
     this.server = s;
   }
 
+  @JsonIgnore
   public Server getServer() {
     return this.server;
   }
 
+  @JsonIgnore
   public ClientProtocol getClientProtocol() {
     return this.client;
   }

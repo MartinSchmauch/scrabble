@@ -114,7 +114,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * @param s defines the Stage which is closes if the user settings screen is launched
    */
   public void openAccount(Stage s) {
-    File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
+    File f = new File(FileParameters.datadir + ("/playerProfile.json"));
     if (f.exists()) {
       Stage newUserSettingsScreen = new Stage();
       newUserSettingsScreen.setX(s.getScene().getWindow().getX());

@@ -38,7 +38,6 @@ import mechanic.PlayerData;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
-import util.JsonHandler;
 
 /**
  * Handles all User inputs in the Lobby Screen as well as the connection of players.
@@ -178,8 +177,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     instance = this;
     this.player = current;
-    new JsonHandler()
-        .loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
     this.countdown.setText(5 + "");
     this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");

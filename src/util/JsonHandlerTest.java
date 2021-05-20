@@ -26,16 +26,16 @@ public class JsonHandlerTest {
 
   @Test
   public void test() {
-    this.player = jsonHandler.loadPlayerProfile(new File("resources/playerProfile.json"));
+    this.player = jsonHandler.loadPlayerProfile(new File("resources/defaultPlayerProfile.json"));
     assertNotNull(player.getAvatar());
-    assertEquals(player.getNickname(), "ScrabbleGamer");
+    assertEquals(player.getNickname(), "Guest");
     assertNotNull(player.getVolume());
 
     jsonHandler.savePlayerProfile(new File("resources/playerProfileTest.json"), player);
     this.player = jsonHandler.loadPlayerProfile(new File("resources/playerProfileTest.json"));
 
     assertNotNull(player.getAvatar());
-    assertEquals(player.getNickname(), "ScrabbleGamer");
+    assertEquals(player.getNickname(), "Guest");
     assertNotNull(player.getVolume());
 
     jsonHandler.loadGameSettings(new File("resources/defaultGameSettings.json"));
