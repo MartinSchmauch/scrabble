@@ -198,6 +198,9 @@ public class GameController {
     return true;
   }
 
+  /**
+   * This method checks, if you can remove a Tile from the Gameboard of the player.
+   */
   public boolean checkRemoveTileFromGameBoard(String player, int x, int y) {
     Field beforeField = gameState.getGameBoard().getField(x, y);
     if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
@@ -208,6 +211,11 @@ public class GameController {
     return true;
   }
 
+  /**
+   * This method is called to get the next player after a player finished his turn.
+   * 
+   * @return String nextPlayer
+   */
   public String getNextPlayer() {
     this.currentPlayerIndex++;
     if (this.currentPlayerIndex >= this.gameState.getAllPlayers().size()) {
