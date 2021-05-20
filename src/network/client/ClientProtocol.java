@@ -217,6 +217,7 @@ public class ClientProtocol extends Thread {
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
                   lsc.startGameScreen();
+                  gpc.setTimerDuration(sgMessage.getTimerDuration());
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   gpc.indicatePlayerTurn(sgMessage.getCurrrentPlayer());

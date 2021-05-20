@@ -68,6 +68,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private int min;
   private int sec;
   private Thread thread;
+  private int timerDuration;
   private double timeLeftBar;
   private boolean turnCountdown;
   private CustomAlert alert2;
@@ -218,13 +219,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void run() {
     String secString = "";
     while (turnCountdown) {
-      if (this.sec > 9) {
-        secString = "" + this.sec;
-      } else {
-        secString = "0" + this.sec;
-      }
-
-      this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
+      this.timeLeftBar = (this.min * 60.0 + this.sec) / timerDuration;
 
       if (this.sec == 0 && this.min > 0) {
         this.sec = 59;
@@ -234,6 +229,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.sendResetTurn();
       } else {
         this.sec--;
+      }
+
+      if (this.sec > 9) {
+        secString = "" + this.sec;
+      } else {
+        secString = "0" + this.sec;
       }
 
       this.updateTimer(String.valueOf(min), secString);
@@ -265,8 +266,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
 
     this.thread = new Thread(this);
-    this.min = 0;
-    this.sec = 20;
+    this.min = this.timerDuration / 60;
+    this.sec = this.timerDuration % 60;
     this.turnCountdown = true;
     this.thread.start();
   }
@@ -287,6 +288,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   public int getSec() {
     return sec;
+  }
+
+  public void setTimerDuration(int timerDuration) {
+    this.timerDuration = timerDuration;
   }
 
   public void updateTimer(String min, String sec) {

@@ -173,7 +173,7 @@ public class AIplayerTest {
           currentTurnWithParam[1] = maxNumOfTiles + "";
           currentTurnWithParam[2] = numberOfCombinationsToUse + "";
           currentTurnWithParam[3] = aiplayer.getRackTile(0).getLetter().getCharacter() + "";
-          for (int k = 1; k < Player.TILE_COUNT_PER_PLAY; k++) {
+          for (int k = 1; k < GameSettings.getTilesOnRack(); k++) {
             currentTurnWithParam[3] =
                 currentTurnWithParam[3] + ", " + aiplayer.getRackTile(k).getLetter().getCharacter();
           }
@@ -254,7 +254,7 @@ public class AIplayerTest {
           currentTurnWithParam[1] = maxNumOfTiles + "";
           currentTurnWithParam[2] = numberOfCombinationsToUse + "";
           currentTurnWithParam[3] = aiplayer.getRackTile(0).getLetter().getCharacter() + "";
-          for (int k = 1; k < Player.TILE_COUNT_PER_PLAY; k++) {
+          for (int k = 1; k < GameSettings.getTilesOnRack(); k++) {
             currentTurnWithParam[3] =
                 currentTurnWithParam[3] + ", " + aiplayer.getRackTile(k).getLetter().getCharacter();
           }

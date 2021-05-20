@@ -1,5 +1,5 @@
 {
-  "timePerPlayer" : 1500,
+  "timePerPlayer" : 500,
   "maxOvertime" : 600,
   "maxScore" : -1,
   "dictionary" : "CollinsScrabbleWords",

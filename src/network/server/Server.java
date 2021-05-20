@@ -95,7 +95,7 @@ public class Server {
 
     // add Tiles to players
     for (ServerProtocol client : this.clients.values()) {
-      tileList = this.gameController.drawTiles(7);
+      tileList = this.gameController.drawTiles(GameSettings.getTilesOnRack());
       // UI
       client.sendToClient(new TileMessage(this.getHost(), tileList));
       // sollen die Racks nur lokal gespeichert werden?
@@ -106,7 +106,7 @@ public class Server {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        List<Tile> tileList = gameController.drawTiles(7);
+        List<Tile> tileList = gameController.drawTiles(GameSettings.getTilesOnRack());
 
         for (Tile t : tileList) {
           t.setField(player.getFreeRackField());
@@ -290,7 +290,8 @@ public class Server {
         }
 
         if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
-            || fiveScorelessRounds) {
+            || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
+                && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
           endGame();
           return;
         }
@@ -522,6 +523,7 @@ public class Server {
             case START_GAME:
               StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
+              gpc.setTimerDuration(GameSettings.getTimePerPlayer());
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
               gpc.updateRemainingLetters(sgm.getRemainingTilesInTileBag());
@@ -632,8 +634,9 @@ public class Server {
     this.gameController = new GameController(gameState);
     gameState.setCurrentPlayer(this.gameController.getNextPlayer());
     sendToAll(new StartGameMessage(host, 10,
-        this.gameController.getTileBag().getRemaining() - this.gameState.getAllPlayers().size() * 7,
-        this.gameState.getCurrentPlayer()));
+        this.gameController.getTileBag().getRemaining()
+            - this.gameState.getAllPlayers().size() * GameSettings.getTilesOnRack(),
+        this.gameState.getCurrentPlayer(), GameSettings.getTimePerPlayer()));
     System.out.println("groeße: " + this.gameState.getAllPlayers().size());
     try {
       Thread.sleep(1000);

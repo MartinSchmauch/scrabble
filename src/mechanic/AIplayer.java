@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Stopwatch;
 import game.GameController;
+import game.GameSettings;
 
 /**
  * 
@@ -418,7 +419,7 @@ public class AIplayer extends Player {
   public void updateFilteredCombinationList() {
     ArrayList<Character> charsOnRack = new ArrayList<Character>();
     this.currentTwoTilesCombinations = (TreeSet<AIcombination>) this.twoTilesCombinations.clone();
-    for (int i = 0; i < TILE_COUNT_PER_PLAY; i++) {
+    for (int i = 0; i < GameSettings.getTilesOnRack(); i++) {
       charsOnRack.add(this.getRackTile(i).getLetter().getCharacter());
     }
 

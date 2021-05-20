@@ -34,7 +34,6 @@ public class Player {
   private Server server = null;
   private GamePanelController gpc = null;
 
-  static final int TILE_COUNT_PER_PLAY = 7;
   static final int RACK_FIELDS = 12;
 
   public Player(String nickname) {
@@ -344,6 +343,10 @@ public class Player {
   }
 
   @JsonIgnore
+  public GamePanelController getGamePanelController() {
+    return this.gpc;
+  }
+
   public void setGamePanelController(GamePanelController gpc) {
     this.gpc = gpc;
   }
