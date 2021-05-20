@@ -28,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mechanic.AIplayer;
 import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.ConnectMessage;
@@ -185,11 +186,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param index defines in which slot the ai player needs to be put.
    */
   public void addAiPlayer(int index) {
-    Player p = new Player("AI " + index);
+    AIplayer p = new AIplayer("AI " + index, this.getPlayer().getServer().getGameController(),
+        AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
     try {
       p.connect(InetAddress.getLocalHost().getHostAddress());
+      this.getPlayer().getServer().addAiPlayer(p);
     } catch (UnknownHostException e) {
       e.printStackTrace();
     }
@@ -271,6 +274,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
         this.player.getServer().getServerProtocol().sendInitialGameState();
+        
+        this.player.getServer().removeFromAiPlayers(nickname);
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);
 

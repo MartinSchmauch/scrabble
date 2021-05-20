@@ -28,8 +28,8 @@ public class AIplayer extends Player {
   // count)
   private final int numberOfCombinationSize = 2; // currently only 2 is supported
 
-  enum AiLevel {
-    LOW, MEDIUM, HIGH, Unbeatable
+  public enum AiLevel {
+    EASY, MEDIUM, HARD, Unbeatable
   }
 
   class AIcombination implements Comparable<AIcombination> {
@@ -410,6 +410,14 @@ public class AIplayer extends Player {
     for (Tile t : this.getRackTiles()) {
       System.out.println(t.getLetter().getCharacter());
     }
+//    for (int i = 0; i < .size(); i++) {
+//      maximumLocation[i].setTile(currentLayedDownTiles.get(i));
+//      this.setRackTileToNone(indicesOnRack.get(i));
+//      // System.out.println("##### TILE MOVED FROM RACK TO GB #####");
+//      // System.out.println(currentLayedDownTiles.get(i));
+//    }
+    // TODO clientProtocoll (update ui), und im Server (updateServerUI)
+    
     return turnWithMaximumScore;
 
   }

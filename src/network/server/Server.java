@@ -15,6 +15,7 @@ import game.GameState;
 import gui.GamePanelController;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
+import mechanic.AIplayer;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -60,6 +61,7 @@ public class Server {
 
   private String host;
   private HashMap<String, ServerProtocol> clients = new HashMap<>();
+  private HashMap<String, AIplayer> aiPlayers = new HashMap<>();
 
   /**
    * Initializes Server with host and customGameSettings. If customGameSettings are null, the
@@ -275,6 +277,14 @@ public class Server {
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
       this.getGameController().newTurn();
+      
+      /**
+       * hier den Tile in die Messages übersetzten
+       * TileMessage
+       * CommitTurnMessage
+       * @author pkoenig
+       */
+      handleAi(nextPlayer);
 
     }
     // else { // turn is invalid
@@ -285,8 +295,33 @@ public class Server {
   }
 
   /**
+   * @author pkoenig
+   */
+  private void handleAi(String aiPlayer) {
+    System.out.println("Server, Line 301");
+    if (this.aiPlayers.containsKey(aiPlayer)) {
+      Turn aiTurn = this.aiPlayers.get(aiPlayer).generateIdealTurn(this.gameState.getGameBoard());
+      TileMessage tm = new TileMessage(aiPlayer, aiTurn.getLaydDownTiles()); // TODO eventuell liegen die Tiles nun auf dem Rack
+      CommitTurnMessage ctm = new CommitTurnMessage(aiPlayer, !this.aiPlayers.get(aiPlayer).getRackTiles().isEmpty());
+      this.sendToAll(tm);
+      try {
+        Thread.sleep(50);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      this.sendToAll(ctm);
+      try {
+        Thread.sleep(50);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
+  /**
    * Thread method that continuously checks for new clients trying to connect. When a new clients
    * connects, a new instance of ServerProtocol is created, moderating the client-server connection
+   * @author pkoenig
    */
 
   public void listen() {
@@ -652,5 +687,32 @@ public class Server {
 
   public void setRunning(boolean running) {
     this.running = running;
+  }
+
+  /**
+   * @author pkoenig
+   * @return the aiPlayers
+   */
+  public HashMap<String, AIplayer> getAiPlayers() {
+    return aiPlayers;
+  }
+
+  /**
+   * @param aiPlayers the aiPlayers to set
+   */
+  public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
+    this.aiPlayers = aiPlayers;
+  }
+  
+  public void addAiPlayer(AIplayer aiPlayer) {
+    this.aiPlayers.put(aiPlayer.getNickname(), aiPlayer);
+  }
+  
+  public boolean isinAiPlayer(AIplayer aiPlayer) {
+    return this.aiPlayers.containsKey(aiPlayer.getNickname());
+  }
+  
+  public void removeFromAiPlayers(String nickname) {
+    this.aiPlayers.remove(nickname);
   }
 }
