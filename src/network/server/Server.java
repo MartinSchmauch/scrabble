@@ -579,8 +579,7 @@ public class Server {
                 if (gpc.getAlert2() != null) {
                   gpc.getAlert2().close();
                 }
-                gpc.setExchangeTilesMode(false);
-                gpc.setRackRectanglesBlack();
+                gpc.resetSkipAndChange();
                 sendToAll(new UpdateChatMessage("",
                     "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
                 semaphoreCommit = true;

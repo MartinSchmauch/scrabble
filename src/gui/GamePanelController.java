@@ -847,6 +847,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
   }
 
+  public void resetSkipAndChange() {
+    this.setExchangeTilesMode(false);
+    this.setRackRectanglesBlack();
+    this.tilesToExchange.removeAll(tilesToExchange);
+  }
+
   /**
    * 
    * Methods to override sender interface methods; documentation in interface
