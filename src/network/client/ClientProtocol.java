@@ -200,7 +200,9 @@ public class ClientProtocol extends Thread {
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
-                  gpc.getAlert2().close();
+                  if (gpc.getAlert2() != null) {
+                    gpc.getAlert2().close();
+                  }
                   break;
                 case LOBBY_STATUS:
                   if (lsc != null) {

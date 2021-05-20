@@ -576,7 +576,9 @@ public class Server {
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
                 gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
                 gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
-                gpc.getAlert2().close();
+                if (gpc.getAlert2() != null) {
+                  gpc.getAlert2().close();
+                }
                 sendToAll(new UpdateChatMessage("",
                     "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
                 semaphoreCommit = true;
