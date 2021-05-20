@@ -390,10 +390,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
               alert2.close();
             }
 
-            Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
-            for (Rectangle r : rect) {
-              r.setStroke(Color.BLACK);
-            }
+            this.setRackRectanglesBlack();
             tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
           }
 
@@ -407,6 +404,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         break;
     }
   }
+
 
   /**
    * This method sets the Disable property of the skipAndChange Button. When you set toBeActivated
@@ -836,6 +834,16 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       if (players.get(i).getNickname().equals(nickName)) {
         playerPoints[i].setText(newScore);
       }
+    }
+  }
+
+  /**
+   * 
+   */
+  public void setRackRectanglesBlack() {
+    Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+    for (Rectangle r : rect) {
+      r.setStroke(Color.BLACK);
     }
   }
 

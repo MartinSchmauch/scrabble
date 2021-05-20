@@ -204,6 +204,7 @@ public class ClientProtocol extends Thread {
                     gpc.getAlert2().close();
                   }
                   gpc.setExchangeTilesMode(false);
+                  gpc.setRackRectanglesBlack();
                   break;
                 case LOBBY_STATUS:
                   if (lsc != null) {
