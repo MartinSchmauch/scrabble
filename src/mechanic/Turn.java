@@ -130,151 +130,134 @@ public class Turn implements Serializable {
    * The calculateWords() method is used to find all words, that emerge from the layd down tiles
    * after a turn is commited. After all words are found, every word is verified with Collins
    * Scrabble Words. If one word does not exists the method returns false.
-   * 
+   *
    * @author ldreyer, lurny
    */
   public boolean calculateWordsHelper() {
     // word list describes the Tiles that build the word
     List<Tile> word = new ArrayList<Tile>();
+    List<Tile> newWordTiles = new ArrayList<Tile>();
     this.words = new ArrayList<Word>();
 
-    int playedTiles = 0;
-    int scoredTiles = 0;
     boolean horizontal = false;
     boolean vertical = false;
     CALCULATE_MAIN_WORD: {
       Tile t = this.laydDownTiles.get(0);
       Tile pivotTile = t;
       word.add(pivotTile);
+      newWordTiles.add(pivotTile);
 
       // check horizontal
       while (t.getRightTile() != null) {
         t = t.getRightTile();
         word.add(t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
       t = pivotTile;
       while (t.getLeftTile() != null) {
         t = t.getLeftTile();
         word.add(0, t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
 
-      if (word.size() > 1) {
+      if (newWordTiles.size() > 1) {
         // System.out.println("horizontal " + word.toString());
         horizontal = true;
+        this.words.add(new Word(word));
         break CALCULATE_MAIN_WORD;
       }
+
+      word.clear();
+      word.add(pivotTile);
 
       // check vertical
       t = pivotTile;
       while (t.getTopTile() != null) {
         t = t.getTopTile();
         word.add(0, t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
       t = pivotTile;
       while (t.getBottomTile() != null) {
         t = t.getBottomTile();
         word.add(t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
 
-      if (word.size() > 1) {
+      if (newWordTiles.size() > 1) {
         // System.out.println("vertical " + word.toString());
         vertical = true;
+        this.words.add(new Word(word));
         break CALCULATE_MAIN_WORD;
       }
 
-      // System.out.println("isolated");
-      stringRepresentation = "Invalid: Single letter is not a word.";
+      // System.out.println("single placed letter");
+      vertical = true;
+      horizontal = true;
+    }
+
+    if (newWordTiles.size() < this.laydDownTiles.size()) {
+      stringRepresentation = "Invalid: No continous word played.";
       return false;
     }
 
-    // add main word to word list
-    this.words.add(new Word(word));
-    scoredTiles += word.size();
     word.clear();
 
     // find additional words
     if (vertical) {
-      for (Tile t : this.laydDownTiles) {
+      for (Tile t : newWordTiles) {
         Tile pivotTile = t;
         word.add(pivotTile);
         while (t.getRightTile() != null) {
           t = t.getRightTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
           word.add(t);
         }
         t = pivotTile;
         while (t.getLeftTile() != null) {
           t = t.getLeftTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
           word.add(0, t);
         }
 
         if (word.size() > 1) {
           this.words.add(new Word(word));
-          scoredTiles += word.size();
-        }
-
-        word.clear();
-      }
-    } else if (horizontal) {
-      for (Tile t : this.laydDownTiles) {
-        Tile pivotTile = t;
-        word.add(pivotTile);
-        while (t.getBottomTile() != null) {
-          t = t.getBottomTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
-          word.add(t);
-        }
-        t = pivotTile;
-        while (t.getTopTile() != null) {
-          t = t.getTopTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
-          word.add(0, t);
-        }
-
-        if (word.size() > 1) {
-          this.words.add(new Word(word));
-          scoredTiles += word.size();
         }
 
         word.clear();
       }
     }
 
-    // checks if there are unconnected tiles or words
-    if (scoredTiles - playedTiles < this.laydDownTiles.size()
-        || playedTiles == 0 && GameSettings.getStarField() != null
-            && GameSettings.getStarField().getTile().isPlayed()) {
-      stringRepresentation = "Invalid: Separate words.";
-      return false;
+    if (horizontal) {
+      for (Tile t : newWordTiles) {
+        Tile pivotTile = t;
+        word.add(pivotTile);
+        while (t.getBottomTile() != null) {
+          t = t.getBottomTile();
+          word.add(t);
+        }
+        t = pivotTile;
+        while (t.getTopTile() != null) {
+          t = t.getTopTile();
+          word.add(0, t);
+        }
+
+        if (word.size() > 1) {
+          this.words.add(new Word(word));
+        }
+
+        word.clear();
+      }
+    }
+    
+    if(this.words.isEmpty()) {
+      stringRepresentation = "Invalid: Single letter is not a valid word.";
     }
 
     // verify words with dictionary

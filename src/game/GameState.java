@@ -66,7 +66,10 @@ public class GameState implements Serializable {
     }
 
     Field starField = GameSettings.getStarField();
-    GameSettings.setStarField(gb.getField(starField.getxCoordinate(), starField.getyCoordinate()));
+    if (starField != null) {
+      GameSettings
+          .setStarField(gb.getField(starField.getxCoordinate(), starField.getyCoordinate()));
+    }
   }
 
 
