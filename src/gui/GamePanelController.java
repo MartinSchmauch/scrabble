@@ -26,6 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -69,8 +70,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private boolean turnCountdown;
   private CustomAlert alert2;
 
+  private VisualTile cursorTile;
 
-
+  @FXML
+  private StackPane upperPane;
   @FXML
   private TextArea chat;
   @FXML
@@ -451,6 +454,14 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
     // rulesButton.getScene().setCursor(new ImageCursor(image));
     node.startFullDrag();
+    cursorTile = new VisualTile("H", 3, true);
+    upperPane.getChildren().add(cursorTile);
+    cursorTile.setOnMouseMoved(new EventHandler<MouseEvent>() {
+      public void handle(MouseEvent event) {
+        cursorTile.setTranslateX(event.getX());
+        cursorTile.setTranslateY(event.getY());
+      }
+    });
   }
 
   /**
@@ -505,6 +516,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void rackDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
+    cursorTile = null;
     // rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
