@@ -256,8 +256,18 @@ public class Turn implements Serializable {
       }
     }
     
-    if(this.words.isEmpty()) {
+    // separate words
+    if (words.size() == 1
+        && this.gameController.getScoredTurns().size() > 0
+        && newWordTiles.size() == this.words.get(0).getTiles().size()) {
+      stringRepresentation = "Invalid: Separate Words.";
+      return false;
+    }
+
+    // isolated tile
+    if (this.words.isEmpty()) {
       stringRepresentation = "Invalid: Single letter is not a valid word.";
+      return false;
     }
 
     // verify words with dictionary
@@ -318,14 +328,7 @@ public class Turn implements Serializable {
       this.stringRepresentation += ("* " + localWordMultiplier + " = " + singleWordScore);
       this.turnScore = this.turnScore + singleWordScore;
     }
-
-//    // set all multipliers to 1
-//    for (Word w : words) {
-//      for (Tile t : w.getTiles()) {
-//        t.getField().setLetterMultiplier(1);
-//        t.getField().setWordMultiplier(1);
-//      }
-//    }
+    
     return this.turnScore;
   }
 

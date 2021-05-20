@@ -27,6 +27,7 @@ public class GameController {
   private GameState gameState;
   private TileBag tileBag;
   private List<Turn> turns;
+  private List<Turn> scoredTurns;
   private Turn turn;
   private int currentPlayerIndex;
   private HashSet<String> dictionary;
@@ -36,6 +37,7 @@ public class GameController {
     this.gameState = gameState;
     this.tileBag = new TileBag();
     this.turns = new ArrayList<Turn>();
+    this.scoredTurns = new ArrayList<Turn>();
   }
 
   /**
@@ -231,6 +233,14 @@ public class GameController {
 
   public TileBag getTileBag() {
     return tileBag;
+  }
+
+  public List<Turn> getScoredTurns() {
+    return scoredTurns;
+  }
+
+  public void addScoredTurn(Turn t) {
+      this.scoredTurns.add(0, t);
   }
 
 }

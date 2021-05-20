@@ -223,6 +223,9 @@ public class Server {
       sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
       if (turn.isValid()) {
+        if (turn.getTurnScore() > 0) {
+          this.gameController.addScoredTurn(turn);
+        }
         int remainingTiles =
             this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
         for (Tile t : turn.getLaydDownTiles()) {

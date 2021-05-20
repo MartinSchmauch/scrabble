@@ -39,7 +39,7 @@ public class JsonHandlerTest {
     assertNotNull(player.getVolume());
 
     jsonHandler.loadGameSettings(new File("resources/defaultGameSettings.json"));
-    assertEquals(GameSettings.getTimePerPlayer(), 1500);
+    assertEquals(GameSettings.getTimePerPlayer(), 500);
     assertEquals(GameSettings.getLetters().get('A').getLetterValue(), 1);
     assertEquals(GameSettings.getSpecialFields().get(0).getWordMultiplier(), 2);
 
