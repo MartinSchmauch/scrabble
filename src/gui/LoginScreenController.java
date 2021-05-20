@@ -5,16 +5,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Optional;
-
-/** @Author nilbecke **/
-
+import game.Tutorial;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -29,6 +26,8 @@ import mechanic.Player;
 
 /**
  * This Class is a Basic Handler for all the input options present in the Login Screen
+ * 
+ * @author nilbecke
  **/
 
 public class LoginScreenController extends LoginScreen implements EventHandler<ActionEvent> {
@@ -97,12 +96,12 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           }
           new UserStatisticsScreen(this.player.getPlayerInfo(), true).start(new Stage());
           break;
+        case "Tutorial":
+          closeScreen();
+          new Tutorial(this.player);
+          break;
         default:
-          Alert alert = new Alert(AlertType.ERROR);
-          alert.setTitle("Too early");
-          alert.setHeaderText(null);
-          alert.setContentText("Function for " + button.getText() + " Not Yet Implemented :D");
-          alert.show();
+          break;
       }
     }
   }

@@ -100,6 +100,16 @@ public class GameController {
     return tiles;
   }
 
+  public List<Tile> drawTutorial(char[] chars) {
+    List<Tile> tiles = new ArrayList<Tile>();
+    for (int i = 0; i < chars.length; i++) {
+      if (!tileBag.isEmpty()) {
+        tiles.add(tileBag.drawTile(chars[i]));
+      }
+    }
+    return tiles;
+  }
+
   /**
    * This method gets the new tiles for the current player, determining the amount by checking the
    * placed tiles of the current turn. If the bag is empty no more tiles are returned.
@@ -139,6 +149,7 @@ public class GameController {
    */
 
   public boolean addTileToGameBoard(String player, Tile tile, int x, int y) {
+    System.out.println(gameState.getGameBoard());
     if (!gameState.getCurrentPlayer().equals(player)
         || gameState.getGameBoard().getField(x, y).getTile() != null) {
       return false;

@@ -102,11 +102,6 @@
                 <RowConstraints maxHeight="40.60001220703125" minHeight="10.0" prefHeight="24.60001220703124" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button disable="true" minWidth="50.0" mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="44.0" prefWidth="50.0" style="-fx-background-color: transparent;" text="Settings" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
-                     <tooltip>
-                        <Tooltip text="Change User Settings" />
-                     </tooltip>
-                  </Button>
                   <Label text="Settings" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                   <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true" style="-webkit-font-smoothing: antialiased;;" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <image>
@@ -135,6 +130,7 @@
                      </tooltip>
                   </Button>
                   <Label text="Tutorial" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Button mnemonicParsing="false" onAction="#handle" opacity="0.0" prefHeight="42.0" prefWidth="55.0" text="Settings" GridPane.halignment="CENTER" />
                </children>
             </GridPane>
             <ImageView fitHeight="23.0" fitWidth="29.0" layoutX="364.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
