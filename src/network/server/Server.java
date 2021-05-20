@@ -202,6 +202,7 @@ public class Server {
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
+          // gameState.getGameStatistics()
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
 
@@ -570,7 +571,6 @@ public class Server {
               } else {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
-                System.out.println("remainingTiles " + trm.getRemainingTilesInTileBag());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                 gpc.startTimer();
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
@@ -689,6 +689,8 @@ public class Server {
         this.gameState.getGameStatisticsOfPlayer(p)
             .setPlayedTiles(this.gameState.getGameStatisticsOfPlayer(p).getPlayedTiles()
                 + t.getLaydDownTiles().size());
+        this.gameState.getGameStatisticsOfPlayer(p)
+            .setTotalTurns(this.gameState.getGameStatisticsOfPlayer(p).getTotalTurns() + 1);
       }
     }
     // for each player

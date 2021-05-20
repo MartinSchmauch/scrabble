@@ -17,7 +17,8 @@ public class GameStatistic implements Serializable {
   private int bestTurn;
   private List<String> bestWords;
   private int averageTimeperTurn;
-  private int playTime;
+  private int totalPlayTime;
+  private int totalTurns;
   private int score;
   private int position;
   private int playedTiles;
@@ -56,11 +57,11 @@ public class GameStatistic implements Serializable {
   }
 
   public int getPlayTime() {
-    return playTime;
+    return totalPlayTime;
   }
 
   public void setPlayTime(int playTime) {
-    this.playTime = playTime;
+    this.totalPlayTime = playTime;
   }
 
   public int getScore() {
@@ -93,6 +94,14 @@ public class GameStatistic implements Serializable {
 
   public void setAllPlayers(List<String> allPlayers) {
     this.allPlayers = allPlayers;
+  }
+
+  public int getTotalTurns() {
+    return totalTurns;
+  }
+
+  public void setTotalTurns(int totalTurns) {
+    this.totalTurns = totalTurns;
   }
 
 
