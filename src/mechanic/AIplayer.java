@@ -135,13 +135,32 @@ public class AIplayer extends Player {
 
   public AIplayer(String nickname, GameController gc, AiLevel level) {
     super(nickname);
-    this.maxNumOfTiles = 7;
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
     this.ailevel = level;
     this.twoTilesCombinations = new TreeSet<AIcombination>();
     this.generateTwoTilesCombinations();
-    this.numberOfCombinationsToUse = 350;
+    switch (ailevel) {
+      case EASY:
+        this.maxNumOfTiles = 3;
+        this.numberOfCombinationsToUse = 350;
+        break;
+      case MEDIUM:
+        this.maxNumOfTiles = 5;
+        this.numberOfCombinationsToUse = 350;
+        break;
+      case HARD:
+        this.maxNumOfTiles = 6;
+        this.numberOfCombinationsToUse = 450;
+        break;
+      case Unbeatable:
+        this.maxNumOfTiles = 7;
+        this.numberOfCombinationsToUse = 500;
+        break;
+
+      default:
+        break;
+    }
   }
 
   public AIplayer(String nickname, int maxNumOfTiles, int numberOfCombinationsToUse,

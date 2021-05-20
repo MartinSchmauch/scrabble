@@ -92,6 +92,11 @@ public class Server {
       // sollen die Racks nur lokal gespeichert werden?
 
     }
+    
+    // add Tiles to AI Rack TODO
+    for (AIplayer a : this.aiPlayers.values()) {
+      a.addTilesToRack(this.gameController.drawTiles(7));
+    }
 
     // add Tiles to host Rack
     Platform.runLater(new Runnable() {
@@ -186,6 +191,7 @@ public class Server {
         }
         sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
             gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+        handleAi(gameState.getCurrentPlayer());
 
       }
     });
@@ -298,7 +304,7 @@ public class Server {
    * @author pkoenig
    */
   private void handleAi(String aiPlayer) {
-    System.out.println("Server, Line 301");
+    System.out.println("Server, Line 301 with " + aiPlayer);
     if (this.aiPlayers.containsKey(aiPlayer)) {
       Turn aiTurn = this.aiPlayers.get(aiPlayer).generateIdealTurn(this.gameState.getGameBoard());
       TileMessage tm = new TileMessage(aiPlayer, aiTurn.getLaydDownTiles()); // TODO eventuell liegen die Tiles nun auf dem Rack
@@ -643,6 +649,14 @@ public class Server {
     this.gameController.newTurn();
 
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
+    initializeAi();
+    handleAi(this.gameState.getCurrentPlayer());
+  }
+
+  private void initializeAi() {
+    for (AIplayer a : this.aiPlayers.values()) {
+      a.generateTwoTilesCombinations();
+    }
   }
 
   public void endGame() {
@@ -682,6 +696,10 @@ public class Server {
 
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lsc = lsc;
+  }
+  
+  public LobbyScreenController getLobbyScreenController() {
+    return this.lsc;
   }
 
 

@@ -190,6 +190,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
+//    
+//    this.player.getServer().getLobbyScreenController().addJoinedPlayer(p.getPlayerInfo());
+//    this.getPlayer().getServer().addAiPlayer(p);
+    
     try {
       p.connect(InetAddress.getLocalHost().getHostAddress());
       this.getPlayer().getServer().addAiPlayer(p);
