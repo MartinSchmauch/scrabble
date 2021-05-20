@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
@@ -26,7 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -73,7 +74,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private VisualTile cursorTile;
 
   @FXML
-  private StackPane upperPane;
+  private Pane upperPane;
   @FXML
   private TextArea chat;
   @FXML
@@ -453,15 +454,25 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     // Image image =
     // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
     // rulesButton.getScene().setCursor(new ImageCursor(image));
+    rulesButton.getScene().setCursor(Cursor.MOVE);
     node.startFullDrag();
-    cursorTile = new VisualTile("H", 3, true);
-    upperPane.getChildren().add(cursorTile);
-    cursorTile.setOnMouseMoved(new EventHandler<MouseEvent>() {
-      public void handle(MouseEvent event) {
-        cursorTile.setTranslateX(event.getX());
-        cursorTile.setTranslateY(event.getY());
-      }
-    });
+    // cursorTile = new VisualTile("H", 3, true);
+    // cursorTile.setId("cursorTileFromRack");
+    // upperPane.getChildren().add(cursorTile);
+    // cursorTile.setOnMouseMoved(new EventHandler<MouseEvent>() {
+    // public void handle(MouseEvent event) {
+    // cursorTile.setTranslateX(event.getX());
+    // cursorTile.setTranslateY(event.getY());
+    // }
+    // });
+  }
+
+  @FXML
+  public void test0(MouseEvent event) {
+    // cursorTile.setTranslateX(event.getX());
+    // cursorTile.setTranslateY(event.getY());
+    // cursorTile.setLayoutX(event.getX());
+    // cursorTile.setLayoutX(event.getY());
   }
 
   /**
@@ -517,7 +528,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
     cursorTile = null;
-    // rulesButton.getScene().setCursor(Cursor.DEFAULT);
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
 
@@ -544,7 +555,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     targetCoordinates = getPos(node, false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
-    // rulesButton.getScene().setCursor(Cursor.DEFAULT);
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
     } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
@@ -566,6 +577,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void mouseReleased(MouseEvent event) {
     Node node = (Node) event.getSource();
     node.setMouseTransparent(false);
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
   /**
