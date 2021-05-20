@@ -295,6 +295,10 @@ public class Server {
           endGame();
           return;
         }
+        // Update total playetime
+        this.gameState.getGameStatisticsOfPlayer(from)
+            .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
+                + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
 
         this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
             nextPlayer, remainingTiles));
@@ -666,7 +670,6 @@ public class Server {
         this.gameState.getScore(turn.getPlayer()), null,
         this.gameController.getTileBag().getRemaining()));
     calculateGameStatistics();
-    System.out.println("Test2");
     // TODO wenn players das Spiel verlassen müssen sie aus der Liste entfernt werden
 
     try {

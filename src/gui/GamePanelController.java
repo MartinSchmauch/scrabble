@@ -67,6 +67,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private int sec;
   private Thread thread;
   private int timerDuration;
+
   private double timeLeftBar;
   private boolean turnCountdown;
   private CustomAlert alert2;
@@ -1064,5 +1065,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   public CustomAlert getAlert2() {
     return alert2;
+  }
+
+  public int getTimerDuration() {
+    return timerDuration;
   }
 }

@@ -83,6 +83,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
         standings[i].setDisable(true);
       }
       turn.setText("" + this.gs.get(player.getNickname()).getBestTurn());
+      time.setText("" + this.gs.get(player.getNickname()).getPlayTime());
 
     }
     updateStatistics();
