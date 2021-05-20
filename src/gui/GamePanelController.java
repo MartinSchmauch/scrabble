@@ -13,8 +13,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
-import javafx.scene.Cursor;
-import javafx.scene.ImageCursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
@@ -449,9 +447,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void rackDragStarted(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
-    Image image =
-        new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
-    rulesButton.getScene().setCursor(new ImageCursor(image));
+    // Image image =
+    // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+    // rulesButton.getScene().setCursor(new ImageCursor(image));
     node.startFullDrag();
   }
 
@@ -468,9 +466,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     selectedCoordinates = getPos(node, false);
     selectedCoordinates[0]++;
     selectedCoordinates[1]++;
-    Image image =
-        new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
-    rulesButton.getScene().setCursor(new ImageCursor(image));
+    // Image image =
+    // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+    // rulesButton.getScene().setCursor(new ImageCursor(image));
     node.startFullDrag();
   }
 
@@ -507,7 +505,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void rackDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
-    rulesButton.getScene().setCursor(Cursor.DEFAULT);
+    // rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
 
@@ -534,7 +532,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     targetCoordinates = getPos(node, false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
-    rulesButton.getScene().setCursor(Cursor.DEFAULT);
+    // rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
     } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
