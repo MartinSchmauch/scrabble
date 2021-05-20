@@ -1,7 +1,6 @@
 /** @author lurny */
 package network.client;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import game.GameState;
 import game.GameStatistic;
-import gui.FileParameters;
 import gui.GamePanelController;
 import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
@@ -202,6 +200,7 @@ public class ClientProtocol extends Thread {
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
+                  gpc.getAlert2().close();
                   break;
                 case LOBBY_STATUS:
                   if (lsc != null) {

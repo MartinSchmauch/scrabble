@@ -70,6 +70,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private Thread thread;
   private double timeLeftBar;
   private boolean turnCountdown;
+  private CustomAlert alert2;
+
+
 
   @FXML
   private TextArea chat;
@@ -364,7 +367,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       case "doneButton":
         if (exchangeTilesMode) {
           if (!this.tilesToExchange.isEmpty()) {
-            CustomAlert alert2 = new CustomAlert(AlertType.CONFIRMATION);
+            alert2 = new CustomAlert(AlertType.CONFIRMATION);
             alert2.setTitle("Skip & Exchange selected tiles");
             alert2.setHeaderText("Skip & Exchange?");
             alert2.setContentText(
@@ -996,5 +999,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   public static void setCoordinates(int coordinates[]) {
     GamePanelController.selectedCoordinates = coordinates;
+  }
+
+  public CustomAlert getAlert2() {
+    return alert2;
   }
 }
