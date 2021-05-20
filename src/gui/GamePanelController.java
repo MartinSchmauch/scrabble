@@ -418,6 +418,14 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     skipAndChangeButton.setDisable(!toBeActivated);
   }
 
+  public boolean isExchangeTilesMode() {
+    return exchangeTilesMode;
+  }
+
+  public void setExchangeTilesMode(boolean exchangeTilesMode) {
+    GamePanelController.exchangeTilesMode = exchangeTilesMode;
+  }
+
   /**
    * This method sets the Disable property of the done Button. When you set toBeActivated on 'true',
    * the Button is being activated.
