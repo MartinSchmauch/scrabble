@@ -18,6 +18,7 @@ public class TileBag {
   private boolean isEmpty;
   private int remaining;
 
+
   /**
    * Constructor fills tile bag according to the game settings configuration.
    */
@@ -49,6 +50,25 @@ public class TileBag {
     remaining = tiles.size();
     return tile;
   }
+
+  /**
+   * This method returns a specific tile, without removing it fromthe lost
+   * 
+   * @author nilbecke
+   * @param input
+   * @return
+   */
+
+  public Tile drawTile(Character input) {
+    for (int i = 0; i < tiles.size(); i++) {
+      if (tiles.get(i).getLetter().getCharacter() == input) {
+        return tiles.get(i);
+      }
+    }
+    return null;
+  }
+
+
 
   /**
    * This method adds a (tile in case of a tile swap) to the tileBag.

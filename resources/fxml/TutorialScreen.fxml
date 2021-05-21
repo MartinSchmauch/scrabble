@@ -1,0 +1,803 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.TutorialController">
+   <children>
+      <ImageView fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
+         <image>
+            <Image url="@images/ScrabbleBoard.png" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="parentPane" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-image: url(&quot;ScrabbleBoard.png&quot;);" stylesheets="@../src/gui/Buttons.css">
+         <children>
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="800.0" prefWidth="750.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+               <children>
+                  <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="820.0" prefWidth="750.0">
+                     <children>
+                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="700.0">
+                           <children>
+                              <HBox alignment="BOTTOM_CENTER" layoutX="-14.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="559.0" prefWidth="750.0">
+                                 <children>
+                                    <VBox alignment="BOTTOM_CENTER" prefHeight="460.0" prefWidth="360.0">
+                                       <children>
+                                          <Pane prefHeight="22.0" prefWidth="370.0">
+                                             <children>
+                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Version 1.0.0" />
+                                             </children>
+                                          </Pane>
+                                          <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="SCRABBLE" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="Arial Bold" size="46.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="20.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <StackPane alignment="BOTTOM_CENTER" prefHeight="450.0" prefWidth="370.0">
+                                             <children>
+                                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" />
+                                                <VBox alignment="TOP_CENTER" prefHeight="460.0" prefWidth="370.0">
+                                                   <children>
+                                                      <VBox prefHeight="296.0" prefWidth="370.0">
+                                                         <children>
+                                                            <StackPane prefHeight="40.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <ImageView fx:id="image1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@creeper.png" />
+                                                                           </image>
+                                                                           <HBox.margin>
+                                                                              <Insets left="10.0" right="10.0" top="8.0" />
+                                                                           </HBox.margin>
+                                                                        </ImageView>
+                                                                        <VBox prefHeight="40.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                                                                                 <font>
+                                                                                    <Font size="18.0" />
+                                                                                 </font>
+                                                                                 <VBox.margin>
+                                                                                    <Insets top="8.0" />
+                                                                                 </VBox.margin>
+                                                                              </Text>
+                                                                              <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                                 <children>
+                                                                                    <Text fx:id="pointsLabel1" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Points:  ">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                    <Text fx:id="playerOnePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                 </children>
+                                                                              </HBox>
+                                                                           </children>
+                                                                        </VBox>
+                                                                     </children>
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="10.0" />
+                                                                     </padding>
+                                                                  </HBox>
+                                                                  <Rectangle fx:id="currentPlayer1" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="15.0" top="10.0" />
+                                                               </VBox.margin>
+                                                            </StackPane>
+                                                            <StackPane layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <HBox fx:id="player2Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <ImageView fx:id="image2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@creeper.png" />
+                                                                           </image>
+                                                                           <HBox.margin>
+                                                                              <Insets left="10.0" right="10.0" top="8.0" />
+                                                                           </HBox.margin>
+                                                                        </ImageView>
+                                                                        <VBox prefHeight="40.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                 <font>
+                                                                                    <Font size="18.0" />
+                                                                                 </font>
+                                                                                 <VBox.margin>
+                                                                                    <Insets top="8.0" />
+                                                                                 </VBox.margin>
+                                                                              </Text>
+                                                                              <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                                 <children>
+                                                                                    <Text fx:id="pointsLabel2" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                    <Text fx:id="playerTwoPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                 </children>
+                                                                              </HBox>
+                                                                           </children>
+                                                                        </VBox>
+                                                                     </children>
+                                                                     <StackPane.margin>
+                                                                        <Insets />
+                                                                     </StackPane.margin>
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="10.0" />
+                                                                     </padding>
+                                                                  </HBox>
+                                                                  <Rectangle fx:id="currentPlayer2" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="15.0" />
+                                                               </VBox.margin>
+                                                            </StackPane>
+                                                            <StackPane layoutX="10.0" layoutY="294.0" prefHeight="40.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <HBox fx:id="player3Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <ImageView fx:id="image3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@creeper.png" />
+                                                                           </image>
+                                                                           <HBox.margin>
+                                                                              <Insets left="10.0" right="10.0" top="8.0" />
+                                                                           </HBox.margin>
+                                                                        </ImageView>
+                                                                        <VBox prefHeight="40.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                 <font>
+                                                                                    <Font size="18.0" />
+                                                                                 </font>
+                                                                                 <VBox.margin>
+                                                                                    <Insets top="8.0" />
+                                                                                 </VBox.margin>
+                                                                              </Text>
+                                                                              <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                                 <children>
+                                                                                    <Text fx:id="pointsLabel3" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="  ">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                    <Text fx:id="playerThreePoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                 </children>
+                                                                              </HBox>
+                                                                           </children>
+                                                                        </VBox>
+                                                                     </children>
+                                                                     <StackPane.margin>
+                                                                        <Insets />
+                                                                     </StackPane.margin>
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="10.0" />
+                                                                     </padding>
+                                                                  </HBox>
+                                                                  <Rectangle fx:id="currentPlayer3" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="15.0" />
+                                                               </VBox.margin>
+                                                            </StackPane>
+                                                            <StackPane layoutX="10.0" layoutY="298.0" prefHeight="40.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <HBox fx:id="player4Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                                     <children>
+                                                                        <ImageView fx:id="image4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                                           <image>
+                                                                              <Image url="@creeper.png" />
+                                                                           </image>
+                                                                           <HBox.margin>
+                                                                              <Insets left="10.0" right="10.0" top="8.0" />
+                                                                           </HBox.margin>
+                                                                        </ImageView>
+                                                                        <VBox prefHeight="40.0" prefWidth="200.0">
+                                                                           <children>
+                                                                              <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                 <font>
+                                                                                    <Font size="18.0" />
+                                                                                 </font>
+                                                                                 <VBox.margin>
+                                                                                    <Insets top="8.0" />
+                                                                                 </VBox.margin>
+                                                                              </Text>
+                                                                              <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="227.0">
+                                                                                 <children>
+                                                                                    <Text fx:id="pointsLabel4" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                    <Text fx:id="playerFourPoints" fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0">
+                                                                                       <font>
+                                                                                          <Font name="System Bold" size="18.0" />
+                                                                                       </font>
+                                                                                    </Text>
+                                                                                 </children>
+                                                                              </HBox>
+                                                                           </children>
+                                                                        </VBox>
+                                                                     </children>
+                                                                     <padding>
+                                                                        <Insets bottom="5.0" left="10.0" />
+                                                                     </padding>
+                                                                  </HBox>
+                                                                  <Rectangle fx:id="currentPlayer4" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
+                                                               </children>
+                                                               <VBox.margin>
+                                                                  <Insets bottom="15.0" />
+                                                               </VBox.margin>
+                                                            </StackPane>
+                                                         </children>
+                                                         <VBox.margin>
+                                                            <Insets />
+                                                         </VBox.margin>
+                                                         <opaqueInsets>
+                                                            <Insets />
+                                                         </opaqueInsets>
+                                                         <padding>
+                                                            <Insets bottom="3.0" top="20.0" />
+                                                         </padding>
+                                                      </VBox>
+                                                      <VBox alignment="CENTER_LEFT" prefHeight="59.0" prefWidth="360.0">
+                                                         <children>
+                                                            <AnchorPane prefHeight="30.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Text strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.leftAnchor="10.0">
+                                                                     <font>
+                                                                        <Font size="16.0" />
+                                                                     </font>
+                                                                  </Text>
+                                                                  <Text fx:id="remainingLetters" layoutX="20.0" layoutY="10.0" strokeType="OUTSIDE" strokeWidth="0.0" AnchorPane.bottomAnchor="10.9921875" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-8.6328125">
+                                                                     <font>
+                                                                        <Font size="16.0" />
+                                                                     </font>
+                                                                  </Text>
+                                                               </children>
+                                                            </AnchorPane>
+                                                            <AnchorPane prefHeight="30.0" prefWidth="200.0">
+                                                               <children>
+                                                                  <Text opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Timer" AnchorPane.leftAnchor="10.0">
+                                                                     <font>
+                                                                        <Font size="16.0" />
+                                                                     </font>
+                                                                  </Text>
+                                                                  <Text fx:id="timer" layoutX="20.0" layoutY="10.0" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="20:30 min" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="-8.6328125">
+                                                                     <font>
+                                                                        <Font size="16.0" />
+                                                                     </font>
+                                                                  </Text>
+                                                               </children>
+                                                            </AnchorPane>
+                                                         </children>
+                                                         <VBox.margin>
+                                                            <Insets left="5.0" right="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </VBox>
+                                                      <ProgressBar fx:id="timeProgress" opacity="0.0" prefHeight="29.0" prefWidth="350.0" progress="0.35" style="-fx-accent: #8FB492;" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </StackPane>
+                                       </children>
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                    </VBox>
+                                    <VBox alignment="BOTTOM_CENTER" prefHeight="544.0" prefWidth="330.0">
+                                       <children>
+                                          <HBox alignment="BOTTOM_CENTER" prefHeight="101.0" prefWidth="330.0">
+                                             <children>
+                                                <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" prefHeight="33.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Leave Game">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Button>
+                                                <Button fx:id="settingsButton" mnemonicParsing="false" onAction="#handle" prefWidth="110.0" stylesheets="@Buttons.css" text="Settings">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Button>
+                                                <Button fx:id="rulesButton" mnemonicParsing="false" onAction="#handle" prefWidth="110.0" stylesheets="@Buttons.css" text="Rules">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" />
+                                                   </HBox.margin>
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                          <StackPane alignment="BOTTOM_CENTER" maxHeight="460.0" maxWidth="340.0" prefHeight="460.0" prefWidth="340.0">
+                                             <children>
+                                                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="330.0" />
+                                                <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="359.0" prefWidth="330.0">
+                                                   <children>
+                                                      <TextArea fx:id="chat" maxHeight="1.7976931348623157E308" maxWidth="300.0" prefHeight="345.0" prefWidth="300.0" promptText="Welcome to the chat!" wrapText="true">
+                                                         <font>
+                                                            <Font size="15.0" />
+                                                         </font>
+                                                      </TextArea>
+                                                      <HBox alignment="CENTER" maxWidth="308.0" prefHeight="63.0" prefWidth="308.0">
+                                                         <children>
+                                                            <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="250.0" onAction="#handle" prefHeight="60.0" prefWidth="230.0" promptText="Message...">
+                                                               <font>
+                                                                  <Font size="14.0" />
+                                                               </font>
+                                                               <HBox.margin>
+                                                                  <Insets bottom="2.0" right="2.0" top="2.0" />
+                                                               </HBox.margin>
+                                                            </TextField>
+                                                            <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" maxHeight="1.7976931348623157E308" maxWidth="60.0" mnemonicParsing="false" onAction="#handle" prefHeight="34.0" prefWidth="52.0" stylesheets="@Buttons.css" text="Send" textAlignment="CENTER" HBox.hgrow="ALWAYS">
+                                                               <font>
+                                                                  <Font size="11.0" />
+                                                               </font>
+                                                               <HBox.margin>
+                                                                  <Insets bottom="2.0" left="3.0" right="3.0" top="35.0" />
+                                                               </HBox.margin>
+                                                            </Button>
+                                                         </children>
+                                                         <VBox.margin>
+                                                            <Insets top="10.0" />
+                                                         </VBox.margin>
+                                                      </HBox>
+                                                   </children>
+                                                   <StackPane.margin>
+                                                      <Insets top="20.0" />
+                                                   </StackPane.margin>
+                                                </VBox>
+                                             </children>
+                                          </StackPane>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </Pane>
+                        <VBox alignment="CENTER_LEFT" maxHeight="230.0" maxWidth="1.7976931348623157E308" prefHeight="235.0" prefWidth="710.0">
+                           <children>
+                              <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Rack">
+                                 <font>
+                                    <Font name="System Bold" size="29.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets left="100.0" />
+                                 </VBox.margin>
+                              </Text>
+                              <StackPane prefHeight="160.0" prefWidth="600.0">
+                                 <children>
+                                    <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="160.0" stroke="BLACK" strokeType="INSIDE" width="520.0" />
+                                    <GridPane fx:id="rack" alignment="CENTER" maxHeight="140.0" maxWidth="500.0" prefHeight="130.0" prefWidth="500.0" vgap="8.0">
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="60.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <Rectangle fx:id="r1" fill="WHITE" height="60.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r4" fill="WHITE" height="60.0" layoutX="106.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r3" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r2" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r0" fill="WHITE" height="60.0" layoutX="344.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r5" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r6" fill="WHITE" height="60.0" layoutX="427.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r7" fill="WHITE" height="60.0" layoutX="10.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r8" fill="WHITE" height="60.0" layoutX="94.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r9" fill="WHITE" height="60.0" layoutX="178.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r10" fill="WHITE" height="60.0" layoutX="261.0" layoutY="87.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                          <Rectangle fx:id="r11" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragHandling" onDragDropped="#rackDropHandling" onDragOver="#DragOverHandling" onMouseClicked="#selectToExchange" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </StackPane>
+                              <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0">
+                                 <children>
+                                    <Button fx:id="skipAndChangeButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Skip &amp; Change">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets right="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Done">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="30.0" right="30.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets top="15.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="30.0" right="10.0" top="20.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <StackPane prefHeight="820.0" prefWidth="820.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+               <children>
+                  <Rectangle fx:id="backgroundGamePanel" arcHeight="15.0" arcWidth="15.0" fill="#ffffff00" height="820.0" stroke="BLACK" strokeType="INSIDE" width="820.0" />
+                  <GridPane fx:id="board" alignment="CENTER" maxHeight="800.0" maxWidth="800.0" minHeight="400.0" minWidth="400.0" prefHeight="800.0" prefWidth="800.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="10.0" prefWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" percentHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="8" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle arcHeight="5.0" fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="9" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="12" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#77aaff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#f99bff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="13" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#99f1ff" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                        <Rectangle fill="#8fb492" height="50.0" layoutX="118.0" layoutY="12.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fill="#ff7a7a" height="50.0" layoutX="385.0" layoutY="12.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Text fx:id="tut1" disable="true" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="B" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut2" disable="true" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="E" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut3" disable="true" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="D" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut4" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="O" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut5" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="M" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut6" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="I" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut7" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="N" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut8" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut9" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="T" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut0" disable="true" opacity="0.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </GridPane>
+               </children>
+            </StackPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

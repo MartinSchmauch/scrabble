@@ -38,7 +38,6 @@ public class GameState implements Serializable {
     this.allPlayers = new HashMap<String, PlayerData>();
     this.allPlayers.put(this.host.getNickname(), this.host);
     this.scores = new HashMap<String, Integer>();
-
     JsonHandler jsonHandler = new JsonHandler();
 
     if (customGameSettings != null) {

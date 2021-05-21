@@ -145,8 +145,9 @@ public class Tile implements Serializable {
    * @author lurny
    */
   public Tile getTopTile() {
-//    System.out.println("Hi");
-//    System.out.println(this.getField().getxCoordinate() + " , " + this.getField().getyCoordinate());
+    // System.out.println("Hi");
+    // System.out.println(this.getField().getxCoordinate() + " , " +
+    // this.getField().getyCoordinate());
     Field f = this.getField().getTop();
     if (f == null) {
       return null;
@@ -222,11 +223,13 @@ public class Tile implements Serializable {
 
   @Override
   public String toString() {
-//    if (this.getField().getTile() != this) {
-//      return "###########################\n###########################\n###########################\n###########################\n DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n"
-//          + "Tile at at Field " + this.field.toString() + " with Char "
-//          + this.letter.getCharacter();
-//    }
+    // if (this.getField().getTile() != this) {
+    // return
+    // "###########################\n###########################\n###########################\n###########################\n
+    // DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n"
+    // + "Tile at at Field " + this.field.toString() + " with Char "
+    // + this.letter.getCharacter();
+    // }
     if (this.field == null) {
       return "Tile (currently Field=null) with Char " + this.letter.getCharacter();
     }

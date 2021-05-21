@@ -147,6 +147,7 @@ public class Player {
   }
 
   public void setRackTile(int index, Tile tile) {
+
     this.rack[index].setTile(tile);
   }
 
@@ -268,7 +269,6 @@ public class Player {
       server.sendToAll(rtm);
       server.getGameController().removeTileFromGameBoard(this.getNickname(),
           tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
-
       tile.setField(getRackField(newIndex));
       tile.setOnRack(true);
       tile.setOnGameBoard(false);
@@ -298,9 +298,7 @@ public class Player {
       gpc.indicateInvalidTurn(this.getNickname(), "Selcted field on Rack is empty.");
       return;
     }
-
     AddTileMessage atm = new AddTileMessage(this.getNickname(), t, newX, newY);
-
     if (this.isHost()) {
       server.handleAddTileToGameBoard(atm);
     } else {

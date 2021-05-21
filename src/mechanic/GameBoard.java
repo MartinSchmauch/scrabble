@@ -25,7 +25,8 @@ public class GameBoard {
   }
 
   public Field getField(int xCoordinate, int yCoordinate) {
-    if (xCoordinate < 1 || yCoordinate < 1 || xCoordinate > this.fields.length || yCoordinate > this.fields.length) {
+    if (xCoordinate < 1 || yCoordinate < 1 || xCoordinate > this.fields.length
+        || yCoordinate > this.fields.length) {
       return null;
     }
     return fields[xCoordinate - 1][yCoordinate - 1];
@@ -67,5 +68,7 @@ public class GameBoard {
   public void setWordlist(Wordlist wordlist) {
     this.wordlist = wordlist;
   }
+
+
 
 }

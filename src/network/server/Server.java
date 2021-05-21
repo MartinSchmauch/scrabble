@@ -16,6 +16,7 @@ import game.GameState;
 import gui.GamePanelController;
 import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
+import gui.TutorialController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.Field;
@@ -106,9 +107,18 @@ public class Server {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        List<Tile> tileList = gameController.drawTiles(GameSettings.getTilesOnRack());
+
+        List<Tile> tileList = new ArrayList<Tile>();
+        if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) { // normal
+                                                                                                  // game
+          tileList = gameController.drawTiles(7);
+        } else { // tutorial
+          char[] chars = {'B', 'E', 'D'};
+          tileList = gameController.drawTutorial(chars);
+        }
 
         for (Tile t : tileList) {
+
           t.setField(player.getFreeRackField());
           t.setOnGameBoard(false);
           t.setOnRack(true);
@@ -125,9 +135,14 @@ public class Server {
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
+
     this.semaphoreCommit = false;
     if (this.semaphoreReset && sem) {
       this.sem = false;
+      this.getGameController().addTilesToTileBag(m.getTiles());
+      // If the host wants to perform the exchange
+
+      this.gpc.stopTimer();
       this.getGameController().addTilesToTileBag(m.getTiles());
       // If the host wants to perform the exchange
       if (m.getFrom().equals(this.getHost())) {
@@ -160,8 +175,8 @@ public class Server {
           e.printStackTrace();
         }
       }
-      this.sem = true;
       this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
+
     }
   }
 
@@ -405,7 +420,9 @@ public class Server {
 
   public void handleAddTileToGameBoard(AddTileMessage m) {
     Field f = m.getTile().getField();
-
+    if (this.gameController == null) {
+      this.gameController = TutorialController.getController();
+    }
     if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
         m.getNewYCoordinate())) {
       sendToAll(m);
@@ -540,7 +557,9 @@ public class Server {
               break;
             case UPDATE_CHAT:
               UpdateChatMessage um = (UpdateChatMessage) m;
-              lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
+              if (lsc != null) {
+                lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
+              }
               break;
             case START_GAME:
               lsc.startGameScreen();
@@ -671,7 +690,9 @@ public class Server {
       e.printStackTrace();
     }
     gameState.setRunning(true);
+
     distributeInitialTiles();
+
     this.gameController.newTurn();
 
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
