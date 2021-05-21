@@ -18,7 +18,7 @@ import network.server.Server;
  * should be loaded automatically like volume settings are Player attributes. Also a player's rack
  * is kept local and managed with attributes and methods of this class. A player object can be read
  * from and stored to a JSON file, ignoring the rack methods and attributes.
- * 
+ *
  * @author ldreyer
  */
 
@@ -35,6 +35,8 @@ public class Player {
   private GamePanelController gpc = null;
 
   static final int RACK_FIELDS = 12;
+
+  /** Creates player instance. */
 
   public Player(String nickname) {
     this.info = new PlayerData(nickname);
@@ -150,7 +152,7 @@ public class Player {
 
   /**
    * This method searches the rack for the first field, that is not covered by a tile.
-   * 
+   *
    * @return emptyField
    */
 
@@ -184,7 +186,7 @@ public class Player {
 
   /**
    * This method adds a List of tileson the player's rack.
-   * 
+   *
    * @author lurny
    */
   public void addTilesToRack(List<Tile> tileList) {
@@ -201,8 +203,6 @@ public class Player {
 
   /**
    * This method creates a list of all tiles on the rack, ignoring empty fields.
-   * 
-   * @return List<Tile>
    */
 
   @JsonIgnore
@@ -243,6 +243,13 @@ public class Player {
     });
   }
 
+  /**
+   * This method checks if rack is free at the given index. If true, the tile is added to the rack
+   * and the server is informed about the update, by sending a remove Tile Message for the tile that
+   * has been previously on the gameboard.
+   *
+   * @author ldreyer
+   */
 
   public void moveToRack(Tile tile, int newIndex) {
     if (newIndex == -1 && getFreeRackField() != null) {
@@ -277,6 +284,13 @@ public class Player {
     }
   }
 
+  /**
+   * This method checks if the selected field on the rack contains a tile. If true, the selected
+   * tile is sent to the server, which handles the rest of the move and will reply if the move was
+   * found valid by the game controller as well.
+   *
+   * @author ldreyer
+   */
 
   public void moveToGameBoard(int oldIndex, int newX, int newY) {
     Tile t = rack[oldIndex].getTile();

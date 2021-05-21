@@ -1,18 +1,18 @@
 package mechanic;
 
+import static org.junit.Assert.assertEquals;
+
+import game.GameController;
+import game.GameState;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * This class test the Turn class which is used to find verify and words to calculate the turn
  * score.
- * 
+ *
  * @author lurny
  */
-
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
-import game.GameController;
-import game.GameState;
-
 
 public class TurnTest {
   private Field l1, l2, l3, l4, l5;
@@ -24,11 +24,9 @@ public class TurnTest {
   @Before
   public void before() {
     // Test 1
-    // JsonHandler jh = new JsonHandler();
-    // jh.loadGameSettings("resources/defaultGameSettings.json");
-    PlayerData pd1 = new PlayerData("Tom");
-    GameState gs1 = new GameState(pd1, null);
-    GameController gc1 = new GameController(gs1);
+    final PlayerData pd1 = new PlayerData("Tom");
+    final GameState gs1 = new GameState(pd1, null);
+    final GameController gc1 = new GameController(gs1);
 
     tile1 = new Tile(new Letter('C', 1, 1));
     tile2 = new Tile(new Letter('L', 1, 1));
@@ -53,9 +51,9 @@ public class TurnTest {
     turn.addTileToTurn(tile5);
 
     // Test 2
-    PlayerData pd2 = new PlayerData("Tom");
-    GameState gs2 = new GameState(pd2, null);
-    GameController gc2 = new GameController(gs2);
+    final PlayerData pd2 = new PlayerData("Tom");
+    final GameState gs2 = new GameState(pd2, null);
+    final GameController gc2 = new GameController(gs2);
 
     f = new Tile(new Letter('F', 1, 1));
     a = new Tile(new Letter('A', 1, 1));
@@ -106,9 +104,9 @@ public class TurnTest {
     turn2.addTileToTurn(b);
     
     // Test 3 // test with Stars
-    PlayerData pd3 = new PlayerData("Tom3");
-    GameState gs3 = new GameState(pd3, null);
-    GameController gc3 = new GameController(gs3);
+    final PlayerData pd3 = new PlayerData("Tom3");
+    final GameState gs3 = new GameState(pd3, null);
+    final GameController gc3 = new GameController(gs3);
 
     f = new Tile(new Letter('F', 1, 1));
     a = new Tile(new Letter('A', 1, 1));

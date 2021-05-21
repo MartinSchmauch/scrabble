@@ -22,7 +22,7 @@ import network.messages.UpdateChatMessage;
  * The ServerProtocol processes all messages from the client and forwards them to the Server class.
  * This class is run as a thread and is created for every connected client. The first message has to
  * be a CONNECT_MESSAGE. If the nickname exists on the server already, the client is rejected.
- * 
+ *
  * @author ldreyer
  */
 
@@ -88,6 +88,9 @@ public class ServerProtocol extends Thread {
   /**
    * Client messages are handled in this run method. First, the server awaits a CONNECT_MESSAGE with
    * client information.
+   *
+   * @author ldreyer
+   * @author pkoenig (nickname appendix)
    */
   public void run() {
     Message m;
@@ -107,9 +110,7 @@ public class ServerProtocol extends Thread {
         String from = m.getFrom();
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
-        /**
-         * @author pkoenig
-         */
+
         if (server.checkNickname(this.clientName)) {
           int i = 1;
           while (server.checkNickname(this.clientName)) {
@@ -120,9 +121,6 @@ public class ServerProtocol extends Thread {
           server.addClient(cm.getPlayerInfo(), this);
           server.sendToAll(cm);
           sendInitialGameState();
-          /**
-           * @author ldreyer
-           */
         } else if (!from.equals(this.clientName)) {
           Message rmsg = new ConnectionRefusedMessage(server.getHost(),
               "Your sender name did not match your nickname. Error.");
@@ -166,7 +164,6 @@ public class ServerProtocol extends Thread {
             CommitTurnMessage ctm = (CommitTurnMessage) m;
             this.server.handleCommitTurn(ctm);
             break;
-
           case TILE:
             TileMessage tm = (TileMessage) m;
             this.server.handleExchangeTiles(tm);

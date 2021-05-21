@@ -206,7 +206,7 @@ public class JsonHandler {
   }
 
 
-  /** taken from https://www.baeldung.com/convert-input-stream-to-a-file */
+  /** derived from https://www.baeldung.com/convert-input-stream-to-a-file */
   public void writeFileFromStream(InputStream in, String path) {
     try {
       java.nio.file.Files.copy(in, new File(path).toPath(), StandardCopyOption.REPLACE_EXISTING);

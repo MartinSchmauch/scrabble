@@ -87,7 +87,7 @@ public class Server {
 
   /**
    * This method fills the racks of every player with initial tiles.
-   * 
+   *
    * @author lurny
    */
   public void distributeInitialTiles() {
@@ -121,7 +121,7 @@ public class Server {
   /**
    * This Method is used to Exchange Tiles via the Skip and change Button. It adds the Tiles you
    * want to exchange to the tilebag and draws the same amount of new tiles.
-   * 
+   *
    * @author lurny
    */
   public void handleExchangeTiles(TileMessage m) {
@@ -168,7 +168,7 @@ public class Server {
   /**
    * This method is called, when a Turn should be resetet. All tiles are remove from the gameboard
    * and the Tiles are added to the player Rack, if the current player is equal to the server.
-   * 
+   *
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
@@ -212,7 +212,9 @@ public class Server {
   }
 
   /**
-   * This method is called to verify the turn.
+   * This method is called when a player commits a turn by clicking the "Done" button. It calculates
+   * the turn and informs all players about the result with a TurnResponseMessage. If the turn is
+   * valid the next player is included in the message as well.
    */
   public void handleCommitTurn(CommitTurnMessage m) {
     this.semaphoreReset = false;
@@ -226,13 +228,11 @@ public class Server {
         if (turn.getTurnScore() > 0) {
           this.gameController.addScoredTurn(turn);
         }
-        int remainingTiles =
-            this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
+
         for (Tile t : turn.getLaydDownTiles()) {
           t.setPlayed(true);
         }
         this.gameState.addScore(from, turn.getTurnScore());
-        String nextPlayer = this.getGameController().getNextPlayer();
 
         if (m.getFrom().equals(this.getHost())) {
           // add new tiles to Domain and UI
@@ -303,6 +303,9 @@ public class Server {
             .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
                 + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
 
+        int remainingTiles =
+            this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
+        String nextPlayer = this.getGameController().getNextPlayer();
         this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
             nextPlayer, remainingTiles));
         gameState.setCurrentPlayer(nextPlayer);
@@ -350,7 +353,6 @@ public class Server {
     return this.gameState;
   }
 
-  // TODO split in relevant getter/setter methods
   public GameController getGameController() {
     return this.gameController;
   }
@@ -369,19 +371,32 @@ public class Server {
     }
   }
 
+  /**
+   * Check if a player with a given nickname already joined the lobby.
+   *
+   * @return true if nickname exists
+   */
+
   public boolean checkNickname(String nickname) {
     return this.clients.keySet().contains(nickname) || this.host.equals(nickname);
   }
+
+  /**
+   * This method adds a client to the gamestate and registers it's server protocol in the clients
+   * hashmap.
+   */
 
   public void addClient(PlayerData player, ServerProtocol serverProtocol) {
     this.gameState.joinGame(player);
     this.clients.put(player.getNickname(), serverProtocol);
   }
 
+  /** This method removes a client and ends the game is running and only the host is left. */
+
   public void removeClient(String player) {
     this.gameState.leaveGame(player);
     this.clients.remove(player);
-    if (this.gameState.getAllPlayers().size() < 1) {
+    if (this.gameState.getGameRunning() && gameState.getAllPlayers().size() < 1) {
       endGame();
     }
   }
@@ -528,11 +543,11 @@ public class Server {
               lsc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
               break;
             case START_GAME:
-              StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
               gpc.setTimerDuration(GameSettings.getTimePerPlayer());
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
+              StartGameMessage sgm = (StartGameMessage) m;
               gpc.updateRemainingLetters(sgm.getRemainingTilesInTileBag());
               gpc.updateChat("-- " + sgm.getCurrrentPlayer() + ", you begin! --", null, "");
               if (!host.equals(sgm.getCurrrentPlayer())) {
@@ -636,6 +651,12 @@ public class Server {
     }
   }
 
+  /**
+   * This method is called to prepare the server for the game. A GameController is created which
+   * initializes the dictionary, the gameboard and the tilebag, taking the GameSettings into
+   * account. All Players are notified, that the game starts and receive their initial tiles.
+   */
+
   public void startGame() {
     this.gameController = new GameController(gameState);
     gameState.setCurrentPlayer(this.gameController.getNextPlayer());
@@ -662,7 +683,7 @@ public class Server {
 
   /**
    * This method is called, when the game is finished and opens the statistics screen.
-   * 
+   *
    * @author ldreyer
    */
   public void endGame() {
@@ -685,7 +706,7 @@ public class Server {
 
   /**
    * This method is used to calculate relevant gameStatistics.
-   * 
+   *
    * @author lurny
    */
   public void calculateGameStatistics() {

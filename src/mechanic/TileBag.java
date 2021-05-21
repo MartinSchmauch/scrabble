@@ -52,10 +52,8 @@ public class TileBag {
 
   /**
    * This method adds a (tile in case of a tile swap) to the tileBag.
-   * 
+   *
    * @author lurny
-   * 
-   * @param tile
    */
   public void addTile(Tile tile) {
     this.tiles.add(tile);

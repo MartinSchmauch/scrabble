@@ -2,7 +2,6 @@ package network.server;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import game.GameSettings;
@@ -10,7 +9,12 @@ import mechanic.Player;
 import network.client.ClientProtocol;
 
 
-/** @author ldreyer */
+/**
+ * This class tests the connection setUp of client and server. It is asserted that the client's
+ * nickname was added to the player list.
+ *
+ * @author ldreyer
+ */
 
 public class ServerTest {
 
@@ -21,6 +25,8 @@ public class ServerTest {
   private ClientProtocol connection;
   private ClientProtocol connection2;
 
+  /** Player objects are initialized. */
+
   @Before
   public void setUp() throws Exception {
     this.host = new Player("Host");
@@ -28,11 +34,10 @@ public class ServerTest {
     this.player2 = new Player("ScrabblePro");
   }
 
-  @After
-  public void tearDown() throws Exception {}
+  /** Client Server connection is tested. */
 
   @Test
-  public void test() throws Exception {
+  public void testClientServer() throws Exception {
 
     // start Server
     server = new Server(host, null);

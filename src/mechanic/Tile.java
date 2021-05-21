@@ -8,7 +8,7 @@ import java.io.Serializable;
  * around, every field has an attribute knowing which tile covers it. This double-linked relation is
  * automatically established when setting a field for a tile. If the Tile is a joker Tile it has the
  * boolean flag set true.
- * 
+ *
  * @author ldreyer
  */
 
@@ -38,11 +38,10 @@ public class Tile implements Serializable {
   }
 
   /**
-   * This method and the method setTileOneDirection are used to automatically set the double linked
+   * This method and the method setTileOneDirection are used to automatically set the double linked.
    * object connection
-   * 
+   *
    * @author lurny
-   * @param tile
    */
   public void setField(Field field) {
     if (field == null) {
@@ -162,9 +161,9 @@ public class Tile implements Serializable {
   }
 
   /**
-   * This method returns the top bottom, which lies next to the current tile. If the bottom field or
+   * This method gives the top bottom, which lies next to the current tile. If the bottom field or
    * bottom tile does not exists the method returns null.
-   * 
+   *
    * @author lurny
    */
   public Tile getBottomTile() {

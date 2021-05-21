@@ -21,6 +21,8 @@ public class Letter implements Serializable {
   private int jokerValue;
   private int count;
 
+  /** Creates letter instance. */
+
   public Letter(char letter, int letterValue, int count) {
     this.character = letter;
     this.value = letterValue;

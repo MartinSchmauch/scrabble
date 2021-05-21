@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * An object of this class is used for each player turn. It is used to find all words that emerge
  * from the layd down tiles, to verify those words and to calculate the turn score.
- * 
+ *
  * @author lurny
  */
 
@@ -37,7 +37,7 @@ public class Turn implements Serializable {
     this.laydDownFields = new ArrayList<Field>();
     this.containedStarTiles = false;
     this.starTiles = new ArrayList<Tile>();
-}
+  }
 
   public boolean addTileToTurn(Tile t) {
     if (!this.laydDownTiles.contains(t)) {
@@ -51,17 +51,14 @@ public class Turn implements Serializable {
     return this.laydDownTiles.remove(t);
   };
 
-  public boolean moveTileInTurn(Tile t, Field newField) {
-    this.laydDownTiles.remove(t);
-    t.setField(newField);
-    return this.laydDownTiles.add(t);
-  };
-
 
   /**
-   * The calculateWords() method is used to find all words (via calculateWordsHelper(), that emerge from the layd down tiles
-   * after a turn is commited. After all words are found, every word is verified with Collins
-   * Scrabble Words. If one word does not exists the method returns false.
+   * The calculateWords() method is used to find all words (via calculateWordsHelper(), that emerge
+   * from the layd down tiles after a turn is commited. After all words are found, every word is
+   * verified with Collins Scrabble Words. If one word does not exists the method returns false.
+   *
+   * @author ldreyer, pkoenig
+   * @return boolean validWord
    */
   public boolean calculateWords() {
     // skip turn
@@ -341,13 +338,13 @@ public class Turn implements Serializable {
     if (this.isValid) {
       calculateTurnScore();
     
-    // set all multipliers to 1
-    for (Word w : words) {
-      for (Tile t : w.getTiles()) {
-        t.getField().setLetterMultiplier(1);
-        t.getField().setWordMultiplier(1);
+      // set all multipliers to 1
+      for (Word w : words) {
+        for (Tile t : w.getTiles()) {
+          t.getField().setLetterMultiplier(1);
+          t.getField().setWordMultiplier(1);
+        }
       }
-    }
     } else {
       this.words.clear();
     }
@@ -386,6 +383,8 @@ public class Turn implements Serializable {
   }
 
   /**
+   * This method is for getting a deep copy of a turn instance.
+   *
    * @author pkoenig
    * @return deep copy of current instance (tiles won't be "deep copied")
    */

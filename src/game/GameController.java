@@ -43,7 +43,7 @@ public class GameController {
 
   /**
    * This method fills the dictionary with words.
-   * 
+   *
    * @author lurny
    * 
    */
@@ -90,7 +90,7 @@ public class GameController {
 
   /**
    * This method gets the selected amount of tiles for the current player.
-   * 
+   *
    * @author lurny
    */
   public List<Tile> drawTiles(int amount) {
@@ -124,10 +124,8 @@ public class GameController {
 
   /**
    * This method adds Tiles from the parameter tileList to the TileBag.
-   * 
+   *
    * @author lurny
-   * 
-   * @param liste
    */
   public void addTilesToTileBag(List<Tile> tileList) {
     for (Tile t : tileList) {
@@ -216,7 +214,7 @@ public class GameController {
 
   /**
    * This method is called to get the next player after a player finished his turn.
-   * 
+   *
    * @return String nextPlayer
    */
   public String getNextPlayer() {
@@ -241,7 +239,7 @@ public class GameController {
   }
 
   public void addScoredTurn(Turn t) {
-      this.scoredTurns.add(0, t);
+    this.scoredTurns.add(0, t);
   }
 
 }

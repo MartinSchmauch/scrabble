@@ -9,7 +9,7 @@ import javafx.scene.image.WritableImage;
 /**
  * The PlayerData object is used for sending a minimal set of data about the player to the other
  * players. The object is added to the GameState for every player.
- * 
+ *
  * @author ldreyer
  */
 
@@ -48,7 +48,7 @@ public class PlayerData implements Serializable {
 
   /**
    * This method initializes all user statistics.
-   * 
+   *
    * @author nilbecke
    * 
    * @param gc represents the amount of games played.
