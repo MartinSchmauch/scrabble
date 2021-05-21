@@ -1,7 +1,6 @@
 package gui;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -67,6 +66,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Label countdown;
   @FXML
+  private Label bestWordKey;
+  @FXML
+  private Label bestTurnKey;
   private TextField input;
   @FXML
   private TextArea chat;

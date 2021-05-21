@@ -92,8 +92,8 @@
                     </rowConstraints>
                      <children>
                         <Label prefHeight="18.0" prefWidth="206.0" text="Time" />
-                        <Label prefHeight="18.0" prefWidth="200.0" text="Best Turn" GridPane.rowIndex="1" />
-                        <Label prefHeight="18.0" prefWidth="161.0" text="Best Word" GridPane.rowIndex="2" />
+                        <Label fx:id="bestTurnKey" prefHeight="18.0" prefWidth="200.0" text="Best Turn" GridPane.rowIndex="1" />
+                        <Label fx:id="bestWordKey" prefHeight="18.0" prefWidth="161.0" text="Best Word" GridPane.rowIndex="2" />
                         <Label fx:id="time" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="164.0" text="Label" textAlignment="RIGHT" GridPane.columnIndex="1" />
                         <Label fx:id="turn" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="158.0" text="Label" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="word" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="189.0" text="Label" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="2" />
