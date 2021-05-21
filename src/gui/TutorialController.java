@@ -44,7 +44,7 @@ import mechanic.Letter;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
-import mechanic.Turn;
+import mechanic.TileBag;
 import network.client.ClientProtocol;
 import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
@@ -53,7 +53,6 @@ import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.ResetTurnMessage;
 import network.messages.TileMessage;
-import network.messages.TurnResponseMessage;
 import network.server.Server;
 
 /**
@@ -140,6 +139,7 @@ public class TutorialController extends GamePanelController
    */
   public void initData(Player player) {
     this.min = 90;
+    this.skipAndChangeButton.setDisable(true);
     this.remainingLetters.setOpacity(0);
     this.player = player;
     cc = new ChatController(player);
@@ -173,6 +173,7 @@ public class TutorialController extends GamePanelController
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
+
   }
 
 
@@ -273,16 +274,49 @@ public class TutorialController extends GamePanelController
     switch (indicator) {
       case 0:
         if (validateTurn(indicator)) {
-          Turn current =
-              new Turn(this.player.getNickname(), this.player.getServer().getGameController());
-          sendMessage(
-              new TurnResponseMessage(this.player.getNickname(), true, current.calculateTurnScore(),
-                  this.player.getServer().getGameController().getNextPlayer(), 99));
-          indicator++;
+          this.playerOnePoints.setText("12");
+          this.chat.appendText("\n\nWell done, you layed your first word! ");
+          tutorialTurn(indicator);
+          this.chat.appendText("\n\nLook, your opponent has layed down a word as well.");
+          this.indicator++;
         }
       default:
         break;
     }
+  }
+
+  /**
+   * This methods deals with all the turns the cpu makes during the tutorial.
+   * 
+   * @param indicator indicates in which turn of the tutorial the user currently is.
+   */
+
+  public void tutorialTurn(int indicator) {
+    GameBoard gb = this.player.getServer().getGameController().getGameState().getGameBoard();
+    TileBag tb = new TileBag();
+    switch (indicator) {
+      case 0:
+        Tile[] toAdd = new Tile[5];
+        toAdd[0] = tb.drawTile('S');
+        toAdd[0].setField(gb.getField(9, 7));
+        toAdd[1] = tb.drawTile('N');
+        toAdd[1].setField(gb.getField(9, 9));
+        toAdd[2] = tb.drawTile('D');
+        toAdd[2].setField(gb.getField(9, 10));
+        toAdd[3] = tb.drawTile('E');
+        toAdd[3].setField(gb.getField(9, 11));
+        toAdd[4] = tb.drawTile('R');
+        toAdd[4].setField(gb.getField(9, 12));
+        for (int i = 0; i < toAdd.length; i++) {
+          toAdd[i].setOnRack(false);
+          addTile(toAdd[i]);
+        }
+        break;
+      default:
+        break;
+    }
+
+
   }
 
   /**
@@ -308,25 +342,31 @@ public class TutorialController extends GamePanelController
           if (gb.getField(8, 8).getTile().getLetter().getCharacter() == 'B'
               && gb.getField(9, 8).getTile().getLetter().getCharacter() == 'E'
               && gb.getField(10, 8).getTile().getLetter().getCharacter() == 'D') {
+            gb.getField(8, 8).getTile().setPlayed(true);
+            gb.getField(9, 8).getTile().setPlayed(true);
+            gb.getField(10, 8).getTile().setPlayed(true);
             return true;
           } else {
             showInvalidTurn();
             for (int i = 0; i < layedDown.size(); i++) {
-              this.player.moveToRack(this.layedDown.get(i).getTile(), i);
-
+              moveToRack(layedDown.get(i).getTile(), layedDown.get(i).getxCoordinate(),
+                  layedDown.get(i).getyCoordinate());
+              sendMessage(new RemoveTileMessage(this.player.getNickname(),
+                  this.layedDown.get(i).getxCoordinate(), this.layedDown.get(i).getyCoordinate()));
             }
           }
 
         } catch (NullPointerException e) {
           showInvalidTurn();
           for (int i = 0; i < layedDown.size(); i++) {
-            this.player.moveToRack(this.layedDown.get(i).getTile(), i);
+            moveToRack(layedDown.get(i).getTile(), layedDown.get(i).getxCoordinate(),
+                layedDown.get(i).getyCoordinate());
             sendMessage(new RemoveTileMessage(this.player.getNickname(),
                 this.layedDown.get(i).getxCoordinate(), this.layedDown.get(i).getyCoordinate()));
-
           }
         }
-
+        break;
+      case 2:
         break;
       default:
         break;
@@ -620,6 +660,7 @@ public class TutorialController extends GamePanelController
       GridPane.setValignment(rackTile, VPos.BOTTOM);
       GridPane.setMargin(rackTile, new Insets(0, 0, 5, 0));
     } else {
+
       row -= 1;
       column -= 1;
       VisualTile boardTile = new VisualTile(Character.toString(letter), tileValue, false);
@@ -646,6 +687,7 @@ public class TutorialController extends GamePanelController
       fromRack = true;
     }
     removeTile(oldXCoordinate, oldYCoordinate, fromRack);
+    tile.setOnRack(true);
     addTile(tile);
   }
 
@@ -663,6 +705,7 @@ public class TutorialController extends GamePanelController
       fromRack = true;
     }
     removeTile(oldXCoordinate, oldYCoordinate, fromRack);
+
     addTile(tile);
   }
 
@@ -696,6 +739,7 @@ public class TutorialController extends GamePanelController
         x = getPos(node, false)[0];
         y = getPos(node, false)[1];
         if (node instanceof Parent && x == column && y == row) {
+
           board.getChildren().remove(node);
           break;
         }
@@ -973,7 +1017,7 @@ public class TutorialController extends GamePanelController
    */
   public void startTimer() {
     if (this.thread != null && !this.thread.isInterrupted()) {
-      stopTimer();
+      // stopTimer();
     }
 
     try {
