@@ -56,10 +56,10 @@ public class Player {
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume,
       @JsonProperty("customGameSettings") String customGameSettings,
-      @JsonProperty("gameCount") int gameCount,
-      @JsonProperty("bestTurn") int bestTurn, @JsonProperty("score") int score,
-      @JsonProperty("bestWord") String bestWord, @JsonProperty("playTime") int playTime,
-      @JsonProperty("wins") int wins, @JsonProperty("playedTiles") int playedTiles) {
+      @JsonProperty("gameCount") int gameCount, @JsonProperty("bestTurn") int bestTurn,
+      @JsonProperty("score") int score, @JsonProperty("bestWord") String bestWord,
+      @JsonProperty("playTime") int playTime, @JsonProperty("wins") int wins,
+      @JsonProperty("playedTiles") int playedTiles) {
     info = new PlayerData(nickname);
     info.setAvatar(avatar);
     this.volume = volume;
@@ -387,7 +387,7 @@ public class Player {
 
     this.client = new ClientProtocol(ip, GameSettings.port, this);
 
-    if (this.client.isOK()) {
+    if (this.client.isOk()) {
       this.client.start();
 
     }

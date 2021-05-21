@@ -52,10 +52,9 @@ public class ServerTest {
     Thread.sleep(50);
 
     // connect client1: (player)
-    this.connection =
-        new ClientProtocol("127.0.0.1", GameSettings.port, player);
+    this.connection = new ClientProtocol("127.0.0.1", GameSettings.port, player);
 
-    if (this.connection.isOK()) {
+    if (this.connection.isOk()) {
       this.connection.start();
     } else {
       fail("connection not OK");
@@ -71,7 +70,7 @@ public class ServerTest {
     // connect client2: (player 2)
     this.connection2 = new ClientProtocol("127.0.0.1", GameSettings.port, player2);
 
-    if (this.connection2.isOK()) {
+    if (this.connection2.isOk()) {
       this.connection2.start();
     } else {
       fail("connection not OK");

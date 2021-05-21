@@ -1,4 +1,3 @@
-/** @author lurny */
 package network.client;
 
 import java.io.IOException;
@@ -33,26 +32,29 @@ import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
 
+/**
+ * This is the client Protocol, which is used for the client server communication. Every connected
+ * client has an instance of this class.
+ *
+ * @author lurny
+ **/
+
 public class ClientProtocol extends Thread {
   private GameState gameState;
   private GamePanelController gpc;
   private LobbyScreenController lsc;
   private Player player;
   private Message m;
-  /**
-   * @author pkoenig
-   */
   private String ipFromServer;
   private int portFromServer;
-
-  /**
-   * @author lurny
-   */
   private Socket clientSocket;
   private ObjectOutputStream out;
   private ObjectInputStream in;
   private boolean running = true;
 
+  /**
+   * This method creates an instance of the class.
+   */
   public ClientProtocol(String ip, int port, Player player) {
     try {
       this.player = player;
@@ -69,7 +71,7 @@ public class ClientProtocol extends Thread {
     }
   }
 
-  public boolean isOK() {
+  public boolean isOk() {
     return (clientSocket != null) && (clientSocket.isConnected()) && !(clientSocket.isClosed());
   }
 

@@ -5,9 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Optional;
-
 /** @Author nilbecke **/
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -177,7 +175,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         e.printStackTrace();
       }
 
-      if (!this.player.getClientProtocol().isOK()) {
+      if (!this.player.getClientProtocol().isOk()) {
         CustomAlert alert = new CustomAlert(AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("Could not establish connection.");
