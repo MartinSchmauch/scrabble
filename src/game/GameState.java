@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import gui.FileParameters;
 import mechanic.Field;
 import mechanic.GameBoard;
 import mechanic.PlayerData;
@@ -26,6 +27,7 @@ public class GameState implements Serializable {
   private String currentPlayer;
   private HashMap<String, PlayerData> allPlayers;
   private HashMap<String, Integer> scores;
+  private HashMap<String, GameStatistic> gameStatistics = new HashMap<>();
   // private GameSettings gameSettings;
 
 
@@ -42,11 +44,9 @@ public class GameState implements Serializable {
     if (customGameSettings != null) {
       jsonHandler.loadGameSettings(new File(customGameSettings));
     } else {
-      jsonHandler.loadGameSettings(new File("resources/defaultGameSettings.json"));
-      System.out.println("!");
+      jsonHandler.loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
     }
 
-    setUpGameboard();
   }
 
   /**
@@ -63,6 +63,12 @@ public class GameState implements Serializable {
           .setLetterMultiplier(f.getLetterMultiplier());
       this.gb.getField(f.getxCoordinate(), f.getyCoordinate())
           .setWordMultiplier(f.getWordMultiplier());
+    }
+
+    Field starField = GameSettings.getStarField();
+    if (starField != null) {
+      GameSettings
+          .setStarField(gb.getField(starField.getxCoordinate(), starField.getyCoordinate()));
     }
   }
 
@@ -104,16 +110,22 @@ public class GameState implements Serializable {
     return this.scores.get(nickName);
   }
 
+  /**
+   * This method is called, when a player joins a game. The Server adds the player to the
+   * allPlayersList and to the scoreList.
+   */
   public boolean joinGame(PlayerData player) {
     if (isRunning) {
       return false;
     }
-
     this.allPlayers.put(player.getNickname(), player);
     this.scores.put(player.getNickname(), 0);
     return true;
   }
 
+  /**
+   * This method is called, when a player leaves the game.
+   */
   public boolean leaveGame(String player) {
     if (player.equals(host.getNickname())) {
       stopGame();
@@ -122,6 +134,9 @@ public class GameState implements Serializable {
     return (allPlayers.remove(player) != null);
   }
 
+  /**
+   * This method is called, when the Game is starting to set the isRunning variable on true.
+   */
   public boolean startGame(String player) {
     if (player.equals(host.getNickname())) {
       this.isRunning = true;
@@ -143,6 +158,9 @@ public class GameState implements Serializable {
     this.gb = gameBoard;
   }
 
+  /**
+   * This method adds a turn score to a specific player.
+   */
   public boolean addScore(String player, int turnScore) {
     int oldScore = this.scores.get(player);
     return this.scores.replace(player, oldScore, oldScore + turnScore);
@@ -158,6 +176,18 @@ public class GameState implements Serializable {
     for (PlayerData player : playerList) {
       this.scores.put(player.getNickname(), 0);
     }
+  }
+
+  public HashMap<String, GameStatistic> getGameStatistics() {
+    return gameStatistics;
+  }
+
+  public GameStatistic getGameStatisticsOfPlayer(String player) {
+    return gameStatistics.get(player);
+  }
+
+  public void addGameStatistics(String player) {
+    this.gameStatistics.put(player, new GameStatistic());
   }
 
 }

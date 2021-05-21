@@ -2,7 +2,6 @@ package gui;
 
 
 
-import java.io.File;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -56,8 +55,7 @@ public class UserSettingsScreen extends Application {
   public synchronized void start(Stage stage) {
 
     try {
-      this.root =
-          FXMLLoader.load(new File(FileParameters.fxmlPath + "UserSettings.fxml").toURI().toURL());
+      this.root = FXMLLoader.load(getClass().getResource("/fxml/UserSettings.fxml"));
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.initStyle(StageStyle.UNDECORATED);

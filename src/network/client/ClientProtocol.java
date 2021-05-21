@@ -1,17 +1,19 @@
 /** @author lurny */
 package network.client;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.List;
 import game.GameState;
-import gui.FileParameters;
+import game.GameStatistic;
 import gui.GamePanelController;
+import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.Tile;
@@ -30,7 +32,6 @@ import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
-import util.JsonHandler;
 
 public class ClientProtocol extends Thread {
   private GameState gameState;
@@ -207,6 +208,10 @@ public class ClientProtocol extends Thread {
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
+                  if (gpc.getAlert2() != null) {
+                    gpc.getAlert2().close();
+                  }
+                  gpc.resetSkipAndChange();
                   break;
                 case LOBBY_STATUS:
                   if (lsc != null) {
@@ -219,11 +224,8 @@ public class ClientProtocol extends Thread {
                   StartGameMessage sgMessage = (StartGameMessage) m;
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
-                  // TODO replace with Server Game Settings (or important parts) eg. joker value
-                  JsonHandler jsonHandler = new JsonHandler();
-                  jsonHandler.loadGameSettings(
-                      new File(FileParameters.datadir + "defaultGameSettings.json"));
                   lsc.startGameScreen();
+                  gpc.setTimerDuration(sgMessage.getTimerDuration());
                   gpc.startTimer();
                   gpc.updateRemainingLetters(sgMessage.getRemainingTilesInTileBag());
                   gpc.indicatePlayerTurn(sgMessage.getCurrrentPlayer());
@@ -233,10 +235,6 @@ public class ClientProtocol extends Thread {
                     gpc.changeDoneStatus(false);
                     gpc.changeSkipAndChangeStatus(false);
                   }
-                  break;
-                case GAME_STATISTIC:
-                  GameStatisticMessage gsMessage = (GameStatisticMessage) m;
-                  // tbImplemented
                   break;
                 case UPDATE_CHAT:
                   UpdateChatMessage ucMessage = (UpdateChatMessage) m;
@@ -257,6 +255,12 @@ public class ClientProtocol extends Thread {
                     gameState.joinGame(cMessage.getPlayerInfo());
                     lsc.addJoinedPlayer(cMessage.getPlayerInfo());
                   }
+                  break;
+                case GAME_STATISTIC:
+                  GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+                  new LeaderboardScreen(gsMessage.getGameStatistics(), player).start(new Stage());
+                  HashMap<String, GameStatistic> gs = gsMessage.getGameStatistics();
+                  System.out.println("Hallo: ");
                   break;
                 case DISCONNECT:
                   if (gameState != null) {

@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Stopwatch;
 import game.GameController;
+import game.GameSettings;
 
 /**
  * 
@@ -29,7 +30,7 @@ public class AIplayer extends Player {
   private final int numberOfCombinationSize = 2; // currently only 2 is supported
 
   public enum AiLevel {
-    EASY, MEDIUM, HARD, Unbeatable
+    EASY, MEDIUM, HARD, UNBEATABLE
   }
 
   class AIcombination implements Comparable<AIcombination> {
@@ -153,7 +154,7 @@ public class AIplayer extends Player {
         this.maxNumOfTiles = 6;
         this.numberOfCombinationsToUse = 34;
         break;
-      case Unbeatable:
+      case UNBEATABLE:
         this.maxNumOfTiles = 7;
         this.numberOfCombinationsToUse = 50;
         break;
@@ -176,7 +177,7 @@ public class AIplayer extends Player {
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
-    super(nickname, avatar, volume, 0, 0, 0, "", 0, 0, 0);
+    super(nickname, avatar, volume, null, 0, 0, 0, null, 0, 0, 0);
   }
 
   public void generateTwoTilesCombinations() { // Version 2.0 (runtime about 5 sec compared to 2
@@ -467,7 +468,7 @@ public class AIplayer extends Player {
   public void updateFilteredCombinationList() {
     ArrayList<Character> charsOnRack = new ArrayList<Character>();
     this.currentTwoTilesCombinations = (TreeSet<AIcombination>) this.twoTilesCombinations.clone();
-    for (int i = 0; i < TILE_COUNT_PER_PLAY; i++) {
+    for (int i = 0; i < GameSettings.getTilesOnRack(); i++) {
       charsOnRack.add(this.getRackTile(i).getLetter().getCharacter());
     }
 

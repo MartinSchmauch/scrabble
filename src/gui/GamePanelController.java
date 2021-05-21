@@ -24,12 +24,10 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -68,9 +66,16 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private int min;
   private int sec;
   private Thread thread;
+  private int timerDuration;
+
   private double timeLeftBar;
   private boolean turnCountdown;
+  private CustomAlert alert2;
 
+  private VisualTile cursorTile;
+
+  @FXML
+  private Pane upperPane;
   @FXML
   private TextArea chat;
   @FXML
@@ -150,8 +155,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         pointsLabel[i].setText("0");
         playerLabel[i].setText("Points: ");
-        avatarImageView[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        avatarImageView[i].setImage(
+            new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
       } else {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
@@ -215,13 +220,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void run() {
     String secString = "";
     while (turnCountdown) {
-      if (this.sec > 9) {
-        secString = "" + this.sec;
-      } else {
-        secString = "0" + this.sec;
-      }
-
-      this.timeLeftBar = (this.min * 60.0 + this.sec) / 600.0;
+      this.timeLeftBar = (this.min * 60.0 + this.sec) / timerDuration;
 
       if (this.sec == 0 && this.min > 0) {
         this.sec = 59;
@@ -231,6 +230,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         this.sendResetTurn();
       } else {
         this.sec--;
+      }
+
+      if (this.sec > 9) {
+        secString = "" + this.sec;
+      } else {
+        secString = "0" + this.sec;
       }
 
       this.updateTimer(String.valueOf(min), secString);
@@ -262,8 +267,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
 
     this.thread = new Thread(this);
-    this.min = 0;
-    this.sec = 20;
+    this.min = this.timerDuration / 60;
+    this.sec = this.timerDuration % 60;
     this.turnCountdown = true;
     this.thread.start();
   }
@@ -284,6 +289,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   public int getSec() {
     return sec;
+  }
+
+  public void setTimerDuration(int timerDuration) {
+    this.timerDuration = timerDuration;
   }
 
   public void updateTimer(String min, String sec) {
@@ -349,8 +358,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         }
         break;
       case "rulesButton":
-        OpenExternalScreen
-            .open(System.getProperty("user.dir") + "/src/gui/images/ScrabbleRules.pdf");
+        OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
         break;
       case "sendButton":
       case "chatInput":
@@ -365,7 +373,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       case "doneButton":
         if (exchangeTilesMode) {
           if (!this.tilesToExchange.isEmpty()) {
-            CustomAlert alert2 = new CustomAlert(AlertType.CONFIRMATION);
+            alert2 = new CustomAlert(AlertType.CONFIRMATION);
             alert2.setTitle("Skip & Exchange selected tiles");
             alert2.setHeaderText("Skip & Exchange?");
             alert2.setContentText(
@@ -388,10 +396,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
               alert2.close();
             }
 
-            Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
-            for (Rectangle r : rect) {
-              r.setStroke(Color.BLACK);
-            }
+            this.setRackRectanglesBlack();
             tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
           }
 
@@ -406,6 +411,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
   }
 
+
   /**
    * This method sets the Disable property of the skipAndChange Button. When you set toBeActivated
    * on 'true', the Button is being activated.
@@ -414,6 +420,14 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   public void changeSkipAndChangeStatus(boolean toBeActivated) {
     skipAndChangeButton.setDisable(!toBeActivated);
+  }
+
+  public boolean isExchangeTilesMode() {
+    return exchangeTilesMode;
+  }
+
+  public void setExchangeTilesMode(boolean exchangeTilesMode) {
+    GamePanelController.exchangeTilesMode = exchangeTilesMode;
   }
 
   /**
@@ -435,18 +449,31 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void rackDragHandling(MouseEvent event) {
-    // Image image = new Image(System.getProperty("user.dir") + "/ressources/general/tile.png");
-    // rulesButton.getScene().setCursor(new ImageCursor(image));
-
+  public void rackDragStarted(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, true);
+    // Image image =
+    // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+    // rulesButton.getScene().setCursor(new ImageCursor(image));
+    rulesButton.getScene().setCursor(Cursor.MOVE);
+    node.startFullDrag();
+    // cursorTile = new VisualTile("H", 3, true);
+    // cursorTile.setId("cursorTileFromRack");
+    // upperPane.getChildren().add(cursorTile);
+    // cursorTile.setOnMouseMoved(new EventHandler<MouseEvent>() {
+    // public void handle(MouseEvent event) {
+    // cursorTile.setTranslateX(event.getX());
+    // cursorTile.setTranslateY(event.getY());
+    // }
+    // });
+  }
 
-    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
-    ClipboardContent cb = new ClipboardContent();
-    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
-    db.setContent(cb);
-    event.consume();
+  @FXML
+  public void test0(MouseEvent event) {
+    // cursorTile.setTranslateX(event.getX());
+    // cursorTile.setTranslateY(event.getY());
+    // cursorTile.setLayoutX(event.getX());
+    // cursorTile.setLayoutX(event.getY());
   }
 
   /**
@@ -457,30 +484,37 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void boardDragHandling(MouseEvent event) {
+  public void boardDragStarted(MouseEvent event) {
     Node node = (Node) event.getSource();
     selectedCoordinates = getPos(node, false);
     selectedCoordinates[0]++;
     selectedCoordinates[1]++;
-
-    Dragboard db = node.startDragAndDrop(TransferMode.ANY);
-
-    ClipboardContent cb = new ClipboardContent();
-    cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
-    db.setContent(cb);
-
-    event.consume();
+    // Image image =
+    // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+    // rulesButton.getScene().setCursor(new ImageCursor(image));
+    node.startFullDrag();
   }
 
   /**
-   * Listener method that is called, when a user drags a tile over a tile. The transfer mode to be
-   * accepted upon a drop action can be of any type, since there is only one type in the game.
    * 
    * @param event
    */
   @FXML
-  public void DragOverHandling(DragEvent event) {
-    event.acceptTransferModes(TransferMode.ANY);
+  public void test2(MouseDragEvent event) {
+    // Node node = (Node) event.getSource();
+    // selectedCoordinates = getPos(node, true);
+    // System.out.println("node entered: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
+  }
+
+  /**
+   * 
+   * @param event
+   */
+  @FXML
+  public void test3(MouseDragEvent event) {
+    // Node node = (Node) event.getSource();
+    // selectedCoordinates = getPos(node, true);
+    // System.out.println("node exited: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
   }
 
   /**
@@ -491,9 +525,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void rackDropHandling(DragEvent event) {
+  public void rackDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
+    cursorTile = null;
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
 
@@ -505,7 +541,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
-    rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
   /**
@@ -516,12 +551,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param event
    */
   @FXML
-  public void boardDropHandling(DragEvent event) {
+  public void boardDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
-
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
     } else if (selectedCoordinates[1] != -1) { // exchange tiles on board
@@ -531,6 +566,19 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       player.moveToGameBoard(selectedCoordinates[0], targetCoordinates[0], targetCoordinates[1]);
     }
     resetCoordinates();
+  }
+
+  @FXML
+  public void mousePressed(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    node.setMouseTransparent(true);
+  }
+
+  @FXML
+  public void mouseReleased(MouseEvent event) {
+    Node node = (Node) event.getSource();
+    node.setMouseTransparent(false);
+    rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
   /**
@@ -777,7 +825,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         alert.initStyle(StageStyle.UNDECORATED);
 
         alert.getDialogPane().getStylesheets()
-            .add(getClass().getResource("DialogPaneButtons.css").toExternalForm());
+            .add(getClass().getResource("/fxml/DialogPaneButtons.css").toExternalForm());
         alert.show();
       }
     });
@@ -831,6 +879,22 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   /**
    * 
+   */
+  public void setRackRectanglesBlack() {
+    Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+    for (Rectangle r : rect) {
+      r.setStroke(Color.BLACK);
+    }
+  }
+
+  public void resetSkipAndChange() {
+    this.setExchangeTilesMode(false);
+    this.setRackRectanglesBlack();
+    this.tilesToExchange.removeAll(tilesToExchange);
+  }
+
+  /**
+   * 
    * Methods to override sender interface methods; documentation in interface
    * 
    */
@@ -873,7 +937,15 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void sendResetTurn() {
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
-      this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+      if (this.player.getServer().getGameState().getCurrentPlayer()
+          .equals(this.player.getNickname())) {
+        this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
+      }
+    } else {
+      if (this.player.getClientProtocol().getGameState().getCurrentPlayer()
+          .equals(this.player.getNickname())) {
+        sendMessage(m);
+      }
     }
   }
 
@@ -989,5 +1061,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   public static void setCoordinates(int coordinates[]) {
     GamePanelController.selectedCoordinates = coordinates;
+  }
+
+  public CustomAlert getAlert2() {
+    return alert2;
+  }
+
+  public int getTimerDuration() {
+    return timerDuration;
   }
 }

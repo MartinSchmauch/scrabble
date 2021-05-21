@@ -48,7 +48,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   @FXML
   public void initialize() {
     this.username.setText(currentPlayer.getNickname());
-    this.avatar.setImage(new Image("file:" + FileParameters.datadir + currentPlayer.getAvatar()));
+    this.avatar
+        .setImage(new Image(getClass().getResource(currentPlayer.getAvatar()).toExternalForm()));
 
   }
 
@@ -64,7 +65,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     }
     this.player = currentPlayer;
     if (e.getSource().getClass() != Button.class) {
-      join();
+      startLobby();
     } else {
       Button button = (Button) e.getSource();
       Stage s = (Stage) button.getScene().getWindow();
@@ -81,7 +82,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           System.exit(0);
           break;
         case "Info":
-          OpenExternalScreen.open(FileParameters.datadir + "/fxml/images/ScrabbleRules.pdf");
+          OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
           break;
         case "Settings":
         case "Account":
@@ -90,7 +91,11 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           break;
         case "Statistics":
           closeScreen();
-          new UserStatisticsScreen(this.player).start(new Stage());
+          // No games have been played.
+          if (this.player.getGameCount() == 0) {
+            this.player.getPlayerInfo().getPlayerStatistics().setGameCount(-1);
+          }
+          new UserStatisticsScreen(this.player.getPlayerInfo(), true).start(new Stage());
           break;
         default:
           Alert alert = new Alert(AlertType.ERROR);
@@ -109,7 +114,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    * @param s defines the Stage which is closes if the user settings screen is launched
    */
   public void openAccount(Stage s) {
-    File f = new File(FileParameters.datadir + ("/playerProfileTest.json"));
+    File f = new File(FileParameters.datadir + ("/playerProfile.json"));
     if (f.exists()) {
       Stage newUserSettingsScreen = new Stage();
       newUserSettingsScreen.setX(s.getScene().getWindow().getX());
@@ -183,8 +188,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     }
 
     try {
-      FXMLLoader loader =
-          new FXMLLoader(new File(FileParameters.fxmlPath + "Lobby.fxml").toURI().toURL());
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Lobby.fxml"));
 
       Stage stage = new Stage(StageStyle.DECORATED);
       Parent root = loader.load();
@@ -283,26 +287,5 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
     return this.LinkField.getText();
   }
 
-  /**
-   * Handles the process when a player is trying to join a game via link. It can be accessed via
-   * "enter" after an input in the LinkField or via a press on the "Join" Button.
-   **/
-  public void join() {
 
-    String gameID = LinkField.getText();
-    Alert connection;
-    if (gameID.length() == 0) {
-      connection = new Alert(AlertType.ERROR);
-      connection.setTitle("Connection Error");
-      connection.setHeaderText(null);
-      connection.setContentText("Must enter a Link");
-      connection.show();
-    } else {
-      connection = new Alert(AlertType.CONFIRMATION);
-      connection.setTitle("Connecting to game");
-      connection.setHeaderText(null);
-      connection.setContentText("Connecting to \"" + gameID + "\"");
-    }
-    // connection.show();
-  }
 }

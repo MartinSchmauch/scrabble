@@ -1,6 +1,5 @@
 package gui;
 
-import java.io.File;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -30,8 +29,8 @@ public class CustomAlert extends Alert {
 
   public CustomAlert(AlertType arg0) {
     super(arg0);
-    File f = new File(FileParameters.fxmlPath + "DialogPaneButtons.css");
-    this.getDialogPane().getStylesheets().add("file:///" + f.getAbsolutePath().replace("\\", "/"));
+    this.getDialogPane().getStylesheets()
+        .add(getClass().getResource("/fxml/DialogPaneButtons.css").toExternalForm());
     this.initStyle(StageStyle.UNDECORATED);
     DialogPane dp = this.getDialogPane();
     dp.getScene().getRoot().setOnMousePressed(new EventHandler<MouseEvent>() {

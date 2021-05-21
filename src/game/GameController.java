@@ -1,7 +1,6 @@
 package game;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,20 +27,17 @@ public class GameController {
   private GameState gameState;
   private TileBag tileBag;
   private List<Turn> turns;
+  private List<Turn> scoredTurns;
   private Turn turn;
   private int currentPlayerIndex;
   private HashSet<String> dictionary;
-
-
-  private static String baseDir = System.getProperty("user.dir")
-      + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
-  private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
 
   public GameController(GameState gameState) {
     fillDictionary();
     this.gameState = gameState;
     this.tileBag = new TileBag();
     this.turns = new ArrayList<Turn>();
+    this.scoredTurns = new ArrayList<Turn>();
   }
 
   /**
@@ -53,7 +49,7 @@ public class GameController {
   public void fillDictionary() {
     this.dictionary = new HashSet<String>();
 
-    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(GameSettings.getDictionary()))) {
       Pattern p = Pattern.compile("\\w*");
       String line;
       while ((line = br.readLine()) != null) {
@@ -204,6 +200,9 @@ public class GameController {
     return true;
   }
 
+  /**
+   * This method checks, if you can remove a Tile from the Gameboard of the player.
+   */
   public boolean checkRemoveTileFromGameBoard(String player, int x, int y) {
     Field beforeField = gameState.getGameBoard().getField(x, y);
     if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
@@ -214,6 +213,11 @@ public class GameController {
     return true;
   }
 
+  /**
+   * This method is called to get the next player after a player finished his turn.
+   * 
+   * @return String nextPlayer
+   */
   public String getNextPlayer() {
     this.currentPlayerIndex++;
     if (this.currentPlayerIndex >= this.gameState.getAllPlayers().size()) {
@@ -229,6 +233,14 @@ public class GameController {
 
   public TileBag getTileBag() {
     return tileBag;
+  }
+
+  public List<Turn> getScoredTurns() {
+    return scoredTurns;
+  }
+
+  public void addScoredTurn(Turn t) {
+      this.scoredTurns.add(0, t);
   }
 
 }

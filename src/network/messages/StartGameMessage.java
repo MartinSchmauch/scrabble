@@ -11,13 +11,15 @@ public class StartGameMessage extends Message {
   private int countdown;
   private int remainingTilesInTileBag;
   private String currrentPlayer;
+  private int timerDuration;
 
   public StartGameMessage(String from, int countdown, int remainingTilesInTileBag,
-      String currentPlayer) {
+      String currentPlayer, int timerDuration) {
     super(MessageType.START_GAME, from);
     this.setCountdown(countdown);
     this.remainingTilesInTileBag = remainingTilesInTileBag;
     this.currrentPlayer = currentPlayer;
+    this.timerDuration = timerDuration;
   }
 
   public int getCountdown() {
@@ -34,6 +36,10 @@ public class StartGameMessage extends Message {
 
   public String getCurrrentPlayer() {
     return currrentPlayer;
+  }
+
+  public int getTimerDuration() {
+    return timerDuration;
   }
 
 }

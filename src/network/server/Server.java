@@ -6,6 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -13,14 +14,17 @@ import game.GameController;
 import game.GameSettings;
 import game.GameState;
 import gui.GamePanelController;
+import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import javafx.application.Platform;
 import mechanic.AIplayer;
+import javafx.stage.Stage;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
 import mechanic.Turn;
+import mechanic.Word;
 import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
@@ -56,6 +60,10 @@ public class Server {
 
   private GamePanelController gpc;
   private LobbyScreenController lsc;
+  private boolean semaphoreCommit;
+  private boolean semaphoreReset;
+  private boolean sem;
+
 
   private boolean running;
 
@@ -63,16 +71,19 @@ public class Server {
   private HashMap<String, ServerProtocol> clients = new HashMap<>();
   private HashMap<String, AIplayer> aiPlayers = new HashMap<>();
 
+
   /**
    * Initializes Server with host and customGameSettings. If customGameSettings are null, the
    * default game settings are used.
    */
 
   public Server(Player host, String customGameSettings) {
+    this.semaphoreCommit = true;
+    this.sem = true;
+    this.semaphoreReset = true;
     this.host = host.getNickname();
     this.player = host;
     this.gameState = new GameState(host.getPlayerInfo(), customGameSettings);
-    this.gameController = new GameController(this.gameState);
     this.lsc = LobbyScreenController.getLobbyInstance();
   }
 
@@ -86,7 +97,7 @@ public class Server {
 
     // add Tiles to players
     for (ServerProtocol client : this.clients.values()) {
-      tileList = this.gameController.drawTiles(7);
+      tileList = this.gameController.drawTiles(GameSettings.getTilesOnRack());
       // UI
       client.sendToClient(new TileMessage(this.getHost(), tileList));
       // sollen die Racks nur lokal gespeichert werden?
@@ -102,7 +113,7 @@ public class Server {
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
-        List<Tile> tileList = gameController.drawTiles(7);
+        List<Tile> tileList = gameController.drawTiles(GameSettings.getTilesOnRack());
 
         for (Tile t : tileList) {
           t.setField(player.getFreeRackField());
@@ -163,141 +174,154 @@ public class Server {
    * @author lurny
    */
   public void resetTurnForEveryPlayer(ResetTurnMessage m) {
-    String from = this.gameState.getCurrentPlayer();
-    List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
-    System.out.println(from + "  " + tileList.size());
-    this.sendToAll((Message) new ResetTurnMessage(from, tileList));
-    // remove Tiles from domain Gameboard
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        for (Tile t : gameController.getTurn().getLaydDownTiles()) {
-          gameState.getGameBoard()
-              .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate()).setTile(null);
-        }
-        // if this is the current player: add Tiles to Rack
-        if (host.equals(gameState.getCurrentPlayer())) {
+    this.semaphoreCommit = false;
+    if (this.semaphoreReset && sem) {
+      this.sem = false;
+      String from = this.gameState.getCurrentPlayer();
+      List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
+      System.out.println(from + "  " + tileList.size());
+      this.sendToAll((Message) new ResetTurnMessage(from, tileList));
+      // remove Tiles from domain Gameboard
+      Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
           for (Tile t : gameController.getTurn().getLaydDownTiles()) {
-            player.addTileToRack(t);
-            gpc.addTile(t);
+            gameState.getGameBoard()
+                .getField(t.getField().getxCoordinate(), t.getField().getyCoordinate())
+                .setTile(null);
           }
-        }
-        gameState.setCurrentPlayer(gameController.getNextPlayer());
-        gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
-        try {
-          Thread.sleep(50);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
-        sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
-            gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
-        handleAi(gameState.getCurrentPlayer());
+          // if this is the current player: add Tiles to Rack
+          if (host.equals(gameState.getCurrentPlayer())) {
+            for (Tile t : gameController.getTurn().getLaydDownTiles()) {
+              player.addTileToRack(t);
+              gpc.addTile(t);
+            }
+          }
+          gameState.setCurrentPlayer(gameController.getNextPlayer());
+          gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          // gameState.getGameStatistics()
+          sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
+              gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+          handleAi(gameState.getCurrentPlayer());
 
-      }
-    });
+        }
+      });
+    }
   }
 
   /**
    * This method is called to verify the turn.
    */
   public void handleCommitTurn(CommitTurnMessage m) {
-    String from = m.getFrom();
-    Turn turn = this.getGameController().getTurn();
-    turn.endTurn();
-    sendToAll(new UpdateChatMessage("", turn.toString(), null));
+    this.semaphoreReset = false;
+    if (this.semaphoreCommit) {
+      String from = m.getFrom();
+      Turn turn = this.getGameController().getTurn();
+      turn.endTurn();
+      sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
-    if (turn.isValid()) {
-      int remainingTiles =
-          this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
-      for (Tile t : turn.getLaydDownTiles()) {
-        t.setPlayed(true);
-      }
-      this.gameState.addScore(from, turn.getTurnScore());
-      String nextPlayer = this.getGameController().getNextPlayer();
+      if (turn.isValid()) {
+        if (turn.getTurnScore() > 0) {
+          this.gameController.addScoredTurn(turn);
+        }
+        int remainingTiles =
+            this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
+        for (Tile t : turn.getLaydDownTiles()) {
+          t.setPlayed(true);
+        }
+        this.gameState.addScore(from, turn.getTurnScore());
+        String nextPlayer = this.getGameController().getNextPlayer();
 
-      if (m.getFrom().equals(this.getHost())) {
-        // add new tiles to Domain and UI
-        Platform.runLater(new Runnable() {
-          @Override
-          public void run() {
-            List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
-            for (Tile t : tileList) {
-              t.setField(player.getFreeRackField());
-              t.setOnGameBoard(false);
-              t.setOnRack(true);
-              gpc.addTile(t);
+        if (m.getFrom().equals(this.getHost())) {
+          // add new tiles to Domain and UI
+          Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+              List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
+              for (Tile t : tileList) {
+                t.setField(player.getFreeRackField());
+                t.setOnGameBoard(false);
+                t.setOnRack(true);
+                gpc.addTile(t);
+              }
+            }
+          });
+        } else {
+          List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
+          TileMessage tm = new TileMessage(from, tileList);
+          this.clients.get(from).sendToClient((Message) tm);
+          try {
+            Thread.sleep(50);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+        }
+        if (turn.isContainedStarTiles()) {
+          for (Tile t : turn.getStarTiles()) {
+            this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(),
+                t.getField().getyCoordinate()));
+
+            try {
+              Thread.sleep(50);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            this.sendToAll(new AddTileMessage(from, t, t.getField().getxCoordinate(),
+                t.getField().getyCoordinate()));
+            try {
+              Thread.sleep(50);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
             }
           }
-        });
+        }
+
+        // check end game criteria
+        List<Turn> turns = this.getGameController().getTurns();
+        boolean fiveScorelessRounds = false;
+
+        if (turns.size() > 5) {
+          fiveScorelessRounds = true;
+          for (int i = 0; i < 5; i++) {
+            if (turns.get(i).getTurnScore() > 0) {
+              fiveScorelessRounds = false;
+              break;
+            }
+          }
+        }
+
+        if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
+            || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
+                && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
+          endGame();
+          return;
+        }
+        // Update total playetime
+        this.gameState.getGameStatisticsOfPlayer(from)
+            .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
+                + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
+
+        this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
+            nextPlayer, remainingTiles));
+        gameState.setCurrentPlayer(nextPlayer);
+        this.getGameController().newTurn();
+        handleAi(nextPlayer);
+
       } else {
-        List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
-        TileMessage tm = new TileMessage(from, tileList);
-        this.clients.get(from).sendToClient((Message) tm);
-        try {
-          Thread.sleep(50);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        this.semaphoreReset = true;
       }
-      if (turn.isContainedStarTiles()) {
-        for (Tile t : turn.getStarTiles()) {
-          this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(),
-              t.getField().getyCoordinate()));
-
-          try {
-            Thread.sleep(50);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
-          this.sendToAll(new AddTileMessage(from, t, t.getField().getxCoordinate(),
-              t.getField().getyCoordinate()));
-          try {
-            Thread.sleep(50);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
-          }
-        }
-      }
-
-      // check end game criteria
-      List<Turn> turns = this.getGameController().getTurns();
-      boolean fiveScorelessRounds = false;
-
-      if (turns.size() > 5) {
-        fiveScorelessRounds = true;
-        for (int i = 0; i < 5; i++) {
-          if (turns.get(i).getTurnScore() > 0) {
-            fiveScorelessRounds = false;
-            break;
-          }
-        }
-      }
-
-      if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
-          || fiveScorelessRounds) {
-        endGame();
-        return;
-      }
-
-      this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
-          nextPlayer, remainingTiles));
-      gameState.setCurrentPlayer(nextPlayer);
-      this.getGameController().newTurn();
-
-      /**
-       * hier den Tile in die Messages übersetzten TileMessage CommitTurnMessage
-       * 
-       * @author pkoenig
-       */
-      handleAi(nextPlayer);
-
     }
-    // else { // turn is invalid
-    // sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from), null,
-    // this.gameController.getTileBag().getRemaining()));
-    // }
-
   }
+  // else { // turn is invalid
+  // sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from), null,
+  // this.gameController.getTileBag().getRemaining()));
+  // }
+
 
   /**
    * @author pkoenig
@@ -539,6 +563,7 @@ public class Server {
             case START_GAME:
               StartGameMessage sgm = (StartGameMessage) m;
               lsc.startGameScreen();
+              gpc.setTimerDuration(GameSettings.getTimePerPlayer());
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
               gpc.updateRemainingLetters(sgm.getRemainingTilesInTileBag());
@@ -550,6 +575,8 @@ public class Server {
               break;
             case GAME_STATISTIC:
               GameStatisticMessage gsm = (GameStatisticMessage) m;
+              System.out.println("check");
+              new LeaderboardScreen(gameState.getGameStatistics(), player).start(new Stage());
               break;
             // TODO
             default:
@@ -586,14 +613,20 @@ public class Server {
               } else {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
-                System.out.println("remainingTiles " + trm.getRemainingTilesInTileBag());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                 gpc.startTimer();
                 gpc.indicatePlayerTurn(trm.getNextPlayer());
                 gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
                 gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
+                if (gpc.getAlert2() != null) {
+                  gpc.getAlert2().close();
+                }
+                gpc.resetSkipAndChange();
                 sendToAll(new UpdateChatMessage("",
                     "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
+                semaphoreCommit = true;
+                semaphoreReset = true;
+                sem = true;
               }
               break;
             case RESET_TURN:
@@ -644,10 +677,13 @@ public class Server {
   }
 
   public void startGame() {
+    gameState.setUpGameboard();
+    this.gameController = new GameController(gameState);
     gameState.setCurrentPlayer(this.gameController.getNextPlayer());
     sendToAll(new StartGameMessage(host, 10,
-        this.gameController.getTileBag().getRemaining() - this.gameState.getAllPlayers().size() * 7,
-        this.gameState.getCurrentPlayer()));
+        this.gameController.getTileBag().getRemaining()
+            - this.gameState.getAllPlayers().size() * GameSettings.getTilesOnRack(),
+        this.gameState.getCurrentPlayer(), GameSettings.getTimePerPlayer()));
     System.out.println("groeße: " + this.gameState.getAllPlayers().size());
     try {
       Thread.sleep(1000);
@@ -661,6 +697,9 @@ public class Server {
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
     initializeAi();
     handleAi(this.gameState.getCurrentPlayer());
+    for (PlayerData client : gameState.getAllPlayers()) {
+      this.gameState.addGameStatistics(client.getNickname());
+    }
   }
 
   private void initializeAi() {
@@ -669,11 +708,19 @@ public class Server {
     }
   }
 
+  /**
+   * This method is called, when the game is finished and opens the statistics screen.
+   * 
+   * @author ldreyer
+   */
   public void endGame() {
+    System.out.println("Test1");
     Turn turn = this.gameController.getTurn();
     sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
         this.gameState.getScore(turn.getPlayer()), null,
         this.gameController.getTileBag().getRemaining()));
+    calculateGameStatistics();
+    // TODO wenn players das Spiel verlassen müssen sie aus der Liste entfernt werden
 
     try {
       Thread.sleep(2000);
@@ -681,8 +728,57 @@ public class Server {
       e.printStackTrace();
     }
     this.gameState.setRunning(false);
-    sendToAll(new GameStatisticMessage(this.host, null));
+    sendToAll(new GameStatisticMessage(this.host, this.gameState.getGameStatistics()));
   }
+
+  /**
+   * This method is used to calculate relevant gameStatistics.
+   * 
+   * @author lurny
+   */
+  public void calculateGameStatistics() {
+    for (Turn t : this.gameController.getTurns()) {
+      String p = t.getPlayer();
+      if (this.gameState.getGameStatisticsOfPlayer(p).getBestTurn() < t.getTurnScore()) {
+        this.gameState.getGameStatisticsOfPlayer(p).setBestTurn(t.getTurnScore());
+        List<String> wordList = new ArrayList<String>();
+        for (Word word : t.getWords()) {
+          wordList.add(word.toString());
+        }
+        this.gameState.getGameStatisticsOfPlayer(p).setBestWords(wordList);
+        this.gameState.getGameStatisticsOfPlayer(p)
+            .setPlayedTiles(this.gameState.getGameStatisticsOfPlayer(p).getPlayedTiles()
+                + t.getLaydDownTiles().size());
+        this.gameState.getGameStatisticsOfPlayer(p)
+            .setTotalTurns(this.gameState.getGameStatisticsOfPlayer(p).getTotalTurns() + 1);
+      }
+    }
+    // for each player
+
+    List<String> playersList = new ArrayList<String>();
+    for (PlayerData client : gameState.getAllPlayers()) {
+      this.gameState.getGameStatisticsOfPlayer(client.getNickname())
+          .setScore(gameState.getScore(client.getNickname()));
+      playersList.add(client.getNickname());
+    }
+    boolean swap = true;
+    while (swap) {
+      swap = false;
+      for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
+        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
+            .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
+          Collections.swap(playersList, i, i + 1);
+          swap = true;
+        }
+      }
+    }
+    for (String p : playersList) {
+      this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
+    }
+
+  }
+
+
 
   public Player getPlayer() {
     return player;

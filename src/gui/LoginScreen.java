@@ -64,21 +64,27 @@ public class LoginScreen extends Application {
   @Override
   public void start(Stage stage) {
     if (new File(FileParameters.datadir).mkdir()) {
-      InputStream in = getClass().getResourceAsStream("/playerProfile.json");
-      new JsonHandler().writeFileFromStream(in, FileParameters.datadir + "playerProfile.json");
+      JsonHandler jsonHandler = new JsonHandler();
+      InputStream in = getClass().getResourceAsStream("/defaultPlayerProfile.json");
+      jsonHandler.writeFileFromStream(in, FileParameters.datadir + "defaultPlayerProfile.json");
       in = getClass().getResourceAsStream("/defaultGameSettings.json");
-      new JsonHandler().writeFileFromStream(in,
-          FileParameters.datadir + "defaultGameSettings.json");
+      jsonHandler.writeFileFromStream(in, FileParameters.datadir + "defaultGameSettings.json");
+      in = getClass().getResourceAsStream("/CollinsScrabbleWords.txt");
+      jsonHandler.writeFileFromStream(in, FileParameters.datadir + "CollinsScrabbleWords.txt");
+      in = getClass().getResourceAsStream("/ScrabbleRules.pdf");
+      jsonHandler.writeFileFromStream(in, FileParameters.datadir + "ScrabbleRules.pdf");
     }
 
-    if (new File(FileParameters.datadir + "playerProfileTest.json").exists()) {
+    Font.loadFont(getClass().getResourceAsStream("/Scrabble.ttf"), 14);
+
+    if (new File(FileParameters.datadir + "playerProfile.json").exists()) {
       System.out.println(FileParameters.datadir);
       currentPlayer = new JsonHandler()
-          .loadPlayerProfile(new File(FileParameters.datadir + "playerProfileTest.json"));
+          .loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
       setFirstLaunch(true);
     } else {
       currentPlayer = new JsonHandler()
-          .loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
+          .loadPlayerProfile(new File(FileParameters.datadir + "defaultPlayerProfile.json"));
       if (!alreadyLaunched) {
         System.out.println("already launched");
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
@@ -93,7 +99,7 @@ public class LoginScreen extends Application {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          File f = new File(FileParameters.datadir + "playerProfileTest.json");
+          File f = new File(FileParameters.datadir + "playerProfile.json");
           try {
             f.createNewFile();
           } catch (IOException e) {
@@ -108,10 +114,9 @@ public class LoginScreen extends Application {
       }
     }
 
-    Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 14);
     try {
-      this.root = FXMLLoader
-          .load(new File(FileParameters.fxmlPath + "LoginScreenFXML.fxml").toURI().toURL());
+      this.root =
+          FXMLLoader.load(getClass().getClassLoader().getResource("fxml/LoginScreenFXML.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
     }

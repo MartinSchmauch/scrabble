@@ -1,13 +1,14 @@
 package gui;
 
 
-import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import game.GameSettings;
 import game.GameState;
 import javafx.concurrent.Task;
@@ -25,6 +26,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -64,6 +67,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Label countdown;
   @FXML
+  private Label bestWordKey;
+  @FXML
+  private Label bestTurnKey;
+  @FXML
   private TextField input;
   @FXML
   private TextArea chat;
@@ -84,6 +91,18 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button remove3;
   @FXML
+  private Button tutorial;
+  @FXML
+  private Button profile0;
+  @FXML
+  private Button profile1;
+  @FXML
+  private Button profile2;
+  @FXML
+  private Button profile3;
+  @FXML
+  private Button copy;
+  @FXML
   private ImageView pic1;
   @FXML
   private ImageView pic2;
@@ -103,9 +122,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
+      case "tutorial":
+        OpenExternalScreen.open(FileParameters.datadir + "/ScrabbleRules.pdf");
+        break;
       case "leavelobby":
         close();
-
         break;
       case "send":
       case "input":
@@ -138,6 +159,17 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       case "remove3":
         removePlayer(Character.getNumericValue(s.charAt(6)));
         break;
+      case "profile1":
+      case "profile2":
+      case "profile0":
+      case "profile3":
+        showStatistics(Character.getNumericValue(s.charAt(7)));
+        break;
+      case "copy":
+        ClipboardContent content = new ClipboardContent();
+        content.putString(this.ip.getText().substring(7));
+        Clipboard.getSystemClipboard().setContent(content);
+        break;
       default:
         break;
     }
@@ -149,7 +181,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     instance = this;
     this.player = current;
-
     this.countdown.setText(5 + "");
     this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
@@ -167,7 +198,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.ip.setText("");
       this.start.setDisable(true);
       this.settings.setDisable(true);
-
+      this.copy.setDisable(true);
+      this.copy.setOpacity(0);
     }
 
   }
@@ -175,9 +207,20 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * This methods gets called if a user clicks on the avatar or username of another player to show
    * the statistics of the user.
+   * 
+   * @param index defines in which position the user is placed.
    */
-  public void showStatistics() {
-
+  public void showStatistics(int index) {
+    if (index > players.size() - 1) {
+      return;
+    }
+    if (players.get(index) != null) {
+      Pattern p = Pattern.compile("AI\\s.");
+      Matcher m = p.matcher(players.get(index).getNickname());
+      if (!m.matches()) {
+        new UserStatisticsScreen(players.get(index), false).start(new Stage());
+      }
+    }
   }
 
   /**
@@ -285,7 +328,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
-      if (nickname.equals("AI 1") || nickname.equals("AI 2") || nickname.equals("AI 3")) {
+      Pattern p = Pattern.compile("AI\\s.");
+      Matcher m = p.matcher(nickname);
+      if (m.matches()) {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
         this.player.getServer().getServerProtocol().sendInitialGameState();
@@ -316,13 +361,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * Starts the game screen for all clients. Is called when a host starts a game from the lobby.
    */
-  @SuppressWarnings({"unchecked", "rawtypes"})
+
   public void startGameScreen() {
     try {
       Stage stage = new Stage(StageStyle.DECORATED);
 
-      FXMLLoader loader = new FXMLLoader(
-          new File(FileParameters.fxmlPath + "Test_MainGamePanel_Martin.fxml").toURI().toURL());
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainGameScreen.fxml"));
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
@@ -464,8 +508,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         } else {
           nicknames[i].setText(players.get(i).getNickname());
         }
-        avatars[i]
-            .setImage(new Image("file:" + FileParameters.datadir + players.get(i).getAvatar()));
+        avatars[i].setImage(
+            new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
       } else {
         // Player disconnects
         nicknames[i].setText("");

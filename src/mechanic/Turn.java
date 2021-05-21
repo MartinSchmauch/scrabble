@@ -2,7 +2,6 @@ package mechanic;
 
 import game.GameController;
 import game.GameSettings;
-import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,6 @@ public class Turn implements Serializable {
   private boolean isValid;
   private GameController gameController;
   private String stringRepresentation;
-  private static String baseDir = System.getProperty("user.dir")
-      + System.getProperty("file.separator") + "resources" + System.getProperty("file.separator");
-  private static File file = new File(baseDir + "CollinsScrabbleWords.txt");
   private boolean containedStarTiles;
   private List<Tile> starTiles;
 
@@ -74,10 +70,8 @@ public class Turn implements Serializable {
       return true;
     }
 
-    Field starField = this.getGameController().getGameState().getGameBoard().getField(8, 8);
-
     // central star field must be covered
-    if (starField.getTile() == null) {
+    if (GameSettings.getStarField() != null && GameSettings.getStarField().getTile() == null) {
       stringRepresentation = "Invalid: Star field not covered.";
       return false;
     }
@@ -136,148 +130,143 @@ public class Turn implements Serializable {
    * The calculateWords() method is used to find all words, that emerge from the layd down tiles
    * after a turn is commited. After all words are found, every word is verified with Collins
    * Scrabble Words. If one word does not exists the method returns false.
+   *
+   * @author ldreyer, lurny
    */
   public boolean calculateWordsHelper() {
-    Field starField = this.getGameController().getGameState().getGameBoard().getField(8, 8);
     // word list describes the Tiles that build the word
     List<Tile> word = new ArrayList<Tile>();
+    List<Tile> newWordTiles = new ArrayList<Tile>();
     this.words = new ArrayList<Word>();
 
-    int playedTiles = 0;
-    int scoredTiles = 0;
     boolean horizontal = false;
     boolean vertical = false;
     CALCULATE_MAIN_WORD: {
       Tile t = this.laydDownTiles.get(0);
       Tile pivotTile = t;
       word.add(pivotTile);
+      newWordTiles.add(pivotTile);
 
       // check horizontal
       while (t.getRightTile() != null) {
         t = t.getRightTile();
         word.add(t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
       t = pivotTile;
       while (t.getLeftTile() != null) {
         t = t.getLeftTile();
         word.add(0, t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
 
-      if (word.size() > 1) {
+      if (newWordTiles.size() > 1) {
         // System.out.println("horizontal " + word.toString());
         horizontal = true;
+        this.words.add(new Word(word));
         break CALCULATE_MAIN_WORD;
       }
+
+      word.clear();
+      word.add(pivotTile);
 
       // check vertical
       t = pivotTile;
       while (t.getTopTile() != null) {
         t = t.getTopTile();
         word.add(0, t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
       t = pivotTile;
       while (t.getBottomTile() != null) {
         t = t.getBottomTile();
         word.add(t);
-        if (t.isPlayed()) {
-          playedTiles++;
+        if (!t.isPlayed()) {
+          newWordTiles.add(t);
         }
       }
 
-      if (word.size() > 1) {
+      if (newWordTiles.size() > 1) {
         // System.out.println("vertical " + word.toString());
         vertical = true;
+        this.words.add(new Word(word));
         break CALCULATE_MAIN_WORD;
       }
 
-      // System.out.println("isolated");
-      stringRepresentation = "Invalid: Single letter is not a word.";
+      // System.out.println("single placed letter");
+      vertical = true;
+      horizontal = true;
+    }
+
+    if (newWordTiles.size() < this.laydDownTiles.size()) {
+      stringRepresentation = "Invalid: No continous word played.";
       return false;
     }
 
-    // add main word to word list
-    this.words.add(new Word(word));
-    scoredTiles += word.size();
     word.clear();
 
     // find additional words
     if (vertical) {
-      for (Tile t : this.laydDownTiles) {
+      for (Tile t : newWordTiles) {
         Tile pivotTile = t;
         word.add(pivotTile);
         while (t.getRightTile() != null) {
           t = t.getRightTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
           word.add(t);
         }
         t = pivotTile;
         while (t.getLeftTile() != null) {
           t = t.getLeftTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
           word.add(0, t);
         }
 
         if (word.size() > 1) {
           this.words.add(new Word(word));
-          scoredTiles += word.size();
-        }
-
-        word.clear();
-      }
-    } else if (horizontal) {
-      for (Tile t : this.laydDownTiles) {
-        Tile pivotTile = t;
-        word.add(pivotTile);
-        while (t.getBottomTile() != null) {
-          t = t.getBottomTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
-          word.add(t);
-        }
-        t = pivotTile;
-        while (t.getTopTile() != null) {
-          t = t.getTopTile();
-          if (!t.isPlayed()) {
-            stringRepresentation = "Invalid: No continous word played.";
-            return false;
-          }
-          playedTiles++;
-          word.add(0, t);
-        }
-
-        if (word.size() > 1) {
-          this.words.add(new Word(word));
-          scoredTiles += word.size();
         }
 
         word.clear();
       }
     }
 
-    // checks if there are unconnected tiles or words
-    if (scoredTiles - playedTiles < this.laydDownTiles.size()
-        || playedTiles == 0 && starField.getTile().isPlayed()) {
-      stringRepresentation = "Invalid: Separate words.";
+    if (horizontal) {
+      for (Tile t : newWordTiles) {
+        Tile pivotTile = t;
+        word.add(pivotTile);
+        while (t.getBottomTile() != null) {
+          t = t.getBottomTile();
+          word.add(t);
+        }
+        t = pivotTile;
+        while (t.getTopTile() != null) {
+          t = t.getTopTile();
+          word.add(0, t);
+        }
+
+        if (word.size() > 1) {
+          this.words.add(new Word(word));
+        }
+
+        word.clear();
+      }
+    }
+    
+    // separate words
+    if (words.size() == 1
+        && this.gameController.getScoredTurns().size() > 0
+        && newWordTiles.size() == this.words.get(0).getTiles().size()) {
+      stringRepresentation = "Invalid: Separate Words.";
+      return false;
+    }
+
+    // isolated tile
+    if (this.words.isEmpty()) {
+      stringRepresentation = "Invalid: Single letter is not a valid word.";
       return false;
     }
 
@@ -313,13 +302,14 @@ public class Turn implements Serializable {
    * This method is used to calculate the turn score resulting from all emerging Words. It is
    * called, if the method calculateWords returns true. After the score is calculated relevant
    * special fields WILL NOT BECOME normal fields with the multiplier 1.
-   * 
-   * @return
+   *
+   * @author lurny
+   * @return turnScore
    */
   public int calculateTurnScore() {
     this.turnScore = 0;
     // calculate word score
-    if (this.laydDownTiles.size() == 7) {
+    if (this.laydDownTiles.size() == GameSettings.getTilesOnRack()) {
       this.turnScore = GameSettings.getBingo();
     }
 
@@ -338,14 +328,7 @@ public class Turn implements Serializable {
       this.stringRepresentation += ("* " + localWordMultiplier + " = " + singleWordScore);
       this.turnScore = this.turnScore + singleWordScore;
     }
-
-//    // set all multipliers to 1
-//    for (Word w : words) {
-//      for (Tile t : w.getTiles()) {
-//        t.getField().setLetterMultiplier(1);
-//        t.getField().setWordMultiplier(1);
-//      }
-//    }
+    
     return this.turnScore;
   }
 

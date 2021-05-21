@@ -1,10 +1,11 @@
 {
-  "timePerPlayer" : 1500,
+  "timePerPlayer" : 500,
   "maxOvertime" : 600,
   "maxScore" : -1,
-  "dictionary" : "resources/dict.csv",
+  "dictionary" : "CollinsScrabbleWords",
   "bingo" : 50,
-  "difficulty": "easy",
+  "difficulty": "LOW",
+  "tilesOnRack" : 7,
   "letters" : {
     "A" : {
       "letterValue" : 1,
@@ -119,7 +120,8 @@
     "xCoordinate" : 8,
     "yCoordinate" : 8,
     "wordMultiplier" : 2,
-    "letterMultiplier" : 1
+    "letterMultiplier" : 1,
+	    "starField" : true
   }, {
     "xCoordinate" : 2,
     "yCoordinate" : 2,

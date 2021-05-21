@@ -40,6 +40,11 @@
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
+                	<archive>
+                   		<manifest>
+                   	     	<mainClass>game.MainApp</mainClass>
+                    	</manifest>
+                	</archive>
 				</configuration>
 
 				<executions>

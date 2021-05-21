@@ -57,6 +57,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Label valid;
   @FXML
+  private Label tor;
+  @FXML
   private ImageView avatar;
   @FXML
   private Button user;
@@ -97,6 +99,10 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button dic2;
   @FXML
+  private Button torUp;
+  @FXML
+  private Button torDown;
+  @FXML
   private Button letterDown;
   @FXML
   private Button letterUp;
@@ -129,10 +135,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     instance = this;
     this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
     this.username.setText(this.currentPlayer.getNickname());
-    this.avatar
-        .setImage(new Image("file:" + FileParameters.datadir + this.currentPlayer.getAvatar()));
-
-
+    this.avatar.setImage(
+        new Image(getClass().getResource(this.currentPlayer.getAvatar()).toExternalForm()));
     setUpLabels();
 
   }
@@ -145,42 +149,25 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "user":
-        showUserProfile();
+        // showUserProfile();
         break;
       case "tppUp":
-        updateLabel(this.time, Integer.parseInt(time.getText()) + 1);
+        updateLabel(this.time, Integer.parseInt(time.getText()) + 10);
         break;
       case "tppDown":
-        updateLabel(this.time, Integer.parseInt(time.getText()) - 1);
+        updateLabel(this.time, Integer.parseInt(time.getText()) - 10);
         break;
       case "tpp":
         labelTextfield(this.time, this.tpptf, (Button) e.getSource());
         break;
-      case "moDown":
-        updateLabel(this.overtime, Integer.parseInt(overtime.getText()) - 1);
-        break;
-      case "moUp":
-        updateLabel(this.overtime, Integer.parseInt(overtime.getText()) + 1);
-        break;
-      case "mo":
-        labelTextfield(this.overtime, this.motf, (Button) e.getSource());
-        break;
       case "msUp":
-        updateLabel(this.score, Integer.parseInt(score.getText()) + 1);
+        updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
         break;
       case "msDown":
-        updateLabel(this.score, Integer.parseInt(score.getText()) - 1);
+        updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
         break;
       case "ms":
         labelTextfield(this.score, this.mstf, (Button) e.getSource());
-      case "sUp":
-        updateLabel(this.size, Integer.parseInt(size.getText()) + 1);
-        break;
-      case "sDown":
-        updateLabel(this.size, Integer.parseInt(size.getText()) - 1);
-        break;
-      case "s":
-        labelTextfield(this.size, this.stf, (Button) e.getSource());
         break;
       case "bUp":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) + 1);
@@ -222,8 +209,16 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       case "dic2":
         OpenExternalScreen.open(GameSettings.getDictionary());
         break;
+      case "torUp":
+        updateTilesOnRack(1);
+        break;
+      case "torDown":
+        updateTilesOnRack(-1);
+        break;
       case "restore":
-        new JsonHandler().loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
+        new JsonHandler()
+            .loadGameSettings(new File(FileParameters.datadir + "defaultGameSettings.json"));
+        this.currentPlayer.setCustomGameSettings(null);
         setUpLabels();
         break;
       case "exit":
@@ -244,11 +239,14 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    GameSettings.setMaxOvertime(Integer.parseInt(overtime.getText()));
     GameSettings.setMaxScore(Integer.parseInt(score.getText()));
-    GameSettings.setGameBoardSize(Integer.parseInt(size.getText()));
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
-    new JsonHandler().saveGameSettings(new File(FileParameters.datadir + "gameSettingsTest.json"));
+    GameSettings.setTilesOnRack(Integer.parseInt(this.tor.getText()));
+    new JsonHandler()
+        .saveGameSettings(new File(FileParameters.datadir + "customGameSettings.json"));
+    this.currentPlayer.setCustomGameSettings(FileParameters.datadir + "customGameSettings.json");
+    new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
+        this.currentPlayer);
 
   }
 
@@ -269,12 +267,13 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     } else { // Textfield to Label
       trigger.setText("Change");
       tf.setOpacity(0);
+      int newValue = -1;
       try {
-        Integer.parseInt(tf.getText());
+        newValue = Integer.parseInt(tf.getText());
       } catch (NumberFormatException e) {
         tf.setText(lbl.getText());
       }
-      if (!tf.getText().equals("")) {
+      if (!tf.getText().equals("") && newValue >= 0) {
         lbl.setText(tf.getText());
       }
       lbl.setOpacity(1);
@@ -295,40 +294,74 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void setUpLabels() {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
-    this.overtime.setText(GameSettings.getMaxOvertime() + "");
+    this.tor.setText(GameSettings.getTilesOnRack() + "");
     this.score.setText(GameSettings.getMaxScore() + "");
-    this.size.setText(GameSettings.getGameBoardSize() + "");
     this.bingo.setText(GameSettings.getBingo() + "");
-    this.ai.setText(GameSettings.getAiDifficulty().substring(0, 1).toUpperCase()
-        + GameSettings.getAiDifficulty().substring(1));
+    String input = GameSettings.getAiDifficulty();
+    switch (input) {
+      case "LOW":
+        this.ai.setText("Easy");
+        break;
+      case "MEDIUM":
+        this.ai.setText("Medium");
+        break;
+      case "HARD":
+        this.ai.setText("Hard");
+        break;
+      default:
+        this.ai.setText("Unbeatable");
+        break;
+    }
+
     this.dic0.setText(GameSettings.getDictionary());
+    this.letter.setText(GameSettings.getLetters().get('A').getCharacter() + "");
+    this.letterValue.setText(GameSettings.getLetters().get('A').getLetterValue() + "");
+    this.letterAmount.setText(GameSettings.getLetters().get('A').getCount() + "");
   }
 
   /**
-   * Lets a user choose a new dictionary to be used
+   * Lets a user choose a new dictionary to be used.
    */
   public void chooseFile() {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Choose Dictionary");
-    File f = fileChooser.showOpenDialog(new Stage());
-    if (f != null && f.getPath().equals("*.csv")) {
-      GameSettings.setDictionary(f.getPath());
-      this.valid.setOpacity(0);
-    } else {
-      this.valid.setOpacity(1);
+    try {
+      File f = fileChooser.showOpenDialog(new Stage());
+      String extension = f.getPath().substring(f.getPath().length() - 3);
+      if (f != null && extension.equals("txt")) {
+        GameSettings.setDictionary(f.getPath());
+        this.valid.setOpacity(0);
+      } else {
+        this.valid.setOpacity(1);
+      }
+    } catch (NullPointerException e) { // No file selected.
+      return;
     }
   }
 
   /**
-   * Changes the AI Difficulty between easy and hard.
+   * Changes the AI Difficulty between easy, medium, hard and unbeatable.
    */
   public void changeAi() {
-    if (this.ai.getText().equals("Easy")) {
-      this.ai.setText("Hard");
-      GameSettings.setAiDifficulty("hard");
-    } else {
-      this.ai.setText("Easy");
-      GameSettings.setAiDifficulty("easy");
+    switch (this.ai.getText()) {
+      case "Easy":
+        this.ai.setText("Medium");
+        GameSettings.setAiDifficulty("MEDIUM");
+        break;
+      case "Medium":
+        this.ai.setText("Hard");
+        GameSettings.setAiDifficulty("HIGH");
+        break;
+      case "Hard":
+        this.ai.setText("Unbeatable");
+        GameSettings.setAiDifficulty("Unbeatable");
+        break;
+      case "Unbeatable":
+        this.ai.setText("Easy");
+        GameSettings.setAiDifficulty("LOW");
+        break;
+      default:
+        break;
     }
   }
 
@@ -337,9 +370,15 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    * the letters Hashmap.
    */
   public void updateValueOrCount() {
-    GameSettings.getLetters().put(this.letter.getText().charAt(0),
+    GameSettings.getLetters().replace(this.letter.getText().charAt(0),
         new Letter(this.letter.getText().charAt(0), Integer.parseInt(letterValue.getText()),
             Integer.parseInt(letterAmount.getText())));
+
+    if (this.letter.getText().charAt(0) == '*') {
+      for (Letter l : GameSettings.getLetters().values()) {
+        l.setJokerValue(Integer.parseInt(this.letterValue.getText()));
+      }
+    }
   }
 
   /**
@@ -349,18 +388,22 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    * @param direction indicates if the letter is to be incremented or decremented.
    */
 
-  public void updateLetterLabel(Character current, boolean direction) {
+  public void updateLetterLabel(char current, boolean direction) {
     if (direction) {
-      if (current < 'Z') {
+      if (current < 'Z' && current != '*') {
         current++;
-      } else {
+      } else if (current == '*') {
         current = 'A';
+      } else {
+        current = '*';
       }
     } else {
-      if (current > 'A') {
+      if (current > 'A' && current != '*') {
         current--;
-      } else {
+      } else if (current == '*') {
         current = 'Z';
+      } else {
+        current = '*';
       }
     }
     this.letter.setText(current + "");
@@ -377,7 +420,25 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void updateLabel(Label toBeUpdated, int update) {
     if (update >= 0) {
       toBeUpdated.setText(update + "");
+    } else {
+      toBeUpdated.setText(0 + "");
     }
+  }
+
+  /**
+   * This method
+   * 
+   * @param input
+   */
+
+  public void updateTilesOnRack(int input) {
+    int newValue = Integer.parseInt(this.tor.getText()) + input;
+    if (newValue <= 0) {
+      return;
+    } else if (newValue > 10) {
+      newValue = 10;
+    }
+    updateLabel(this.tor, newValue);
   }
 
   /**

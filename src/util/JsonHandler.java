@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,6 +21,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.Files;
 import game.GameSettings;
+import gui.FileParameters;
 import mechanic.Field;
 import mechanic.Letter;
 import mechanic.Player;
@@ -95,7 +97,13 @@ public class JsonHandler {
                 letterNode.getValue().get("count").asInt()));
       }
 
+      int jokerValue = letters.get('*').getLetterValue();
+      for (Letter l : letters.values()) {
+        l.setJokerValue(jokerValue);
+      }
+
       JsonNode fieldNode;
+      Field field;
       int wordMultiplier;
       int letterMultiplier;
       List<Field> specialFields = new ArrayList<Field>();
@@ -113,18 +121,29 @@ public class JsonHandler {
           letterMultiplier = fieldNode.get("letterMultiplier").asInt();
         }
 
-        specialFields.add(new Field(letterMultiplier, wordMultiplier,
-            fieldNode.get("xCoordinate").asInt(), fieldNode.get("yCoordinate").asInt()));
+        field = new Field(letterMultiplier, wordMultiplier, fieldNode.get("xCoordinate").asInt(),
+            fieldNode.get("yCoordinate").asInt());
+        specialFields.add(field);
+        
+        if (fieldNode.has("starField") && fieldNode.get("starField").asBoolean()) {
+          GameSettings.setStarField(field);
+        }
       }
 
       GameSettings.setTimePerPlayer(jsonNode.get("timePerPlayer").asInt());
       GameSettings.setMaxOvertime(jsonNode.get("maxOvertime").asInt());
       GameSettings.setMaxScore(jsonNode.get("maxScore").asInt());
-      GameSettings.setDictionary(jsonNode.get("dictionary").asText());
+      if (jsonNode.get("dictionary").asText().equals("CollinsScrabbleWords")) {
+        GameSettings.setDictionary(FileParameters.datadir + "CollinsScrabbleWords.txt");
+      } else {
+        GameSettings.setDictionary(jsonNode.get("dictionary").asText());
+      }
       GameSettings.setBingo(jsonNode.get("bingo").asInt());
       GameSettings.setAiDifficulty(jsonNode.get("difficulty").asText());
+      GameSettings.setTilesOnRack(jsonNode.get("tilesOnRack").asInt());
       GameSettings.setLetters(letters);
       GameSettings.setSpecialFields(specialFields);
+
 
     } catch (IOException e) {
       e.printStackTrace();
@@ -145,6 +164,7 @@ public class JsonHandler {
     rootNode.put("dictionary", GameSettings.getDictionary());
     rootNode.put("bingo", GameSettings.getBingo());
     rootNode.put("difficulty", GameSettings.getAiDifficulty());
+    rootNode.put("tilesOnRack", GameSettings.getTilesOnRack());
 
     ObjectNode letter = factory.objectNode();
     ObjectNode letterInfo;
@@ -167,6 +187,9 @@ public class JsonHandler {
       field.put("yCoordinate", f.getyCoordinate());
       field.put("wordMultiplier", f.getWordMultiplier());
       field.put("letterMultiplier", f.getLetterMultiplier());
+      if (GameSettings.getStarField() != null && GameSettings.getStarField().equals(f)) {
+        field.put("starField", true);
+      }
       specialFields.add(field);
     }
 
@@ -186,9 +209,8 @@ public class JsonHandler {
   /** taken from https://www.baeldung.com/convert-input-stream-to-a-file */
   public void writeFileFromStream(InputStream in, String path) {
     try {
-      byte[] buffer = new byte[in.available()];
-      in.read(buffer);
-      Files.write(buffer, new File(path));
+      java.nio.file.Files.copy(in, new File(path).toPath(), StandardCopyOption.REPLACE_EXISTING);
+      in.close();
     } catch (IOException e) {
       e.printStackTrace();
     }
