@@ -1,11 +1,11 @@
 package game;
 
-import gui.FileParameters;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import gui.FileParameters;
 import mechanic.Field;
 import mechanic.GameBoard;
 import mechanic.PlayerData;
@@ -110,16 +110,22 @@ public class GameState implements Serializable {
     return this.scores.get(nickName);
   }
 
+  /**
+   * This method is called, when a player joins a game. The Server adds the player to the
+   * allPlayersList and to the scoreList.
+   */
   public boolean joinGame(PlayerData player) {
     if (isRunning) {
       return false;
     }
-
     this.allPlayers.put(player.getNickname(), player);
     this.scores.put(player.getNickname(), 0);
     return true;
   }
 
+  /**
+   * This method is called, when a player leaves the game.
+   */
   public boolean leaveGame(String player) {
     if (player.equals(host.getNickname())) {
       stopGame();
@@ -128,6 +134,9 @@ public class GameState implements Serializable {
     return (allPlayers.remove(player) != null);
   }
 
+  /**
+   * This method is called, when the Game is starting to set the isRunning variable on true.
+   */
   public boolean startGame(String player) {
     if (player.equals(host.getNickname())) {
       this.isRunning = true;
@@ -149,6 +158,9 @@ public class GameState implements Serializable {
     this.gb = gameBoard;
   }
 
+  /**
+   * This method adds a turn score to a specific player.
+   */
   public boolean addScore(String player, int turnScore) {
     int oldScore = this.scores.get(player);
     return this.scores.replace(player, oldScore, oldScore + turnScore);
