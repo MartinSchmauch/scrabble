@@ -177,8 +177,16 @@ public class ClientProtocol extends Thread {
                   TileMessage trMessage = (TileMessage) m;
 
                   for (Tile t : trMessage.getTiles()) {
-                    player.addTileToRack(t);
-                    gpc.addTile(t);
+                    if (t.getField() != null && t.getField().getyCoordinate() != -1) { // case "on Rack"
+                      t.setOnRack(false);
+                      t.setOnGameBoard(true);
+                      gpc.addTile(t);
+                    }
+                    else { // case "on board"
+                      player.addTileToRack(t);
+                      gpc.addTile(t);
+                    }
+
                   }
                   break;
                 case TURN_RESPONSE:
@@ -232,6 +240,9 @@ public class ClientProtocol extends Thread {
                   break;
                 case UPDATE_CHAT:
                   UpdateChatMessage ucMessage = (UpdateChatMessage) m;
+                  if (gameState == null) { // only true for AIplayer
+                    break;
+                  }
                   if (!gameState.getGameRunning()) {
                     lsc.updateChat(ucMessage.getText(), ucMessage.getDateTime(),
                         ucMessage.getFrom());

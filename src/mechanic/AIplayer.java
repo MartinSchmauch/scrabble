@@ -143,19 +143,19 @@ public class AIplayer extends Player {
     switch (ailevel) {
       case EASY:
         this.maxNumOfTiles = 3;
-        this.numberOfCombinationsToUse = 350;
+        this.numberOfCombinationsToUse = 25;
         break;
       case MEDIUM:
         this.maxNumOfTiles = 5;
-        this.numberOfCombinationsToUse = 350;
+        this.numberOfCombinationsToUse = 30;
         break;
       case HARD:
         this.maxNumOfTiles = 6;
-        this.numberOfCombinationsToUse = 450;
+        this.numberOfCombinationsToUse = 34;
         break;
       case Unbeatable:
         this.maxNumOfTiles = 7;
-        this.numberOfCombinationsToUse = 500;
+        this.numberOfCombinationsToUse = 50;
         break;
 
       default:
@@ -328,6 +328,28 @@ public class AIplayer extends Player {
         }
       }
     }
+    // if first Move
+    
+    if (results.isEmpty()) {
+      // horizontal
+      for (int i = 8 - numOfTiles + 1; i <= 8; i++) {
+        for (int k = i; k < i + numOfTiles; k++) {
+          singleTilesPosition[k - i] = gb.getField(k, 8);  
+        }
+        results.add(singleTilesPosition);
+        singleTilesPosition = new Field[numOfTiles];
+      }
+      // vertical
+      for (int i = 8 - numOfTiles + 1; i <= 8; i++) {
+        for (int k = i; k < i + numOfTiles; k++) {
+          singleTilesPosition[k - i] = gb.getField(8, k);  
+        }
+        results.add(singleTilesPosition);
+        singleTilesPosition = new Field[numOfTiles];
+      }
+    }
+    
+    
     return results;
   }
 

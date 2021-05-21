@@ -92,7 +92,7 @@ public class Server {
       // sollen die Racks nur lokal gespeichert werden?
 
     }
-    
+
     // add Tiles to AI Rack TODO
     for (AIplayer a : this.aiPlayers.values()) {
       a.addTilesToRack(this.gameController.drawTiles(7));
@@ -283,11 +283,10 @@ public class Server {
           nextPlayer, remainingTiles));
       gameState.setCurrentPlayer(nextPlayer);
       this.getGameController().newTurn();
-      
+
       /**
-       * hier den Tile in die Messages übersetzten
-       * TileMessage
-       * CommitTurnMessage
+       * hier den Tile in die Messages übersetzten TileMessage CommitTurnMessage
+       * 
        * @author pkoenig
        */
       handleAi(nextPlayer);
@@ -307,8 +306,11 @@ public class Server {
     System.out.println("Server, Line 301 with " + aiPlayer);
     if (this.aiPlayers.containsKey(aiPlayer)) {
       Turn aiTurn = this.aiPlayers.get(aiPlayer).generateIdealTurn(this.gameState.getGameBoard());
-      TileMessage tm = new TileMessage(aiPlayer, aiTurn.getLaydDownTiles()); // TODO eventuell liegen die Tiles nun auf dem Rack
-      CommitTurnMessage ctm = new CommitTurnMessage(aiPlayer, !this.aiPlayers.get(aiPlayer).getRackTiles().isEmpty());
+      TileMessage tm = new TileMessage(aiPlayer, aiTurn.getLaydDownTiles()); // TODO eventuell
+                                                                             // liegen die Tiles nun
+                                                                             // auf dem Rack
+      CommitTurnMessage ctm =
+          new CommitTurnMessage(aiPlayer, !this.aiPlayers.get(aiPlayer).getRackTiles().isEmpty());
       this.sendToAll(tm);
       try {
         Thread.sleep(50);
@@ -327,6 +329,7 @@ public class Server {
   /**
    * Thread method that continuously checks for new clients trying to connect. When a new clients
    * connects, a new instance of ServerProtocol is created, moderating the client-server connection
+   * 
    * @author pkoenig
    */
 
@@ -607,6 +610,13 @@ public class Server {
               UpdateChatMessage um = (UpdateChatMessage) m;
               gpc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
               break;
+            case TILE:
+              TileMessage trMessage = (TileMessage) m;
+              for (Tile t : trMessage.getTiles()) {
+                player.addTileToRack(t);
+                gpc.addTile(t);
+              }
+              break;
             default:
               break;
           }
@@ -697,7 +707,7 @@ public class Server {
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lsc = lsc;
   }
-  
+
   public LobbyScreenController getLobbyScreenController() {
     return this.lsc;
   }
@@ -721,15 +731,15 @@ public class Server {
   public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
     this.aiPlayers = aiPlayers;
   }
-  
+
   public void addAiPlayer(AIplayer aiPlayer) {
     this.aiPlayers.put(aiPlayer.getNickname(), aiPlayer);
   }
-  
+
   public boolean isinAiPlayer(AIplayer aiPlayer) {
     return this.aiPlayers.containsKey(aiPlayer.getNickname());
   }
-  
+
   public void removeFromAiPlayers(String nickname) {
     this.aiPlayers.remove(nickname);
   }
