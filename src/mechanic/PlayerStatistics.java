@@ -33,6 +33,10 @@ public class PlayerStatistics implements Serializable {
     this.gameCount++;
   }
 
+  public void setGameCount(int gameCount) {
+    this.gameCount = gameCount;
+  }
+
   public void setBestTurn(int turn) {
     this.bestTurn = turn;
   }
@@ -58,6 +62,7 @@ public class PlayerStatistics implements Serializable {
     this.wins++;
   }
 
+
   public void setPlayedTiles(int tiles) {
     this.playedTiles += tiles;
   }
@@ -67,6 +72,10 @@ public class PlayerStatistics implements Serializable {
    */
   public int getGameCount() {
     return this.gameCount;
+  }
+
+  public void setWins(int wins) {
+    this.wins = wins;
   }
 
   public int getBestTurn() {
