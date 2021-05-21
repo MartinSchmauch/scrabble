@@ -256,7 +256,6 @@ public class Player {
       server.sendToAll(rtm);
       server.getGameController().removeTileFromGameBoard(this.getNickname(),
           tile.getField().getxCoordinate(), tile.getField().getyCoordinate());
-
       tile.setField(getRackField(newIndex));
       tile.setOnRack(true);
       tile.setOnGameBoard(false);

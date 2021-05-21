@@ -104,10 +104,9 @@ public class Server {
       @Override
       public void run() {
         List<Tile> tileList = new ArrayList<Tile>();
-
-        if (lsc != null) {
+        if (gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) { // normal game
           tileList = gameController.drawTiles(7);
-        } else {
+        } else { // tutorial
           char[] chars = {'B', 'E', 'D'};
           tileList = gameController.drawTutorial(chars);
         }

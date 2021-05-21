@@ -40,7 +40,7 @@ public class Tutorial {
       player.getServer().setGamePanelController(controller);
       player.setGamePanelController(controller);
       controller.initData(player);
-      stage.setOnCloseRequest(e -> controller.close());
+      stage.setOnCloseRequest(e -> controller.closeTutorial());
       stage.setTitle("Scrabble3");
       // stage.setResizable(false);
       stage.show();

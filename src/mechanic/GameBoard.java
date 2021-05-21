@@ -1,7 +1,7 @@
 package mechanic;
 
-import game.GameSettings;
 import java.io.File;
+import game.GameSettings;
 
 /**
  * The GameBoard class contains all GameBoard fields in a two-dimensional array. The arrays start at
@@ -28,7 +28,8 @@ public class GameBoard {
   }
 
   public Field getField(int xCoordinate, int yCoordinate) {
-    if (xCoordinate < 1 || yCoordinate < 1 || xCoordinate > this.fields.length || yCoordinate > this.fields.length) {
+    if (xCoordinate < 1 || yCoordinate < 1 || xCoordinate > this.fields.length
+        || yCoordinate > this.fields.length) {
       return null;
     }
     return fields[xCoordinate - 1][yCoordinate - 1];
@@ -70,5 +71,7 @@ public class GameBoard {
   public void setWordlist(Wordlist wordlist) {
     this.wordlist = wordlist;
   }
+
+
 
 }

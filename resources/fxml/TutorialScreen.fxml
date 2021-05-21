@@ -743,6 +743,21 @@
                         <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                         <Rectangle fill="#8fb492" height="50.0" layoutX="118.0" layoutY="12.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Rectangle fill="#ff7a7a" height="50.0" layoutX="385.0" layoutY="12.0" onDragDetected="#boardDragHandling" onDragDropped="#boardDropHandling" onDragOver="#DragOverHandling" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Text fx:id="tut1" disable="true" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="B" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut2" disable="true" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="E" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="tut3" disable="true" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="D" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold" size="15.0" />
+                           </font>
+                        </Text>
                      </children>
                   </GridPane>
                </children>
