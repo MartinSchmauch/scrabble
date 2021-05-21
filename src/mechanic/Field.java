@@ -53,6 +53,7 @@ public class Field implements Serializable {
    * @param tile
    */
   public void setTile(Tile tile) {
+    System.out.println(tile);
     if (tile == null) {
       this.tile.setFieldOneDirection(null);
       this.tile = null;

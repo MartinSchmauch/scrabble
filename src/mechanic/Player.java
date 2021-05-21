@@ -139,6 +139,7 @@ public class Player {
   }
 
   public void setRackTile(int index, Tile tile) {
+
     this.rack[index].setTile(tile);
   }
 

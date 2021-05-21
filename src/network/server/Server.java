@@ -104,14 +104,15 @@ public class Server {
       @Override
       public void run() {
         List<Tile> tileList = new ArrayList<Tile>();
-        if (gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) { // normal game
+        if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) { // normal
+                                                                                                  // game
           tileList = gameController.drawTiles(7);
         } else { // tutorial
           char[] chars = {'B', 'E', 'D'};
           tileList = gameController.drawTutorial(chars);
         }
         for (Tile t : tileList) {
-          System.out.println(t);
+
           t.setField(player.getFreeRackField());
           t.setOnGameBoard(false);
           t.setOnRack(true);
@@ -200,7 +201,6 @@ public class Server {
         }
         sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
             gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
-
       }
     });
   }

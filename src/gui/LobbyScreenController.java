@@ -309,7 +309,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     alert.changeButtonText("Remove", ButtonType.OK);
     alert.changeButtonText("Cancel", ButtonType.CANCEL);
 
-
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == ButtonType.OK) {
       Pattern p = Pattern.compile("AI\\s.");
@@ -320,7 +319,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.player.getServer().getServerProtocol().sendInitialGameState();
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);
-
         sendMessage(dm);
       }
       updateJoinedPlayers();

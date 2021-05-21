@@ -50,7 +50,6 @@ import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
-import network.messages.RemoveTileMessage;
 import network.messages.ResetTurnMessage;
 import network.messages.TileMessage;
 import network.server.Server;
@@ -108,7 +107,7 @@ public class TutorialController extends GamePanelController
   @FXML
   private Text pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4;
   @FXML
-  private Text remainingLetters, timer, tut1, tut2, tut3;
+  private Text remainingLetters, timer, tut1, tut2, tut3, tut4, tut5, tut6, tut7, tut8, tut9, tut0;
   @FXML
   private Rectangle tile1;
   @FXML
@@ -298,19 +297,40 @@ public class TutorialController extends GamePanelController
       case 0:
         Tile[] toAdd = new Tile[5];
         toAdd[0] = tb.drawTile('S');
-        toAdd[0].setField(gb.getField(9, 7));
+        toAdd[0].setField(gb.getField(8, 7));
         toAdd[1] = tb.drawTile('N');
-        toAdd[1].setField(gb.getField(9, 9));
+        toAdd[1].setField(gb.getField(8, 9));
         toAdd[2] = tb.drawTile('D');
-        toAdd[2].setField(gb.getField(9, 10));
+        toAdd[2].setField(gb.getField(8, 10));
         toAdd[3] = tb.drawTile('E');
-        toAdd[3].setField(gb.getField(9, 11));
+        toAdd[3].setField(gb.getField(8, 11));
         toAdd[4] = tb.drawTile('R');
-        toAdd[4].setField(gb.getField(9, 12));
+        toAdd[4].setField(gb.getField(8, 12));
         for (int i = 0; i < toAdd.length; i++) {
           toAdd[i].setOnRack(false);
           addTile(toAdd[i]);
         }
+        Tile[] newTiles = new Tile[7];
+        newTiles[0] = tb.drawTile('M');
+        newTiles[1] = tb.drawTile('O');
+        newTiles[3] = tb.drawTile('E');
+        newTiles[2] = tb.drawTile('I');
+        newTiles[4] = tb.drawTile('T');
+        newTiles[5] = tb.drawTile('A');
+        newTiles[6] = tb.drawTile('N');
+        for (int i = 0; i < newTiles.length; i++) {
+          newTiles[i].setField(gb.getField(i + 1, 1));
+          newTiles[i].setOnRack(true);
+          addTile(newTiles[i]);
+          this.player.setRackTile(i + 1, newTiles[i]);
+        }
+        tut4.setOpacity(0.5);
+        tut5.setOpacity(0.5);
+        tut6.setOpacity(0.5);
+        tut7.setOpacity(0.5);
+        tut8.setOpacity(0.5);
+        tut9.setOpacity(0.5);
+        tut0.setOpacity(0.5);
         break;
       default:
         break;
@@ -336,34 +356,22 @@ public class TutorialController extends GamePanelController
         }
       }
     }
+
     switch (index) {
       case 0:
         try {
-          if (gb.getField(8, 8).getTile().getLetter().getCharacter() == 'B'
-              && gb.getField(9, 8).getTile().getLetter().getCharacter() == 'E'
-              && gb.getField(10, 8).getTile().getLetter().getCharacter() == 'D') {
+          if (gb.getField(7, 8).getTile().getLetter().getCharacter() == 'B'
+              && gb.getField(8, 8).getTile().getLetter().getCharacter() == 'E'
+              && gb.getField(9, 8).getTile().getLetter().getCharacter() == 'D') {
+            gb.getField(7, 8).getTile().setPlayed(true);
             gb.getField(8, 8).getTile().setPlayed(true);
             gb.getField(9, 8).getTile().setPlayed(true);
-            gb.getField(10, 8).getTile().setPlayed(true);
             return true;
           } else {
-            showInvalidTurn();
-            for (int i = 0; i < layedDown.size(); i++) {
-              moveToRack(layedDown.get(i).getTile(), layedDown.get(i).getxCoordinate(),
-                  layedDown.get(i).getyCoordinate());
-              sendMessage(new RemoveTileMessage(this.player.getNickname(),
-                  this.layedDown.get(i).getxCoordinate(), this.layedDown.get(i).getyCoordinate()));
-            }
-          }
 
+          }
         } catch (NullPointerException e) {
           showInvalidTurn();
-          for (int i = 0; i < layedDown.size(); i++) {
-            moveToRack(layedDown.get(i).getTile(), layedDown.get(i).getxCoordinate(),
-                layedDown.get(i).getyCoordinate());
-            sendMessage(new RemoveTileMessage(this.player.getNickname(),
-                this.layedDown.get(i).getxCoordinate(), this.layedDown.get(i).getyCoordinate()));
-          }
         }
         break;
       case 2:
@@ -371,7 +379,16 @@ public class TutorialController extends GamePanelController
       default:
         break;
     }
-    return true;
+    // maybe for later
+    List<Tile> tileList = new ArrayList<Tile>();
+    for (Tile t : tileList) {
+
+      t.setField(player.getFreeRackField());
+      t.setOnGameBoard(false);
+      t.setOnRack(true);
+      this.addTile(t);
+    }
+    return false;
 
   }
 
