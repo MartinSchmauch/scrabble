@@ -734,6 +734,7 @@ public class Server {
 
   public void addAiPlayer(AIplayer aiPlayer) {
     this.aiPlayers.put(aiPlayer.getNickname(), aiPlayer);
+    this.gameState.joinGame(aiPlayer.getPlayerInfo());
   }
 
   public boolean isinAiPlayer(AIplayer aiPlayer) {
