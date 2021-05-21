@@ -30,7 +30,7 @@ public class GamePanelTest {
     } catch (UnknownHostException e) {
       e.printStackTrace();
     }
-    this.client.getClientProtocol().setLC(this.controller);
+    this.client.getClientProtocol().setLc(this.controller);
     // start game
     this.host.getServer().startGame();
   }

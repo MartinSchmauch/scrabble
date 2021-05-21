@@ -192,7 +192,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.ip.setText("Link:  " + address);
 
     } else {
-      this.player.getClientProtocol().setLC(this);
+      this.player.getClientProtocol().setLc(this);
       this.address = connection;
       this.ip.setText("");
       this.start.setDisable(true);
