@@ -637,7 +637,6 @@ public class Server {
   }
 
   public void startGame() {
-    gameState.setUpGameboard();
     this.gameController = new GameController(gameState);
     gameState.setCurrentPlayer(this.gameController.getNextPlayer());
     sendToAll(new StartGameMessage(host, 10,

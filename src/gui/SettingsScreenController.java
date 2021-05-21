@@ -161,10 +161,20 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         labelTextfield(this.time, this.tpptf, (Button) e.getSource());
         break;
       case "msUp":
-        updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
+        if (this.score.getText().equals("\u221e")) {
+          this.score.setText("0");
+        } else {
+          updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
+        }
         break;
       case "msDown":
-        updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
+        if (this.score.getText().equals("\u221e")) {
+          break;
+        } else if (Integer.parseInt(this.score.getText()) - 10 < 0) {
+          this.score.setText("\u221e");
+        } else {
+          updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
+        }
         break;
       case "ms":
         labelTextfield(this.score, this.mstf, (Button) e.getSource());
@@ -239,7 +249,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    GameSettings.setMaxScore(Integer.parseInt(score.getText()));
+    if (this.score.getText().equals("\u221e")) {
+      GameSettings.setMaxScore(-1);
+    } else {
+      GameSettings.setMaxScore(Integer.parseInt(score.getText()));
+    }
     GameSettings.setBingo(Integer.parseInt(bingo.getText()));
     GameSettings.setTilesOnRack(Integer.parseInt(this.tor.getText()));
     new JsonHandler()
@@ -295,7 +309,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void setUpLabels() {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
     this.tor.setText(GameSettings.getTilesOnRack() + "");
-    this.score.setText(GameSettings.getMaxScore() + "");
+    if (GameSettings.getMaxScore() < 0) {
+      this.score.setText("\u221e");
+    } else {
+      this.score.setText(GameSettings.getMaxScore() + "");
+    }
     this.bingo.setText(GameSettings.getBingo() + "");
     String input = GameSettings.getAiDifficulty();
     switch (input) {

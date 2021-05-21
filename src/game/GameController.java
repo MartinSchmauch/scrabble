@@ -35,6 +35,7 @@ public class GameController {
   public GameController(GameState gameState) {
     fillDictionary();
     this.gameState = gameState;
+    this.gameState.setUpGameboard();
     this.tileBag = new TileBag();
     this.turns = new ArrayList<Turn>();
     this.scoredTurns = new ArrayList<Turn>();
