@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * After the server recieved the sendChatMessage, he sends the UpdateChatMessage to all players to
  * update the chat.
- * 
+ *
  * @author mschmauc
  */
 
@@ -15,12 +15,15 @@ public class UpdateChatMessage extends Message {
   private LocalDateTime dateTime;
   private String owner;
 
-
+  /**
+   * This constructor creates an instance of the class.
+   * 
+   */
   public UpdateChatMessage(String from, String content, LocalDateTime timeStamp) {
     super(MessageType.UPDATE_CHAT, from);
     this.text = content;
     this.dateTime = timeStamp;
-    this.owner=from;
+    this.owner = from;
   }
 
   public String getText() {
@@ -30,5 +33,5 @@ public class UpdateChatMessage extends Message {
   public LocalDateTime getDateTime() {
     return dateTime;
   }
- 
+
 }

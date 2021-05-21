@@ -4,7 +4,7 @@ import mechanic.Tile;
 
 /**
  * This message is used, when a client adds a tile to the Gameboard.
- * 
+ *
  * @author lurny
  */
 
@@ -13,13 +13,17 @@ public class AddTileMessage extends Message {
   private static final long serialVersionUID = 1L;
 
   private Tile tile;
-  private int newXCoordinate, newYCoordinate;
+  private int newxCoordinate;
+  private int newyCoordinate;
 
-  public AddTileMessage(String from, Tile tile, int newXCoordinate, int newYCoordinate) {
+  /**
+   * This method creates an instance of the class.
+   */
+  public AddTileMessage(String from, Tile tile, int newxCoordinate, int newyCoordinate) {
     super(MessageType.ADD_TILE, from);
     this.tile = tile;
-    this.newXCoordinate = newXCoordinate;
-    this.newYCoordinate = newYCoordinate;
+    this.newxCoordinate = newxCoordinate;
+    this.newyCoordinate = newyCoordinate;
   }
 
   public Tile getTile() {
@@ -27,11 +31,11 @@ public class AddTileMessage extends Message {
   }
 
   public int getNewXCoordinate() {
-    return newXCoordinate;
+    return newxCoordinate;
   }
 
   public int getNewYCoordinate() {
-    return newYCoordinate;
+    return newyCoordinate;
   }
 
 }

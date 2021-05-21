@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 /**
  * This message is send, when a player writes text a message via the chat.
- * 
+ *
  * @author mschmauc
  */
 
@@ -14,6 +14,9 @@ public class SendChatMessage extends Message {
   private LocalDateTime dateTime;
   private String sender;
 
+  /**
+   * This method creates an instance of the class.
+   */
   public SendChatMessage(String from, String content, LocalDateTime timeStamp) {
     super(MessageType.SEND_CHAT_TEXT, from);
     this.setText(content);

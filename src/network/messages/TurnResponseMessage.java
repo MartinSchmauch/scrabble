@@ -1,6 +1,12 @@
 package network.messages;
 
-/** @author lurny */
+/**
+ * This message is send after every finished turn. It is used to update some Key values and to
+ * indicate the nextPlayer turn.
+ *
+ * @author lurny
+ *
+ */
 
 public class TurnResponseMessage extends Message {
 
@@ -10,6 +16,9 @@ public class TurnResponseMessage extends Message {
   private String nextPlayer;
   private int remainingTilesInTileBag;
 
+  /**
+   * This is the consturctor of the TurnResponseMessage.
+   */
   public TurnResponseMessage(String from, boolean isValid, int calculatedTurnScore,
       String nextPlayer, int remainingTilesInTileBag) {
     super(MessageType.TURN_RESPONSE, from);

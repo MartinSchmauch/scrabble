@@ -148,6 +148,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   public void updateStatistics() {
     PlayerData pd = player.getPlayerInfo();
     pd.getPlayerStatistics().incrementGameCount();
+    System.out.println(pd.getPlayerStatistics().getBestTurn());
     if (pd.getPlayerStatistics().getBestTurn() < gs.get(player).getBestTurn()) {
       pd.getPlayerStatistics().setBestTurn(gs.get(player).getBestTurn());
     }

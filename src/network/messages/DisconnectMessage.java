@@ -2,7 +2,7 @@ package network.messages;
 
 /**
  * The Disconnect Messsage is used to disconnect one client from the Server.
- * 
+ *
  * @author lurny
  */
 
