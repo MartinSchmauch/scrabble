@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class PlayerStatistics implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  private int gameCount;
   private int bestTurn;
+  private int gameCount;
   private String bestWord;
   private int playTime;
   private int score;
@@ -24,9 +24,13 @@ public class PlayerStatistics implements Serializable {
    * Setter Methods.
    */
 
-  public void setGameCount(int count) {
-
-    this.gameCount = count;
+  /**
+   * This method increments the GameCount by one.
+   * 
+   * @author lurny
+   */
+  public void incrementGameCount() {
+    this.gameCount++;
   }
 
   public void setBestTurn(int turn) {
@@ -45,8 +49,13 @@ public class PlayerStatistics implements Serializable {
     this.score = score;
   }
 
-  public void setWins(int wins) {
-    this.wins = wins;
+  /**
+   * This method increments the amount of won games by one.
+   * 
+   * @author lurny
+   */
+  public void incrementWins() {
+    this.wins++;
   }
 
   public void setPlayedTiles(int tiles) {

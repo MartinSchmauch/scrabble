@@ -103,6 +103,4 @@ public class GameStatistic implements Serializable {
   public void setTotalTurns(int totalTurns) {
     this.totalTurns = totalTurns;
   }
-
-
 }

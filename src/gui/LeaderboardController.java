@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import mechanic.Player;
+import mechanic.PlayerData;
 
 /**
  * This class initializes all leaderboard related labels.
@@ -86,9 +87,30 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
         }
         standings[i].setDisable(true);
       }
-      turn.setText("" + this.gs.get(player.getNickname()).getBestTurn());
-      time.setText("" + this.gs.get(player.getNickname()).getPlayTime());
-
+      // find max Turn and best Word
+      int maxTurn = 0;
+      String maxTurnPlayer = "";
+      for (String p : players) {
+        if (gs.get(p).getBestTurn() > maxTurn) {
+          maxTurn = gs.get(p).getBestTurn();
+          maxTurnPlayer = p;
+        }
+      }
+      turn.setText("" + maxTurn);
+      bestTurnKey.setText("Best Turn (" + maxTurnPlayer + "):");
+      int totalGameTime = 0;
+      for (String p : players) {
+        totalGameTime += this.gs.get(p).getPlayTime();
+      }
+      int min = totalGameTime / 60;
+      int sec = totalGameTime % 60;
+      String secondString = "";
+      if (sec < 10) {
+        secondString = "0" + String.valueOf(sec);
+      } else {
+        secondString = String.valueOf(sec);
+      }
+      time.setText("" + min + ":" + secondString);
     }
     updateStatistics();
   }
@@ -120,10 +142,23 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   /**
    * This methods updates all user statistics acooring to the game state
    * 
-   * @author pkoenig TODO
+   * @author lurny
    */
+  @SuppressWarnings("unlikely-arg-type")
   public void updateStatistics() {
+    PlayerData pd = player.getPlayerInfo();
+    pd.getPlayerStatistics().incrementGameCount();
+    if (pd.getPlayerStatistics().getBestTurn() < gs.get(player).getBestTurn()) {
+      pd.getPlayerStatistics().setBestTurn(gs.get(player).getBestTurn());
+    }
+    if (players.get(0).equals(player)) {
+      pd.getPlayerStatistics().incrementWins();
+    }
+    // TODO best word
 
+    for (String p : players) {
+
+    }
   }
 
 }
