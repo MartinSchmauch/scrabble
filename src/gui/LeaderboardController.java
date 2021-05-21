@@ -39,6 +39,10 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   private Label turn;
   @FXML
   private Label word;
+  @FXML
+  private Label bestWordKey;
+  @FXML
+  private Label bestTurnKey;
 
   @FXML
   public void initialize() {

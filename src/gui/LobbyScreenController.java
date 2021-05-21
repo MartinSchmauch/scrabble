@@ -69,6 +69,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   private Label bestWordKey;
   @FXML
   private Label bestTurnKey;
+  @FXML
   private TextField input;
   @FXML
   private TextArea chat;
