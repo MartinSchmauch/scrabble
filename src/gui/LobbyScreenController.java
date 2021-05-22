@@ -196,11 +196,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.address = connection;
       this.ip.setText("");
       this.start.setDisable(true);
-      this.settings.setDisable(true);
       this.copy.setDisable(true);
       this.copy.setOpacity(0);
     }
-
   }
 
   /**

@@ -10,6 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -124,6 +125,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   private TextField stf;
   @FXML
   private TextField btf;
+  @FXML
+  private Tooltip tooltip;
 
 
   /**
@@ -132,6 +135,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   @FXML
   public void initialize() {
+    tooltip.setText(GameSettings.getDictionary());
     instance = this;
     this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
     this.username.setText(this.currentPlayer.getNickname());

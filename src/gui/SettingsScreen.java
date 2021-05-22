@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import mechanic.Player;
 
 /** This Class launches the Settings Screen **/
 
@@ -29,9 +30,16 @@ public class SettingsScreen extends Application {
    * 
    * @param s: Currently used settings
    */
-  public SettingsScreen(GameSettings s) {
-    settings = s;
+  public SettingsScreen(Player p, boolean lobby) {
+    if (p.isHost() == false || lobby == false) {
 
+    } else {
+      // settings = s;
+    }
+  }
+
+  public SettingsScreen(GameSettings gs) {
+    settings = gs;
   }
 
   /**

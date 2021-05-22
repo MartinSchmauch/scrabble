@@ -145,7 +145,7 @@ public class TutorialController extends GamePanelController
     chat.setEditable(false);
 
     this.chat.appendText(
-        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game.\n\nStart by dragging the 'B','E' and 'D' on the marked fields.");
+        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game.\n\nStart by dragging the 'B','E' and 'D' on the marked fields and hit \"done.");
 
     Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
     Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
@@ -255,6 +255,7 @@ public class TutorialController extends GamePanelController
           exchangeTilesMode = false;
           changeSkipAndChangeStatus(true);
         } else {
+
           nextTurn(indicator);
         }
         break;
@@ -278,7 +279,15 @@ public class TutorialController extends GamePanelController
           tutorialTurn(indicator);
           this.chat.appendText("\n\nLook, your opponent has layed down a word as well.");
           this.indicator++;
+          break;
+
         }
+      case 1:
+
+        if (validateTurn(indicator)) {
+          this.indicator++;
+        }
+        break;
       default:
         break;
     }
@@ -368,13 +377,21 @@ public class TutorialController extends GamePanelController
             gb.getField(9, 8).getTile().setPlayed(true);
             return true;
           } else {
-
+            showInvalidTurn();
           }
         } catch (NullPointerException e) {
           showInvalidTurn();
         }
         break;
-      case 2:
+      case 1:
+        char[] nominate = new char[7];
+        for (int i = 9; i < nominate.length + 9; i++) {
+          nominate[i - 9] = gb.getField(i, 9).getTile().getLetter().getCharacter();
+        }
+
+        if (new String(nominate).equals("OMINATE")) {
+          this.chat.appendText("\n\nGreat Turn!");
+        }
         break;
       default:
         break;
