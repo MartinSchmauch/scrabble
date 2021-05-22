@@ -208,6 +208,11 @@ public class Tile implements Serializable {
    * @author lurny
    */
   public Tile getRightTile() {
+    
+    if (this.getField() == null) {
+      System.out.println("######### PROBLEM IN TILE LINE 213");
+    }
+    
     Field f = this.getField().getRight();
     if (f == null) {
       return null;

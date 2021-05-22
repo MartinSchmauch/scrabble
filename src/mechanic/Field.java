@@ -54,7 +54,9 @@ public class Field implements Serializable {
    */
   public void setTile(Tile tile) {
     if (tile == null) {
-      this.tile.setFieldOneDirection(null);
+      if (this.tile != null) {
+        this.tile.setFieldOneDirection(null);
+      }
       this.tile = null;
     } else {
       this.tile = tile;

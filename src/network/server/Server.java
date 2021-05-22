@@ -106,7 +106,7 @@ public class Server {
 
     // add Tiles to AI Rack TODO
     for (AIplayer a : this.aiPlayers.values()) {
-      a.addTilesToRack(this.gameController.drawTiles(7));
+      a.addTilesToRack(this.gameController.drawTiles(GameSettings.getTilesOnRack()));
     }
 
     // add Tiles to host Rack
@@ -207,7 +207,12 @@ public class Server {
           // gameState.getGameStatistics()
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
-          handleAi(gameState.getCurrentPlayer());
+          Runnable r = new Runnable() {
+            public void run() {
+              handleAi(gameState.getCurrentPlayer());
+            }
+          };
+          new Thread(r).start();
 
         }
       });
@@ -236,8 +241,19 @@ public class Server {
         }
         this.gameState.addScore(from, turn.getTurnScore());
         String nextPlayer = this.getGameController().getNextPlayer();
+        
+        if (this.aiPlayers.containsKey(from)) {
+          List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
+          for (Tile t : tileList) {
+            t.setField( this.aiPlayers.get(from).getFreeRackField());
+            t.setOnGameBoard(false);
+            t.setOnRack(true);
+//            gpc.addTile(t);
+          }
+          
+        }
 
-        if (m.getFrom().equals(this.getHost())) {
+        else if (m.getFrom().equals(this.getHost())) {
           // add new tiles to Domain and UI
           Platform.runLater(new Runnable() {
             @Override
@@ -301,16 +317,23 @@ public class Server {
           endGame();
           return;
         }
-        // Update total playetime
-        this.gameState.getGameStatisticsOfPlayer(from)
-            .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
-                + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
+        // Update total playetime TODO ist auskommentiert
+//        this.gameState.getGameStatisticsOfPlayer(from)
+//            .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
+//                + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
 
         this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
             nextPlayer, remainingTiles));
         gameState.setCurrentPlayer(nextPlayer);
         this.getGameController().newTurn();
-        handleAi(nextPlayer);
+        
+        Runnable r = new Runnable() {
+          public void run() {
+            handleAi(nextPlayer);
+          }
+        };
+        new Thread(r).start();
+        
 
       } else {
         this.semaphoreReset = true;
@@ -326,27 +349,30 @@ public class Server {
   /**
    * @author pkoenig
    */
-  private void handleAi(String aiPlayer) {
-    System.out.println("Server, Line 301 with " + aiPlayer);
-    if (this.aiPlayers.containsKey(aiPlayer)) {
-      Turn aiTurn = this.aiPlayers.get(aiPlayer).generateIdealTurn(this.gameState.getGameBoard());
-      TileMessage tm = new TileMessage(aiPlayer, aiTurn.getLaydDownTiles()); // TODO eventuell
-                                                                             // liegen die Tiles nun
-                                                                             // auf dem Rack
+  private void handleAi(String player) {
+    System.out.println("Server, Line 301 with " + player);
+    if (this.aiPlayers.containsKey(player)) {
+      System.out.println("handleAi Player line 332");
+      Turn aiTurn = this.aiPlayers.get(player).runAi(this.gameState.getGameBoard());
+      TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles()); // TODO eventuell
+                                                                           // liegen die Tiles nun
+                                                                           // auf dem Rack
+      this.gameController.setTurn(aiTurn);
       CommitTurnMessage ctm =
-          new CommitTurnMessage(aiPlayer, !this.aiPlayers.get(aiPlayer).getRackTiles().isEmpty());
+          new CommitTurnMessage(player, !this.aiPlayers.get(player).getRackTiles().isEmpty());
       this.sendToAll(tm);
       try {
-        Thread.sleep(50);
+        Thread.sleep(500);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      this.sendToAll(ctm);
-      try {
-        Thread.sleep(50);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
-      }
+//      this.sendToAll(ctm);
+      this.handleCommitTurn(ctm);
+//      try {
+//        Thread.sleep(500);
+//      } catch (InterruptedException e) {
+//        e.printStackTrace();
+//      }
     }
   }
 
@@ -646,7 +672,8 @@ public class Server {
             case TILE:
               TileMessage trMessage = (TileMessage) m;
               for (Tile t : trMessage.getTiles()) {
-                player.addTileToRack(t);
+                t.setOnRack(false);
+                t.setOnGameBoard(true);
                 gpc.addTile(t);
               }
               break;
@@ -693,10 +720,15 @@ public class Server {
     gameState.setRunning(true);
     distributeInitialTiles();
     this.gameController.newTurn();
-
+    System.out.println("start game line 697");
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
     initializeAi();
-    handleAi(this.gameState.getCurrentPlayer());
+    Runnable r = new Runnable() {
+      public void run() {
+        handleAi(gameState.getCurrentPlayer());
+      }
+    };
+    new Thread(r).start();
     for (PlayerData client : gameState.getAllPlayers()) {
       this.gameState.addGameStatistics(client.getNickname());
     }
@@ -704,7 +736,8 @@ public class Server {
 
   private void initializeAi() {
     for (AIplayer a : this.aiPlayers.values()) {
-      a.generateTwoTilesCombinations();
+      a.setGc(this.gameController);
+      a.generateTileCombinations();
     }
   }
 

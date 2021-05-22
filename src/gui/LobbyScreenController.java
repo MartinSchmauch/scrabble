@@ -238,12 +238,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     this.getPlayer().getServer().addAiPlayer(p);
     this.getPlayer().getServer().sendToAll(new ConnectMessage(p.getPlayerInfo()));
 
-    try {
-      Thread.sleep(100);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    
-    }
+//    try {
+//      Thread.sleep(100);
+//    } catch (InterruptedException e) {
+//      e.printStackTrace();
+//    
+//    }
 //    LobbyStatusMessage m = new LobbyStatusMessage(this.getPlayer().getServer().getHost(), this.getPlayer().getServer().getGameState());
 
 //    this.getPlayer().getServer().sendToAll(m);
