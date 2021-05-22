@@ -15,7 +15,7 @@ import mechanic.PlayerStatistics;
 /**
  * This Class handles all User Inputs concerning the user statistics screen launchable from the
  * LoginScreen. On this screen no user information can be changed.
- * 
+ *
  * @author nilbecke
  *
  */
@@ -95,7 +95,6 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
    * This method updates the displayed statistics and is called when the user hits the "next" or
    * "previous" button.
    * 
-   * @param increment indicates if the next or previous statistic shoud be shown
    */
   public void updateStatistics(boolean increment) {
     if (increment) {

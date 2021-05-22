@@ -27,6 +27,9 @@ public class Field implements Serializable {
   private int letterMultiplier;
   private int wordMultiplier;
 
+  /**
+   * This method creates an instance of the class.
+   */
   public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
@@ -34,6 +37,9 @@ public class Field implements Serializable {
     this.wordMultiplier = wordMultiplier;
   }
 
+  /**
+   * This method creates an instance of the class.
+   */
   public Field(int xCoordinate, int yCoordinate) {
     this.xCoordinate = xCoordinate;
     this.yCoordinate = yCoordinate;
@@ -47,10 +53,9 @@ public class Field implements Serializable {
 
   /**
    * This method and the method setFieldOneDirection are used to automatically set the double linked
-   * object connection
-   * 
+   * object connection.
+   *
    * @author lurny
-   * @param tile
    */
   public void setTile(Tile tile) {
     System.out.println(tile);
@@ -65,6 +70,19 @@ public class Field implements Serializable {
     }
   }
 
+  /**
+   * This method is called by the setField method to ensure the double link object connection.
+   *
+   * @author lurny
+   */
+  public void setTileOneDirection(Tile t) {
+    this.tile = t;
+  }
+
+  /**
+   * This method is used if you only want to set the Tile, without the automatically generated link
+   * from Tile to Field.
+   */
   public void setOnlyTile(Tile tile) {
     if (tile.getField() != this) {
       tile.setField(this);
@@ -72,10 +90,6 @@ public class Field implements Serializable {
     this.tile = tile;
   }
 
-  /** @author lurny */
-  public void setTileOneDirection(Tile t) {
-    this.tile = t;
-  }
 
   public int getxCoordinate() {
     return xCoordinate;
@@ -114,9 +128,9 @@ public class Field implements Serializable {
   }
 
   /**
-   * This method returns the left field, which lies next to the current field. If the field does not
-   * exist, the method returns null.
-   * 
+   * This method provides the left field, which lies next to the current field. If the field does
+   * not exist, the method gives back null.
+   *
    * @author lurny
    */
   @JsonIgnore
@@ -129,9 +143,9 @@ public class Field implements Serializable {
   }
 
   /**
-   * This method returns the right field, which lies next to the current field. If the field does
-   * not exist, the method returns null.
-   * 
+   * This method provides the right field, which lies next to the current field. If the field does
+   * not exist, the method gives back null.
+   *
    * @author lurny
    */
   @JsonIgnore
@@ -144,9 +158,9 @@ public class Field implements Serializable {
   }
 
   /**
-   * This method returns the top field, which lies next to the current field. If the field does not
-   * exist, the method returns null.
-   * 
+   * This method provides the top field, which lies next to the current field. If the field does not
+   * exist, the method gives back null.
+   *
    * @author lurny
    */
   @JsonIgnore
@@ -159,9 +173,9 @@ public class Field implements Serializable {
   }
 
   /**
-   * This method returns the bottom field, which lies next to the current field. If the field does
-   * not exist, the method returns null.
-   * 
+   * This method provides the bottom field, which lies next to the current field. If the field does
+   * not exist, the method gives back null.
+   *
    * @author lurny
    */
   @JsonIgnore
@@ -174,6 +188,8 @@ public class Field implements Serializable {
   }
 
   /**
+   * This method provides a String representation of the the Field coordinates.
+   *
    * @author pkoenig
    */
   @Override
@@ -182,6 +198,8 @@ public class Field implements Serializable {
   }
 
   /**
+   * This method is used to check if a field equals another field.
+   *
    * @author lurny
    */
   @Override

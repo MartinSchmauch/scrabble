@@ -19,9 +19,8 @@ import mechanic.Player;
 import util.JsonHandler;
 
 /**
- * 
  * Handles user-inputs in the Gamesettings screen.
- * 
+ *
  * @author nilbecke
  * 
  **/
@@ -127,9 +126,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
 
   /**
-   * Initialize the Settings Screen with username, avatar and all current settings
+   * Initialize the Settings Screen with username, avatar and all current settings.
    */
-
   @FXML
   public void initialize() {
     instance = this;
@@ -266,7 +264,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * This method is used for changing settings by using a textfield to commit changes.
-   * 
+   *
    * @param lbl defines the label to be updated.
    * @param tf defines the Textfield with the expected changes.
    * @param trigger defines the button pushed to invoke the action.
@@ -401,7 +399,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Lets a user cycle through all letters to be able to change amount and value for this letter.
-   * 
+   *
    * @param current the currently selected character out of [A-Z].
    * @param direction indicates if the letter is to be incremented or decremented.
    */
@@ -431,7 +429,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Update a label.
-   * 
+   *
    * @param update new Time per player.
    * @param toBeUpdated Label to be changed
    */
@@ -444,9 +442,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * This method
-   * 
-   * @param input
+   * updates the Tiles on the Rack at position input.
    */
 
   public void updateTilesOnRack(int input) {
@@ -461,7 +457,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Get a reference on the current Game settings controller.
-   * 
+   *
    * @return: Current instance of the settings controller if present, null otherwise
    */
   public static SettingsScreenController getInstance() {
@@ -470,8 +466,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Updates the displayed username.
-   * 
-   * @param newName: updated username
+   *
+   * @param newName updated username
    */
   public void setUserLabel(String newName) {
     this.username.setText(newName);

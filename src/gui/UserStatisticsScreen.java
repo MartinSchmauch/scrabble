@@ -13,7 +13,7 @@ import mechanic.PlayerData;
 
 /**
  * This Class launches the user statistics screen displaying all user connected game data.
- * 
+ *
  * @author nilbecke
  *
  */
@@ -29,9 +29,9 @@ public class UserStatisticsScreen extends Application {
 
   /**
    * This constructor gurantees that player statistics are shown for the correct player.
-   * 
+   *
    * @param current indicates the player whomst statistics are to be shown.
-   * @param from Lobby indicates if the screen is launched from the loginscreen
+   * @param from Lobby indicates if the screen is launched from the loginscreen.
    */
 
   public UserStatisticsScreen(PlayerData current, boolean fromLobby) {
@@ -82,7 +82,7 @@ public class UserStatisticsScreen extends Application {
 
   /**
    * This method gives a reference to the player whomst statistics are to be displayed.
-   * 
+   *
    * @return the current player
    */
   public PlayerData getPlayer() {
@@ -90,8 +90,8 @@ public class UserStatisticsScreen extends Application {
   }
 
   /**
-   * This method gives a reference to the current UserSettingsScreen
-   * 
+   * This method gives a reference to the current UserSettingsScreen.
+   *
    * @return the current Screen
    */
 
