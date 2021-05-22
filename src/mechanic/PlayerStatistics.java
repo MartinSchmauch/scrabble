@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * This class represents all user statistics.
- * 
+ *
  * @author nilbecke
  *
  */
@@ -20,13 +20,10 @@ public class PlayerStatistics implements Serializable {
   private int wins;
   private int playedTiles;
 
-  /**
-   * Setter Methods.
-   */
 
   /**
    * This method increments the GameCount by one.
-   * 
+   *
    * @author lurny
    */
   public void incrementGameCount() {
@@ -55,7 +52,7 @@ public class PlayerStatistics implements Serializable {
 
   /**
    * This method increments the amount of won games by one.
-   * 
+   *
    * @author lurny
    */
   public void incrementWins() {

@@ -52,11 +52,9 @@ public class TileBag {
   }
 
   /**
-   * This method returns a specific tile, without removing it fromthe lost
-   * 
+   * This method draws a specific tile, without removing it from the Tilebag.
+   *
    * @author nilbecke
-   * @param input
-   * @return
    */
 
   public Tile drawTile(Character input) {

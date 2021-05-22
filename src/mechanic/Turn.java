@@ -1,11 +1,11 @@
 package mechanic;
 
-import game.GameController;
-import game.GameSettings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import game.GameController;
+import game.GameSettings;
 
 /**
  * An object of this class is used for each player turn. It is used to find all words that emerge
@@ -28,6 +28,10 @@ public class Turn implements Serializable {
   private List<Tile> starTiles;
 
 
+  /**
+   * This method creates an instanc of the class.
+   * 
+   */
   public Turn(String player, GameController gamecontroller) {
     this.gameController = gamecontroller;
     this.player = player;
@@ -40,17 +44,23 @@ public class Turn implements Serializable {
     this.starTiles = new ArrayList<Tile>();
   }
 
+  /**
+   * This method adds the Tile t to the Turn instance.
+   */
   public boolean addTileToTurn(Tile t) {
     if (!this.laydDownTiles.contains(t)) {
       this.laydDownTiles.add(t);
       return true;
     }
     return false;
-  };
+  }
 
+  /**
+   * This method removes the Tile t from the Turn instance.
+   */
   public boolean removeTileFromTurn(Tile t) {
     return this.laydDownTiles.remove(t);
-  };
+  }
 
 
   /**
@@ -85,10 +95,11 @@ public class Turn implements Serializable {
       for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
         for (int k = 0; k < starTiles.size(); k++) {
           if (k == 0) {
-            this.starTiles.get(starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / 1) % 26))));
-          }
-          else {
-            this.starTiles.get(starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / (k*26)) % 26))));
+            this.starTiles.get(starTiles.size() - k - 1)
+                .setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / 1) % 26))));
+          } else {
+            this.starTiles.get(starTiles.size() - k - 1)
+                .setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / (k * 26)) % 26))));
           }
         }
         if (calculateWordsHelper()) {
@@ -105,21 +116,20 @@ public class Turn implements Serializable {
         }
         this.starTiles.clear();
         return false;
-      }
-      else {
+      } else {
         for (int k = 0; k < this.starTiles.size(); k++) {
           if (k == 0) {
-            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / 1) % 26))));
-          }
-          else {
-            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / (k*26)) % 26))));
+            this.starTiles.get(this.starTiles.size() - k - 1)
+                .setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / 1) % 26))));
+          } else {
+            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(
+                GameSettings.getLetterForChar((char) ('A' + ((maxIndex / (k * 26)) % 26))));
           }
         }
         calculateWordsHelper();
         return true;
       }
-    }
-    else {
+    } else {
       return calculateWordsHelper();
     }
   }
@@ -253,10 +263,9 @@ public class Turn implements Serializable {
         word.clear();
       }
     }
-    
+
     // separate words
-    if (words.size() == 1
-        && this.gameController.getScoredTurns().size() > 0
+    if (words.size() == 1 && this.gameController.getScoredTurns().size() > 0
         && newWordTiles.size() == this.words.get(0).getTiles().size()) {
       stringRepresentation = "Invalid: Separate Words.";
       return false;
@@ -326,7 +335,7 @@ public class Turn implements Serializable {
       this.stringRepresentation += ("* " + localWordMultiplier + " = " + singleWordScore);
       this.turnScore = this.turnScore + singleWordScore;
     }
-    
+
     return this.turnScore;
   }
 
@@ -338,7 +347,7 @@ public class Turn implements Serializable {
     this.isValid = calculateWords();
     if (this.isValid) {
       calculateTurnScore();
-    
+
       // set all multipliers to 1
       for (Word w : words) {
         for (Tile t : w.getTiles()) {
@@ -378,7 +387,7 @@ public class Turn implements Serializable {
   public boolean isValid() {
     return isValid;
   }
-  
+
   public boolean setValid(boolean valid) {
     return isValid;
   }
@@ -419,7 +428,10 @@ public class Turn implements Serializable {
   public String toString() {
     return stringRepresentation;
   }
-  
+
+  /**
+   * This method is a to String method, but returns an Array.
+   */
   public String[] toStringArray() {
     String[] res = new String[5];
     res[0] = this.stringRepresentation;
@@ -434,51 +446,36 @@ public class Turn implements Serializable {
     return res;
   }
 
-  /**
-   * @return the containedStarTiles
-   */
+
   public boolean isContainedStarTiles() {
     return containedStarTiles;
   }
 
-  /**
-   * @param containedStarTiles the containedStarTiles to set
-   */
   public void setContainedStarTiles(boolean containedStarTiles) {
     this.containedStarTiles = containedStarTiles;
   }
 
-  /**
-   * @return the starTiles
-   */
+
   public List<Tile> getStarTiles() {
     return starTiles;
   }
 
-  /**
-   * @param starTiles the starTiles to set
-   */
   public void setStarTiles(List<Tile> starTiles) {
     this.starTiles = starTiles;
   }
 
-  /**
-   * @return the laydDownFields
-   */
+
   public List<Field> getLaydDownFields() {
     return laydDownFields;
   }
 
-  /**
-   * @param laydDownFields the laydDownFields to set
-   */
   public void setLaydDownFields(List<Field> laydDownFields) {
     this.laydDownFields = laydDownFields;
   }
 
   public void setLaydDownFields(Field[] currentLocation) {
     this.laydDownFields = Arrays.asList(currentLocation);
-    
+
   }
 
 

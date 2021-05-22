@@ -196,6 +196,9 @@ public class Player {
     }
   }
 
+  /**
+   * This method is used to remove the tile at position index from the rack.
+   */
   public Tile removeRackTile(int index) {
     Tile tile = rack[index].getTile();
     rack[index].setTileOneDirection(null);
@@ -305,12 +308,12 @@ public class Player {
       client.sendToServer(atm);
     }
   }
-  
+
+
   public void personalMoveToGameBoard(Tile t, Field f) {
     if (t.getField().getyCoordinate() != -1) {
       System.out.println("\nINVALID: personalMovetoGameboard + \n");
-    }
-    else {
+    } else {
       this.setRackTileToNone(t.getField().getxCoordinate());
       f.setTile(t);
     }
@@ -373,10 +376,12 @@ public class Player {
     this.gpc = gpc;
   }
 
-  /** @author nilbecke */
-
+  /**
+   * This method is called, when a player hosts a game.
+   *
+   * @author nilbecke
+   */
   public void host() {
-
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this, this.customGameSettings);
 
@@ -388,8 +393,11 @@ public class Player {
     new Thread(r).start();
   }
 
-  /** @author nilbecke */
-
+  /**
+   * This method is called, when a client connects to a server.
+   *
+   * @author nilbecke
+   */
   public void connect(String ip) {
     this.getPlayerInfo().setHost(false);
 

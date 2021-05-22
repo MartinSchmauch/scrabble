@@ -22,6 +22,9 @@ public class Tile implements Serializable {
   private boolean onRack;
 
 
+  /**
+   * This method creates an instance of the class.
+   */
   public Tile(Letter letter, Field field) {
     this.letter = letter;
     setField(field);
@@ -53,13 +56,21 @@ public class Tile implements Serializable {
     }
   }
 
+  /**
+   * This method is used if you don´t want to set the automatically generated double link between
+   * Tile and Field.
+   */
   public void setOnlyField(Field field) {
     if (field.getTile() != this) {
       field.setTile(this);
     }
   }
 
-  /** @author lurny */
+  /**
+   * This method sets only one direction of the double linked Tile - Field.
+   *
+   * @author lurny
+   */
   public void setFieldOneDirection(Field field) {
     this.field = field;
   }
@@ -91,6 +102,8 @@ public class Tile implements Serializable {
   }
 
   /**
+   * This method overrides the equal method to compare two tiles.
+   *
    * @author lurny
    */
   @Override
@@ -139,15 +152,12 @@ public class Tile implements Serializable {
   }
 
   /**
-   * This method returns the top tile, which lies next to the current tile. If the top field or top
-   * tile does not exists the method returns null.
-   * 
+   * This method provides the top tile, which lies next to the current tile. If the top field or top
+   * tile does not exists the method gives back null.
+   *
    * @author lurny
    */
   public Tile getTopTile() {
-    // System.out.println("Hi");
-    // System.out.println(this.getField().getxCoordinate() + " , " +
-    // this.getField().getyCoordinate());
     Field f = this.getField().getTop();
     if (f == null) {
       return null;
@@ -162,8 +172,8 @@ public class Tile implements Serializable {
   }
 
   /**
-   * This method gives the top bottom, which lies next to the current tile. If the bottom field or
-   * bottom tile does not exists the method returns null.
+   * This method provides the top bottom, which lies next to the current tile. If the bottom field
+   * or bottom tile does not exists the method gives back null.
    *
    * @author lurny
    */
@@ -182,9 +192,9 @@ public class Tile implements Serializable {
   }
 
   /**
-   * This method returns the left tile, which lies next to the current tile. If the left field or
-   * left tile does not exists the method returns null.
-   * 
+   * This method provides the left tile, which lies next to the current tile. If the left field or
+   * left tile does not exists the method gives back null.
+   *
    * @author lurny
    */
   public Tile getLeftTile() {
@@ -202,17 +212,17 @@ public class Tile implements Serializable {
   }
 
   /**
-   * This method returns the right tile, which lies next to the current tile. If the right field or
-   * right tile does not exists the method returns null.
-   * 
+   * This method provides the right tile, which lies next to the current tile. If the right field or
+   * right tile does not exists the method gives back null.
+   *
    * @author lurny
    */
   public Tile getRightTile() {
-    
+
     if (this.getField() == null) {
       System.out.println("######### PROBLEM IN TILE LINE 213");
     }
-    
+
     Field f = this.getField().getRight();
     if (f == null) {
       return null;
@@ -228,13 +238,6 @@ public class Tile implements Serializable {
 
   @Override
   public String toString() {
-    // if (this.getField().getTile() != this) {
-    // return
-    // "###########################\n###########################\n###########################\n###########################\n
-    // DOPPELREFERENZIERUNG KAPUTT !!!!!!!\n"
-    // + "Tile at at Field " + this.field.toString() + " with Char "
-    // + this.letter.getCharacter();
-    // }
     if (this.field == null) {
       return "Tile (currently Field=null) with Char " + this.letter.getCharacter();
     }
