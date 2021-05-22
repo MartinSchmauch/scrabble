@@ -32,6 +32,7 @@ import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameStatisticMessage;
 import network.messages.InvalidMoveMessage;
+import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
@@ -116,8 +117,8 @@ public class Server {
       public void run() {
 
         List<Tile> tileList = new ArrayList<Tile>();
-        if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) { // normal
-                                                                                                  // game
+        // check if player is playing a normal game and not a tutorial
+        if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) {
           tileList = gameController.drawTiles(7);
         } else { // tutorial
           char[] chars = {'B', 'E', 'D'};
@@ -405,7 +406,7 @@ public class Server {
   /**
    * Thread method that continuously checks for new clients trying to connect. When a new clients
    * connects, a new instance of ServerProtocol is created, moderating the client-server connection
-   * 
+   *
    * @author pkoenig
    */
 
@@ -860,6 +861,19 @@ public class Server {
 
   }
 
+  /**
+   * This method sends the current lobby status containing the gameState and all relevant game
+   * settings.
+   *
+   * @author ldreyer
+   */
+  public void sendLobbyStatus() {
+    LobbyStatusMessage lsm = new LobbyStatusMessage(this.host,
+        GameSettings.getTimePerPlayer(), GameSettings.getMaxScore(), GameSettings.getBingo(),
+        GameSettings.getAiDifficulty(), GameSettings.getTilesOnRack(), GameSettings.getLetters(),
+        this.gameState);
+    sendToAll(lsm);
+  }
 
 
   public Player getPlayer() {

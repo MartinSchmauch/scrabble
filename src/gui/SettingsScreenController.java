@@ -16,6 +16,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mechanic.Letter;
 import mechanic.Player;
+import network.messages.UpdateChatMessage;
 import util.JsonHandler;
 
 /**
@@ -28,6 +29,7 @@ import util.JsonHandler;
 public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   private Player currentPlayer;
+  private boolean changed;
   private static SettingsScreenController instance;
 
 
@@ -131,6 +133,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   public void initialize() {
     instance = this;
+    this.changed = false;
     this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar.setImage(
@@ -145,6 +148,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @Override
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
+
+    if (!s.equals("exit") && !s.equals("save")) {
+      changed = true;
+    }
+
     switch (s) {
       case "user":
         // showUserProfile();
@@ -231,7 +239,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         break;
       case "exit":
       case "save":
-        saveSettings();
+        if (changed) {
+          saveSettings();
+        }
         Button b = (Button) e.getSource();
         Stage st = (Stage) (b.getScene().getWindow());
         st.close();
@@ -260,6 +270,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
         this.currentPlayer);
 
+    this.currentPlayer.getServer().sendLobbyStatus();
+    this.currentPlayer.getServer()
+        .sendToAll(new UpdateChatMessage("", "Game's settings were updated!", null));
   }
 
   /**

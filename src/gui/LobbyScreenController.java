@@ -36,7 +36,6 @@ import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
-import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 
 /**
@@ -332,7 +331,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       if (m.matches()) {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
-        this.player.getServer().getServerProtocol().sendInitialGameState();
+        this.player.getServer().sendLobbyStatus();
         
         this.player.getServer().removeFromAiPlayers(nickname);
       } else {

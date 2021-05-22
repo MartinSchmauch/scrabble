@@ -8,7 +8,6 @@ import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
-import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
@@ -48,16 +47,6 @@ public class ServerProtocol extends Thread {
     } catch (IOException e) {
       e.printStackTrace();
     }
-  }
-
-
-  /** Sends the initialGameState to the client who uses this protocol. */
-
-  public void sendInitialGameState() {
-    LobbyStatusMessage m = new LobbyStatusMessage(server.getHost(), server.getGameState());
-
-    this.server.sendToAll(m);
-
   }
 
 
@@ -120,7 +109,7 @@ public class ServerProtocol extends Thread {
           cm.getPlayerInfo().setNickname(this.clientName);
           server.addClient(cm.getPlayerInfo(), this);
           server.sendToAll(cm);
-          sendInitialGameState();
+          server.sendLobbyStatus();
         } else if (!from.equals(this.clientName)) {
           Message rmsg = new ConnectionRefusedMessage(server.getHost(),
               "Your sender name did not match your nickname. Error.");
@@ -131,7 +120,7 @@ public class ServerProtocol extends Thread {
         } else {
           server.addClient(cm.getPlayerInfo(), this);
           server.sendToAll(cm);
-          sendInitialGameState();
+          server.sendLobbyStatus();
         }
       } else {
         disconnect();

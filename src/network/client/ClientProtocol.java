@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
+import game.GameSettings;
 import game.GameState;
 import game.GameStatistic;
 import gui.GamePanelController;
@@ -214,6 +215,12 @@ public class ClientProtocol extends Thread {
                     LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
                     gameState = lsMessage.getGameState();
                     lsc.updateJoinedPlayers();
+                    GameSettings.setTimePerPlayer(lsMessage.getTimePerPlayer());
+                    GameSettings.setMaxScore(lsMessage.getMaxScore());
+                    GameSettings.setBingo(lsMessage.getBingo());
+                    GameSettings.setAiDifficulty(lsMessage.getAiDifficulty());
+                    GameSettings.setTilesOnRack(lsMessage.getTilesOnRack());
+                    GameSettings.setLetters(lsMessage.getLetters());
                   }
                   break;
                 case START_GAME:
