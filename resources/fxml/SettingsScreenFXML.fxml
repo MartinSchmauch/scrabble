@@ -191,7 +191,10 @@
                         <Label fx:id="dic0" prefHeight="34.0" prefWidth="97.0" text="dic0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font size="9.0" />
-                           </font></Label>
+                           </font>
+                           <tooltip>
+                              <Tooltip fx:id="tooltip" text="Empty Tooltip" />
+                           </tooltip></Label>
                         <Label fx:id="valid" alignment="CENTER_RIGHT" disable="true" opacity="0.0" prefHeight="31.0" prefWidth="220.0" text="File not valid (use .txt)" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <font>
                               <Font size="7.0" />
