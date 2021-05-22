@@ -4,6 +4,7 @@ import game.GameController;
 import game.GameSettings;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -394,7 +395,7 @@ public class Turn implements Serializable {
       res.laydDownFields.add(t.getField());
     }
     res.player = this.player;
-    res.isValid = this.isValid;
+    res.isValid = true; // TODO not so nice
     for (Tile t : this.laydDownTiles) {
       res.laydDownTiles.add(t);
     }
@@ -459,6 +460,25 @@ public class Turn implements Serializable {
    */
   public void setStarTiles(List<Tile> starTiles) {
     this.starTiles = starTiles;
+  }
+
+  /**
+   * @return the laydDownFields
+   */
+  public List<Field> getLaydDownFields() {
+    return laydDownFields;
+  }
+
+  /**
+   * @param laydDownFields the laydDownFields to set
+   */
+  public void setLaydDownFields(List<Field> laydDownFields) {
+    this.laydDownFields = laydDownFields;
+  }
+
+  public void setLaydDownFields(Field[] currentLocation) {
+    this.laydDownFields = Arrays.asList(currentLocation);
+    
   }
 
 

@@ -295,7 +295,7 @@ public class Player {
   public void moveToGameBoard(int oldIndex, int newX, int newY) {
     Tile t = rack[oldIndex].getTile();
     if (t == null) {
-      gpc.indicateInvalidTurn(this.getNickname(), "Selcted field on Rack is empty.");
+      gpc.indicateInvalidTurn(this.getNickname(), "Selected field on Rack is empty.");
       return;
     }
     AddTileMessage atm = new AddTileMessage(this.getNickname(), t, newX, newY);
@@ -303,6 +303,16 @@ public class Player {
       server.handleAddTileToGameBoard(atm);
     } else {
       client.sendToServer(atm);
+    }
+  }
+  
+  public void personalMoveToGameBoard(Tile t, Field f) {
+    if (t.getField().getyCoordinate() != -1) {
+      System.out.println("\nINVALID: personalMovetoGameboard + \n");
+    }
+    else {
+      this.setRackTileToNone(t.getField().getxCoordinate());
+      f.setTile(t);
     }
   }
 
