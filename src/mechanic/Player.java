@@ -51,7 +51,6 @@ public class Player {
    * This constructor is used for initializing a Player Object with an ObjectMapper from a JSON
    * file.
    */
-
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume,
@@ -97,41 +96,42 @@ public class Player {
     return this.info.getAvatar();
   }
 
+  @JsonIgnore
   public PlayerStatistics getStatistics() {
     return this.info.getPlayerStatistics();
   }
 
-  @JsonIgnore
+
   public int getGameCount() {
     return getStatistics().getGameCount();
   }
 
-  @JsonIgnore
+
   public int getBestTurn() {
     return this.getStatistics().getBestTurn();
   }
 
-  @JsonIgnore
+
   public String getBestWord() {
     return this.getStatistics().getBestWord();
   }
 
-  @JsonIgnore
+
   public int getPlayTime() {
     return this.getStatistics().getPlayTime();
   }
 
-  @JsonIgnore
+
   public int getScore() {
     return this.getStatistics().getScore();
   }
 
-  @JsonIgnore
+
   public int getWins() {
     return this.getStatistics().getWins();
   }
 
-  @JsonIgnore
+
   public int getPlayedTiles() {
     return this.getStatistics().getPlayedTiles();
   }
