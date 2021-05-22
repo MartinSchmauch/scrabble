@@ -94,6 +94,8 @@ public class AIplayerTest {
   @Test
   public void testDocumentTwoTilesCombinations() {
     int iterations = 10;
+    int maxNumberOfCombinationsToUse;
+    
 
     // DOCUMENTATION
     Stopwatch timeOverall = Stopwatch.createUnstarted();
@@ -101,14 +103,14 @@ public class AIplayerTest {
     file = new File(System.getProperty("user.dir") + System.getProperty("file.separator")
         + "resources" + System.getProperty("file.separator") + "csv"
         + System.getProperty("file.separator")
-        + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HH:mm:ss")) + ".csv");
+        + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HH_mm_ss")) + ".csv");
     try {
       file.createNewFile();
     } catch (IOException e1) {
       e1.printStackTrace();
     }
     String[] currentTurnWithParam = new String[] {"BoardSetup", "maxNumOfTiles",
-        "numOfCombinationsToUse", "RacktilesAtBeginOfTurn", "Duration(millisec)",
+        "numOfCombinationsToUse", "goodTurnScore", "RacktilesAtBeginOfTurn", "Duration(millisec)",
         "StringRepresentation", "layedDownFields", "turnScore", "containesStarTiles", "StarTiles"};
     String[] temp;
     List<String[]> toCsv = new ArrayList<String[]>();
@@ -133,6 +135,7 @@ public class AIplayerTest {
       setUpGameBoard1(gb);
 
       aiplayer = new AIplayer("test-1-" + i, 0, 0, gc1);
+      aiplayer.setTestmode(true);
 
       for (int ii = 0; ii < 7; ii++) {
         newRackChar = (char) ((Math.random() * (92 - 'A')) + 'A');
@@ -142,149 +145,78 @@ public class AIplayerTest {
         aiplayer
             .addTileToRack(new Tile(GameSettings.getLetterForChar(newRackChar), new Field(0, 0)));
       }
+      
+      maxNumberOfCombinationsToUse = 0;
+      int helper = 0;
 
       for (int maxNumOfTiles = 2; maxNumOfTiles <= 7; maxNumOfTiles++) {
+        
+        helper = 1;
+        for (int h = 0; h < maxNumOfTiles; h++) {
+          helper *= 7 - h;
+        }
+            
+        maxNumberOfCombinationsToUse += helper;
+        
         for (int numberOfCombinationsToUse =
-            10; numberOfCombinationsToUse <= 6000; numberOfCombinationsToUse += 1000) { // TODO
-          System.out.println("\n-------------------------------------------------------------");
-          System.out.println("PARAMETER: maxNumOfTilew = " + maxNumOfTiles
-              + ", numberOfCombinationsToUse = " + numberOfCombinationsToUse);
-          System.out.println("-------------------------------------------------------------");
+            15; numberOfCombinationsToUse <= maxNumberOfCombinationsToUse; numberOfCombinationsToUse *= 2) { // TODO
+          for (int goodScore = 5; goodScore < 200; goodScore *= 2) {
+            System.out.println("\n-------------------------------------------------------------");
+            System.out.println("PARAMETER: maxNumOfTiles = " + maxNumOfTiles
+                + ", numberOfCombinationsToUse = " + numberOfCombinationsToUse
+                + ", goodScore = " + goodScore);
+            System.out.println("-------------------------------------------------------------");
 
-          aiplayer.setMaxNumOfTiles(maxNumOfTiles);
-          aiplayer.generateTileCombinations();
-          aiplayer.setNumberOfCombinationsToUse(numberOfCombinationsToUse);
+            aiplayer.setMaxNumOfTiles(maxNumOfTiles);
+            aiplayer.generateTileCombinations();
+            aiplayer.setNumberOfCombinationsToUse(numberOfCombinationsToUse);
+            aiplayer.setGoodScore(goodScore);
 
-          /*
-           * TIMED AREA BEGIN
-           */
-          timeOverall.start();
-          idealTurn = aiplayer.runAi(gb);
-          timeOverall.stop();
+            /*
+             * TIMED AREA BEGIN
+             */
+            timeOverall.start();
+            idealTurn = aiplayer.runAi(gb);
+            timeOverall.stop();
 
-          /*
-           * TIMED AREA END
-           */
-          if (idealTurn == null) {
+            /*
+             * TIMED AREA END
+             */
+            if (idealTurn == null) {
+              timeOverall.reset();
+              break;
+            }
+
+            currentTurnWithParam[0] = 1 + ""; // current Board Setup
+            currentTurnWithParam[1] = maxNumOfTiles + "";
+            currentTurnWithParam[2] = numberOfCombinationsToUse + "";
+            currentTurnWithParam[3] = goodScore + "";
+            currentTurnWithParam[4] = aiplayer.getRackTile(0).getLetter().getCharacter() + "";
+            for (int k = 1; k < GameSettings.getTilesOnRack(); k++) {
+              currentTurnWithParam[4] = currentTurnWithParam[4] + ", "
+                  + aiplayer.getRackTile(k).getLetter().getCharacter();
+            }
+            currentTurnWithParam[5] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
             timeOverall.reset();
-            break;
-          }
 
-          currentTurnWithParam[0] = 1 + ""; // current Board Setup
-          currentTurnWithParam[1] = maxNumOfTiles + "";
-          currentTurnWithParam[2] = numberOfCombinationsToUse + "";
-          currentTurnWithParam[3] = aiplayer.getRackTile(0).getLetter().getCharacter() + "";
-          for (int k = 1; k < GameSettings.getTilesOnRack(); k++) {
-            currentTurnWithParam[3] =
-                currentTurnWithParam[3] + ", " + aiplayer.getRackTile(k).getLetter().getCharacter();
-          }
-          currentTurnWithParam[4] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
-          timeOverall.reset();
+            temp = idealTurn.toStringArray();
 
-          temp = idealTurn.toStringArray();
-
-          for (int ii = 0; ii < temp.length; ii++) {
-            currentTurnWithParam[ii + 5] = temp[ii];
-          }
-          for (String s : currentTurnWithParam) {
-            System.out.println(s);
-          }
-          toCsv.add(currentTurnWithParam);
-          try {
-            csvWriterAll(toCsv, file);
-            toCsv.clear();
-          } catch (Exception e) {
-            e.printStackTrace();
+            for (int ii = 0; ii < temp.length; ii++) {
+              currentTurnWithParam[ii + 5] = temp[ii];
+            }
+            for (String s : currentTurnWithParam) {
+              System.out.println(s);
+            }
+            toCsv.add(currentTurnWithParam);
+            try {
+              csvWriterAll(toCsv, file);
+              toCsv.clear();
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         }
       }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println();
-    System.out.println("######### AI TEST WITH RACK VERSION 2 #########");
-    System.out.println();
-    System.out.println("-------------------------------------------------------------\n");
-    for (int i = 0; i < iterations; i++) {
-
-      PlayerData pd1 = new PlayerData("test-" + i);
-      GameState gs1 = new GameState(pd1, null);
-      GameController gc1 = new GameController(gs1);
-      gs1.setUpGameboard();
-      gb = gs1.getGameBoard();
-      setUpGameBoard2(gb);
-
-      aiplayer = new AIplayer("test-2-" + i, 0, 0, gc1);
-
-      for (int ii = 0; ii < 7; ii++) {
-        newRackChar = (char) ((Math.random() * (92 - 'A')) + 'A');
-        if (newRackChar == (char) 91) {
-          newRackChar = '*';
-        }
-        aiplayer
-            .addTileToRack(new Tile(GameSettings.getLetterForChar(newRackChar), new Field(0, 0)));
-      }
-
-      for (int maxNumOfTiles = 2; maxNumOfTiles <= 7; maxNumOfTiles++) {
-        for (int numberOfCombinationsToUse =
-            10; numberOfCombinationsToUse <= 40; numberOfCombinationsToUse += 5) {
-          System.out.println("\n-------------------------------------------------------------");
-          System.out.println("PARAMETER: maxNumOfTilew = " + maxNumOfTiles
-              + ", numberOfCombinationsToUse = " + numberOfCombinationsToUse);
-          System.out.println("-------------------------------------------------------------");
-
-          aiplayer.setMaxNumOfTiles(maxNumOfTiles);
-          aiplayer.generateTileCombinations();
-          aiplayer.setNumberOfCombinationsToUse(numberOfCombinationsToUse);
-          /*
-           * TIMED AREA BEGIN
-           */
-          timeOverall.start();
-          idealTurn = aiplayer.runAi(gb);
-          timeOverall.stop();
-
-          /*
-           * TIMED AREA END
-           */
-
-          if (idealTurn == null) {
-            timeOverall.reset();
-            break;
-          }
-
-          currentTurnWithParam[0] = 2 + ""; // current Board Setup
-          currentTurnWithParam[1] = maxNumOfTiles + "";
-          currentTurnWithParam[2] = numberOfCombinationsToUse + "";
-          currentTurnWithParam[3] = aiplayer.getRackTile(0).getLetter().getCharacter() + "";
-          for (int k = 1; k < GameSettings.getTilesOnRack(); k++) {
-            currentTurnWithParam[3] =
-                currentTurnWithParam[3] + ", " + aiplayer.getRackTile(k).getLetter().getCharacter();
-          }
-          currentTurnWithParam[4] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
-          timeOverall.reset();
-
-          temp = idealTurn.toStringArray();
-          for (int ii = 0; ii < temp.length; ii++) {
-            currentTurnWithParam[ii + 5] = temp[ii];
-          }
-          for (String s : currentTurnWithParam) {
-            System.out.println(s);
-          }
-          toCsv.add(currentTurnWithParam);
-          try {
-            csvWriterAll(toCsv, file);
-            toCsv.clear();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        }
-      }
-    }
-
-    try {
-      csvWriterAll(toCsv, file);
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 

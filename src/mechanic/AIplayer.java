@@ -32,8 +32,8 @@ public class AIplayer extends Player {
   // count)
   // private final int numberOfCombinationSize = 2; // currently only 2 is supported
 
-  private int minScore;
-  private int maxTimeInSec;
+  private int goodScore;
+  private boolean testmode = false;
 
   public enum AiLevel {
     LOW, MEDIUM, HIGH, UNBEATABLE
@@ -148,28 +148,24 @@ public class AIplayer extends Player {
     this.tileCombinations = new TreeSet<AIcombination>();
     switch (ailevel) {
       case LOW:
-        this.maxNumOfTiles = 3;
-        this.numberOfCombinationsToUse = 10000;
-        this.minScore = 5;
-        this.maxTimeInSec = 15;
+        this.maxNumOfTiles = 7;
+        this.numberOfCombinationsToUse = 20;
+        this.goodScore = 10;
         break;
       case MEDIUM:
-        this.maxNumOfTiles = 4;
-        this.numberOfCombinationsToUse = 10000;
-        this.minScore = 5;
-        this.maxTimeInSec = 20;
+        this.maxNumOfTiles = 7;
+        this.numberOfCombinationsToUse = 50;
+        this.goodScore = 15;
         break;
       case HIGH:
-        this.maxNumOfTiles = 6;
-        this.numberOfCombinationsToUse = 10000;
-        this.minScore = 5;
-        this.maxTimeInSec = 30;
+        this.maxNumOfTiles = 7;
+        this.numberOfCombinationsToUse = 200;
+        this.goodScore = 20;
         break;
       case UNBEATABLE:
         this.maxNumOfTiles = 7;
         this.numberOfCombinationsToUse = 10000;
-        this.minScore = -1; // no minScore
-        this.maxTimeInSec = -1; // no maxTime
+        this.goodScore = 100;
         break;
 
       default:
@@ -215,7 +211,9 @@ public class AIplayer extends Player {
   }
 
   public Turn runAi(GameBoard gb) {
-    System.out.println("AI is running....");
+    System.out.println("\nAI is running with setting " + this.ailevel + "....");
+    Stopwatch sw = Stopwatch.createStarted();
+
     // init
     TreeSet<AIcombination> currentAiCombinations =
         (TreeSet<AIcombination>) getFilteredCombinationList().descendingSet();
@@ -224,6 +222,8 @@ public class AIplayer extends Player {
     ArrayList<HashSet<Field[]>> possibleLocations = new ArrayList<HashSet<Field[]>>();
     ArrayList<Tile> currentLayedDownTiles = new ArrayList<Tile>();
     int maximumScore = 0;
+    boolean finished = false;
+    int combinationIndex = 0;
 
     for (int i = 2; i <= this.getMaxNumOfTiles(); i++) {
       possibleLocations.add(getValidTilePositionsForNumOfTiles(gb, i));
@@ -237,46 +237,22 @@ public class AIplayer extends Player {
         for (Tile t : this.getRackTiles()) {
           if (t.getLetter().getCharacter() == c) {
             currentLayedDownTiles.add(t);
-
-            // if (currentLayedDownTiles.get(currentLayedDownTiles.size() - 1).getField() == null) {
-            // System.out.println("line 240");
-            // }
-
             this.setRackTileToNone(t.getField().getxCoordinate()); // !!!
             break;
           }
         }
       }
-      // if (currentLayedDownTiles.size() < 2) {
-      // System.out.println("line 244");
-      // }
-      // if (currentLayedDownTiles.size() != currentAiCombination.getChars().length) {
-      // System.out.println("line 247");
-      // }
-      int dummy = 0;
       // iterate over the possible locations
       for (Field[] currentLocation : possibleLocations.get(currentLayedDownTiles.size() - 2)) {
 
         // put Tiles on Gameboard
         for (int i = 0; i < currentLocation.length; i++) {
-
-
-          // if (currentLayedDownTiles.get(i).getField() == null) {
-          // System.out.println("line 244");
-          // }
-          // if (currentLayedDownTiles.get(i).getField().ge) {
-          // System.out.println("line 247");
-          // }
-
           if (currentLayedDownTiles.get(i).getField() != null) {
-            currentLayedDownTiles.get(i).getField().setTileOneDirection(null); // TODO
+            currentLayedDownTiles.get(i).getField().setTileOneDirection(null);
           }
-          
-//          currentLocation[i].setTile(currentLayedDownTiles.get(i)); // TODO
-          
           currentLayedDownTiles.get(i).setFieldOneDirection(currentLocation[i]);
           currentLocation[i].setTileOneDirection(currentLayedDownTiles.get(i));
-          
+
         }
 
         // manage Turn
@@ -286,15 +262,21 @@ public class AIplayer extends Player {
           maximumScore = currentTurn.getTurnScore();
           idealTurn = currentTurn.getDeepCopy();
           idealTurn.setLaydDownFields(currentLocation);
-          idealTurn.setValid(true);
+          
+          // found turn with good score (for AiLevel
+          if (maximumScore >= this.goodScore) {
+            finished = true;
+          }
         }
-        
+
         // cleanup gameboard
         for (int i = 0; i < currentLocation.length; i++) {
           currentLocation[i].setTileOneDirection(null); // TODO
           currentLayedDownTiles.get(i).setFieldOneDirection(null);
         }
-
+        if (finished) {
+          break;
+        }
       }
 
       // put Tiles back to the rack
@@ -306,11 +288,20 @@ public class AIplayer extends Player {
       }
       // clean currentLayedDownTiles
       currentLayedDownTiles.clear();
+      if (finished) {
+        break;
+      }
+      if (combinationIndex >= this.numberOfCombinationsToUse - 1) {
+        break;
+      }
+      combinationIndex++;
     }
 
     if (idealTurn == null) {
       return null;
     }
+    sw.stop();
+
     System.out.println();
     System.out.println();
     System.out.println("Maximum score: " + maximumScore);
@@ -319,27 +310,24 @@ public class AIplayer extends Player {
       System.out.println(w.toString());
     }
     System.out.println("----------------------");
-    System.out.println("RACKTILES ()");
-    for (Tile t : this.getRackTiles()) {
-      System.out.println(t.getLetter().getCharacter());
-    }
-    System.out.println("AI finished");
-    
-    // add Tiles to gameboard
-    Field[] maxLocation = new Field[idealTurn.getLaydDownFields().size()];
-    int i = 0;
-    for (Field f : idealTurn.getLaydDownFields()) {
-      maxLocation[i] = f;
-      i++;
-    }
-    ArrayList<Tile> maxTiles = (ArrayList<Tile>) idealTurn.getLaydDownTiles();
-//    Field[] maxLocation = (Field[]) idealTurn.getLaydDownFields().toArray();
-    for (int ii = 0; ii < maxTiles.size(); ii++) {
-      if (maxTiles.get(ii).getField() != null) {
-        maxTiles.get(ii).getField().setTile(null); // TODO
+    System.out.println("AI finished in " + sw.elapsed(TimeUnit.MILLISECONDS) + " milliseconds");
+
+    if (!this.testmode) {
+      // add Tiles to gameboard
+      Field[] maxLocation = new Field[idealTurn.getLaydDownFields().size()];
+      int i = 0;
+      for (Field f : idealTurn.getLaydDownFields()) {
+        maxLocation[i] = f;
+        i++;
       }
-      maxTiles.get(ii).setFieldOneDirection(maxLocation[ii]);
-      maxLocation[ii].setTileOneDirection(maxTiles.get(ii));
+      ArrayList<Tile> maxTiles = (ArrayList<Tile>) idealTurn.getLaydDownTiles();
+      for (int ii = 0; ii < maxTiles.size(); ii++) {
+        if (maxTiles.get(ii).getField() != null) {
+          maxTiles.get(ii).getField().setTile(null); // TODO
+        }
+        maxTiles.get(ii).setFieldOneDirection(maxLocation[ii]);
+        maxLocation[ii].setTileOneDirection(maxTiles.get(ii));
+      }
     }
 
     return idealTurn;
@@ -1090,6 +1078,34 @@ public class AIplayer extends Player {
    */
   public void setGc(GameController gc) {
     this.gc = gc;
+  }
+
+  /**
+   * @return the goodScore
+   */
+  public int getGoodScore() {
+    return goodScore;
+  }
+
+  /**
+   * @param goodScore the goodScore to set
+   */
+  public void setGoodScore(int goodScore) {
+    this.goodScore = goodScore;
+  }
+
+  /**
+   * @return the testmode
+   */
+  public boolean isTestmode() {
+    return testmode;
+  }
+
+  /**
+   * @param testmode the testmode to set
+   */
+  public void setTestmode(boolean testmode) {
+    this.testmode = testmode;
   }
 
 }

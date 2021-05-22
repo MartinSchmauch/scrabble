@@ -183,7 +183,9 @@ public class Server {
           e.printStackTrace();
         }
       }
-      this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
+//      this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
+      resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
+
     }
   }
 
@@ -337,7 +339,7 @@ public class Server {
           endGame();
           return;
         }
-        // Update total playetime TODO ist auskommentiert
+        // Update total playetime
         if (!this.aiPlayers.containsKey(from)) {
           this.gameState.getGameStatisticsOfPlayer(from)
               .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
@@ -367,10 +369,6 @@ public class Server {
       }
     }
   }
-  // else { // turn is invalid
-  // sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from), null,
-  // this.gameController.getTileBag().getRemaining()));
-  // }
 
 
   /**
@@ -381,25 +379,26 @@ public class Server {
     if (this.aiPlayers.containsKey(player)) {
       System.out.println("handleAi Player line 332");
       Turn aiTurn = this.aiPlayers.get(player).runAi(this.gameState.getGameBoard());
-      TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles()); // TODO eventuell
-                                                                           // liegen die Tiles nun
-                                                                           // auf dem Rack
-      this.gameController.setTurn(aiTurn);
-      CommitTurnMessage ctm =
-          new CommitTurnMessage(player, !this.aiPlayers.get(player).getRackTiles().isEmpty());
-      this.sendToAll(tm);
-      try {
-        Thread.sleep(500);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+      // if no Turn found, exchange all RackTiles
+      if (aiTurn == null) {
+        handleExchangeTiles(new TileMessage(player, this.aiPlayers.get(player).getRackTiles()));
+      } else {
+        TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
+        this.sendToAll(tm);
+        
+        try {
+          Thread.sleep(500);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
+
+        this.gameController.setTurn(aiTurn);
+        CommitTurnMessage ctm =
+            new CommitTurnMessage(player, !this.aiPlayers.get(player).getRackTiles().isEmpty());
+
+        this.handleCommitTurn(ctm);
       }
-      // this.sendToAll(ctm);
-      this.handleCommitTurn(ctm);
-      // try {
-      // Thread.sleep(500);
-      // } catch (InterruptedException e) {
-      // e.printStackTrace();
-      // }
     }
   }
 
@@ -557,7 +556,13 @@ public class Server {
       AddTileMessage atm =
           new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
       sendToAll(atm);
-
+      
+      try {
+        Thread.sleep(500);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      
       RemoveTileMessage rtm =
           new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
       sendToAll(rtm);

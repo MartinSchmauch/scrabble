@@ -435,6 +435,7 @@ public class Turn implements Serializable {
   public String[] toStringArray() {
     String[] res = new String[5];
     res[0] = this.stringRepresentation;
+    res[1] = "";
     for (Field f : this.laydDownFields) { // list of fields
       res[1] = res[1] + ", " + f;
     }
