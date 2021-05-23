@@ -283,7 +283,7 @@ public class TutorialController extends GamePanelController
           Optional<ButtonType> result = alert.showAndWait();
           if (result.get() == ButtonType.OK) {
 
-            closeTutorial(); // TODO: close method not neccesary anymore?
+            closeTutorial();
           }
         }
         break;
@@ -334,7 +334,7 @@ public class TutorialController extends GamePanelController
             for (Rectangle r : rect) {
               r.setStroke(Color.BLACK);
             }
-            tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
+            tilesToExchange.removeAll(tilesToExchange);
           }
           exchangeTilesMode = false;
           changeSkipAndChangeStatus(true);
@@ -572,15 +572,6 @@ public class TutorialController extends GamePanelController
         break;
       default:
         break;
-    }
-    // maybe for later
-    List<Tile> tileList = new ArrayList<Tile>();
-    for (Tile t : tileList) {
-
-      t.setField(player.getFreeRackField());
-      t.setOnGameBoard(false);
-      t.setOnRack(true);
-      this.addTile(t);
     }
     return false;
 
@@ -941,31 +932,7 @@ public class TutorialController extends GamePanelController
     });
   }
 
-  /**
-   * This method is called, when the host decides to shut down the server. For the clients this
-   * method creates a warning alert and after confirmation, the game panel is closed.
-   */
-  public void showShutdownMessage(String hostName, String reason) {
-    Platform.runLater(new Runnable() {
-      @Override
-      public void run() {
-        CustomAlert alert = new CustomAlert(AlertType.WARNING);
-        alert.setTitle("Server Shutdown");
-        alert.setHeaderText("Server stopped and game ended.");
-        alert.setContentText("The Server was shut down by '" + hostName + "'. \nReason: " + reason);
-        alert.initStyle(StageStyle.UNDECORATED);
 
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-          Stage st = (Stage) rulesButton.getScene().getWindow(); // TODO: das muss schoener gehen
-          st.close();
-          alert.close();
-        }
-      }
-    });
-    new LoginScreen().start(new Stage());
-  }
 
   /**
    * This method updates the score of an Player on the UI and shows a new totalScore.
