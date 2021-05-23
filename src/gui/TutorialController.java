@@ -221,16 +221,13 @@ public class TutorialController extends GamePanelController
    * state.
    */
   public void initData(Player player) {
-    this.min = 90;
+    this.settingsButton.setText("Show Tip");
     this.skipAndChangeButton.setDisable(true);
     this.remainingLetters.setOpacity(0);
     this.player = player;
     cc = new ChatController(player);
     chat.setEditable(false);
-
-    this.chat.appendText(
-        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game.\n\nStart by dragging the 'B','E' and 'D' on the marked fields and hit \"done.");
-
+    updateChat("\n\nStart by dragging the 'B','E' and 'D' on the marked fields and hit \"done.");
     Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
     Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
     Text[] playerNameLabel = {player1, player2, player3, player4};
@@ -269,7 +266,7 @@ public class TutorialController extends GamePanelController
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "settingsButton":
-        // TODO: any settings here to be adjusted?
+        showTip(this.indicator);
         break;
       case "leaveGameButton":
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
@@ -302,6 +299,7 @@ public class TutorialController extends GamePanelController
         if (!exchangeTilesMode) {
           exchangeTilesMode = true;
           changeSkipAndChangeStatus(false);
+          this.doneButton.setDisable(false);
         }
         break;
       case "doneButton":
@@ -311,7 +309,7 @@ public class TutorialController extends GamePanelController
             alert2.setTitle("Skip & Exchange selected tiles");
             alert2.setHeaderText("Skip & Exchange?");
             alert2.setContentText(
-                "Do you want to skip the current turn and exchange the selected tiles ");
+                "Do you want to skip the current turn \nand exchange the selected tiles? ");
             alert2.initStyle(StageStyle.UNDECORATED);
 
             alert2.changeButtonText("Yes", ButtonType.OK);
@@ -326,6 +324,8 @@ public class TutorialController extends GamePanelController
                 this.player.removeRackTile(t.getField().getxCoordinate());
               }
               sendTileMessage(this.player.getNickname());
+              this.chat.appendText("\n\n THANK YOU FOR PLAYING");
+              endTutorial();
             } else {
               alert2.close();
             }
@@ -349,6 +349,55 @@ public class TutorialController extends GamePanelController
   }
 
   /**
+   * This method tells the user what to do.
+   * 
+   * @param index indicates in which state of the tutorial is.
+   */
+  public void showTip(int index) {
+    CustomAlert alert = new CustomAlert(AlertType.INFORMATION);
+    switch (index) {
+      case 0:
+        alert.setHeaderText("Lay your first word");
+        alert.setContentText(
+            "Drag the correct letters on their designated place.\nFirst word has to go through the middle!");
+        break;
+      case 1:
+        alert.setHeaderText("React");
+        alert.setContentText(
+            "Lay the next indicated word.\nA new word always has to connect with a word already placed.");
+        break;
+      case 2:
+        alert.setHeaderText("Exhange your tiles");
+        alert.setContentText(
+            "Hit \"Skip & Change\"!\nSelect the tiles you want to change and hit \"Done\".\nIf you change tiles, you can't lay words in this round.");
+        break;
+      default:
+        break;
+    }
+    alert.show();
+  }
+
+  /**
+   * This method gets called when the tutorial has successfully ended. It gives the user the
+   * opportunity to just leave the screen or additionally view the rules.
+   */
+  public void endTutorial() {
+    CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
+    alert.setHeaderText("Thank you for playing the Tutorial!");
+    alert.setContentText(
+        "Now try your skills in a real game!\nFor more theoretical info visit the rules.");
+    alert.changeButtonText("Leave", ButtonType.OK);
+    alert.changeButtonText("Show Rules", ButtonType.CANCEL);
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get().equals(ButtonType.OK)) {
+      closeTutorial();
+    } else {
+      closeTutorial();
+      OpenExternalScreen.open(FileParameters.datadir + "ScrabbleRules.pdf");
+    }
+  }
+
+  /**
    * This method indicates the next strp in the tutorial.
    *
    * @author nilbecke
@@ -359,20 +408,21 @@ public class TutorialController extends GamePanelController
       case 0:
         if (validateTurn(indicator)) {
           this.playerOnePoints.setText("12");
-          this.chat.appendText("\n\nWell done, you layed your first word! ");
+          updateChat(
+              "\n\nWell done, you layed your first word!\n\nLook, your opponent has layed down a word as well.\n\nNow lay the words \"DO\" and \"NOMAINTE\" by dragging the letters onto the designated fields. Use the '*' as a 'T'. ");
           tutorialTurn(indicator);
-          this.chat.appendText("\n\nLook, your opponent has layed down a word as well.");
           this.indicator++;
           break;
 
         }
 
       case 1:
-
         if (validateTurn(indicator)) {
+          updateChat(
+              "\n\nAs these letters form two words (DO and NOMINATE), you will recieve the points for both these words.\n\nThe last task is to exchange Tiles. To do so hit the \"Skip and Exchange\" Button and select the Tiles you want to change. After that hit \"Done\". ");
+          tutorialTurn(indicator);
           this.indicator++;
         }
-
         break;
       default:
         break;
@@ -388,9 +438,11 @@ public class TutorialController extends GamePanelController
   public void tutorialTurn(int indicator) {
     GameBoard gb = this.player.getServer().getGameController().getGameState().getGameBoard();
     TileBag tb = new TileBag();
+    Tile[] toAdd;
+    Tile[] newTiles;
     switch (indicator) {
       case 0:
-        Tile[] toAdd = new Tile[5];
+        toAdd = new Tile[5];
         toAdd[0] = tb.drawTile('S');
         toAdd[0].setField(gb.getField(8, 7));
         toAdd[1] = tb.drawTile('N');
@@ -404,13 +456,14 @@ public class TutorialController extends GamePanelController
         for (int i = 0; i < toAdd.length; i++) {
           toAdd[i].setOnRack(false);
           addTile(toAdd[i]);
+          toAdd[i].setPlayed(true);
         }
-        Tile[] newTiles = new Tile[7];
+        newTiles = new Tile[7];
         newTiles[0] = tb.drawTile('M');
         newTiles[1] = tb.drawTile('O');
         newTiles[3] = tb.drawTile('E');
         newTiles[2] = tb.drawTile('I');
-        newTiles[4] = tb.drawTile('T');
+        newTiles[4] = tb.drawTile('*');
         newTiles[5] = tb.drawTile('A');
         newTiles[6] = tb.drawTile('N');
         for (int i = 0; i < newTiles.length; i++) {
@@ -426,6 +479,30 @@ public class TutorialController extends GamePanelController
         tut8.setOpacity(0.5);
         tut9.setOpacity(0.5);
         tut0.setOpacity(0.5);
+        break;
+      case 1:
+        toAdd = new Tile[3];
+        toAdd[0] = tb.drawTile('G');
+        toAdd[0].setField(gb.getField(12, 7));
+        toAdd[1] = tb.drawTile('O');
+        toAdd[1].setField(gb.getField(12, 8));
+        toAdd[2] = tb.drawTile('E');
+        toAdd[2].setField(gb.getField(12, 10));
+        for (int i = 0; i < toAdd.length; i++) {
+          toAdd[i].setOnRack(false);
+          addTile(toAdd[i]);
+          toAdd[i].setPlayed(true);
+        }
+        newTiles = new Tile[7];
+        for (int i = 0; i < newTiles.length; i++) {
+
+          newTiles[i] = tb.drawTile((char) (i + 70));
+          newTiles[i].setField(gb.getField(i + 1, 1));
+          newTiles[i].setOnRack(true);
+          addTile(newTiles[i]);
+          this.player.setRackTile(i + 1, newTiles[i]);
+        }
+        this.doneButton.setDisable(true);
         break;
       default:
         break;
@@ -470,12 +547,27 @@ public class TutorialController extends GamePanelController
         break;
       case 1:
         char[] nominate = new char[7];
-        for (int i = 9; i < nominate.length + 9; i++) {
-          nominate[i - 9] = gb.getField(i, 9).getTile().getLetter().getCharacter();
+        try {
+          for (int i = 9; i < nominate.length + 9; i++) {
+            nominate[i - 9] = gb.getField(i, 9).getTile().getLetter().getCharacter();
+          }
+        } catch (NullPointerException e) {
+          showInvalidTurn();
         }
 
-        if (new String(nominate).equals("OMINATE")) {
-          this.chat.appendText("\n\nGreat Turn!");
+        if (new String(nominate).equals("OMINA*E")) {
+          removeTile(14, 9, false);
+          Tile t = new TileBag().drawTile('T');
+          t.setField(gb.getField(14, 9));
+          t.setOnRack(false);
+          addTile(t);
+          for (int i = 9; i < 16; i++) {
+            gb.getField(i, 9).getTile().setPlayed(true);
+            this.skipAndChangeButton.setDisable(false);
+          }
+          return true;
+        } else {
+          showInvalidTurn();
         }
         break;
       default:
@@ -494,13 +586,19 @@ public class TutorialController extends GamePanelController
 
   }
 
+  public void updateChat(String input) {
+    this.chat.setText(
+        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game. If you need help, click on \"Show Tip\"."
+            + input);
+  }
+
   /**
    * This method informs the user of a mistake in the tutorial.
    */
   public void showInvalidTurn() {
     CustomAlert alert = new CustomAlert(AlertType.ERROR);
     alert.setHeaderText("Retry move!");
-    alert.setContentText("Look in the chat for instructions and try again.");
+    alert.setContentText("Look in the chat for instructions or view tip and try again.");
     alert.show();
 
   }

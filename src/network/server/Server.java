@@ -18,8 +18,8 @@ import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import gui.TutorialController;
 import javafx.application.Platform;
-import mechanic.AIplayer;
 import javafx.stage.Stage;
+import mechanic.AIplayer;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -119,7 +119,7 @@ public class Server {
         List<Tile> tileList = new ArrayList<Tile>();
         // check if player is playing a normal game and not a tutorial
         if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) {
-          tileList = gameController.drawTiles(7);
+          tileList = gameController.drawTiles(GameSettings.getTilesOnRack());
         } else { // tutorial
           char[] chars = {'B', 'E', 'D'};
           tileList = gameController.drawTutorial(chars);
@@ -149,8 +149,9 @@ public class Server {
       this.sem = false;
       this.getGameController().addTilesToTileBag(m.getTiles());
       // If the host wants to perform the exchange
-
-      this.gpc.stopTimer();
+      if (gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) {
+        this.gpc.stopTimer();
+      }
       this.getGameController().addTilesToTileBag(m.getTiles());
       // If the host wants to perform the exchange
       if (m.getFrom().equals(this.getHost())) {
@@ -183,7 +184,7 @@ public class Server {
           e.printStackTrace();
         }
       }
-//      this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
+      // this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
       resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
 
     }
@@ -385,7 +386,7 @@ public class Server {
       } else {
         TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
         this.sendToAll(tm);
-        
+
         try {
           Thread.sleep(500);
         } catch (InterruptedException e) {
@@ -556,13 +557,13 @@ public class Server {
       AddTileMessage atm =
           new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
       sendToAll(atm);
-      
+
       try {
         Thread.sleep(500);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      
+
       RemoveTileMessage rtm =
           new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
       sendToAll(rtm);
@@ -873,10 +874,9 @@ public class Server {
    * @author ldreyer
    */
   public void sendLobbyStatus() {
-    LobbyStatusMessage lsm = new LobbyStatusMessage(this.host,
-        GameSettings.getTimePerPlayer(), GameSettings.getMaxScore(), GameSettings.getBingo(),
-        GameSettings.getAiDifficulty(), GameSettings.getTilesOnRack(), GameSettings.getLetters(),
-        this.gameState);
+    LobbyStatusMessage lsm = new LobbyStatusMessage(this.host, GameSettings.getTimePerPlayer(),
+        GameSettings.getMaxScore(), GameSettings.getBingo(), GameSettings.getAiDifficulty(),
+        GameSettings.getTilesOnRack(), GameSettings.getLetters(), this.gameState);
     sendToAll(lsm);
   }
 
