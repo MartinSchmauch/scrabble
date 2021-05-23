@@ -843,14 +843,11 @@ public class Server {
     }
     // for each player
 
-    boolean swap = true;
     for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
-      swap = false;
       for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
-        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
+        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) > gameState
             .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
           Collections.swap(gameState.getAllPlayers(), i, i + 1);
-          System.out.println("Test2,5");
         }
       }
     }

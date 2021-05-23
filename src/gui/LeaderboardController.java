@@ -171,9 +171,6 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
       pd.getPlayerStatistics().incrementWins();
     }
     // TODO best word
-    for (String p : players) {
-
-    }
     new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
         this.player);
   }
