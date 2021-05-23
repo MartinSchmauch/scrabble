@@ -2,8 +2,6 @@ package gui;
 
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -146,7 +144,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         new Thread(task).start();
         break;
       case "settings":
-        new SettingsScreen(this.gs).start(new Stage());
+        new SettingsScreen(this.player, true).start(new Stage());
         break;
       case "add1":
       case "add2":
@@ -231,26 +229,27 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
-    
+
     this.getPlayer().getServer().addAiPlayer(p);
     this.getPlayer().getServer().sendToAll(new ConnectMessage(p.getPlayerInfo()));
 
-//    try {
-//      Thread.sleep(100);
-//    } catch (InterruptedException e) {
-//      e.printStackTrace();
-//    
-//    }
-//    LobbyStatusMessage m = new LobbyStatusMessage(this.getPlayer().getServer().getHost(), this.getPlayer().getServer().getGameState());
+    // try {
+    // Thread.sleep(100);
+    // } catch (InterruptedException e) {
+    // e.printStackTrace();
+    //
+    // }
+    // LobbyStatusMessage m = new LobbyStatusMessage(this.getPlayer().getServer().getHost(),
+    // this.getPlayer().getServer().getGameState());
 
-//    this.getPlayer().getServer().sendToAll(m);
-    
-//    try {
-//      p.connect(InetAddress.getLocalHost().getHostAddress());
-//      this.getPlayer().getServer().addAiPlayer(p);
-//    } catch (UnknownHostException e) {
-//      e.printStackTrace();
-//    }
+    // this.getPlayer().getServer().sendToAll(m);
+
+    // try {
+    // p.connect(InetAddress.getLocalHost().getHostAddress());
+    // this.getPlayer().getServer().addAiPlayer(p);
+    // } catch (UnknownHostException e) {
+    // e.printStackTrace();
+    // }
 
 
   }
@@ -330,7 +329,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
         this.player.getServer().sendLobbyStatus();
-        
+
         this.player.getServer().removeFromAiPlayers(nickname);
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);

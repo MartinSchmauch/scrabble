@@ -1,7 +1,6 @@
 package gui;
 
 import java.io.IOException;
-import game.GameSettings;
 /** @author nilbecke **/
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -21,7 +20,7 @@ import mechanic.Player;
 
 public class SettingsScreen extends Application {
 
-  private static GameSettings settings;
+  private static boolean disable;
   private double xoffset;
   private double yoffset;
 
@@ -34,14 +33,10 @@ public class SettingsScreen extends Application {
    */
   public SettingsScreen(Player p, boolean lobby) {
     if (p.isHost() == false || lobby == false) {
-
+      disable = true;
     } else {
-      // settings = s;
+      disable = false;
     }
-  }
-
-  public SettingsScreen(GameSettings gs) {
-    settings = gs;
   }
 
   /**
@@ -80,20 +75,8 @@ public class SettingsScreen extends Application {
 
   }
 
-  /**
-   * Get the currently used game settings.
-   *
-   * @return currently used game settings
-   */
-  public static GameSettings getSettings() {
-    return settings;
-  }
-
-  /**
-   * Update the settings used.
-   */
-  public void setSettings(GameSettings s) {
-    settings = s;
+  public static boolean getDisable() {
+    return disable;
   }
 
   /**
@@ -103,10 +86,6 @@ public class SettingsScreen extends Application {
    */
   public SettingsScreen getSettingScreen() {
     return this;
-  }
-
-  public static void main(String[] args) {
-    launch(args);
   }
 
 }

@@ -71,23 +71,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button tppUp;
   @FXML
-  private Button mo;
-  @FXML
-  private Button moDown;
-  @FXML
-  private Button moUp;
-  @FXML
   private Button ms;
   @FXML
   private Button msDown;
   @FXML
   private Button msUp;
-  @FXML
-  private Button s;
-  @FXML
-  private Button sDown;
-  @FXML
-  private Button sUp;
   @FXML
   private Button b;
   @FXML
@@ -116,6 +104,10 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   private Button amountDown;
   @FXML
   private Button amountUp;
+  @FXML
+  private Button restore;
+  @FXML
+  private Button save;
   @FXML
   private TextField tpptf;
   @FXML
@@ -350,6 +342,33 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.letter.setText(GameSettings.getLetters().get('A').getCharacter() + "");
     this.letterValue.setText(GameSettings.getLetters().get('A').getLetterValue() + "");
     this.letterAmount.setText(GameSettings.getLetters().get('A').getCount() + "");
+
+    if (SettingsScreen.getDisable()) {
+      tpp.setDisable(true);;
+      tppDown.setDisable(true);
+      tppUp.setDisable(true);
+      ms.setDisable(true);
+      msDown.setDisable(true);
+      msUp.setDisable(true);
+      b.setDisable(true);
+      bDown.setDisable(true);
+      bUp.setDisable(true);
+      dif.setDisable(true);
+      dic1.setDisable(true);
+      dic2.setDisable(true);
+      torUp.setDisable(true);
+      torDown.setDisable(true);
+      letterDown.setDisable(true);
+      letterUp.setDisable(true);
+      valueDown.setDisable(true);
+      valueUp.setDisable(true);
+      amountDown.setDisable(true);
+      amountUp.setDisable(true);
+      save.setDisable(true);
+      save.setOpacity(0);
+      restore.setDisable(true);
+      restore.setOpacity(0);
+    }
   }
 
   /**

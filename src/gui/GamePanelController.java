@@ -321,7 +321,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     String s = ((Node) e.getSource()).getId();
     switch (s) {
       case "settingsButton":
-        // TODO: any settings here to be adjusted?
+        new SettingsScreen(this.player, false).start(new Stage());;
         break;
       case "leaveGameButton":
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
