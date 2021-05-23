@@ -229,7 +229,7 @@ public class Server {
           }
           // gameState.getGameStatistics()
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
-              gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+              gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining(), null));
           Runnable r = new Runnable() {
             public void run() {
               handleAi(gameState.getCurrentPlayer());
@@ -255,25 +255,8 @@ public class Server {
       turn.endTurn();
       sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
-      // check end game criteria
-      List<Turn> turns = this.getGameController().getTurns();
-      boolean fiveScorelessRounds = false;
 
-      if (turns.size() > 5) {
-        fiveScorelessRounds = true;
-        for (int i = 0; i < 5; i++) {
-          if (turns.get(i).getTurnScore() > 0) {
-            fiveScorelessRounds = false;
-            break;
-          }
-        }
-      }
-      if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
-          || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
-              && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
-        endGame();
-        return;
-      } else if (turn.isValid()) {
+      if (turn.isValid()) {
         if (turn.getTurnScore() > 0) {
           this.gameController.addScoredTurn(turn);
         }
@@ -291,10 +274,7 @@ public class Server {
             t.setOnRack(true);
             // gpc.addTile(t);
           }
-
-        }
-
-        else if (m.getFrom().equals(this.getHost())) {
+        } else if (m.getFrom().equals(this.getHost())) {
           // add new tiles to Domain and UI
           Platform.runLater(new Runnable() {
             @Override
@@ -318,6 +298,7 @@ public class Server {
             e.printStackTrace();
           }
         }
+
         if (turn.isContainedStarTiles()) {
           for (Tile t : turn.getStarTiles()) {
             this.sendToAll(new RemoveTileMessage(from, t.getField().getxCoordinate(),
@@ -338,6 +319,34 @@ public class Server {
           }
         }
 
+
+        // check end game criteria
+        List<Turn> turns = this.getGameController().getTurns();
+        boolean fiveScorelessRounds = false;
+
+        if (turns.size() > 5) {
+          fiveScorelessRounds = true;
+          for (int i = 0; i < 5; i++) {
+            if (turns.get(i).getTurnScore() > 0) {
+              fiveScorelessRounds = false;
+              break;
+            }
+          }
+        }
+
+        if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
+            || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
+                && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
+          Runnable r = new Runnable() {
+            public void run() {
+              endGame();
+            }
+          };
+          new Thread(r).start();
+          return;
+        }
+
+
         if (!this.aiPlayers.containsKey(from)) {
           this.gameState.getGameStatisticsOfPlayer(from)
               .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
@@ -348,7 +357,7 @@ public class Server {
             this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
         String nextPlayer = this.getGameController().getNextPlayer();
         this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
-            nextPlayer, remainingTiles));
+            nextPlayer, remainingTiles, null));
         gameState.setCurrentPlayer(nextPlayer);
         this.getGameController().newTurn();
 
@@ -477,7 +486,12 @@ public class Server {
     this.gameState.leaveGame(player);
     this.clients.remove(player);
     if (this.gameState.getGameRunning() && gameState.getAllPlayers().size() < 1) {
-      endGame();
+      Runnable r = new Runnable() {
+        public void run() {
+          endGame();
+        }
+      };
+      new Thread(r).start();
     }
   }
 
@@ -646,11 +660,10 @@ public class Server {
               }
               break;
             case GAME_STATISTIC:
-              GameStatisticMessage gsm = (GameStatisticMessage) m;
               System.out.println("check");
+              gpc.close();
               new LeaderboardScreen(gameState.getGameStatistics(), player).start(new Stage());
               break;
-            // TODO
             default:
               break;
           }
@@ -684,18 +697,27 @@ public class Server {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
               } else {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-                gpc.indicatePlayerTurn(trm.getNextPlayer());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
-                gpc.startTimer();
-                gpc.indicatePlayerTurn(trm.getNextPlayer());
-                gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
-                gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
+                gpc.stopTimer();
+                if (trm.getWinner() == null) {
+                  gpc.indicatePlayerTurn(trm.getNextPlayer());
+                  sendToAll(new UpdateChatMessage("",
+                      "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
+                  gpc.startTimer();
+                  gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
+                  gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));
+                } else {
+                  gpc.updateChat(
+                      "-- " + gameState.getGameStatistics().get(player.getNickname()).getWinner()
+                          + " won the game --",
+                      null, "");
+                }
+
                 if (gpc.getAlert2() != null) {
                   gpc.getAlert2().close();
                 }
                 gpc.resetSkipAndChange();
-                sendToAll(new UpdateChatMessage("",
-                    "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
+
                 semaphoreCommit = true;
                 semaphoreReset = true;
                 sem = true;
@@ -802,19 +824,20 @@ public class Server {
   public void endGame() {
     System.out.println("Test1");
     Turn turn = this.gameController.getTurn();
-    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
-        this.gameState.getScore(turn.getPlayer()), this.getHost(),
-        this.gameController.getTileBag().getRemaining()));
     calculateGameStatistics();
+    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
+        this.gameState.getScore(turn.getPlayer()), null,
+        this.gameController.getTileBag().getRemaining(),
+        this.gameState.getGameStatistics().get(this.host).getWinner()));
     System.out.println("Test3");
-    // TODO wenn players das Spiel verlassen müssen sie aus der Liste entfernt werden
 
     try {
-      Thread.sleep(2000);
+      Thread.sleep(3000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    this.gameState.setRunning(false);
+
+    gameState.setRunning(false);
     sendToAll(new GameStatisticMessage(this.host, this.gameState.getGameStatistics()));
   }
 

@@ -32,6 +32,10 @@ public class GameStatistic implements Serializable {
 
   }
 
+  public String getWinner() {
+    return this.allPlayers.get(0);
+  }
+
   public int getBestTurn() {
     return bestTurn;
   }

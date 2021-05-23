@@ -1,17 +1,15 @@
 package network.client;
 
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LeaderboardScreen;
+import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.List;
-import game.GameSettings;
-import game.GameState;
-import game.GameStatistic;
-import gui.GamePanelController;
-import gui.LeaderboardScreen;
-import gui.LobbyScreenController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.Field;
@@ -193,15 +191,22 @@ public class ClientProtocol extends Thread {
                   break;
                 case TURN_RESPONSE:
                   TurnResponseMessage trm = (TurnResponseMessage) m;
-                  // TODO please check if it is correct
                   gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                   if (trm.getIsValid()) {
                     gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
-                    gpc.indicatePlayerTurn(trm.getNextPlayer());
-                    gameState.setCurrentPlayer(trm.getNextPlayer());
-                    gpc.startTimer();
-                    gpc.changeDoneStatus(trm.getNextPlayer().equals(player.getNickname()));
-                    gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(player.getNickname()));
+                    gpc.stopTimer();
+                    if (trm.getWinner() == null) {
+                      gpc.indicatePlayerTurn(trm.getNextPlayer());
+                      gameState.setCurrentPlayer(trm.getNextPlayer());
+                      gpc.startTimer();
+                      gpc.changeDoneStatus(trm.getNextPlayer().equals(player.getNickname()));
+                      gpc.changeSkipAndChangeStatus(
+                          trm.getNextPlayer().equals(player.getNickname()));
+                    } else {
+                      gpc.updateChat("-- "
+                          + gameState.getGameStatistics().get(player.getNickname()).getWinner()
+                          + " won the game --", null, "");
+                    }
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
@@ -262,9 +267,8 @@ public class ClientProtocol extends Thread {
                   break;
                 case GAME_STATISTIC:
                   GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+                  gpc.close();
                   new LeaderboardScreen(gsMessage.getGameStatistics(), player).start(new Stage());
-                  HashMap<String, GameStatistic> gs = gsMessage.getGameStatistics();
-                  System.out.println("Hallo: ");
                   break;
                 case DISCONNECT:
                   if (gameState != null) {

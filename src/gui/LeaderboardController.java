@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import mechanic.Player;
 import mechanic.PlayerData;
 import util.JsonHandler;
@@ -121,7 +122,8 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   @Override
   public void handle(ActionEvent event) {
     // Only "leave game" button.
-    GamePanelController.getInstance().close();
+    Stage st = (Stage) this.bestTurnKey.getScene().getWindow();
+    st.close();
   }
 
   /**
