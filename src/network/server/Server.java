@@ -255,7 +255,6 @@ public class Server {
       turn.endTurn();
       sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
-
       // check end game criteria
       List<Turn> turns = this.getGameController().getTurns();
       boolean fiveScorelessRounds = false;
@@ -861,9 +860,9 @@ public class Server {
           .setScore(gameState.getScore(client.getNickname()));
       playersList.add(client.getNickname());
     }
-    // for (String p : playersList) {
-    // this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
-    // }
+    for (String p : playersList) {
+      this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
+    }
 
   }
 

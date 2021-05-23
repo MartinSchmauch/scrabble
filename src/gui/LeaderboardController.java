@@ -148,6 +148,8 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
    */
   @SuppressWarnings("unlikely-arg-type")
   public void updateStatistics() {
+    System.out
+        .println("Final statistics: " + gs.get(player.getNickname()).getScore() + players.get(0));
     PlayerData pd = player.getPlayerInfo();
     pd.getPlayerStatistics().incrementGameCount();
     pd.getPlayerStatistics()
