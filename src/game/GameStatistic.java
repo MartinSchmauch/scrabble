@@ -58,8 +58,9 @@ public class GameStatistic implements Serializable {
       if (firstWord) {
         s = word;
         firstWord = false;
+      } else {
+        s = s + "; " + word;
       }
-      s = s + "; " + word;
     }
     return s;
   }

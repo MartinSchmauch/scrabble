@@ -255,7 +255,26 @@ public class Server {
       turn.endTurn();
       sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
-      if (turn.isValid()) {
+
+      // check end game criteria
+      List<Turn> turns = this.getGameController().getTurns();
+      boolean fiveScorelessRounds = false;
+
+      if (turns.size() > 5) {
+        fiveScorelessRounds = true;
+        for (int i = 0; i < 5; i++) {
+          if (turns.get(i).getTurnScore() > 0) {
+            fiveScorelessRounds = false;
+            break;
+          }
+        }
+      }
+      if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
+          || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
+              && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
+        endGame();
+        return;
+      } else if (turn.isValid()) {
         if (turn.getTurnScore() > 0) {
           this.gameController.addScoredTurn(turn);
         }
@@ -320,27 +339,6 @@ public class Server {
           }
         }
 
-        // check end game criteria
-        List<Turn> turns = this.getGameController().getTurns();
-        boolean fiveScorelessRounds = false;
-
-        if (turns.size() > 5) {
-          fiveScorelessRounds = true;
-          for (int i = 0; i < 5; i++) {
-            if (turns.get(i).getTurnScore() > 0) {
-              fiveScorelessRounds = false;
-              break;
-            }
-          }
-        }
-
-        if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
-            || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
-                && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
-          endGame();
-          return;
-        }
-        // Update total playetime
         if (!this.aiPlayers.containsKey(from)) {
           this.gameState.getGameStatisticsOfPlayer(from)
               .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
@@ -806,9 +804,10 @@ public class Server {
     System.out.println("Test1");
     Turn turn = this.gameController.getTurn();
     sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
-        this.gameState.getScore(turn.getPlayer()), null,
+        this.gameState.getScore(turn.getPlayer()), this.getHost(),
         this.gameController.getTileBag().getRemaining()));
     calculateGameStatistics();
+    System.out.println("Test3");
     // TODO wenn players das Spiel verlassen müssen sie aus der Liste entfernt werden
 
     try {
@@ -826,6 +825,7 @@ public class Server {
    * @author lurny
    */
   public void calculateGameStatistics() {
+    System.out.println("Test2");
     for (Turn t : this.gameController.getTurns()) {
       String p = t.getPlayer();
       if (this.gameState.getGameStatisticsOfPlayer(p).getBestTurn() < t.getTurnScore()) {
@@ -844,26 +844,26 @@ public class Server {
     }
     // for each player
 
+    boolean swap = true;
+    for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
+      swap = false;
+      for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
+        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
+            .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
+          Collections.swap(gameState.getAllPlayers(), i, i + 1);
+          System.out.println("Test2,5");
+        }
+      }
+    }
     List<String> playersList = new ArrayList<String>();
     for (PlayerData client : gameState.getAllPlayers()) {
       this.gameState.getGameStatisticsOfPlayer(client.getNickname())
           .setScore(gameState.getScore(client.getNickname()));
       playersList.add(client.getNickname());
     }
-    boolean swap = true;
-    while (swap) {
-      swap = false;
-      for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
-        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
-            .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
-          Collections.swap(playersList, i, i + 1);
-          swap = true;
-        }
-      }
-    }
-    for (String p : playersList) {
-      this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
-    }
+    // for (String p : playersList) {
+    // this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
+    // }
 
   }
 

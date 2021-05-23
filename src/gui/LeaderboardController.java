@@ -152,14 +152,21 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
     pd.getPlayerStatistics().incrementGameCount();
     pd.getPlayerStatistics()
         .setScore(pd.getPlayerStatistics().getScore() + gs.get(player.getNickname()).getScore());
+    pd.getPlayerStatistics().setPlayedTiles(
+        pd.getPlayerStatistics().getPlayedTiles() + gs.get(player.getNickname()).getPlayedTiles());
+    pd.getPlayerStatistics().setPlayTime(pd.getPlayerStatistics().getPlayTimeInSeconds()
+        + gs.get(player.getNickname()).getPlayTime());
     System.out.println("BestWords: " + gs.get(player.getNickname()).getBestWordAsString());
     if (pd.getPlayerStatistics().getBestTurn() < gs.get(player.getNickname()).getBestTurn()) {
       pd.getPlayerStatistics().setBestTurn(gs.get(player.getNickname()).getBestTurn());
       pd.getPlayerStatistics().setBestWord(gs.get(player.getNickname()).getBestWordAsString());
     }
-    if (players.get(0).equals(player.getNickname())) {
-      pd.getPlayerStatistics().incrementWins();
-    }
+    // for (String p : players) {
+    // System.out.println(p);
+    // }
+    // if (players.get(0).equals(player.getNickname())) {
+    // pd.getPlayerStatistics().incrementWins();
+    // }
     // TODO best word
     for (String p : players) {
 
