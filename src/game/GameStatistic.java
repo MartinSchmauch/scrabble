@@ -48,6 +48,22 @@ public class GameStatistic implements Serializable {
     this.bestWords = bestWords;
   }
 
+  /**
+   * This method returns the best words as a continous String.
+   */
+  public String getBestWordAsString() {
+    String s = "";
+    boolean firstWord = true;
+    for (String word : bestWords) {
+      if (firstWord) {
+        s = word;
+        firstWord = false;
+      }
+      s = s + "; " + word;
+    }
+    return s;
+  }
+
   public int getAverageTimeperTurn() {
     return averageTimeperTurn;
   }

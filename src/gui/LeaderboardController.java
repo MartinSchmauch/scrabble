@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import game.GameStatistic;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import mechanic.Player;
 import mechanic.PlayerData;
+import util.JsonHandler;
 
 /**
  * This class initializes all leaderboard related labels.
@@ -148,18 +150,22 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   public void updateStatistics() {
     PlayerData pd = player.getPlayerInfo();
     pd.getPlayerStatistics().incrementGameCount();
-    System.out.println(pd.getPlayerStatistics().getBestTurn());
-    if (pd.getPlayerStatistics().getBestTurn() < gs.get(player).getBestTurn()) {
-      pd.getPlayerStatistics().setBestTurn(gs.get(player).getBestTurn());
+    pd.getPlayerStatistics()
+        .setScore(pd.getPlayerStatistics().getScore() + gs.get(player.getNickname()).getScore());
+    System.out.println("BestWords: " + gs.get(player.getNickname()).getBestWordAsString());
+    if (pd.getPlayerStatistics().getBestTurn() < gs.get(player.getNickname()).getBestTurn()) {
+      pd.getPlayerStatistics().setBestTurn(gs.get(player.getNickname()).getBestTurn());
+      pd.getPlayerStatistics().setBestWord(gs.get(player.getNickname()).getBestWordAsString());
     }
-    if (players.get(0).equals(player)) {
+    if (players.get(0).equals(player.getNickname())) {
       pd.getPlayerStatistics().incrementWins();
     }
     // TODO best word
-
     for (String p : players) {
 
     }
+    new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
+        this.player);
   }
 
 }

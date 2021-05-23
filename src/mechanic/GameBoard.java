@@ -4,7 +4,7 @@ package mechanic;
  * The GameBoard class contains all GameBoard fields in a two-dimensional array. The arrays start at
  * zero while the general coordinate system is implemented starting at one. This is respected in the
  * getter-method.
- * 
+ *
  * @author ldreyer
  */
 
@@ -12,6 +12,9 @@ public class GameBoard {
   private Field[][] fields;
   private Wordlist wordlist;
 
+  /**
+   * This method creates an instance of the class.
+   */
   public GameBoard(int size) {
     this.fields = new Field[size][size];
     for (int i = 0; i < size; i++) {
@@ -33,8 +36,9 @@ public class GameBoard {
   }
 
   /**
+   * This method gives back the field array.
+   *
    * @author pkoenig
-   * @return fields
    */
   public Field[][] getFields() {
     return fields;
@@ -55,20 +59,13 @@ public class GameBoard {
     return res;
   }
 
-  /**
-   * @return the wordlist
-   */
   public Wordlist getWordlist() {
     return wordlist;
   }
 
-  /**
-   * @param wordlist the wordlist to set
-   */
+
   public void setWordlist(Wordlist wordlist) {
     this.wordlist = wordlist;
   }
-
-
 
 }

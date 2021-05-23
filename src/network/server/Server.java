@@ -18,6 +18,7 @@ import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import gui.TutorialController;
 import javafx.application.Platform;
+import mechanic.AIplayer;
 import javafx.stage.Stage;
 import mechanic.Field;
 import mechanic.Player;
@@ -31,6 +32,7 @@ import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameStatisticMessage;
 import network.messages.InvalidMoveMessage;
+import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
@@ -69,6 +71,7 @@ public class Server {
 
   private String host;
   private HashMap<String, ServerProtocol> clients = new HashMap<>();
+  private HashMap<String, AIplayer> aiPlayers = new HashMap<>();
 
 
   /**
@@ -103,14 +106,19 @@ public class Server {
 
     }
 
+    // add Tiles to AI Rack TODO
+    for (AIplayer a : this.aiPlayers.values()) {
+      a.addTilesToRack(this.gameController.drawTiles(GameSettings.getTilesOnRack()));
+    }
+
     // add Tiles to host Rack
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
 
         List<Tile> tileList = new ArrayList<Tile>();
-        if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) { // normal
-                                                                                                  // game
+        // check if player is playing a normal game and not a tutorial
+        if (gpc == null || gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) {
           tileList = gameController.drawTiles(7);
         } else { // tutorial
           char[] chars = {'B', 'E', 'D'};
@@ -175,7 +183,8 @@ public class Server {
           e.printStackTrace();
         }
       }
-      this.resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
+//      this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
+      resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
 
     }
   }
@@ -220,6 +229,12 @@ public class Server {
           // gameState.getGameStatistics()
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining()));
+          Runnable r = new Runnable() {
+            public void run() {
+              handleAi(gameState.getCurrentPlayer());
+            }
+          };
+          new Thread(r).start();
 
         }
       });
@@ -249,7 +264,18 @@ public class Server {
         }
         this.gameState.addScore(from, turn.getTurnScore());
 
-        if (m.getFrom().equals(this.getHost())) {
+        if (this.aiPlayers.containsKey(from)) {
+          List<Tile> tileList = gameController.drawTiles(turn.getLaydDownTiles().size());
+          for (Tile t : tileList) {
+            t.setField(this.aiPlayers.get(from).getFreeRackField());
+            t.setOnGameBoard(false);
+            t.setOnRack(true);
+            // gpc.addTile(t);
+          }
+
+        }
+
+        else if (m.getFrom().equals(this.getHost())) {
           // add new tiles to Domain and UI
           Platform.runLater(new Runnable() {
             @Override
@@ -314,9 +340,11 @@ public class Server {
           return;
         }
         // Update total playetime
-        this.gameState.getGameStatisticsOfPlayer(from)
-            .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
-                + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
+        if (!this.aiPlayers.containsKey(from)) {
+          this.gameState.getGameStatisticsOfPlayer(from)
+              .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
+                  + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
+        }
 
         int remainingTiles =
             this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
@@ -326,20 +354,59 @@ public class Server {
         gameState.setCurrentPlayer(nextPlayer);
         this.getGameController().newTurn();
 
+        Runnable r = new Runnable() {
+
+          public void run() {
+            handleAi(nextPlayer);
+          }
+
+        };
+        new Thread(r).start();
+
+
       } else {
         this.semaphoreReset = true;
       }
     }
-    // else { // turn is invalid
-    // sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from), null,
-    // this.gameController.getTileBag().getRemaining()));
-    // }
+  }
 
+
+  /**
+   * @author pkoenig
+   */
+  private void handleAi(String player) {
+    System.out.println("Server, Line 301 with " + player);
+    if (this.aiPlayers.containsKey(player)) {
+      System.out.println("handleAi Player line 332");
+      Turn aiTurn = this.aiPlayers.get(player).runAi(this.gameState.getGameBoard());
+      // if no Turn found, exchange all RackTiles
+      if (aiTurn == null) {
+        handleExchangeTiles(new TileMessage(player, this.aiPlayers.get(player).getRackTiles()));
+      } else {
+        TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
+        this.sendToAll(tm);
+        
+        try {
+          Thread.sleep(500);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
+
+        this.gameController.setTurn(aiTurn);
+        CommitTurnMessage ctm =
+            new CommitTurnMessage(player, !this.aiPlayers.get(player).getRackTiles().isEmpty());
+
+        this.handleCommitTurn(ctm);
+      }
+    }
   }
 
   /**
    * Thread method that continuously checks for new clients trying to connect. When a new clients
    * connects, a new instance of ServerProtocol is created, moderating the client-server connection
+   *
+   * @author pkoenig
    */
 
   public void listen() {
@@ -489,7 +556,13 @@ public class Server {
       AddTileMessage atm =
           new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
       sendToAll(atm);
-
+      
+      try {
+        Thread.sleep(500);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      
       RemoveTileMessage rtm =
           new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
       sendToAll(rtm);
@@ -644,6 +717,14 @@ public class Server {
               UpdateChatMessage um = (UpdateChatMessage) m;
               gpc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
               break;
+            case TILE:
+              TileMessage trMessage = (TileMessage) m;
+              for (Tile t : trMessage.getTiles()) {
+                t.setOnRack(false);
+                t.setOnGameBoard(true);
+                gpc.addTile(t);
+              }
+              break;
             default:
               break;
           }
@@ -694,11 +775,24 @@ public class Server {
     distributeInitialTiles();
 
     this.gameController.newTurn();
-
+    System.out.println("start game line 697");
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
-
+    initializeAi();
+    Runnable r = new Runnable() {
+      public void run() {
+        handleAi(gameState.getCurrentPlayer());
+      }
+    };
+    new Thread(r).start();
     for (PlayerData client : gameState.getAllPlayers()) {
       this.gameState.addGameStatistics(client.getNickname());
+    }
+  }
+
+  private void initializeAi() {
+    for (AIplayer a : this.aiPlayers.values()) {
+      a.setGc(this.gameController);
+      a.generateTileCombinations();
     }
   }
 
@@ -772,6 +866,19 @@ public class Server {
 
   }
 
+  /**
+   * This method sends the current lobby status containing the gameState and all relevant game
+   * settings.
+   *
+   * @author ldreyer
+   */
+  public void sendLobbyStatus() {
+    LobbyStatusMessage lsm = new LobbyStatusMessage(this.host,
+        GameSettings.getTimePerPlayer(), GameSettings.getMaxScore(), GameSettings.getBingo(),
+        GameSettings.getAiDifficulty(), GameSettings.getTilesOnRack(), GameSettings.getLetters(),
+        this.gameState);
+    sendToAll(lsm);
+  }
 
 
   public Player getPlayer() {
@@ -798,8 +905,40 @@ public class Server {
     this.lsc = lsc;
   }
 
+  public LobbyScreenController getLobbyScreenController() {
+    return this.lsc;
+  }
+
 
   public void setRunning(boolean running) {
     this.running = running;
+  }
+
+  /**
+   * @author pkoenig
+   * @return the aiPlayers
+   */
+  public HashMap<String, AIplayer> getAiPlayers() {
+    return aiPlayers;
+  }
+
+  /**
+   * @param aiPlayers the aiPlayers to set
+   */
+  public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
+    this.aiPlayers = aiPlayers;
+  }
+
+  public void addAiPlayer(AIplayer aiPlayer) {
+    this.aiPlayers.put(aiPlayer.getNickname(), aiPlayer);
+    this.gameState.joinGame(aiPlayer.getPlayerInfo());
+  }
+
+  public boolean isinAiPlayer(AIplayer aiPlayer) {
+    return this.aiPlayers.containsKey(aiPlayer.getNickname());
+  }
+
+  public void removeFromAiPlayers(String nickname) {
+    this.aiPlayers.remove(nickname);
   }
 }

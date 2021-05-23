@@ -1,7 +1,5 @@
 package gui;
 
-
-
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,9 +16,10 @@ import javafx.stage.StageStyle;
 import mechanic.Player;
 
 
-
 /**
- * @author nilbecke Opens the user settings menu
+ * Opens the user settings menu
+ *
+ * @author nilbecke
  **/
 
 public class UserSettingsScreen extends Application {
@@ -38,7 +37,9 @@ public class UserSettingsScreen extends Application {
   @FXML
   private Slider volbar;
   @FXML
-  private ImageView avatar, question;
+  private ImageView avatar;
+  @FXML
+  private ImageView question;
   @FXML
   private TextField namefield;
 

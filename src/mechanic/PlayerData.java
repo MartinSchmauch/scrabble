@@ -71,15 +71,17 @@ public class PlayerData implements Serializable {
     this.statistics.setPlayedTiles(pt2);
   }
 
-  /** @author nilbecke */
   public void setAvatar(String input) {
-
     this.avatar = input;
   }
 
+  public void setAvatar(Image input) {
+    this.avatar = input.getUrl();
+  }
+
   /**
-   * obsolete
-   * 
+   * This method is used to Convert a BufferedImage to an Image.
+   *
    * @author nilbecke
    * @param input of type Buffered Image
    * @return A Java FX Image
@@ -99,9 +101,6 @@ public class PlayerData implements Serializable {
     return (Image) wr;
   }
 
-  public void setAvatar(Image input) {
-    this.avatar = input.getUrl();
-  }
 
   public boolean isHost() {
     return this.isHost;

@@ -2,9 +2,7 @@ package gui;
 
 import java.io.IOException;
 import game.GameSettings;
-
 /** @author nilbecke **/
-
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +13,11 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
 
-/** This Class launches the Settings Screen **/
+/**
+ * This Class launches the Settings Screen.
+ *
+ * @author nilbecke
+ */
 
 public class SettingsScreen extends Application {
 
@@ -27,8 +29,8 @@ public class SettingsScreen extends Application {
 
   /**
    * Set up the Settings Screen with an instance of the GameSettings class.
-   * 
-   * @param s: Currently used settings
+   *
+   * @param s Currently used settings
    */
   public SettingsScreen(Player p, boolean lobby) {
     if (p.isHost() == false || lobby == false) {
@@ -80,7 +82,7 @@ public class SettingsScreen extends Application {
 
   /**
    * Get the currently used game settings.
-   * 
+   *
    * @return currently used game settings
    */
   public static GameSettings getSettings() {
@@ -89,17 +91,14 @@ public class SettingsScreen extends Application {
 
   /**
    * Update the settings used.
-   * 
-   * @param s
    */
-
   public void setSettings(GameSettings s) {
     settings = s;
   }
 
   /**
    * Access the current Gamesettingsscreen.
-   * 
+   *
    * @return Current instance of Gamesettings Screen
    */
   public SettingsScreen getSettingScreen() {

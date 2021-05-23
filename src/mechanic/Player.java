@@ -51,7 +51,6 @@ public class Player {
    * This constructor is used for initializing a Player Object with an ObjectMapper from a JSON
    * file.
    */
-
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume,
@@ -97,41 +96,42 @@ public class Player {
     return this.info.getAvatar();
   }
 
+  @JsonIgnore
   public PlayerStatistics getStatistics() {
     return this.info.getPlayerStatistics();
   }
 
-  @JsonIgnore
+
   public int getGameCount() {
     return getStatistics().getGameCount();
   }
 
-  @JsonIgnore
+
   public int getBestTurn() {
     return this.getStatistics().getBestTurn();
   }
 
-  @JsonIgnore
+
   public String getBestWord() {
     return this.getStatistics().getBestWord();
   }
 
-  @JsonIgnore
+
   public int getPlayTime() {
     return this.getStatistics().getPlayTime();
   }
 
-  @JsonIgnore
+
   public int getScore() {
     return this.getStatistics().getScore();
   }
 
-  @JsonIgnore
+
   public int getWins() {
     return this.getStatistics().getWins();
   }
 
-  @JsonIgnore
+
   public int getPlayedTiles() {
     return this.getStatistics().getPlayedTiles();
   }
@@ -196,6 +196,9 @@ public class Player {
     }
   }
 
+  /**
+   * This method is used to remove the tile at position index from the rack.
+   */
   public Tile removeRackTile(int index) {
     Tile tile = rack[index].getTile();
     rack[index].setTileOneDirection(null);
@@ -295,7 +298,7 @@ public class Player {
   public void moveToGameBoard(int oldIndex, int newX, int newY) {
     Tile t = rack[oldIndex].getTile();
     if (t == null) {
-      gpc.indicateInvalidTurn(this.getNickname(), "Selcted field on Rack is empty.");
+      gpc.indicateInvalidTurn(this.getNickname(), "Selected field on Rack is empty.");
       return;
     }
     AddTileMessage atm = new AddTileMessage(this.getNickname(), t, newX, newY);
@@ -303,6 +306,16 @@ public class Player {
       server.handleAddTileToGameBoard(atm);
     } else {
       client.sendToServer(atm);
+    }
+  }
+
+
+  public void personalMoveToGameBoard(Tile t, Field f) {
+    if (t.getField().getyCoordinate() != -1) {
+      System.out.println("\nINVALID: personalMovetoGameboard + \n");
+    } else {
+      this.setRackTileToNone(t.getField().getxCoordinate());
+      f.setTile(t);
     }
   }
 
@@ -363,10 +376,12 @@ public class Player {
     this.gpc = gpc;
   }
 
-  /** @author nilbecke */
-
+  /**
+   * This method is called, when a player hosts a game.
+   *
+   * @author nilbecke
+   */
   public void host() {
-
     this.getPlayerInfo().setHost(true);
     this.server = new Server(this, this.customGameSettings);
 
@@ -378,8 +393,11 @@ public class Player {
     new Thread(r).start();
   }
 
-  /** @author nilbecke */
-
+  /**
+   * This method is called, when a client connects to a server.
+   *
+   * @author nilbecke
+   */
   public void connect(String ip) {
     this.getPlayerInfo().setHost(false);
 

@@ -11,11 +11,11 @@ import javafx.scene.text.Text;
 
 
 /**
+ * This class represents a tile on the MainGamePanelScreen and the constructor is being called, when
+ * a new tile needs to be genereated. The tile consists of a Parent container, which contains a
+ * StackPane. In the StackPane a rectangle and two texts are layered.
+ *
  * @author mschmauc
- * 
- *         This class represents a tile on the MainGamePanelScreen and the constructor is being
- *         called, when a new tile needs to be genereated. The tile consists of a Parent container,
- *         which contains a StackPane. In the StackPane a rectangle and two texts are layered.
  */
 public class VisualTile extends Parent {
 
@@ -27,6 +27,9 @@ public class VisualTile extends Parent {
   private Text valueText;
 
 
+  /**
+   * This method creates an instance of the class.
+   */
   public VisualTile(String letter, int value, boolean onRack) {
     StackPane sP = new StackPane();
     sP.setAlignment(Pos.CENTER);

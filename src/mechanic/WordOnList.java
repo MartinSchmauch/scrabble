@@ -2,14 +2,15 @@ package mechanic;
 
 /**
  * Datatyp for word of Wordlist. Have a look at WordlistHandler.
+ *
  * @author pkoenig
  *
  */
 public class WordOnList {
-  
+
   private String wordString;
   private String definition;
-  
+
   public WordOnList(String wordString, String definition) {
     this.setWordString(wordString);
     this.setDefinition(definition);
@@ -42,7 +43,7 @@ public class WordOnList {
   public void setDefinition(String definition) {
     this.definition = definition;
   }
-  
+
   @Override
   public String toString() {
     // TODO Auto-generated method stub

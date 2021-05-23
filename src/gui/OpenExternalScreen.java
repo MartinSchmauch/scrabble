@@ -1,12 +1,14 @@
 package gui;
 
-/** @Author nilbecke **/
-
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-/** This Class opens the Tutorial in the user's pdf viewer **/
+/**
+ * This Class opens the Tutorial in the user's pdf viewer.
+ *
+ * @author nilbecke
+ */
 public class OpenExternalScreen {
 
   /**

@@ -228,14 +228,29 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void addAiPlayer(int index) {
     AIplayer p = new AIplayer("AI " + index, this.getPlayer().getServer().getGameController(),
-        AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty()));
+        AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
-    try {
-      p.connect(InetAddress.getLocalHost().getHostAddress());
-    } catch (UnknownHostException e) {
-      e.printStackTrace();
-    }
+    
+    this.getPlayer().getServer().addAiPlayer(p);
+    this.getPlayer().getServer().sendToAll(new ConnectMessage(p.getPlayerInfo()));
+
+//    try {
+//      Thread.sleep(100);
+//    } catch (InterruptedException e) {
+//      e.printStackTrace();
+//    
+//    }
+//    LobbyStatusMessage m = new LobbyStatusMessage(this.getPlayer().getServer().getHost(), this.getPlayer().getServer().getGameState());
+
+//    this.getPlayer().getServer().sendToAll(m);
+    
+//    try {
+//      p.connect(InetAddress.getLocalHost().getHostAddress());
+//      this.getPlayer().getServer().addAiPlayer(p);
+//    } catch (UnknownHostException e) {
+//      e.printStackTrace();
+//    }
 
 
   }
@@ -314,7 +329,9 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       if (m.matches()) {
         this.player.getServer().getGameState().leaveGame(nickname);
         this.player.getServer().removeClient(nickname);
-        this.player.getServer().getServerProtocol().sendInitialGameState();
+        this.player.getServer().sendLobbyStatus();
+        
+        this.player.getServer().removeFromAiPlayers(nickname);
       } else {
         DisconnectMessage dm = new DisconnectMessage(nickname);
         sendMessage(dm);

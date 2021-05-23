@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * The word class is a help class for the turn. It is used to represent a word and consists of a
  * tile list.
- * 
+ *
  * @author lurny
  */
 
@@ -21,7 +21,9 @@ public class Word {
     return tiles;
   }
 
-  /** The to String method returns the Word as a String */
+  /**
+   * The to String method returns the Word as a String.
+   */
   @Override
   public String toString() {
     String wordString = "";

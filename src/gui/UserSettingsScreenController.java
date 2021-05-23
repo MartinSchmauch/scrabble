@@ -21,7 +21,7 @@ import util.JsonHandler;
 /**
  * This class handles all user based action in the User Settings Screen like changing nocknam,
  * avatar and volume.
- * 
+ *
  * @author nilbecke
  **/
 
@@ -52,7 +52,9 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   // Holds which of the 10 avatars is currently selected.
   private int currentAvatar;
 
-
+  /**
+   * This method is called to initialize the screen controller.
+   */
   public void initialize() {
     instance = this;
     this.player = UserSettingsScreen.getPlayer();
@@ -61,8 +63,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Main handling method of button based user inputs.
-   * 
-   * @param e user input event
+   *
+   * @param e user input event.
    **/
 
   @Override
@@ -83,8 +85,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
       case "exit":
 
         textfieldToLabel();
-        new JsonHandler().savePlayerProfile(
-            new File(FileParameters.datadir + "playerProfile.json"), this.player);
+        new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
+            this.player);
 
         if (SettingsScreenController.getInstance() != null) {
           SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
@@ -131,8 +133,8 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     this.nickname.setText(this.player.getNickname());
     this.volbar.setValue((double) this.player.getVolume());
     this.vol.setText((int) this.volbar.getValue() + "");
-    this.avatar.setImage(
-        new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
+    this.avatar
+        .setImage(new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
     this.namefield.setText(this.player.getNickname());
   }
 
@@ -167,7 +169,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * Saves all changes to the LoginScreen
+   * Saves all changes to the LoginScreen.
    */
   public void updateLoginScreen() {
 
@@ -197,7 +199,6 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   /**
    * Sets the Usename to a previous user input given in the labelToTextfield method.
    **/
-
   public void textfieldToLabel() {
     this.namefield.setOpacity(0);
     if (this.namefield.getText().length() > 0) {
@@ -223,7 +224,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Updates the avatar picture of the current player.
-   * 
+   *
    * @param increment true if picture is to be incremented, false if it should be decremented
    */
   public void updateAvatar(boolean increment) {
@@ -257,7 +258,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Opens a dialog window for user inputs (unused).
-   * 
+   *
    * @param title of the dialog window
    * @param oldValue Old value now to be changed
    * @param content of the subject to be changed

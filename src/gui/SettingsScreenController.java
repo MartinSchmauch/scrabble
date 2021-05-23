@@ -17,12 +17,12 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import mechanic.Letter;
 import mechanic.Player;
+import network.messages.UpdateChatMessage;
 import util.JsonHandler;
 
 /**
- * 
  * Handles user-inputs in the Gamesettings screen.
- * 
+ *
  * @author nilbecke
  * 
  **/
@@ -30,6 +30,7 @@ import util.JsonHandler;
 public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   private Player currentPlayer;
+  private boolean changed;
   private static SettingsScreenController instance;
 
 
@@ -130,13 +131,13 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
 
   /**
-   * Initialize the Settings Screen with username, avatar and all current settings
+   * Initialize the Settings Screen with username, avatar and all current settings.
    */
-
   @FXML
   public void initialize() {
     tooltip.setText(GameSettings.getDictionary());
     instance = this;
+    this.changed = false;
     this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar.setImage(
@@ -151,6 +152,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @Override
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
+
+    if (!s.equals("exit") && !s.equals("save")) {
+      changed = true;
+    }
+
     switch (s) {
       case "user":
         // showUserProfile();
@@ -237,7 +243,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         break;
       case "exit":
       case "save":
-        saveSettings();
+        if (changed) {
+          saveSettings();
+        }
         Button b = (Button) e.getSource();
         Stage st = (Stage) (b.getScene().getWindow());
         st.close();
@@ -266,11 +274,14 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
         this.currentPlayer);
 
+    this.currentPlayer.getServer().sendLobbyStatus();
+    this.currentPlayer.getServer()
+        .sendToAll(new UpdateChatMessage("", "Game's settings were updated!", null));
   }
 
   /**
    * This method is used for changing settings by using a textfield to commit changes.
-   * 
+   *
    * @param lbl defines the label to be updated.
    * @param tf defines the Textfield with the expected changes.
    * @param trigger defines the button pushed to invoke the action.
@@ -405,7 +416,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Lets a user cycle through all letters to be able to change amount and value for this letter.
-   * 
+   *
    * @param current the currently selected character out of [A-Z].
    * @param direction indicates if the letter is to be incremented or decremented.
    */
@@ -435,7 +446,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Update a label.
-   * 
+   *
    * @param update new Time per player.
    * @param toBeUpdated Label to be changed
    */
@@ -448,9 +459,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   }
 
   /**
-   * This method
-   * 
-   * @param input
+   * updates the Tiles on the Rack at position input.
    */
 
   public void updateTilesOnRack(int input) {
@@ -465,7 +474,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Get a reference on the current Game settings controller.
-   * 
+   *
    * @return: Current instance of the settings controller if present, null otherwise
    */
   public static SettingsScreenController getInstance() {
@@ -474,8 +483,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Updates the displayed username.
-   * 
-   * @param newName: updated username
+   *
+   * @param newName updated username
    */
   public void setUserLabel(String newName) {
     this.username.setText(newName);
