@@ -184,7 +184,7 @@ public class Server {
           e.printStackTrace();
         }
       }
-      // this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
+      this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
       resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
 
     }
