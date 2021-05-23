@@ -661,8 +661,15 @@ public class Server {
               break;
             case GAME_STATISTIC:
               System.out.println("check");
-              gpc.close();
+
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+
               new LeaderboardScreen(gameState.getGameStatistics(), player).start(new Stage());
+              gpc.close();
               break;
             default:
               break;
@@ -832,7 +839,7 @@ public class Server {
     System.out.println("Test3");
 
     try {
-      Thread.sleep(3000);
+      Thread.sleep(8000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
