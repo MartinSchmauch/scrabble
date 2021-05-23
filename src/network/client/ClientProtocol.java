@@ -218,6 +218,7 @@ public class ClientProtocol extends Thread {
                     GameSettings.setTimePerPlayer(lsMessage.getTimePerPlayer());
                     GameSettings.setMaxScore(lsMessage.getMaxScore());
                     GameSettings.setBingo(lsMessage.getBingo());
+                    GameSettings.setDictionary(lsMessage.getDictionary());
                     GameSettings.setAiDifficulty(lsMessage.getAiDifficulty());
                     GameSettings.setTilesOnRack(lsMessage.getTilesOnRack());
                     GameSettings.setLetters(lsMessage.getLetters());

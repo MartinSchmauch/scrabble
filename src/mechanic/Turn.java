@@ -358,6 +358,8 @@ public class Turn implements Serializable {
     } else {
       this.words.clear();
     }
+
+    this.getGameController().addTurn(this);
   }
 
   public void setLaydDownTiles(List<Tile> laydDownTiles) {

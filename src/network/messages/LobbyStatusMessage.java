@@ -19,6 +19,7 @@ public class LobbyStatusMessage extends Message {
   private int maxScore;
   private int bingo;
   private String aiDifficulty;
+  private String dictionary;
   private int tilesOnRack;
   private HashMap<Character, Letter> letters;
   private GameState gameState;
@@ -28,12 +29,13 @@ public class LobbyStatusMessage extends Message {
    * This method creates an instance of the class.
    */
   public LobbyStatusMessage(String from, int timePerPlayer, int maxScore, int bingo,
-      String aiDifficulty, int tilesOnRack, HashMap<Character, Letter> letters,
+      String dictionary, String aiDifficulty, int tilesOnRack, HashMap<Character, Letter> letters,
       GameState gameState) {
     super(MessageType.LOBBY_STATUS, from);
     this.timePerPlayer = timePerPlayer;
     this.maxScore = maxScore;
     this.bingo = bingo;
+    this.dictionary = dictionary;
     this.aiDifficulty = aiDifficulty;
     this.tilesOnRack = tilesOnRack;
     this.letters = letters;
@@ -57,6 +59,11 @@ public class LobbyStatusMessage extends Message {
 
   public int getBingo() {
     return bingo;
+  }
+
+
+  public String getDictionary() {
+    return dictionary;
   }
 
 

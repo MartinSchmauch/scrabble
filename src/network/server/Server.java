@@ -875,8 +875,9 @@ public class Server {
    */
   public void sendLobbyStatus() {
     LobbyStatusMessage lsm = new LobbyStatusMessage(this.host, GameSettings.getTimePerPlayer(),
-        GameSettings.getMaxScore(), GameSettings.getBingo(), GameSettings.getAiDifficulty(),
-        GameSettings.getTilesOnRack(), GameSettings.getLetters(), this.gameState);
+        GameSettings.getMaxScore(), GameSettings.getBingo(), GameSettings.getDictionary(),
+        GameSettings.getAiDifficulty(), GameSettings.getTilesOnRack(), GameSettings.getLetters(),
+        this.gameState);
     sendToAll(lsm);
   }
 

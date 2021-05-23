@@ -69,7 +69,6 @@ public class GameController {
 
   public void newTurn() {
     this.turn = new Turn(gameState.getCurrentPlayer(), this);
-    this.turns.add(0, this.turn);
   }
 
   public HashSet<String> getDictionary() {
@@ -251,6 +250,10 @@ public class GameController {
 
   public void addScoredTurn(Turn t) {
     this.scoredTurns.add(0, t);
+  }
+
+  public void addTurn(Turn t) {
+    this.turns.add(0, t);
   }
 
 }
