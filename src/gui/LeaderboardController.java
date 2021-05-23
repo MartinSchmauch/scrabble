@@ -100,6 +100,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
       }
       turn.setText("" + maxTurn);
       bestTurnKey.setText("Best Turn (" + maxTurnPlayer + "):");
+      word.setText(gs.get(maxTurnPlayer).getBestWordAsString());
       int totalGameTime = 0;
       for (String p : players) {
         totalGameTime += this.gs.get(p).getPlayTime();
@@ -163,12 +164,12 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
       pd.getPlayerStatistics().setBestTurn(gs.get(player.getNickname()).getBestTurn());
       pd.getPlayerStatistics().setBestWord(gs.get(player.getNickname()).getBestWordAsString());
     }
-    // for (String p : players) {
-    // System.out.println(p);
-    // }
-    // if (players.get(0).equals(player.getNickname())) {
-    // pd.getPlayerStatistics().incrementWins();
-    // }
+    for (String p : players) {
+      System.out.println(p);
+    }
+    if (players.get(0).equals(player.getNickname())) {
+      pd.getPlayerStatistics().incrementWins();
+    }
     // TODO best word
     for (String p : players) {
 
