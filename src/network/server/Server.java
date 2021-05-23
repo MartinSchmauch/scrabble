@@ -668,8 +668,9 @@ public class Server {
                 e.printStackTrace();
               }
 
-              new LeaderboardScreen(gameState.getGameStatistics(), player).start(new Stage());
               gpc.close();
+              new LeaderboardScreen(gameState.getGameStatistics(), player).start(new Stage());
+
               break;
             default:
               break;
@@ -718,6 +719,9 @@ public class Server {
                       "-- " + gameState.getGameStatistics().get(player.getNickname()).getWinner()
                           + " won the game --",
                       null, "");
+                  gpc.updateChat("Lobby closing in 10 seconds...", null, "");
+                  gpc.changeDoneStatus(false);
+                  gpc.changeSkipAndChangeStatus(false);
                 }
 
                 if (gpc.getAlert2() != null) {

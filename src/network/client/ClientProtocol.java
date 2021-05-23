@@ -206,6 +206,9 @@ public class ClientProtocol extends Thread {
                       gpc.updateChat("-- "
                           + gameState.getGameStatistics().get(player.getNickname()).getWinner()
                           + " won the game --", null, "");
+                      gpc.updateChat("Lobby closing in 10 seconds...", null, "");
+                      gpc.changeDoneStatus(false);
+                      gpc.changeSkipAndChangeStatus(false);
                     }
                   } else {
                     gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");

@@ -91,7 +91,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
         standings[i].setDisable(true);
       }
       // find max Turn and best Word
-      int maxTurn = 0;
+      int maxTurn = -1;
       String maxTurnPlayer = "";
       for (String p : players) {
         if (gs.get(p).getBestTurn() > maxTurn) {
