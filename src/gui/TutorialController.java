@@ -227,7 +227,7 @@ public class TutorialController extends GamePanelController
     this.player = player;
     cc = new ChatController(player);
     chat.setEditable(false);
-    updateChat("\n\nStart by dragging the 'B','E' and 'D' on the marked fields and hit \"done.");
+    updateChat("\n\nStart by dragging the 'B','E' and 'D' on the marked fields and hit \"Done\".");
     Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
     Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
     Text[] playerNameLabel = {player1, player2, player3, player4};
@@ -364,7 +364,7 @@ public class TutorialController extends GamePanelController
       case 1:
         alert.setHeaderText("React");
         alert.setContentText(
-            "Lay the next indicated word.\nA new word always has to connect with a word already placed.");
+            "Lay the next indicated word.\nA new word always has to connect with a word already placed.\n\nIf the layed down tiles generate more than one word, \nyou will recieve points for all words generated.\n\n'*' Tiles can be used as a Joker,\nso they can represtent every Letter.");
         break;
       case 2:
         alert.setHeaderText("Exhange your tiles");
@@ -411,6 +411,7 @@ public class TutorialController extends GamePanelController
           updateChat(
               "\n\nWell done, you layed your first word!\n\nLook, your opponent has layed down a word as well.\n\nNow lay the words \"DO\" and \"NOMAINTE\" by dragging the letters onto the designated fields. Use the '*' as a 'T'. ");
           tutorialTurn(indicator);
+          showTip(1);
           this.indicator++;
           break;
 
@@ -421,6 +422,7 @@ public class TutorialController extends GamePanelController
           updateChat(
               "\n\nAs these letters form two words (DO and NOMINATE), you will recieve the points for both these words.\n\nThe last task is to exchange Tiles. To do so hit the \"Skip and Exchange\" Button and select the Tiles you want to change. After that hit \"Done\". ");
           tutorialTurn(indicator);
+          showTip(2);
           this.indicator++;
         }
         break;
