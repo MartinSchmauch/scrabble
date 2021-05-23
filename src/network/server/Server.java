@@ -875,7 +875,7 @@ public class Server {
 
     for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
       for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
-        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) > gameState
+        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
             .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
           Collections.swap(gameState.getAllPlayers(), i, i + 1);
         }
