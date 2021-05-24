@@ -253,7 +253,7 @@ public class Server {
       String from = m.getFrom();
       Turn turn = this.getGameController().getTurn();
       turn.endTurn();
-      sendToAll(new UpdateChatMessage("", turn.toString(), null));
+      // sendToAll(new UpdateChatMessage("", turn.toString(), null));
 
 
       if (turn.isValid()) {
@@ -710,8 +710,7 @@ public class Server {
                 gpc.stopTimer();
                 if (trm.getWinner() == null) {
                   gpc.indicatePlayerTurn(trm.getNextPlayer());
-                  sendToAll(new UpdateChatMessage("",
-                      "-- " + trm.getNextPlayer() + ", it's your turn! --", null));
+                  gpc.updateChat("-- " + trm.getNextPlayer() + ", it's your turn! --", null, "");
                   gpc.startTimer();
                   gpc.changeDoneStatus(trm.getNextPlayer().equals(host));
                   gpc.changeSkipAndChangeStatus(trm.getNextPlayer().equals(host));

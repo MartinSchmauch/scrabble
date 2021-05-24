@@ -200,13 +200,13 @@ public class ClientProtocol extends Thread {
                       gpc.indicatePlayerTurn(trm.getNextPlayer());
                       gameState.setCurrentPlayer(trm.getNextPlayer());
                       gpc.startTimer();
+                      gpc.updateChat("-- " + trm.getNextPlayer() + ", it's your turn! --", null,
+                          "");
                       gpc.changeDoneStatus(trm.getNextPlayer().equals(player.getNickname()));
                       gpc.changeSkipAndChangeStatus(
                           trm.getNextPlayer().equals(player.getNickname()));
                     } else {
-                      gpc.updateChat("-- "
-                          + gameState.getGameStatistics().get(player.getNickname()).getWinner()
-                          + " won the game --", null, "");
+                      gpc.updateChat("-- " + trm.getWinner() + " won the game --", null, "");
                       gpc.updateChat("Lobby closing in 10 seconds...", null, "");
                       gpc.changeDoneStatus(false);
                       gpc.changeSkipAndChangeStatus(false);
