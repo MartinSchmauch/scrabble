@@ -2,6 +2,9 @@ package gui;
 
 import java.io.File;
 import game.GameSettings;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -31,6 +34,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
 
   private Player currentPlayer;
   private boolean changed;
+  private List<Character> letters;
   private static SettingsScreenController instance;
 
 
@@ -131,6 +135,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     instance = this;
     this.changed = false;
     this.currentPlayer = LobbyScreenController.getLobbyInstance().getPlayer();
+    this.letters = new ArrayList<Character>();
+    for (Letter l : GameSettings.getLetters().values()) {
+      this.letters.add(l.getCharacter());
+    }
+    Collections.sort(this.letters);
     this.username.setText(this.currentPlayer.getNickname());
     this.avatar.setImage(
         new Image(getClass().getResource(this.currentPlayer.getAvatar()).toExternalForm()));
@@ -145,7 +154,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
 
-    if (!s.equals("exit") && !s.equals("save")) {
+    if (!s.equals("exit") && !s.equals("save") && !s.equals("letterUp")
+        && !s.equals("letterDown")) {
       changed = true;
     }
 
@@ -163,17 +173,17 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         labelTextfield(this.time, this.tpptf, (Button) e.getSource());
         break;
       case "msUp":
-        if (this.score.getText().equals("\u221e")) {
+        if (this.score.getText().equals("∞")) {
           this.score.setText("0");
         } else {
           updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
         }
         break;
       case "msDown":
-        if (this.score.getText().equals("\u221e")) {
+        if (this.score.getText().equals("∞")) {
           break;
         } else if (Integer.parseInt(this.score.getText()) - 10 < 0) {
-          this.score.setText("\u221e");
+          this.score.setText("∞");
         } else {
           updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
         }
@@ -253,7 +263,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    if (this.score.getText().equals("\u221e")) {
+    if (this.score.getText().equals("∞")) {
       GameSettings.setMaxScore(-1);
     } else {
       GameSettings.setMaxScore(Integer.parseInt(score.getText()));
@@ -317,7 +327,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
     this.tor.setText(GameSettings.getTilesOnRack() + "");
     if (GameSettings.getMaxScore() < 0) {
-      this.score.setText("\u221e");
+      this.score.setText("∞");
     } else {
       this.score.setText(GameSettings.getMaxScore() + "");
     }
@@ -358,14 +368,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       dic2.setDisable(true);
       torUp.setDisable(true);
       torDown.setDisable(true);
-      letterDown.setDisable(true);
-      letterUp.setDisable(true);
       valueDown.setDisable(true);
       valueUp.setDisable(true);
       amountDown.setDisable(true);
       amountUp.setDisable(true);
-      save.setDisable(true);
-      save.setOpacity(0);
+      save.setText("Done");
       restore.setDisable(true);
       restore.setOpacity(0);
     }
@@ -441,23 +448,26 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
 
   public void updateLetterLabel(char current, boolean direction) {
+    int currentIndex = this.letters.indexOf(current);
+    
     if (direction) {
-      if (current < 'Z' && current != '*') {
-        current++;
-      } else if (current == '*') {
-        current = 'A';
+      currentIndex++;
+
+      if (currentIndex > this.letters.size() - 1) {
+        current = this.letters.get(0);
       } else {
-        current = '*';
+        current = this.letters.get(currentIndex);
       }
     } else {
-      if (current > 'A' && current != '*') {
-        current--;
-      } else if (current == '*') {
-        current = 'Z';
+      currentIndex--;
+
+      if (currentIndex < 0) {
+        current = this.letters.get(this.letters.size() - 1);
       } else {
-        current = '*';
+        current = this.letters.get(currentIndex);
       }
     }
+
     this.letter.setText(current + "");
     this.letterValue.setText(GameSettings.getLetters().get(current).getLetterValue() + "");
     this.letterAmount.setText(GameSettings.getLetters().get(current).getCount() + "");

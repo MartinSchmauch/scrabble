@@ -51,7 +51,7 @@ public class GameController {
     this.dictionary = new HashSet<String>();
 
     try (BufferedReader br = new BufferedReader(new FileReader(GameSettings.getDictionary()))) {
-      Pattern p = Pattern.compile("\\w*");
+      Pattern p = Pattern.compile("[^\\n\\s]*");
       String line;
       while ((line = br.readLine()) != null) {
         Matcher m = p.matcher(line);
