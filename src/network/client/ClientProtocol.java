@@ -192,10 +192,10 @@ public class ClientProtocol extends Thread {
                 case TURN_RESPONSE:
                   System.out.println("TurnResponseMessageReceived");
                   TurnResponseMessage trm = (TurnResponseMessage) m;
-                  gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                   gpc.updateChat(trm.getTurnInfo(), null, "");
 
                   if (trm.getIsValid()) {
+                    gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                     gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                     gpc.stopTimer();
                     if (trm.getWinner() == null) {
@@ -213,9 +213,8 @@ public class ClientProtocol extends Thread {
                       gpc.changeDoneStatus(false);
                       gpc.changeSkipAndChangeStatus(false);
                     }
-                  } else {
-                    gpc.indicateInvalidTurn(trm.getFrom(), "Invalid Turn");
                   }
+
                   if (gpc.getAlert2() != null) {
                     gpc.getAlert2().close();
                   }
