@@ -151,9 +151,12 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
    */
   @SuppressWarnings("unlikely-arg-type")
   public void updateStatistics() {
-    System.out
-        .println("Final statistics: " + gs.get(player.getNickname()).getScore() + players.get(0));
+    System.out.println("Game play time in seconds " + gs.get(player.getNickname()).getPlayTime());
+
     PlayerData pd = player.getPlayerInfo();
+    System.out
+        .println("Total game Time in seconds " + pd.getPlayerStatistics().getPlayTimeInSeconds());
+    System.out.println("Total game Time in Minutes " + pd.getPlayerStatistics().getPlayTime());
     pd.getPlayerStatistics().incrementGameCount();
     pd.getPlayerStatistics()
         .setScore(pd.getPlayerStatistics().getScore() + gs.get(player.getNickname()).getScore());
