@@ -15,12 +15,13 @@ public class TurnResponseMessage extends Message {
   private int calculatedTurnScore;
   private String nextPlayer;
   private int remainingTilesInTileBag;
+  private String turnInfo;
   private String winner;
 
   /**
-   * This is the consturctor of the TurnResponseMessage.
+   * This is the constructor of the TurnResponseMessage.
    */
-  public TurnResponseMessage(String from, boolean isValid, int calculatedTurnScore,
+  public TurnResponseMessage(String from, boolean isValid, int calculatedTurnScore, String turnInfo,
       String nextPlayer, int remainingTilesInTileBag, String winner) {
     super(MessageType.TURN_RESPONSE, from);
     this.isValid = isValid;
@@ -36,6 +37,10 @@ public class TurnResponseMessage extends Message {
 
   public int getCalculatedTurnScore() {
     return calculatedTurnScore;
+  }
+
+  public String getTurnInfo() {
+    return turnInfo;
   }
 
   public String getNextPlayer() {

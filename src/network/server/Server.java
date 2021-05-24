@@ -221,7 +221,6 @@ public class Server {
             }
           }
           gameState.setCurrentPlayer(gameController.getNextPlayer());
-          gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
           try {
             Thread.sleep(50);
           } catch (InterruptedException e) {
@@ -229,7 +228,11 @@ public class Server {
           }
           // gameState.getGameStatistics()
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
-              gameState.getCurrentPlayer(), gameController.getTileBag().getRemaining(), null));
+              gameController.getTurn().toString(), gameState.getCurrentPlayer(),
+              gameController.getTileBag().getRemaining(), null));
+
+          gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
+          
           Runnable r = new Runnable() {
             public void run() {
               handleAi(gameState.getCurrentPlayer());
@@ -357,7 +360,7 @@ public class Server {
             this.gameController.getTileBag().getRemaining() - turn.getLaydDownTiles().size();
         String nextPlayer = this.getGameController().getNextPlayer();
         this.sendToAll(new TurnResponseMessage(from, turn.isValid(), this.gameState.getScore(from),
-            nextPlayer, remainingTiles, null));
+            turn.toString(), nextPlayer, remainingTiles, null));
         gameState.setCurrentPlayer(nextPlayer);
         this.getGameController().newTurn();
 
@@ -837,7 +840,7 @@ public class Server {
     Turn turn = this.gameController.getTurn();
     calculateGameStatistics();
     sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
-        this.gameState.getScore(turn.getPlayer()), null,
+        this.gameState.getScore(turn.getPlayer()), turn.toString(), null,
         this.gameController.getTileBag().getRemaining(),
         this.gameState.getGameStatistics().get(this.host).getWinner()));
     System.out.println("Test3");
