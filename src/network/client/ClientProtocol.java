@@ -193,6 +193,8 @@ public class ClientProtocol extends Thread {
                   System.out.println("TurnResponseMessageReceived");
                   TurnResponseMessage trm = (TurnResponseMessage) m;
                   gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
+                  gpc.updateChat(trm.getTurnInfo(), null, "");
+
                   if (trm.getIsValid()) {
                     gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                     gpc.stopTimer();

@@ -705,6 +705,8 @@ public class Server {
             case TURN_RESPONSE:
               System.out.println("TurnResponseMessageReceived");
               TurnResponseMessage trm = (TurnResponseMessage) m;
+              gpc.updateChat(trm.getTurnInfo(), null, "");
+
               if (!trm.getIsValid()) {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
               } else {
