@@ -409,9 +409,7 @@ public class Server {
    * @author pkoenig
    */
   private void handleAi(String player) {
-    System.out.println("Server, Line 301 with " + player);
     if (this.aiPlayers.containsKey(player)) {
-      System.out.println("handleAi Player line 332");
       Turn aiTurn = this.aiPlayers.get(player).runAi(this.gameState.getGameBoard());
       
       // if no Turn found, exchange all RackTiles
