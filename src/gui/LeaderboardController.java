@@ -76,14 +76,11 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
       if (players.get(i) != null) {
         String ru = "Runner Up:           ";
         if (i != 3) {
-          standings[i].setText(players.get(i) + " "
-          // + gs.getScore(players.get(i).getNickname()) + " pt"
-          );
+          standings[i].setText(players.get(i) + " " + gs.get(players.get(i)).getScore() + " pt");
+        } else {
+          standings[i]
+              .setText(ru + players.get(i) + " " + gs.get(players.get(i)).getScore() + " pt");
         }
-        // else {
-        // standings[i].setText(ru + players.get(i).getNickname() + " "
-        // + gs.getScore(players.get(i).getNickname()) + " pt");
-        // }
       } else {
         if (i == 3) {
           standings[i].setOpacity(0);
