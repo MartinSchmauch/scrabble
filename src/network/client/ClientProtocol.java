@@ -1,15 +1,15 @@
 package network.client;
 
-import game.GameSettings;
-import game.GameState;
-import gui.GamePanelController;
-import gui.LeaderboardScreen;
-import gui.LobbyScreenController;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
+import game.GameSettings;
+import game.GameState;
+import gui.GamePanelController;
+import gui.LeaderboardScreen;
+import gui.LobbyScreenController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.Field;
@@ -177,12 +177,12 @@ public class ClientProtocol extends Thread {
                   TileMessage trMessage = (TileMessage) m;
 
                   for (Tile t : trMessage.getTiles()) {
-                    if (t.getField() != null && t.getField().getyCoordinate() != -1) { // case "on Rack"
+                    if (t.getField() != null && t.getField().getyCoordinate() != -1) { // case "on
+                                                                                       // Rack"
                       t.setOnRack(false);
                       t.setOnGameBoard(true);
                       gpc.addTile(t);
-                    }
-                    else { // case "on board"
+                    } else { // case "on board"
                       player.addTileToRack(t);
                       gpc.addTile(t);
                     }
@@ -190,6 +190,7 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case TURN_RESPONSE:
+                  System.out.println("TurnResponseMessageReceived");
                   TurnResponseMessage trm = (TurnResponseMessage) m;
                   gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                   if (trm.getIsValid()) {

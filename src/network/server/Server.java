@@ -700,6 +700,7 @@ public class Server {
               gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
               break;
             case TURN_RESPONSE:
+              System.out.println("TurnResponseMessageReceived");
               TurnResponseMessage trm = (TurnResponseMessage) m;
               if (!trm.getIsValid()) {
                 gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
