@@ -146,23 +146,23 @@ public class AIplayer extends Player {
     this.tileCombinations = new TreeSet<AIcombination>();
     switch (ailevel) {
       case LOW:
-        this.maxNumOfTiles = 4;
-        this.numberOfCombinationsToUse = 20;
-        this.goodScore = 5;
+        this.maxNumOfTiles = 2;
+        this.numberOfCombinationsToUse = 2;
+        this.goodScore = 1;
         break;
       case MEDIUM:
-        this.maxNumOfTiles = 5;
-        this.numberOfCombinationsToUse = 50;
-        this.goodScore = 12;
+        this.maxNumOfTiles = 4;
+        this.numberOfCombinationsToUse = 20;
+        this.goodScore = 10;
         break;
       case HIGH:
         this.maxNumOfTiles = 6;
-        this.numberOfCombinationsToUse = 100;
+        this.numberOfCombinationsToUse = 50;
         this.goodScore = 20;
         break;
       case UNBEATABLE:
         this.maxNumOfTiles = 7;
-        this.numberOfCombinationsToUse = 200;
+        this.numberOfCombinationsToUse = 125;
         this.goodScore = 45;
         break;
 
