@@ -157,13 +157,13 @@ public class AIplayer extends Player {
         break;
       case HIGH:
         this.maxNumOfTiles = 6;
-        this.numberOfCombinationsToUse = 200;
+        this.numberOfCombinationsToUse = 100;
         this.goodScore = 20;
         break;
       case UNBEATABLE:
         this.maxNumOfTiles = 7;
-        this.numberOfCombinationsToUse = 10000;
-        this.goodScore = 100;
+        this.numberOfCombinationsToUse = 200;
+        this.goodScore = 45;
         break;
 
       default:
