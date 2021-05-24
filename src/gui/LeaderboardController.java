@@ -67,7 +67,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
     // this.gs.addScore("test3", 34);
     // this.gs.addScore("test4", 4);
 
-    Font f = Font.loadFont(getClass().getResourceAsStream("Scrabble.ttf"), 40);
+    Font f = Font.loadFont(getClass().getResourceAsStream("/fxml/Scrabble.ttf"), 40);
     leaderboard.setFont(f);
     this.players = this.gs.get(player.getNickname()).getAllPlayers();
     Label[] standings = {first, second, third, fourth};
