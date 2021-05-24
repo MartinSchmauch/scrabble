@@ -185,6 +185,7 @@ public class Server {
         }
       }
       this.sem = true; // added by pkoenig, um Deadlocks zu verhindern
+      this.gameController.getTurn().setStringRepresentation("Tiles changed and turn skipped.");
       resetTurnForEveryPlayer(new ResetTurnMessage(m.getFrom(), null));
 
     }
@@ -227,6 +228,10 @@ public class Server {
             e.printStackTrace();
           }
           // gameState.getGameStatistics()
+          if (gameController.getTurn().toString().equals("Turn not scored.")) {
+            gameController.getTurn().setStringRepresentation("Time's up!");
+          }
+          
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameController.getTurn().toString(), gameState.getCurrentPlayer(),
               gameController.getTileBag().getRemaining(), null));
@@ -376,6 +381,8 @@ public class Server {
 
       } else {
         this.semaphoreReset = true;
+        this.sendToAll(
+            new TurnResponseMessage(from, turn.isValid(), -1, turn.toString(), null, -1, null));
       }
     }
   }
@@ -707,9 +714,7 @@ public class Server {
               TurnResponseMessage trm = (TurnResponseMessage) m;
               gpc.updateChat(trm.getTurnInfo(), null, "");
 
-              if (!trm.getIsValid()) {
-                gpc.indicateInvalidTurn(trm.getFrom(), "turn invalid");
-              } else {
+              if (trm.getIsValid()) {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
                 gpc.updateRemainingLetters(trm.getRemainingTilesInTileBag());
                 gpc.stopTimer();

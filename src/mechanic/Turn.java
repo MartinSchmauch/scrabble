@@ -38,7 +38,7 @@ public class Turn implements Serializable {
     this.words = new ArrayList<Word>();
     this.laydDownTiles = new ArrayList<Tile>();
     this.turnScore = 0;
-    this.stringRepresentation = "not calculated";
+    this.stringRepresentation = "Turn not scored.";
     this.laydDownFields = new ArrayList<Field>();
     this.containedStarTiles = false;
     this.starTiles = new ArrayList<Tile>();
@@ -429,6 +429,10 @@ public class Turn implements Serializable {
 
   public String toString() {
     return stringRepresentation;
+  }
+
+  public void setStringRepresentation(String s) {
+    this.stringRepresentation = s;
   }
 
   /**
