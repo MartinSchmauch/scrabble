@@ -147,17 +147,17 @@ public class AIplayer extends Player {
     switch (ailevel) {
       case LOW:
         this.maxNumOfTiles = 2;
-        this.numberOfCombinationsToUse = 1;
+        this.numberOfCombinationsToUse = 8;
         this.goodScore = 1;
         break;
       case MEDIUM:
         this.maxNumOfTiles = 4;
-        this.numberOfCombinationsToUse = 20;
+        this.numberOfCombinationsToUse = 25;
         this.goodScore = 10;
         break;
       case HIGH:
         this.maxNumOfTiles = 6;
-        this.numberOfCombinationsToUse = 50;
+        this.numberOfCombinationsToUse = 45;
         this.goodScore = 20;
         break;
       case UNBEATABLE:
@@ -193,7 +193,7 @@ public class AIplayer extends Player {
     String cChars;
     for (String w : gc.getDictionary()) {
       for (int currentNumOfTiles =
-          2; currentNumOfTiles <= this.maxNumOfTiles; currentNumOfTiles++) {
+          1; currentNumOfTiles <= this.maxNumOfTiles; currentNumOfTiles++) {
         for (int i = 0; i <= w.length() - currentNumOfTiles; i++) {
           cChars = w.substring(i, i + currentNumOfTiles);
           if ((c = temp.get(cChars)) != null) {
@@ -223,7 +223,7 @@ public class AIplayer extends Player {
     boolean finished = false;
     int combinationIndex = 0;
 
-    for (int i = 2; i <= this.getMaxNumOfTiles(); i++) {
+    for (int i = 1; i <= this.getMaxNumOfTiles(); i++) {
       possibleLocations.add(getValidTilePositionsForNumOfTiles(gb, i));
     }
 
@@ -241,7 +241,7 @@ public class AIplayer extends Player {
         }
       }
       // iterate over the possible locations
-      for (Field[] currentLocation : possibleLocations.get(currentLayedDownTiles.size() - 2)) {
+      for (Field[] currentLocation : possibleLocations.get(currentLayedDownTiles.size() - 1)) {
 
         // put Tiles on Gameboard
         for (int i = 0; i < currentLocation.length; i++) {
@@ -300,17 +300,17 @@ public class AIplayer extends Player {
     }
     sw.stop();
 
-    System.out.println();
-    System.out.println();
-    System.out.println("Maximum score: " + maximumScore);
-    System.out.println("----------------------");
-    for (Word w : idealTurn.getWords()) {
-      System.out.println(w.toString());
+    if (this.testmode) {
+      System.out.println();
+      System.out.println();
+      System.out.println("Maximum score: " + maximumScore);
+      System.out.println("----------------------");
+      for (Word w : idealTurn.getWords()) {
+        System.out.println(w.toString());
+      }
+      System.out.println("----------------------");
     }
-    System.out.println("----------------------");
-    System.out.println("AI finished in " + sw.elapsed(TimeUnit.MILLISECONDS) + " milliseconds");
-
-    if (!this.testmode) {
+    else {
       // add Tiles to gameboard
       Field[] maxLocation = new Field[idealTurn.getLaydDownFields().size()];
       int i = 0;
@@ -327,6 +327,7 @@ public class AIplayer extends Player {
         maxLocation[ii].setTileOneDirection(maxTiles.get(ii));
       }
     }
+    System.out.println("AI finished in " + sw.elapsed(TimeUnit.MILLISECONDS) + " milliseconds");
 
     return idealTurn;
   }
@@ -395,7 +396,7 @@ public class AIplayer extends Player {
 
 
   public HashSet<Field[]> getValidTilePositionsForNumOfTiles(GameBoard gb, int numOfTiles) {
-    if (numOfTiles <= 1) {
+    if (numOfTiles < 1) {
       return null;
     }
     HashSet<Field[]> results = new HashSet<Field[]>(); // no duplicates in results

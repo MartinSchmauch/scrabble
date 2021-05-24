@@ -496,7 +496,7 @@ public class Server {
    */
 
   public boolean checkNickname(String nickname) {
-    return this.clients.keySet().contains(nickname) || this.host.equals(nickname);
+    return this.clients.keySet().contains(nickname) || this.host.equals(nickname) || this.aiPlayers.containsKey(nickname);
   }
 
   /**
@@ -853,6 +853,7 @@ public class Server {
     for (AIplayer a : this.aiPlayers.values()) {
       a.setGc(this.gameController);
       a.generateTileCombinations();
+      a.setAilevel( AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     }
   }
 

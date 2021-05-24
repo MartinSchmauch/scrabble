@@ -225,7 +225,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param index defines in which slot the ai player needs to be put.
    */
   public void addAiPlayer(int index) {
-    AIplayer p = new AIplayer("AI " + index, this.getPlayer().getServer().getGameController(),
+    int i = 1;
+    String aiName = "AI " + i;
+    while (this.player.getServer().checkNickname(aiName)) {
+      i++;
+      aiName = "AI " + i;
+    }
+    AIplayer p = new AIplayer(aiName, this.getPlayer().getServer().getGameController(),
         AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
