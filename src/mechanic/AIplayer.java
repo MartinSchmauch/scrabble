@@ -147,7 +147,7 @@ public class AIplayer extends Player {
     switch (ailevel) {
       case LOW:
         this.maxNumOfTiles = 2;
-        this.numberOfCombinationsToUse = 2;
+        this.numberOfCombinationsToUse = 1;
         this.goodScore = 1;
         break;
       case MEDIUM:
