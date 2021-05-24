@@ -232,7 +232,7 @@ public class Server {
               gameController.getTileBag().getRemaining(), null));
 
           gameController.setTurn(new Turn(gameState.getCurrentPlayer(), gameController));
-          
+
           Runnable r = new Runnable() {
             public void run() {
               handleAi(gameState.getCurrentPlayer());
@@ -882,19 +882,27 @@ public class Server {
     }
     // for each player
 
-    for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
-      for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
-        if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
-            .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
-          Collections.swap(gameState.getAllPlayers(), i, i + 1);
-        }
-      }
-    }
     List<String> playersList = new ArrayList<String>();
     for (PlayerData client : gameState.getAllPlayers()) {
       this.gameState.getGameStatisticsOfPlayer(client.getNickname())
           .setScore(gameState.getScore(client.getNickname()));
       playersList.add(client.getNickname());
+    }
+
+    // for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
+    // for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
+    // if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
+    // .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
+    // Collections.swap(gameState.getAllPlayers(), i, i + 1);
+    // }
+    // }
+    // }
+    for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
+      for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
+        if (gameState.getScore(playersList.get(i)) < gameState.getScore(playersList.get(i + 1))) {
+          Collections.swap(playersList, i, i + 1);
+        }
+      }
     }
     for (String p : playersList) {
       this.gameState.getGameStatisticsOfPlayer(p).setAllPlayers(playersList);
