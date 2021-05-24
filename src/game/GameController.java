@@ -57,7 +57,7 @@ public class GameController {
         Matcher m = p.matcher(line);
         if (!line.isEmpty()) {
           m.find();
-          this.dictionary.add(line.substring(m.regionStart(), m.end()));
+          this.dictionary.add(line.substring(m.regionStart(), m.end()).toUpperCase());
         }
       }
     } catch (FileNotFoundException e) {
