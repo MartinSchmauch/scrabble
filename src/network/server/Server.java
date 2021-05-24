@@ -190,6 +190,23 @@ public class Server {
 
     }
   }
+  
+
+  private void handleExchangeTilesForAI(AIplayer aiplayer, List<Tile> rackTiles) {
+    this.getGameController().addTilesToTileBag(rackTiles);
+    for (Tile t : rackTiles) {
+      this.player.removeRackTile(t.getField().getxCoordinate());
+    }
+    List<Tile> tileList = gameController.drawTiles(rackTiles.size());
+    for (Tile t : tileList) {
+      t.setField(player.getFreeRackField());
+      t.setOnGameBoard(false);
+      t.setOnRack(true);
+//      gpc.addTile(t);
+    }
+    this.gameController.getTurn().setStringRepresentation("Tiles changed and turn skipped.");
+    resetTurnForEveryPlayer(new ResetTurnMessage(aiplayer.getNickname(), null));
+  }
 
   /**
    * This method is called, when a Turn should be resetet. All tiles are remove from the gameboard
@@ -396,9 +413,10 @@ public class Server {
     if (this.aiPlayers.containsKey(player)) {
       System.out.println("handleAi Player line 332");
       Turn aiTurn = this.aiPlayers.get(player).runAi(this.gameState.getGameBoard());
+      
       // if no Turn found, exchange all RackTiles
       if (aiTurn == null) {
-        handleExchangeTiles(new TileMessage(player, this.aiPlayers.get(player).getRackTiles()));
+        handleExchangeTilesForAI(this.aiPlayers.get(player), this.aiPlayers.get(player).getRackTiles());
       } else {
         TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
         this.sendToAll(tm);
@@ -418,6 +436,7 @@ public class Server {
       }
     }
   }
+
 
   /**
    * Thread method that continuously checks for new clients trying to connect. When a new clients
