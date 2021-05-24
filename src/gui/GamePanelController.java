@@ -673,11 +673,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param dateTime
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
-    if (!sender.equals("")) {
-      this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
-    } else {
-      this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender) + "");
-    }
+    this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
 

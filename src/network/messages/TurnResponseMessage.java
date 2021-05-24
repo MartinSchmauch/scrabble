@@ -28,6 +28,7 @@ public class TurnResponseMessage extends Message {
     this.calculatedTurnScore = calculatedTurnScore;
     this.nextPlayer = nextPlayer;
     this.remainingTilesInTileBag = remainingTilesInTileBag;
+    this.turnInfo = turnInfo;
     this.winner = winner;
   }
 
