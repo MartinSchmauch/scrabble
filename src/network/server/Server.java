@@ -152,7 +152,6 @@ public class Server {
       if (gpc.getClass().getCanonicalName().equals("gui.GamePanelController")) {
         this.gpc.stopTimer();
       }
-      this.getGameController().addTilesToTileBag(m.getTiles());
       // If the host wants to perform the exchange
       if (m.getFrom().equals(this.getHost())) {
         // delete Old tiles From Domain
@@ -190,7 +189,7 @@ public class Server {
 
     }
   }
-  
+
 
   private void handleExchangeTilesForAI(AIplayer aiplayer, List<Tile> rackTiles) {
     this.getGameController().addTilesToTileBag(rackTiles);
@@ -202,7 +201,7 @@ public class Server {
       t.setField(player.getFreeRackField());
       t.setOnGameBoard(false);
       t.setOnRack(true);
-//      gpc.addTile(t);
+      // gpc.addTile(t);
     }
     this.gameController.getTurn().setStringRepresentation("Tiles changed and turn skipped.");
     resetTurnForEveryPlayer(new ResetTurnMessage(aiplayer.getNickname(), null));
@@ -248,7 +247,7 @@ public class Server {
           if (gameController.getTurn().toString().equals("Turn not scored.")) {
             gameController.getTurn().setStringRepresentation("Time's up!");
           }
-          
+
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameController.getTurn().toString(), gameState.getCurrentPlayer(),
               gameController.getTileBag().getRemaining(), null));
@@ -411,10 +410,11 @@ public class Server {
   private void handleAi(String player) {
     if (this.aiPlayers.containsKey(player)) {
       Turn aiTurn = this.aiPlayers.get(player).runAi(this.gameState.getGameBoard());
-      
+
       // if no Turn found, exchange all RackTiles
       if (aiTurn == null) {
-        handleExchangeTilesForAI(this.aiPlayers.get(player), this.aiPlayers.get(player).getRackTiles());
+        handleExchangeTilesForAI(this.aiPlayers.get(player),
+            this.aiPlayers.get(player).getRackTiles());
       } else {
         TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
         this.sendToAll(tm);
@@ -494,7 +494,8 @@ public class Server {
    */
 
   public boolean checkNickname(String nickname) {
-    return this.clients.keySet().contains(nickname) || this.host.equals(nickname) || this.aiPlayers.containsKey(nickname);
+    return this.clients.keySet().contains(nickname) || this.host.equals(nickname)
+        || this.aiPlayers.containsKey(nickname);
   }
 
   /**
@@ -851,7 +852,7 @@ public class Server {
     for (AIplayer a : this.aiPlayers.values()) {
       a.setGc(this.gameController);
       a.generateTileCombinations();
-      a.setAilevel( AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
+      a.setAilevel(AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     }
   }
 
