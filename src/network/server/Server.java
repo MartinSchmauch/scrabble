@@ -523,9 +523,13 @@ public class Server {
     }
     this.gameState.leaveGame(player);
     this.clients.remove(player);
-    if (this.gameState.getGameRunning() && gameState.getAllPlayers().size() < 1) {
+    if (this.gameState.getGameRunning() && gameState.getAllPlayers().size() < 2) {
       Runnable r = new Runnable() {
         public void run() {
+          gpc.updateChat("You're alone now. The game is over.", null, "");
+          gpc.stopTimer();
+          gpc.changeDoneStatus(false);
+          gpc.changeSkipAndChangeStatus(false);
           endGame();
         }
       };
@@ -740,7 +744,9 @@ public class Server {
             case TURN_RESPONSE:
               System.out.println("TurnResponseMessageReceived");
               TurnResponseMessage trm = (TurnResponseMessage) m;
-              gpc.updateChat(trm.getTurnInfo(), null, "");
+              if (trm.getTurnInfo() != null) {
+                gpc.updateChat(trm.getTurnInfo(), null, "");
+              }
 
               if (trm.getIsValid()) {
                 gpc.updateScore(trm.getFrom(), trm.getCalculatedTurnScore());
