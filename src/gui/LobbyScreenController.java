@@ -332,8 +332,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       Pattern p = Pattern.compile("AI\\s.");
       Matcher m = p.matcher(nickname);
       if (m.matches()) {
-        this.player.getServer().getGameState().leaveGame(nickname);
-        this.player.getServer().removeClient(nickname);
+        this.player.getServer().handleLeaveLobby(nickname);
         this.player.getServer().sendLobbyStatus();
 
         this.player.getServer().removeFromAiPlayers(nickname);

@@ -509,9 +509,15 @@ public class Server {
     this.clients.put(player.getNickname(), serverProtocol);
   }
 
+  public void handleLeaveLobby(String player) {
+    this.gameState.leaveGame(player);
+    this.clients.remove(player);
+  }
+
+
   /** This method removes a client and ends the game is running and only the host is left. */
 
-  public void removeClient(String player) {
+  public void handleLeaveGame(String player) {
     for (int i = 0; i < gameController.getTurns().size(); i++) {
       if (gameController.getTurns().get(i).getPlayer().equals(player)) {
         gameController.getTurns().remove(i);
@@ -531,7 +537,23 @@ public class Server {
         }
       };
       new Thread(r).start();
+      return;
     }
+
+    String nextPlayer = this.getGameController().getNextPlayer();
+    this.sendToAll(new TurnResponseMessage(player, true, 0,
+        null, nextPlayer, this.gameController.getTileBag().getRemaining(), null));
+    gameState.setCurrentPlayer(nextPlayer);
+    this.getGameController().newTurn();
+
+    Runnable r = new Runnable() {
+
+      public void run() {
+        handleAi(nextPlayer);
+      }
+
+    };
+    new Thread(r).start();
   }
 
   /** Handles move from rack to gameBoard (with AddTileMessage). */

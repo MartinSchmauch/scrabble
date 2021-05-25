@@ -61,7 +61,7 @@ public class ServerProtocol extends Thread {
       out.reset();
     } catch (IOException e) {
       System.out.println("Client " + this.clientName + " removed (message delivery failed).");
-      server.removeClient(this.clientName);
+      server.handleLeaveGame(this.clientName);
       e.printStackTrace();
     }
   }
@@ -133,7 +133,7 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             DisconnectMessage dm = (DisconnectMessage) m;
             dm.setTiles(this.server.getGameController().getTurn().getLaydDownTiles());
-            server.removeClient(dm.getFrom());
+            server.handleLeaveGame(dm.getFrom());
             server.sendToAll(m);
             disconnect();
             break;
