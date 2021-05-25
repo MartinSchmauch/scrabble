@@ -720,6 +720,14 @@ public class Server {
             case DISCONNECT:
               DisconnectMessage dm = (DisconnectMessage) m;
               gpc.removeJoinedPlayer(dm.getFrom());
+              gpc.updateChat("-- " + dm.getFrom() + " left the Game! --", null, "");
+
+              if (dm.getTiles() != null) {
+                for (Tile t : dm.getTiles()) {
+                  gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
+                      false);
+                }
+              }
               break;
             case SHUTDOWN:
               // TODO:

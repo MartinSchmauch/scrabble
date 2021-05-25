@@ -338,7 +338,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
         this.player.getServer().removeFromAiPlayers(nickname);
       } else {
-        DisconnectMessage dm = new DisconnectMessage(nickname);
+        DisconnectMessage dm = new DisconnectMessage(nickname, null);
         sendMessage(dm);
       }
       updateJoinedPlayers();
@@ -562,13 +562,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     if (this.player.getServer() != null) {
       for (PlayerData p : players) {
         if (!p.isHost()) {
-          sendMessage(new DisconnectMessage(p.getNickname()));
+          sendMessage(new DisconnectMessage(p.getNickname(), null));
         }
       }
-      sendMessage(new DisconnectMessage(this.player.getNickname()));
+      sendMessage(new DisconnectMessage(this.player.getNickname(), null));
       this.player.getServer().stopServer();
     } else if (!this.player.isHost()) {
-      sendMessage(new DisconnectMessage(this.player.getNickname()));
+      sendMessage(new DisconnectMessage(this.player.getNickname(), null));
       this.player.getClientProtocol().disconnect();
     }
     closeWindow();

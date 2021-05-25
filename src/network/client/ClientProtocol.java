@@ -282,6 +282,14 @@ public class ClientProtocol extends Thread {
                   if (gameState != null) {
                     DisconnectMessage discMessage = (DisconnectMessage) m;
                     gameState.leaveGame(discMessage.getFrom());
+                    gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
+
+                    if (discMessage.getTiles() != null) {
+                      for (Tile t : discMessage.getTiles()) {
+                        gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
+                            false);
+                      }
+                    }
 
                     if (!gameState.getGameRunning()) {
                       if (lsc != null) {
@@ -323,7 +331,7 @@ public class ClientProtocol extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(this.player.getNickname()));
+        this.out.writeObject(new DisconnectMessage(this.player.getNickname(), null));
         clientSocket.close(); // close streams and socket
       }
     } catch (IOException e) {

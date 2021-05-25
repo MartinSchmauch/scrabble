@@ -996,7 +996,7 @@ public class TutorialController extends GamePanelController
 
   @Override
   public void sendDisconnectMessage(String nickName) {
-    Message m = new DisconnectMessage(nickName);
+    Message m = new DisconnectMessage(nickName, null);
     sendMessage(m);
   }
 
@@ -1072,7 +1072,7 @@ public class TutorialController extends GamePanelController
       }
       sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
       // this.player.getClientProtocol().disconnect(); // in DisconnectMessage included?
-      Message m = new DisconnectMessage(this.player.getNickname());
+      Message m = new DisconnectMessage(this.player.getNickname(), null);
       sendMessage(m);
     }
     Stage st = (Stage) (rulesButton.getScene().getWindow());

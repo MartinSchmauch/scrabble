@@ -948,7 +948,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @Override
   public void sendDisconnectMessage(String nickName) {
-    Message m = new DisconnectMessage(nickName);
+    Message m = new DisconnectMessage(nickName, null);
     sendMessage(m);
   }
 
@@ -1018,17 +1018,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
       // sendMessage(m);
     } else if (!this.player.isHost()) {
-      Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
-      for (int i = 0; i < players.size(); i++) {
-        if (players.get(i).getNickname().equals(this.player.getNickname())) {
-          if (rect[i].isVisible()) {
-            sendResetTurnForEveryPlayer(this.player.getNickname()); // TODO:
-          }
-        }
-      }
-      sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
-      // this.player.getClientProtocol().disconnect(); // in DisconnectMessage included?
-      Message m = new DisconnectMessage(this.player.getNickname());
+      Message m = new DisconnectMessage(this.player.getNickname(), null);
       sendMessage(m);
     }
     Stage st = (Stage) (rulesButton.getScene().getWindow());
