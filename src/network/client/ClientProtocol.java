@@ -288,6 +288,7 @@ public class ClientProtocol extends Thread {
                         if (discMessage.getFrom().equals(player.getNickname())) {
                           lsc.removeJoinedPlayer(discMessage.getFrom());
                           lsc.close();
+                          gpc.stopTimer();
                         } else {
                           lsc.updateJoinedPlayers();
                         }

@@ -812,6 +812,7 @@ public class Server {
    */
   public void stopServer() {
     running = false;
+    gpc.stopTimer();
     sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {
@@ -883,9 +884,8 @@ public class Server {
     if (checkNickname(turn.getPlayer())) {
       score = this.gameState.getScore(turn.getPlayer());
     }
-    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
-        score, turn.toString(), null,
-        this.gameController.getTileBag().getRemaining(),
+    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(), score, turn.toString(),
+        null, this.gameController.getTileBag().getRemaining(),
         this.gameState.getGameStatistics().get(this.host).getWinner()));
     System.out.println("Test3");
 
