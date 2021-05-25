@@ -121,6 +121,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
     // Only "leave game" button.
     Stage st = (Stage) this.bestTurnKey.getScene().getWindow();
     st.close();
+    new LoginScreen().start(new Stage());
   }
 
   /**

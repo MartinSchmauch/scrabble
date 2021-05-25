@@ -354,7 +354,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           // Button b = (Button) e.getSource();
           // Stage st = (Stage) (b.getScene().getWindow());
           // st.close();
-          // new LoginScreen().start(new Stage());
+          new LoginScreen().start(new Stage());
         }
         break;
       case "rulesButton":
@@ -1032,7 +1032,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     }
     Stage st = (Stage) (rulesButton.getScene().getWindow());
     st.close();
-    new LoginScreen().start(new Stage());
   }
 
   public Server getServer() {
