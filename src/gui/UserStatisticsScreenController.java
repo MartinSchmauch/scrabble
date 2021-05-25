@@ -138,7 +138,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
     this.values1[2] = this.ps.getBestWord();
     this.values1[3] = this.ps.getBestTurn() + " points";
     this.values1[4] = this.ps.getPlayedTiles() + "";
-    this.values1[5] = this.ps.getPlayTime() + " min";
+    this.values1[5] = this.ps.getPlayTimeInMinutes() + " min";
 
     this.values2[0] = "Average Score: " + this.ps.getScore() / this.ps.getGameCount();
     this.values2[1] = "Winrate: " + (this.ps.getWins() * 100) / this.ps.getGameCount() + " %";

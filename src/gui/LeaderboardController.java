@@ -152,16 +152,16 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
 
     PlayerData pd = player.getPlayerInfo();
     System.out
-        .println("Total game Time in seconds " + pd.getPlayerStatistics().getPlayTimeInSeconds());
-    System.out.println("Total game Time in Minutes " + pd.getPlayerStatistics().getPlayTime());
+        .println("Total game Time in seconds " + pd.getPlayerStatistics().getPlayTime());
+    System.out.println("Total game Time in Minutes " + pd.getPlayerStatistics().getPlayTimeInMinutes());
     pd.getPlayerStatistics().incrementGameCount();
     pd.getPlayerStatistics()
         .setScore(pd.getPlayerStatistics().getScore() + gs.get(player.getNickname()).getScore());
     pd.getPlayerStatistics().setPlayedTiles(
         pd.getPlayerStatistics().getPlayedTiles() + gs.get(player.getNickname()).getPlayedTiles());
-    System.out.println("time wird auf x gesetz: " + (pd.getPlayerStatistics().getPlayTimeInSeconds()
+    System.out.println("time wird auf x gesetz: " + (pd.getPlayerStatistics().getPlayTime()
         + gs.get(player.getNickname()).getPlayTime()));
-    pd.getPlayerStatistics().setPlayTime(pd.getPlayerStatistics().getPlayTimeInSeconds()
+    pd.getPlayerStatistics().setPlayTime(pd.getPlayerStatistics().getPlayTime()
         + gs.get(player.getNickname()).getPlayTime());
     System.out.println("BestWords: " + gs.get(player.getNickname()).getBestWordAsString());
     if (pd.getPlayerStatistics().getBestTurn() < gs.get(player.getNickname()).getBestTurn()) {

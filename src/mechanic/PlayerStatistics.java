@@ -84,16 +84,16 @@ public class PlayerStatistics implements Serializable {
   }
 
   public int getPlayTime() {
-    return this.playTime / 60;
+    return this.playTime;
   }
 
   /**
-   * This method gives back the total game Time in seconds.
+   * This method gives back the total game Time in minutes.
    * 
    * @author lurny
    */
-  public int getPlayTimeInSeconds() {
-    return this.playTime;
+  public int getPlayTimeInMinutes() {
+    return this.playTime / 60;
   }
 
   public int getScore() {
