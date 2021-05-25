@@ -8,6 +8,7 @@ import network.messages.AddTileMessage;
 import network.messages.CommitTurnMessage;
 import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
+import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MessageType;
 import network.messages.MoveTileMessage;
@@ -130,8 +131,9 @@ public class ServerProtocol extends Thread {
         m = (Message) in.readObject();
         switch (m.getMessageType()) {
           case DISCONNECT:
-            server.removeClient(m.getFrom());
-            running = false;
+            DisconnectMessage dm = (DisconnectMessage) m;
+            dm.setTiles(this.server.getGameController().getTurn().getLaydDownTiles());
+            server.removeClient(dm.getFrom());
             server.sendToAll(m);
             disconnect();
             break;

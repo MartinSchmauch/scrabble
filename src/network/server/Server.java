@@ -888,12 +888,10 @@ public class Server {
     System.out.println("Test1");
     Turn turn = this.gameController.getTurn();
     calculateGameStatistics();
-    int score = 0;
-    if (checkNickname(turn.getPlayer())) {
-      score = this.gameState.getScore(turn.getPlayer());
-    }
-    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(), score, turn.toString(),
-        null, this.gameController.getTileBag().getRemaining(),
+
+    sendToAll(new TurnResponseMessage(turn.getPlayer(), turn.isValid(),
+        this.gameState.getScore(turn.getPlayer()), turn.toString(), null,
+        this.gameController.getTileBag().getRemaining(),
         this.gameState.getGameStatistics().get(this.host).getWinner()));
     System.out.println("Test3");
 
