@@ -221,6 +221,11 @@ public class Server {
       List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
       System.out.println(from + "  " + tileList.size());
       this.sendToAll((Message) new ResetTurnMessage(from, tileList));
+      if (!this.aiPlayers.containsKey(from)) {
+        this.gameState.getGameStatisticsOfPlayer(from)
+            .setPlayTime(this.gameState.getGameStatisticsOfPlayer(from).getPlayTime()
+                + this.gpc.getTimerDuration() - (this.gpc.getMin() * 60 + this.gpc.getSec()));
+      }
       // remove Tiles from domain Gameboard
       Platform.runLater(new Runnable() {
         @Override
@@ -897,12 +902,12 @@ public class Server {
           wordList.add(word.toString());
         }
         this.gameState.getGameStatisticsOfPlayer(p).setBestWords(wordList);
-        this.gameState.getGameStatisticsOfPlayer(p)
-            .setPlayedTiles(this.gameState.getGameStatisticsOfPlayer(p).getPlayedTiles()
-                + t.getLaydDownTiles().size());
-        this.gameState.getGameStatisticsOfPlayer(p)
-            .setTotalTurns(this.gameState.getGameStatisticsOfPlayer(p).getTotalTurns() + 1);
       }
+      this.gameState.getGameStatisticsOfPlayer(p)
+          .setPlayedTiles(this.gameState.getGameStatisticsOfPlayer(p).getPlayedTiles()
+              + t.getLaydDownTiles().size());
+      this.gameState.getGameStatisticsOfPlayer(p)
+          .setTotalTurns(this.gameState.getGameStatisticsOfPlayer(p).getTotalTurns() + 1);
     }
     // for each player
 
@@ -913,14 +918,6 @@ public class Server {
       playersList.add(client.getNickname());
     }
 
-    // for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
-    // for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
-    // if (gameState.getScore(gameState.getAllPlayers().get(i).getNickname()) < gameState
-    // .getScore(gameState.getAllPlayers().get(i + 1).getNickname())) {
-    // Collections.swap(gameState.getAllPlayers(), i, i + 1);
-    // }
-    // }
-    // }
     for (int z = 0; z < gameState.getAllPlayers().size(); z++) {
       for (int i = 0; i < gameState.getAllPlayers().size() - 1; i++) {
         if (gameState.getScore(playersList.get(i)) < gameState.getScore(playersList.get(i + 1))) {
