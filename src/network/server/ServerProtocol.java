@@ -133,7 +133,9 @@ public class ServerProtocol extends Thread {
           case DISCONNECT:
             DisconnectMessage dm = (DisconnectMessage) m;
             if (this.server.getGameState().getGameRunning()) {
-              dm.setTiles(this.server.getGameController().getTurn().getLaydDownTiles());
+              if (this.server.getGameState().getCurrentPlayer().equals(dm.getFrom())) {
+                dm.setTiles(this.server.getGameController().getTurn().getLaydDownTiles());
+              }
               server.handleLeaveGame(dm.getFrom());
             } else {
               server.handleLeaveLobby(dm.getFrom());
