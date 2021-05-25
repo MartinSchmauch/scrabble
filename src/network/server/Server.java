@@ -516,6 +516,11 @@ public class Server {
   /** This method removes a client and ends the game is running and only the host is left. */
 
   public void removeClient(String player) {
+    for (int i = 0; i < gameController.getTurns().size(); i++) {
+      if (gameController.getTurns().get(i).getPlayer().equals(player)) {
+        gameController.getTurns().remove(i);
+      }
+    }
     this.gameState.leaveGame(player);
     this.clients.remove(player);
     if (this.gameState.getGameRunning() && gameState.getAllPlayers().size() < 1) {
