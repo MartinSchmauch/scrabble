@@ -129,8 +129,10 @@ public class GameState implements Serializable {
     if (player.equals(host.getNickname())) {
       stopGame();
     }
-    gameStatistics.remove(player);
-    scores.remove(player);
+    if (isRunning) {
+      gameStatistics.remove(player);
+      scores.remove(player);
+    }
     return (allPlayers.remove(player) != null);
   }
 
