@@ -159,6 +159,8 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
         .setScore(pd.getPlayerStatistics().getScore() + gs.get(player.getNickname()).getScore());
     pd.getPlayerStatistics().setPlayedTiles(
         pd.getPlayerStatistics().getPlayedTiles() + gs.get(player.getNickname()).getPlayedTiles());
+    System.out.println("time wird auf x gesetz: " + (pd.getPlayerStatistics().getPlayTimeInSeconds()
+        + gs.get(player.getNickname()).getPlayTime()));
     pd.getPlayerStatistics().setPlayTime(pd.getPlayerStatistics().getPlayTimeInSeconds()
         + gs.get(player.getNickname()).getPlayTime());
     System.out.println("BestWords: " + gs.get(player.getNickname()).getBestWordAsString());
