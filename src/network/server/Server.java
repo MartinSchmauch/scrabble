@@ -842,7 +842,6 @@ public class Server {
    */
   public void stopServer() {
     running = false;
-    gpc.stopTimer();
     sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {

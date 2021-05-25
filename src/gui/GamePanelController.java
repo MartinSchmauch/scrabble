@@ -1013,6 +1013,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * Closes the Game and stops the server.
    */
   public void close() {
+    stopTimer();
     if (this.player.getServer() != null) { // TODO: this.player.isHost() nutzen?
       this.player.getServer().stopServer();
       // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
