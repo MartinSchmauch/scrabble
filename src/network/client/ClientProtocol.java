@@ -274,6 +274,7 @@ public class ClientProtocol extends Thread {
                   break;
                 case GAME_STATISTIC:
                   GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+                  gpc.stopTimer();
                   gpc.close();
                   new LeaderboardScreen(gsMessage.getGameStatistics(), player).start(new Stage());
                   break;

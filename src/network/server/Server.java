@@ -702,6 +702,7 @@ public class Server {
               }
               break;
             case GAME_STATISTIC:
+              gpc.stopTimer();
               System.out.println("check");
 
               try {
