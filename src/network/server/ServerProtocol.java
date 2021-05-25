@@ -159,6 +159,7 @@ public class ServerProtocol extends Thread {
             break;
           case RESET_TURN:
             ResetTurnMessage rtMessage = (ResetTurnMessage) m;
+            this.server.getGameController().getTurn().setStringRepresentation("Time's up!");
             this.server.resetTurnForEveryPlayer(rtMessage);
             break;
           case SEND_CHAT_TEXT:

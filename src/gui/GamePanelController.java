@@ -935,6 +935,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     if (this.player.isHost()) {
       if (this.player.getServer().getGameState().getCurrentPlayer()
           .equals(this.player.getNickname())) {
+        this.player.getServer().getGameController().getTurn().setStringRepresentation("Time's up!");
         this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
       }
     } else {

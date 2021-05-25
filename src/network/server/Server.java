@@ -248,10 +248,6 @@ public class Server {
           } catch (InterruptedException e) {
             e.printStackTrace();
           }
-          // gameState.getGameStatistics()
-          if (gameController.getTurn().toString().equals("Turn not scored.")) {
-            gameController.getTurn().setStringRepresentation("Time's up!");
-          }
 
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameController.getTurn().toString(), gameState.getCurrentPlayer(),
@@ -527,6 +523,7 @@ public class Server {
       Runnable r = new Runnable() {
         public void run() {
           gpc.updateChat("You're alone now. The game is over.", null, "");
+          gpc.indicatePlayerTurn(host);
           gpc.stopTimer();
           gpc.changeDoneStatus(false);
           gpc.changeSkipAndChangeStatus(false);
