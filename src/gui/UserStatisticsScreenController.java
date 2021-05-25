@@ -145,6 +145,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
     this.values2[2] = "";
     this.values2[3] = "";
     this.values2[4] = "Average Played Tiles: " + this.ps.getPlayedTiles() / this.ps.getGameCount();
-    this.values2[5] = "Average Gametime: " + this.ps.getPlayTime() / this.ps.getGameCount();
+    this.values2[5] =
+        "Average Gametime: " + this.ps.getPlayTimeInMinutes() / this.ps.getGameCount();
   }
 }

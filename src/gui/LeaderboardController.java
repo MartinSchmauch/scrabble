@@ -146,7 +146,7 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
    * 
    * @author lurny
    */
-  @SuppressWarnings("unlikely-arg-type")
+
   public void updateStatistics() {
     System.out.println("Game play time in seconds " + gs.get(player.getNickname()).getPlayTime());
 
