@@ -72,7 +72,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   private boolean turnCountdown;
   private CustomAlert alert2;
 
-  private VisualTile cursorTile;
+  // private VisualTile cursorTile;
 
   @FXML
   private Pane upperPane;
@@ -112,6 +112,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     return instance;
   }
 
+  private Text[] playerLabel;
+  private Text[] pointsLabel;
+  private Text[] playerNameLabel;
+  private ImageView[] avatarImageView;
+  private Rectangle[] rect;
+
   /**
    * This method initializes the GamePanelController and is being called upon creation of the
    * Controller. Here all the labels on the UI are being reset and adapted to the current game
@@ -124,11 +130,12 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
-
-    Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
-    Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
-    Text[] playerNameLabel = {player1, player2, player3, player4};
-    ImageView[] avatarImageView = {image1, image2, image3, image4};
+    playerLabel = new Text[] {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
+    pointsLabel =
+        new Text[] {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    playerNameLabel = new Text[] {player1, player2, player3, player4};
+    avatarImageView = new ImageView[] {image1, image2, image3, image4};
+    rect = new Rectangle[] {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
     GameState gs;
     if (player.isHost()) {
       gs = player.getServer().getGameState();
@@ -422,14 +429,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     skipAndChangeButton.setDisable(!toBeActivated);
   }
 
-  public boolean isExchangeTilesMode() {
-    return exchangeTilesMode;
-  }
-
-  public void setExchangeTilesMode(boolean exchangeTilesMode) {
-    GamePanelController.exchangeTilesMode = exchangeTilesMode;
-  }
-
   /**
    * This method sets the Disable property of the done Button. When you set toBeActivated on 'true',
    * the Button is being activated.
@@ -450,26 +449,30 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   @FXML
   public void rackDragStarted(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, true);
-    // Image image =
-    // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
-    // rulesButton.getScene().setCursor(new ImageCursor(image));
-    rulesButton.getScene().setCursor(Cursor.MOVE);
-    node.startFullDrag();
-    // cursorTile = new VisualTile("H", 3, true);
-    // cursorTile.setId("cursorTileFromRack");
-    // upperPane.getChildren().add(cursorTile);
-    // cursorTile.setOnMouseMoved(new EventHandler<MouseEvent>() {
-    // public void handle(MouseEvent event) {
-    // cursorTile.setTranslateX(event.getX());
-    // cursorTile.setTranslateY(event.getY());
-    // }
-    // });
+    if (!exchangeTilesMode) {
+      Node node = (Node) event.getSource();
+      selectedCoordinates = getPos(node, true);
+      // Image image =
+      // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+      // rulesButton.getScene().setCursor(new ImageCursor(image));
+      rulesButton.getScene().setCursor(Cursor.MOVE);
+      node.startFullDrag();
+      // cursorTile = new VisualTile("H", 3, true);
+      // cursorTile.setId("cursorTileFromRack");
+      // upperPane.getChildren().add(cursorTile);
+      // cursorTile.setOnMouseDragged(new EventHandler<MouseEvent>() {
+      // public void handle(MouseEvent event) {
+      // cursorTile.relocate(event.getX(), event.getY());
+      // // cursorTile.setLayoutX(event.getX());
+      // // cursorTile.setLayoutY(event.getY());
+      // }
+      // });
+    }
   }
 
   @FXML
   public void test0(MouseEvent event) {
+
     // cursorTile.setTranslateX(event.getX());
     // cursorTile.setTranslateY(event.getY());
     // cursorTile.setLayoutX(event.getX());
@@ -485,14 +488,17 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   @FXML
   public void boardDragStarted(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    selectedCoordinates = getPos(node, false);
-    selectedCoordinates[0]++;
-    selectedCoordinates[1]++;
-    // Image image =
-    // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
-    // rulesButton.getScene().setCursor(new ImageCursor(image));
-    node.startFullDrag();
+    if (!exchangeTilesMode) {
+      Node node = (Node) event.getSource();
+      selectedCoordinates = getPos(node, false);
+      selectedCoordinates[0]++;
+      selectedCoordinates[1]++;
+      rulesButton.getScene().setCursor(Cursor.MOVE);
+      // Image image =
+      // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
+      // rulesButton.getScene().setCursor(new ImageCursor(image));
+      node.startFullDrag();
+    }
   }
 
   /**
@@ -528,7 +534,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   public void rackDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
-    cursorTile = null;
+    // cursorTile = null;
     rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
@@ -649,18 +655,34 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * @param nickname of the player disconnecting
    */
   public void removeJoinedPlayer(String playerToBeRemoved) {
-    Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
-    Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
-    Text[] playerNameLabel = {player1, player2, player3, player4};
-    ImageView[] avatarImageView = {image1, image2, image3, image4};
+    // Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
+    // Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    // Text[] playerNameLabel = {player1, player2, player3, player4};
+    // ImageView[] avatarImageView = {image1, image2, image3, image4};
+    int indexRemoved = 5;
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).getNickname().equals(playerToBeRemoved)) {
         playerNameLabel[i].setText(null);
-        pointsLabel[i].setText(null);
+        pointsLabel[i].setText(""); // better to use "" instead of null?
+        playerLabel[i].setText(null);
+        avatarImageView[i].setImage(null);
+        indexRemoved = i;
+        rect[i].setVisible(false);
+      }
+      if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
+        // move other players up
+        playerNameLabel[i - 1].setText(playerNameLabel[i].getText());
+        pointsLabel[i - 1].setText(pointsLabel[i].getText());
+        playerLabel[i - 1].setText(playerLabel[i].getText());
+        avatarImageView[i - 1].setImage(avatarImageView[i].getImage());
+
+        playerNameLabel[i].setText(null);
+        pointsLabel[i].setText("");
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
       }
     }
+    players.remove(indexRemoved);
   }
 
   /**
@@ -683,10 +705,9 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    * 
    * @param nickName
    */
-  public void indicatePlayerTurn(String newPlayer) {
-    Rectangle[] rect = {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
+  public void indicatePlayerTurn(String nextPlayer) {
     for (int i = 0; i < players.size(); i++) {
-      if (players.get(i).getNickname().equals(newPlayer)) {
+      if (players.get(i).getNickname().equals(nextPlayer)) {
         rect[i].setVisible(true);
       } else {
         rect[i].setVisible(false);
@@ -864,10 +885,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   public void updateScore(String nickName, int totalScore) {
     String newScore = String.valueOf(totalScore);
-    Text playerPoints[] = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    // Text playerPoints[] = {playerOnePoints, playerTwoPoints, playerThreePoints,
+    // playerFourPoints};
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).getNickname().equals(nickName)) {
-        playerPoints[i].setText(newScore);
+        pointsLabel[i].setText(newScore);
       }
     }
   }
@@ -1018,7 +1040,18 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
       // sendMessage(m);
     } else if (!this.player.isHost()) {
+
+      for (int i = 0; i < players.size(); i++) {
+        if (players.get(i).getNickname().equals(this.player.getNickname())) {
+          if (rect[i].isVisible()) {
+            sendResetTurnForEveryPlayer(this.player.getNickname()); // TODO:
+          }
+        }
+      }
+      sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
+      // this.player.getClientProtocol().disconnect(); // in DisconnectMessage included?
       Message m = new DisconnectMessage(this.player.getNickname(), null);
+
       sendMessage(m);
     }
     Stage st = (Stage) (rulesButton.getScene().getWindow());
@@ -1055,5 +1088,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   public int getTimerDuration() {
     return timerDuration;
+  }
+
+  public boolean isExchangeTilesMode() {
+    return exchangeTilesMode;
+  }
+
+  public void setExchangeTilesMode(boolean exchangeTilesMode) {
+    GamePanelController.exchangeTilesMode = exchangeTilesMode;
   }
 }
