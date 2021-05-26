@@ -26,7 +26,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <Pane fx:id="upperPane" onMouseDragged="#test0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
    <children>
       <StackPane layoutX="4.0" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0">
@@ -752,7 +751,27 @@
                               <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                               <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                               <Rectangle fill="#8fb492" height="50.0" layoutX="118.0" layoutY="12.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <Rectangle fill="#ff7a7a" height="50.0" layoutX="385.0" layoutY="12.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                              <Rectangle fill="#ff7a7a" height="50.0" layoutX="385.0" layoutY="12.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2x L" textAlignment="CENTER" wrappingWidth="26.912109375" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="223.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3x L" textAlignment="CENTER" wrappingWidth="26.912109375" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="223.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2x W" textAlignment="CENTER" wrappingWidth="28.912109375" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="63.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3x W" textAlignment="CENTER" wrappingWidth="29.912109375" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </GridPane>
                      </children>
