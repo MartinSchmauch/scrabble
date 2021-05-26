@@ -11,6 +11,11 @@ import game.GameSettings;
 
 /**
  * 
+ * AI player can play scrabble. He searches for a valid Turn (see class turn) based on - the AiLevel
+ * (mapped to different parameters) - the GameBoard - his rack - the dictionary
+ * 
+ * Depending on enum AiLevel the ai tries to create better or worse scores. Main Method is RunAi()
+ * 
  * @author pkoenig
  *
  */
@@ -31,6 +36,15 @@ public class AIplayer extends Player {
     LOW, MEDIUM, HIGH, UNBEATABLE
   }
 
+  
+  /**
+   * 
+   * Represent a combination of chars with a counter. The counter represents, how often this
+   * combination of chars is present in the wordlist (i.e. dictionary)
+   * 
+   * @author pkoenig
+   *
+   */
   class AIcombination implements Comparable<AIcombination> {
 
     private char[] chars;
@@ -165,6 +179,16 @@ public class AIplayer extends Player {
     }
   }
 
+  /**
+   * 
+   * Contructor. Only used for testing-purposes.
+   * 
+   * @param nickname
+   * @param maxNumOfTiles
+   * @param numberOfCombinationsToUse
+   * @param gc
+   * 
+   */
   public AIplayer(String nickname, int maxNumOfTiles, int numberOfCombinationsToUse,
       GameController gc) {
     super(nickname);
@@ -174,6 +198,15 @@ public class AIplayer extends Player {
     this.numberOfCombinationsToUse = numberOfCombinationsToUse;
   }
 
+  /**
+   * 
+   * Constructor used for profilemanagemnt with JSON
+   * 
+   * @param nickname
+   * @param avatar
+   * @param volume
+   * 
+   */
   @JsonCreator
   public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
@@ -202,6 +235,15 @@ public class AIplayer extends Player {
     tileCombinations.addAll(temp.values());
   }
 
+  /**
+   * 
+   * Main Method. Gets called from server, when AIplayer gets currentPlayer.
+   * 
+   * 
+   * @param gb
+   * @return Turn: ideal Turn (in Terms of AiLevel)
+   * 
+   */
   public Turn runAi(GameBoard gb) {
     System.out.println("\nAI is running with setting " + this.ailevel + "....");
 
@@ -301,8 +343,7 @@ public class AIplayer extends Player {
         System.out.println(w.toString());
       }
       System.out.println("----------------------");
-    }
-    else {
+    } else {
       // add Tiles to gameboard
       Field[] maxLocation = new Field[idealTurn.getLaydDownFields().size()];
       int i = 0;
@@ -325,7 +366,7 @@ public class AIplayer extends Player {
   }
 
   @SuppressWarnings("unchecked")
-  public TreeSet<AIcombination> getFilteredCombinationList() {
+  private TreeSet<AIcombination> getFilteredCombinationList() {
     ArrayList<Character> charsOnRack = new ArrayList<Character>();
     ArrayList<Character> currentCharsOnRack;
     TreeSet<AIcombination> currentTwoTilesCombinations = new TreeSet<AIcombination>();
