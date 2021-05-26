@@ -230,19 +230,19 @@ public class GameController {
    */
 
   public boolean checkEndGame(boolean tilesLeftOnRack) {
-    boolean fiveScorelessRounds = false;
+    boolean sixScorelessRounds = false;
 
-    if (this.turns.size() > 5) {
-      fiveScorelessRounds = true;
-      for (int i = 0; i < 5; i++) {
+    if (this.turns.size() > 6) {
+      sixScorelessRounds = true;
+      for (int i = 0; i < 6; i++) {
         if (this.turns.get(i).getTurnScore() > 0) {
-          fiveScorelessRounds = false;
+          sixScorelessRounds = false;
           break;
         }
       }
     }
 
-    if (!tilesLeftOnRack && this.tileBag.isEmpty() || fiveScorelessRounds
+    if (!tilesLeftOnRack && this.tileBag.isEmpty() || sixScorelessRounds
         || (GameSettings.getMaxScore() > -1 && this.gameState
             .getScore(this.gameState.getCurrentPlayer()) > GameSettings.getMaxScore())) {
       return true;
