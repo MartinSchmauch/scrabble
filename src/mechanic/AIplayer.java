@@ -36,6 +36,7 @@ public class AIplayer extends Player {
     LOW, MEDIUM, HIGH, UNBEATABLE
   }
 
+  
   /**
    * 
    * Represent a combination of chars with a counter. The counter represents, how often this
