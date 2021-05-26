@@ -1040,14 +1040,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
       // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
       // sendMessage(m);
     } else if (!this.player.isHost()) {
-
-      for (int i = 0; i < players.size(); i++) {
-        if (players.get(i).getNickname().equals(this.player.getNickname())) {
-          if (rect[i].isVisible()) {
-            sendResetTurnForEveryPlayer(this.player.getNickname()); // TODO:
-          }
-        }
-      }
       Message m = new DisconnectMessage(this.player.getNickname(), null);
       sendMessage(m);
     }
