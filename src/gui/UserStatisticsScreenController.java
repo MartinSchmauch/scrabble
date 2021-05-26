@@ -49,6 +49,8 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
   private Button prev;
   @FXML
   private Button rules;
+  @FXML
+  private Label count;
 
 
   /**
@@ -58,6 +60,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
     this.uss = UserStatisticsScreen.getInstance();
     this.player = uss.getPlayer();
     this.ps = this.player.getPlayerStatistics();
+    this.count.setText("Game Count: "+this.ps.getGameCount());
     setUpLabels();
     calculateStatistics();
     this.avatar

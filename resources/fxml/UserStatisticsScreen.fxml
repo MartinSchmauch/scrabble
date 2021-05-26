@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UserStatisticsScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UserStatisticsScreenController">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" BorderPane.alignment="CENTER">
          <children>
@@ -92,6 +92,7 @@
                </image>
             </ImageView>
             <Label fx:id="scroller" layoutX="399.0" layoutY="168.0" text="1/6" />
+            <Label fx:id="count" layoutX="306.0" layoutY="120.0" prefHeight="17.0" prefWidth="104.0" text="Games Played:" />
          </children>
       </AnchorPane>
    </center>
