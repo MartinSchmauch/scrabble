@@ -4,25 +4,15 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
-import org.junit.Before;
 import org.junit.Test;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
 import mechanic.AIplayer.AIcombination;
-import util.JsonHandler;
-import java.util.concurrent.TimeUnit;
-import com.google.common.base.Stopwatch;
 import com.opencsv.CSVWriter;
 
 /**
@@ -98,7 +88,6 @@ public class AIplayerTest {
 
 
     // DOCUMENTATION
-    Stopwatch timeOverall = Stopwatch.createUnstarted();
     File file = null;
     file = new File(System.getProperty("user.dir") + System.getProperty("file.separator")
         + "resources" + System.getProperty("file.separator") + "csv"
@@ -176,15 +165,15 @@ public class AIplayerTest {
             /*
              * TIMED AREA BEGIN
              */
-            timeOverall.start();
+//            timeOverall.start();
             idealTurn = aiplayer.runAi(gb);
-            timeOverall.stop();
+//            timeOverall.stop();
 
             /*
              * TIMED AREA END
              */
             if (idealTurn == null) {
-              timeOverall.reset();
+//              timeOverall.reset();
               break;
             }
 
@@ -197,8 +186,8 @@ public class AIplayerTest {
               currentTurnWithParam[4] = currentTurnWithParam[4] + ", "
                   + aiplayer.getRackTile(k).getLetter().getCharacter();
             }
-            currentTurnWithParam[5] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
-            timeOverall.reset();
+//            currentTurnWithParam[5] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
+//            timeOverall.reset();
 
             temp = idealTurn.toStringArray();
 

@@ -3,15 +3,9 @@ package mechanic;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Stopwatch;
 import game.GameController;
 import game.GameSettings;
 
@@ -210,7 +204,6 @@ public class AIplayer extends Player {
 
   public Turn runAi(GameBoard gb) {
     System.out.println("\nAI is running with setting " + this.ailevel + "....");
-    Stopwatch sw = Stopwatch.createStarted();
 
     // init
     TreeSet<AIcombination> currentAiCombinations =
@@ -298,7 +291,6 @@ public class AIplayer extends Player {
     if (idealTurn == null) {
       return null;
     }
-    sw.stop();
 
     if (this.testmode) {
       System.out.println();
@@ -327,7 +319,7 @@ public class AIplayer extends Player {
         maxLocation[ii].setTileOneDirection(maxTiles.get(ii));
       }
     }
-    System.out.println("AI finished in " + sw.elapsed(TimeUnit.MILLISECONDS) + " milliseconds");
+    System.out.println("AI finished");
 
     return idealTurn;
   }
