@@ -4,7 +4,7 @@
   "maxScore" : -1,
   "dictionary" : "C:\\Users\\Luis\\.scrabble\\CollinsScrabbleWords.txt",
   "bingo" : 50,
-  "difficulty" : "LOW",
+  "difficulty" : "EASY",
   "tilesOnRack" : 7,
   "letters" : {
     "A" : {

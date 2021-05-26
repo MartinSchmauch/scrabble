@@ -412,15 +412,15 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         break;
       case "Medium":
         this.ai.setText("Hard");
-        GameSettings.setAiDifficulty("HIGH");
+        GameSettings.setAiDifficulty("HARD");
         break;
       case "Hard":
         this.ai.setText("Unbeatable");
-        GameSettings.setAiDifficulty("Unbeatable");
+        GameSettings.setAiDifficulty("UNBEATABLE");
         break;
       case "Unbeatable":
         this.ai.setText("Easy");
-        GameSettings.setAiDifficulty("LOW");
+        GameSettings.setAiDifficulty("EASY");
         break;
       default:
         break;

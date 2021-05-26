@@ -33,7 +33,7 @@ public class AIplayer extends Player {
   private boolean testmode = false;
 
   public enum AiLevel {
-    LOW, MEDIUM, HIGH, UNBEATABLE
+    EASY, MEDIUM, HARD, UNBEATABLE
   }
 
   
@@ -153,7 +153,7 @@ public class AIplayer extends Player {
     this.ailevel = level;
     this.tileCombinations = new TreeSet<AIcombination>();
     switch (ailevel) {
-      case LOW:
+      case EASY:
         this.maxNumOfTiles = 2;
         this.numberOfCombinationsToUse = 8;
         this.goodScore = 1;
@@ -163,7 +163,7 @@ public class AIplayer extends Player {
         this.numberOfCombinationsToUse = 25;
         this.goodScore = 10;
         break;
-      case HIGH:
+      case HARD:
         this.maxNumOfTiles = 6;
         this.numberOfCombinationsToUse = 45;
         this.goodScore = 20;
