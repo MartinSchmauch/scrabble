@@ -514,16 +514,12 @@ public class Server {
   /** This method removes a client and ends the game is running and only the host is left. */
 
   public void handleLeaveGame(String player) {
-    for (int i = 0; i < gameController.getTurns().size(); i++) {
-      if (gameController.getTurns().get(i).getPlayer().equals(player)) {
-        gameController.getTurns().remove(i);
-      }
-    }
     this.gameState.leaveGame(player);
     this.clients.remove(player);
     if (this.gameState.getGameRunning() && this.gameState.getAllPlayers().size() < 2) {
       Runnable r = new Runnable() {
         public void run() {
+          Thread.yield();
           gpc.updateChat("You're alone now. The game is over.", null, "");
           gpc.indicatePlayerTurn(host);
           gpc.stopTimer();
@@ -537,6 +533,10 @@ public class Server {
     }
 
     if(this.gameState.getCurrentPlayer().equals(player)) {
+      for(Tile t : this.gameController.getTurn().getLaydDownTiles()) {
+        t.getField().setTileOneDirection(null);
+      }
+      
       String nextPlayer = this.getGameController().getNextPlayer();
       this.sendToAll(new TurnResponseMessage(player, true, 0, null, nextPlayer,
           this.gameController.getTileBag().getRemaining(), null));
@@ -551,6 +551,12 @@ public class Server {
   
       };
       new Thread(r).start();
+    }
+    
+    for (int i = 0; i < gameController.getTurns().size(); i++) {
+      if (gameController.getTurns().get(i).getPlayer().equals(player)) {
+        gameController.getTurns().remove(i);
+      }
     }
   }
 

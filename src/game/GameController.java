@@ -179,7 +179,8 @@ public class GameController {
     Field afterField = gameState.getGameBoard().getField(x2, y2);
 
     if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
-        || beforeField.getTile().isPlayed() || afterField.getTile() != null) {
+        || beforeField.getTile() == null || beforeField.getTile().isPlayed()
+        || afterField.getTile() != null) {
       return false;
     }
 

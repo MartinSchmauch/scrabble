@@ -261,12 +261,11 @@ public class ClientProtocol extends Thread {
                 case DISCONNECT:
                   DisconnectMessage discMessage = (DisconnectMessage) m;
                   gameState.leaveGame(discMessage.getFrom());
-                  gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
 
                   if (!gameState.getGameRunning()) {
                     lsc.updateJoinedPlayers();
                   } else {
-                    
+                    gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
                     if (discMessage.getTiles() != null) {
                       for (Tile t : discMessage.getTiles()) {
                         gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
