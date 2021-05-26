@@ -517,7 +517,7 @@ public class Server {
     }
     this.gameState.leaveGame(player);
     this.clients.remove(player);
-    if (this.gameState.getGameRunning() && gameState.getAllPlayers().size() < 2) {
+    if (this.gameState.getGameRunning() && this.gameState.getAllPlayers().size() < 2) {
       Runnable r = new Runnable() {
         public void run() {
           gpc.updateChat("You're alone now. The game is over.", null, "");
@@ -532,20 +532,22 @@ public class Server {
       return;
     }
 
-    String nextPlayer = this.getGameController().getNextPlayer();
-    this.sendToAll(new TurnResponseMessage(player, true, 0, null, nextPlayer,
-        this.gameController.getTileBag().getRemaining(), null));
-    gameState.setCurrentPlayer(nextPlayer);
-    this.getGameController().newTurn();
-
-    Runnable r = new Runnable() {
-
-      public void run() {
-        handleAi(nextPlayer);
-      }
-
-    };
-    new Thread(r).start();
+    if(this.gameState.getCurrentPlayer().equals(player)) {
+      String nextPlayer = this.getGameController().getNextPlayer();
+      this.sendToAll(new TurnResponseMessage(player, true, 0, null, nextPlayer,
+          this.gameController.getTileBag().getRemaining(), null));
+      gameState.setCurrentPlayer(nextPlayer);
+      this.getGameController().newTurn();
+  
+      Runnable r = new Runnable() {
+  
+        public void run() {
+          handleAi(nextPlayer);
+        }
+  
+      };
+      new Thread(r).start();
+    }
   }
 
   /** Handles move from rack to gameBoard (with AddTileMessage). */
