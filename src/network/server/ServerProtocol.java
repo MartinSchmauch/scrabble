@@ -125,6 +125,7 @@ public class ServerProtocol extends Thread {
         switch (m.getMessageType()) {
           case DISCONNECT:
             DisconnectMessage dm = (DisconnectMessage) m;
+            server.sendToAll(m);
             if (this.server.getGameState().getGameRunning()) {
               if (this.server.getGameState().getCurrentPlayer().equals(dm.getFrom())) {
                 dm.setTiles(this.server.getGameController().getTurn().getLaydDownTiles());
@@ -133,7 +134,6 @@ public class ServerProtocol extends Thread {
             } else {
               server.handleLeaveLobby(dm.getFrom());
             }
-            server.sendToAll(m);
             disconnect();
             break;
           case ADD_TILE:

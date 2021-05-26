@@ -1048,10 +1048,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           }
         }
       }
-      sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
-      // this.player.getClientProtocol().disconnect(); // in DisconnectMessage included?
       Message m = new DisconnectMessage(this.player.getNickname(), null);
-
       sendMessage(m);
     }
     Stage st = (Stage) (rulesButton.getScene().getWindow());
