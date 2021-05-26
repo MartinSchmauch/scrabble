@@ -580,9 +580,13 @@ public class Server {
         clients.get(m.getFrom()).sendToClient(rtm);
       }
     } else {
-      InvalidMoveMessage im =
-          new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
-      clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+      if (gameState.getCurrentPlayer().equals(this.host)) {
+        gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
+      } else {
+        InvalidMoveMessage im =
+            new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
+        clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+      }
     }
   }
 
@@ -592,9 +596,13 @@ public class Server {
     // TODO temporary
     if (this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate())
         .getTile() == null) {
-      InvalidMoveMessage im =
-          new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
-      clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+      if (gameState.getCurrentPlayer().equals(this.host)) {
+        gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
+      } else {
+        InvalidMoveMessage im =
+            new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
+        clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+      }
       return;
     }
 
@@ -603,9 +611,13 @@ public class Server {
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
       if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate())) {
-        InvalidMoveMessage im =
-            new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
-        clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+        if (gameState.getCurrentPlayer().equals(this.host)) {
+          gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
+        } else {
+          InvalidMoveMessage im =
+              new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
+          clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+        }
         return;
       }
 
@@ -620,9 +632,17 @@ public class Server {
     } else if (m.getNewYCoordinate() != -1 && m.getOldYCoordinate() != -1) { // move on game board
       if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldXCoordinate(),
           m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
-        InvalidMoveMessage im =
-            new InvalidMoveMessage(m.getFrom(), "Tile could not be moved on GameBoard.");
-        clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+        if (gameState.getCurrentPlayer().equals(this.host)) {
+          gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
+        } else {
+          if (gameState.getCurrentPlayer().equals(this.host)) {
+            gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
+          } else {
+            InvalidMoveMessage im =
+                new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
+            clients.get(gameState.getCurrentPlayer()).sendToClient(im);
+          }
+        }
         return;
       }
 
