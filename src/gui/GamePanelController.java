@@ -42,6 +42,7 @@ import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.MoveTileMessage;
 import network.messages.ResetTurnMessage;
+import network.messages.ShutdownMessage;
 import network.messages.TileMessage;
 import network.server.Server;
 
@@ -1035,11 +1036,10 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
    */
   public void close() {
     stopTimer();
-    if (this.player.getServer() != null) { // TODO: this.player.isHost() nutzen?
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host closed the server session."));
       this.player.getServer().stopServer();
-      // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
-      // sendMessage(m);
-    } else if (!this.player.isHost()) {
+    } else if (this.player.getClientProtocol().isOk()) {
       Message m = new DisconnectMessage(this.player.getNickname(), null);
       sendMessage(m);
     }

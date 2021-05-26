@@ -7,9 +7,11 @@ import java.net.Socket;
 import java.util.List;
 import game.GameSettings;
 import game.GameState;
+import gui.CustomAlert;
 import gui.GamePanelController;
 import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
+import gui.LoginScreenController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.Field;
@@ -86,9 +88,10 @@ public class ClientProtocol extends Thread {
         ConnectMessage cm = (ConnectMessage) m;
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
+        LoginScreenController.getInstance().startLobby();
       } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED) {
-        this.clientSocket.close();
-      } else {
+        ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
+        CustomAlert.showWarningAlert(mrMessage.getReason(), "Try another Link or try again later.");
         disconnect();
       }
       while (running) {
@@ -99,20 +102,14 @@ public class ClientProtocol extends Thread {
             @Override
             public void run() {
               switch (m.getMessageType()) {
-                case CONNECTION_REFUSED:
-                  ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
-                  lsc.refuseConnection(mrMessage.getReason());
-                  try {
-                    clientSocket.close();
-                  } catch (IOException e) {
-                    e.printStackTrace();
-                  }
-                  break;
                 case SHUTDOWN:
                   ShutdownMessage shutMessage = (ShutdownMessage) m;
                   disconnect();
-                  if (gpc != null) {
+                  if (gameState.getGameRunning()) {
                     gpc.showShutdownMessage(shutMessage.getFrom(), shutMessage.getReason());
+                  } else {
+                    lsc.close();
+                    CustomAlert.showWarningAlert("Server closed.", "The host closed the server.");
                   }
                   break;
                 case ADD_TILE:
@@ -262,32 +259,22 @@ public class ClientProtocol extends Thread {
                   new LeaderboardScreen(gsMessage.getGameStatistics(), player).start(new Stage());
                   break;
                 case DISCONNECT:
-                  if (gameState != null) {
-                    DisconnectMessage discMessage = (DisconnectMessage) m;
-                    gameState.leaveGame(discMessage.getFrom());
-                    gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
+                  DisconnectMessage discMessage = (DisconnectMessage) m;
+                  gameState.leaveGame(discMessage.getFrom());
+                  gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
 
+                  if (!gameState.getGameRunning()) {
+                    lsc.updateJoinedPlayers();
+                  } else {
+                    
                     if (discMessage.getTiles() != null) {
                       for (Tile t : discMessage.getTiles()) {
                         gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
                             false);
                       }
                     }
-
-                    if (!gameState.getGameRunning()) {
-                      if (lsc != null) {
-                        if (discMessage.getFrom().equals(player.getNickname())) {
-                          lsc.removeJoinedPlayer(discMessage.getFrom());
-                          lsc.close();
-                        } else {
-                          lsc.updateJoinedPlayers();
-                        }
-                      }
-                    } else {
-                      if (gpc != null) {
-                        gpc.removeJoinedPlayer(discMessage.getFrom());
-                      }
-                    }
+                    
+                    gpc.removeJoinedPlayer(discMessage.getFrom());
                   }
                   break;
                 default:
@@ -315,7 +302,6 @@ public class ClientProtocol extends Thread {
     running = false;
     try {
       if (!clientSocket.isClosed()) {
-        this.out.writeObject(new DisconnectMessage(this.player.getNickname(), null));
         clientSocket.close(); // close streams and socket
       }
     } catch (IOException e) {

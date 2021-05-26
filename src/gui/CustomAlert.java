@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -53,5 +54,21 @@ public class CustomAlert extends Alert {
   public void changeButtonText(String content, ButtonType type) {
     ((Button) this.getDialogPane().lookupButton(type)).setText(content);
   }
+  
+  
+  /** 
+   * Displays an alert if the connection to the lobby has been refused.
+   */
 
+  public static void showWarningAlert(String title, String reason) {
+    Platform.runLater(new Runnable() {
+      @Override
+      public void run() {
+        CustomAlert alert = new CustomAlert(AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(title);
+        alert.setContentText(reason);
+        alert.show();
+      }});
+  }
 }

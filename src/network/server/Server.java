@@ -13,9 +13,11 @@ import java.util.Set;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
+import gui.CustomAlert;
 import gui.GamePanelController;
 import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
+import gui.LoginScreenController;
 import gui.TutorialController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -441,7 +443,8 @@ public class Server {
     try {
       serverSocket = new ServerSocket(GameSettings.port);
       System.out.println("Server runs");
-
+      LoginScreenController.getInstance().startLobby();
+      
       while (running) {
         Socket clientSocket = serverSocket.accept();
 
@@ -449,10 +452,11 @@ public class Server {
         this.serverProtocol.start();
       }
 
-    } catch (IOException e) {
+    } catch (IOException e) {   
       if (serverSocket != null && serverSocket.isClosed()) {
         System.out.println("Server stopped.");
       } else {
+        CustomAlert.showWarningAlert("Already hosting!", "Sorry. You cannot host two games at a time.");
         e.printStackTrace();
       }
     }
@@ -748,9 +752,6 @@ public class Server {
                 }
               }
               break;
-            case SHUTDOWN:
-              // TODO:
-              break;
             case SEND_CHAT_TEXT:
               SendChatMessage scm = (SendChatMessage) m;
               gpc.updateChat(scm.getText(), scm.getDateTime(), scm.getSender());
@@ -835,7 +836,6 @@ public class Server {
    */
   public void stopServer() {
     running = false;
-    sendToAll(new ShutdownMessage(this.host, "Server closed session."));
 
     if (!serverSocket.isClosed()) {
       try {

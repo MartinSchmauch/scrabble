@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
+import gui.CustomAlert;
 import gui.GamePanelController;
 import javafx.application.Platform;
 import network.client.ClientProtocol;
@@ -403,7 +404,8 @@ public class Player {
 
     if (this.client.isOk()) {
       this.client.start();
-
+    } else {
+      CustomAlert.showWarningAlert("Invalid link.", "Try another Link or try again later");
     }
   }
 

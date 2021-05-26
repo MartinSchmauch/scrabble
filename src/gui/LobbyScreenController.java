@@ -35,6 +35,7 @@ import mechanic.PlayerData;
 import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
+import network.messages.ShutdownMessage;
 
 /**
  * Handles all User inputs in the Lobby Screen as well as the connection of players.
@@ -326,19 +327,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     }
 
   }
-  
-  /** 
-   * Displays an alert if the connection to the lobby has been refused.
-   */
-
-  public void refuseConnection(String reason) {
-    closeWindow();
-    CustomAlert alert = new CustomAlert(AlertType.ERROR);
-    alert.setTitle(reason);
-    alert.setHeaderText(reason);
-    alert.setContentText("Try another Link or try again later");
-    alert.show();
-  }
 
 
   /**
@@ -455,19 +443,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       }
     }
     updateLabels(this.players);
-    // TODO NOT WORKING!!
-    // Kicks a player instantly if the lobby is full.
-    if (players.size() == 5) {
-      if (players.get(1).getNickname().equals(this.player.getNickname())) {
-        close();
-        CustomAlert alert = new CustomAlert(AlertType.ERROR);
-        alert.setTitle("Lobby Full");
-        alert.setHeaderText("Lobby already full!");
-        alert.setContentText("Try another link or try again later");
-        alert.show();
-        return;
-      }
-    }
   }
 
   public void updateLabels(List<PlayerData> list) {
@@ -553,15 +528,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * Closes the Lobby and stops the server.
    */
   public void close() {
-    if (this.player.getServer() != null) {
-      for (PlayerData p : players) {
-        if (!p.isHost()) {
-          sendMessage(new DisconnectMessage(p.getNickname(), null));
-        }
-      }
-      sendMessage(new DisconnectMessage(this.player.getNickname(), null));
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host closed the server session."));
       this.player.getServer().stopServer();
-    } else if (!this.player.isHost()) {
+    } else if (this.player.getClientProtocol().isOk()){
       sendMessage(new DisconnectMessage(this.player.getNickname(), null));
       this.player.getClientProtocol().disconnect();
     }
@@ -585,15 +555,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   public void closeWindow(Button b) {
     Stage st = (Stage) b.getScene().getWindow();
     st.close();
-  }
-
-  /**
-   * Reads updated game settings and distributes them to all players.
-   * 
-   * @param settings new Instance of game settings
-   */
-  public void updategameSettings(GameSettings settings) {
-    // TODO
   }
 
   public Player getPlayer() {

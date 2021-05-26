@@ -61,7 +61,11 @@ public class ServerProtocol extends Thread {
       out.reset();
     } catch (IOException e) {
       System.out.println("Client " + this.clientName + " removed (message delivery failed).");
-      server.handleLeaveGame(this.clientName);
+      if(this.server.getGameState().getGameRunning()) {
+        server.handleLeaveGame(this.clientName);
+      } else {
+        server.handleLeaveLobby(this.clientName);
+      }
       e.printStackTrace();
     }
   }
@@ -92,6 +96,7 @@ public class ServerProtocol extends Thread {
         out.flush();
         out.reset();
         disconnect();
+        return;
       } else if (m.getMessageType() == MessageType.CONNECT) {
         if (server.getGameState().getAllPlayers().size() >= 4) {
           out.writeObject(new ConnectionRefusedMessage(m.getFrom(), "Lobby full!"));
