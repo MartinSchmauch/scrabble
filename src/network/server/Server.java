@@ -812,10 +812,6 @@ public class Server {
                 gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), false);
               }
               break;
-            case INVALID:
-              InvalidMoveMessage imm = (InvalidMoveMessage) m;
-              gpc.indicateInvalidTurn(imm.getFrom(), imm.getReason());
-              break;
             case UPDATE_CHAT:
               UpdateChatMessage um = (UpdateChatMessage) m;
               gpc.updateChat(um.getText(), um.getDateTime(), um.getFrom());
