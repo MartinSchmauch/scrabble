@@ -668,6 +668,7 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         avatarImageView[i].setImage(null);
         indexRemoved = i;
         rect[i].setVisible(false);
+        players.remove(indexRemoved);
       }
       if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
         // move other players up
@@ -682,7 +683,6 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
         avatarImageView[i].setImage(null);
       }
     }
-    players.remove(indexRemoved);
   }
 
   /**
