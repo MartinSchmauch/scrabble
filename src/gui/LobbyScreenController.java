@@ -374,7 +374,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       player.setGamePanelController(controller);
 
       controller.initData(player);
-      stage.setOnCloseRequest(e -> controller.close());
+      stage.setOnCloseRequest(e -> close(controller));
       stage.setTitle("Scrabble3");
       // stage.setResizable(false);
       stage.show();
@@ -383,6 +383,17 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+  
+  /**
+   * Opens Loginscreen updon closing the main game.
+   * 
+   * @param c indicates the gpc the leaving player is having.
+   */
+  
+  public void close(GamePanelController c) {
+	  c.close();
+	  new LoginScreen().start(new Stage());
   }
 
   public void updateCountdown(int c) {
