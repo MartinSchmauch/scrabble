@@ -169,9 +169,8 @@ public class GameState implements Serializable {
 
   /**
    * This Method initializes the scores for all players with zero.
-   * 
+   *
    * @author lurny
-   * @param playerList
    */
   public void initializeScoresWithZero(List<PlayerData> playerList) {
     for (PlayerData player : playerList) {

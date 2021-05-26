@@ -101,8 +101,7 @@ public class ClientProtocol extends Thread {
               switch (m.getMessageType()) {
                 case CONNECTION_REFUSED:
                   ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
-                  System.out.println("cp, l 115");
-                  lsc.refuseConnection();
+                  lsc.refuseConnection(mrMessage.getReason());
                   try {
                     clientSocket.close();
                   } catch (IOException e) {
@@ -160,12 +159,13 @@ public class ClientProtocol extends Thread {
                   TileMessage trMessage = (TileMessage) m;
 
                   for (Tile t : trMessage.getTiles()) {
-                    if (t.getField() != null && t.getField().getyCoordinate() != -1) { // case "on
-                                                                                       // Rack"
+                    if (t.getField() != null && t.getField().getyCoordinate() != -1) {
+                      // case "on rack"
                       t.setOnRack(false);
                       t.setOnGameBoard(true);
                       gpc.addTile(t);
-                    } else { // case "on board"
+                    } else { 
+                      // case "on board"
                       player.addTileToRack(t);
                       gpc.addTile(t);
                     }
@@ -290,6 +290,8 @@ public class ClientProtocol extends Thread {
                     }
                   }
                   break;
+                default:
+                  break;
               }
             }
           });
@@ -306,8 +308,8 @@ public class ClientProtocol extends Thread {
     this.lsc = lc;
   }
 
-  /*
-   * Disconnect client Shutdown streams and sockets
+  /**
+   * Disconnect client Shutdown streams and sockets.
    */
   public void disconnect() {
     running = false;
@@ -322,7 +324,6 @@ public class ClientProtocol extends Thread {
   }
 
   public void sendToServer(Message message) {
-
     try {
       this.out.writeObject(message);
       this.out.flush();
@@ -339,10 +340,6 @@ public class ClientProtocol extends Thread {
   public void setGameState(GameState gameState) {
     this.gameState = gameState;
   }
-
-  /**
-   * @author mschmauc
-   */
 
   public Player getPlayer() {
     return player;

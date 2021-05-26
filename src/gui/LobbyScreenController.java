@@ -238,26 +238,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     this.getPlayer().getServer().addAiPlayer(p);
     this.getPlayer().getServer().sendToAll(new ConnectMessage(p.getPlayerInfo()));
-
-    // try {
-    // Thread.sleep(100);
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    //
-    // }
-    // LobbyStatusMessage m = new LobbyStatusMessage(this.getPlayer().getServer().getHost(),
-    // this.getPlayer().getServer().getGameState());
-
-    // this.getPlayer().getServer().sendToAll(m);
-
-    // try {
-    // p.connect(InetAddress.getLocalHost().getHostAddress());
-    // this.getPlayer().getServer().addAiPlayer(p);
-    // } catch (UnknownHostException e) {
-    // e.printStackTrace();
-    // }
-
-
   }
 
   /**
@@ -346,12 +326,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     }
 
   }
+  
+  /** 
+   * Displays an alert if the connection to the lobby has been refused.
+   */
 
-  public void refuseConnection() {
+  public void refuseConnection(String reason) {
     closeWindow();
     CustomAlert alert = new CustomAlert(AlertType.ERROR);
-    alert.setTitle("Lobby full");
-    alert.setHeaderText("Lobby Full!");
+    alert.setTitle(reason);
+    alert.setHeaderText(reason);
     alert.setContentText("Try another Link or try again later");
     alert.show();
   }

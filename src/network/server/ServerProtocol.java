@@ -94,10 +94,13 @@ public class ServerProtocol extends Thread {
         disconnect();
       } else if (m.getMessageType() == MessageType.CONNECT) {
         if (server.getGameState().getAllPlayers().size() >= 4) {
-          sendToClient(new ConnectionRefusedMessage(m.getFrom(), "Lobby full"));
+          out.writeObject(new ConnectionRefusedMessage(m.getFrom(), "Lobby full!"));
+          out.flush();
+          out.reset();
+          disconnect();
           return;
         }
-        String from = m.getFrom();
+
         ConnectMessage cm = (ConnectMessage) m;
         this.clientName = cm.getPlayerInfo().getNickname();
 
@@ -108,21 +111,11 @@ public class ServerProtocol extends Thread {
             i++;
           }
           cm.getPlayerInfo().setNickname(this.clientName);
-          server.handleJoinLobby(cm.getPlayerInfo(), this);
-          server.sendToAll(cm);
-          server.sendLobbyStatus();
-        } else if (!from.equals(this.clientName)) {
-          Message rmsg = new ConnectionRefusedMessage(server.getHost(),
-              "Your sender name did not match your nickname. Error.");
-          out.writeObject(rmsg);
-          out.flush();
-          out.reset();
-          disconnect();
-        } else {
-          server.handleJoinLobby(cm.getPlayerInfo(), this);
-          server.sendToAll(cm);
-          server.sendLobbyStatus();
         }
+
+        server.handleJoinLobby(cm.getPlayerInfo(), this);
+        server.sendToAll(cm);
+        server.sendLobbyStatus();
       } else {
         disconnect();
       }
