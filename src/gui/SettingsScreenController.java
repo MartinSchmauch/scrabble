@@ -170,26 +170,28 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         updateLabel(this.time, Integer.parseInt(time.getText()) - 10);
         break;
       case "tpp":
-        labelTextfield(this.time, this.tpptf, (Button) e.getSource());
+      case "tpptf":
+        labelTextfield(this.time, this.tpptf, tpp);
         break;
       case "msUp":
-        if (this.score.getText().equals("∞")) {
+        if (this.score.getText().equals("\u221e")) {
           this.score.setText("0");
         } else {
           updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
         }
         break;
       case "msDown":
-        if (this.score.getText().equals("∞")) {
+        if (this.score.getText().equals("\u221e")) {
           break;
         } else if (Integer.parseInt(this.score.getText()) - 10 < 0) {
-          this.score.setText("∞");
+          this.score.setText("\u221e");
         } else {
           updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
         }
         break;
       case "ms":
-        labelTextfield(this.score, this.mstf, (Button) e.getSource());
+      case"mstf":
+        labelTextfield(this.score, this.mstf, ms);
         break;
       case "bUp":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) + 1);
@@ -198,7 +200,8 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) - 1);
         break;
       case "b":
-        labelTextfield(this.bingo, this.btf, (Button) e.getSource());
+      case "btf":
+        labelTextfield(this.bingo, this.btf, this.b);
         break;
       case "letterUp":
         updateLetterLabel(this.letter.getText().charAt(0), true);
