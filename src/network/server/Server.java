@@ -541,8 +541,8 @@ public class Server {
     }
 
     String nextPlayer = this.getGameController().getNextPlayer();
-    this.sendToAll(new TurnResponseMessage(player, true, 0,
-        null, nextPlayer, this.gameController.getTileBag().getRemaining(), null));
+    this.sendToAll(new TurnResponseMessage(player, true, 0, null, nextPlayer,
+        this.gameController.getTileBag().getRemaining(), null));
     gameState.setCurrentPlayer(nextPlayer);
     this.getGameController().newTurn();
 
@@ -582,7 +582,7 @@ public class Server {
     } else {
       InvalidMoveMessage im =
           new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
-      sendToAll(im);
+      clients.get(gameState.getCurrentPlayer()).sendToClient(im);
     }
   }
 
@@ -594,7 +594,7 @@ public class Server {
         .getTile() == null) {
       InvalidMoveMessage im =
           new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
-      sendToAll(im);
+      clients.get(gameState.getCurrentPlayer()).sendToClient(im);
       return;
     }
 
@@ -605,7 +605,7 @@ public class Server {
           m.getOldYCoordinate())) {
         InvalidMoveMessage im =
             new InvalidMoveMessage(m.getFrom(), "Tile could not be removed from GameBoard.");
-        sendToAll(im);
+        clients.get(gameState.getCurrentPlayer()).sendToClient(im);
         return;
       }
 
@@ -622,7 +622,7 @@ public class Server {
           m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
         InvalidMoveMessage im =
             new InvalidMoveMessage(m.getFrom(), "Tile could not be moved on GameBoard.");
-        sendToAll(im);
+        clients.get(gameState.getCurrentPlayer()).sendToClient(im);
         return;
       }
 

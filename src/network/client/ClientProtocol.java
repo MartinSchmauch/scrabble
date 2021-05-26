@@ -20,6 +20,7 @@ import network.messages.ConnectMessage;
 import network.messages.ConnectionRefusedMessage;
 import network.messages.DisconnectMessage;
 import network.messages.GameStatisticMessage;
+import network.messages.InvalidMoveMessage;
 import network.messages.LobbyStatusMessage;
 import network.messages.Message;
 import network.messages.MessageType;
@@ -155,7 +156,10 @@ public class ClientProtocol extends Thread {
                   }
                   gpc.removeTile(rtMessage.getX(), rtMessage.getY(), (rtMessage.getY() == -1));
                   break;
-
+                case INVALID:
+                  InvalidMoveMessage imm = (InvalidMoveMessage) m;
+                  gpc.indicateInvalidTurn(imm.getFrom(), imm.getReason());
+                  break;
                 case RESET_TURN:
                   ResetTurnMessage resettMessage = (ResetTurnMessage) m;
                   List<Tile> tileList = resettMessage.getTiles();
