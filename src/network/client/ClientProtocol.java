@@ -87,27 +87,7 @@ public class ClientProtocol extends Thread {
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
       } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED) {
-
         this.clientSocket.close();
-        /**
-         * @author pkoenig
-         */
-        // } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED){
-        // ConnectionRefusedMessage crm = (ConnectionRefusedMessage) m;
-        // this.player.setNickname(crm.getAlternativeUserName());
-        // //sendToServer(new ConnectMessage(this.player.getPlayerInfo()));
-        // System.out.println("cp, line 87");
-        // disconnect();
-        // player.connect(ipFromServer);
-        //// m = (Message) in.readObject();
-        //// if (m.getMessageType() == MessageType.CONNECT) {
-        //// ConnectMessage cm = (ConnectMessage) m;
-        //// this.player.setNickname(cm.getPlayerInfo().getNickname());
-        //// System.out.println("New username: " + player.getNickname());
-        //// }
-        //// else {
-        //// disconnect();
-        //// }
       } else {
         disconnect();
       }
@@ -128,7 +108,6 @@ public class ClientProtocol extends Thread {
                   } catch (IOException e) {
                     e.printStackTrace();
                   }
-                  // tbImplemented
                   break;
                 case SHUTDOWN:
                   ShutdownMessage shutMessage = (ShutdownMessage) m;

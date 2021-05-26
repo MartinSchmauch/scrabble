@@ -223,6 +223,35 @@ public class GameController {
   }
 
   /**
+   * This method checks the end game criteria.
+   * 
+   * @author ldreyer
+   * @returns true if endGame criteria have been met
+   */
+
+  public boolean checkEndGame(boolean tilesLeftOnRack) {
+    boolean fiveScorelessRounds = false;
+
+    if (this.turns.size() > 5) {
+      fiveScorelessRounds = true;
+      for (int i = 0; i < 5; i++) {
+        if (this.turns.get(i).getTurnScore() > 0) {
+          fiveScorelessRounds = false;
+          break;
+        }
+      }
+    }
+
+    if (!tilesLeftOnRack && this.tileBag.isEmpty() || fiveScorelessRounds
+        || (GameSettings.getMaxScore() > -1 && this.gameState
+            .getScore(this.gameState.getCurrentPlayer()) > GameSettings.getMaxScore())) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * This method is called to get the next player after a player finished his turn.
    *
    * @return String nextPlayer

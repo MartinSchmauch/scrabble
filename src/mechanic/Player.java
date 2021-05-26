@@ -158,7 +158,7 @@ public class Player {
    */
 
   @JsonIgnore
-  public Field getFreeRackField() { // rack koordinate fortlaufen in xCoordinate
+  public Field getFreeRackField() { // rack koordinate fortlaufend in xCoordinate
     int i = 0;
     while (rack[i].getTile() != null) {
       i++;
@@ -169,10 +169,6 @@ public class Player {
 
   public Field getRackField(int index) {
     return rack[index];
-  }
-
-  public void setRackTileToNone(int index) {
-    this.rack[index].setTileOneDirection(null);
   }
 
   /**
@@ -186,7 +182,7 @@ public class Player {
   }
 
   /**
-   * This method adds a List of tileson the player's rack.
+   * This method adds a List of tiles on the player's rack.
    *
    * @author lurny
    */
@@ -228,6 +224,8 @@ public class Player {
   /**
    * Takes indices of two rack fields and moves the tile from the before-index to the after-index.
    * If the operation was successful the method returns true.
+   *
+   * @author ldreyer
    */
 
   public void reorganizeRackTile(int indexBefore, int indexAfter) {
@@ -314,7 +312,7 @@ public class Player {
     if (t.getField().getyCoordinate() != -1) {
       System.out.println("\nINVALID: personalMovetoGameboard + \n");
     } else {
-      this.setRackTileToNone(t.getField().getxCoordinate());
+      this.removeRackTile(t.getField().getxCoordinate());
       f.setTile(t);
     }
   }

@@ -28,7 +28,6 @@ public class GameState implements Serializable {
   private HashMap<String, PlayerData> allPlayers;
   private HashMap<String, Integer> scores;
   private HashMap<String, GameStatistic> gameStatistics = new HashMap<>();
-  // private GameSettings gameSettings;
 
 
 

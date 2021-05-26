@@ -235,7 +235,7 @@ public class AIplayer extends Player {
         for (Tile t : this.getRackTiles()) {
           if (t.getLetter().getCharacter() == c) {
             currentLayedDownTiles.add(t);
-            this.setRackTileToNone(t.getField().getxCoordinate()); // !!!
+            this.removeRackTile(t.getField().getxCoordinate()); // !!!
             break;
           }
         }

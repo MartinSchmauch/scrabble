@@ -838,6 +838,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
     Platform.runLater(new Runnable() {
       @Override
       public void run() {
+        close();
+        new LoginScreen().start(new Stage());
         CustomAlert alert = new CustomAlert(AlertType.WARNING);
         alert.setTitle("Server Shutdown");
         alert.setHeaderText("Server stopped and game ended.");
@@ -847,14 +849,11 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          Stage st = (Stage) rulesButton.getScene().getWindow(); // TODO: das muss schoener gehen
-                                                                 // als einen random knopf zu nehmen
-          st.close();
           alert.close();
         }
       }
     });
-    new LoginScreen().start(new Stage());
+
   }
 
   /**

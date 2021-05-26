@@ -208,8 +208,9 @@ public class Server {
   }
 
   /**
-   * This method is called, when a Turn should be resetet. All tiles are remove from the gameboard
-   * and the Tiles are added to the player Rack, if the current player is equal to the server.
+   * This method is called, when a Turn should be resetet. This is the case if either a player
+   * leaves or the timer is up. All tiles are remove from the gameboard and the Tiles are added to
+   * the player Rack, if the current player is equal to the server.
    *
    * @author lurny
    */
@@ -242,12 +243,19 @@ public class Server {
               gpc.addTile(t);
             }
           }
-          gameState.setCurrentPlayer(gameController.getNextPlayer());
-          try {
-            Thread.sleep(50);
-          } catch (InterruptedException e) {
-            e.printStackTrace();
+
+          // check end game criteria
+          if (gameController.checkEndGame(true)) {
+            Runnable r = new Runnable() {
+              public void run() {
+                endGame();
+              }
+            };
+            new Thread(r).start();
+            return;
           }
+
+          gameState.setCurrentPlayer(gameController.getNextPlayer());
 
           sendToAll(new TurnResponseMessage(from, true, gameState.getScore(from),
               gameController.getTurn().toString(), gameState.getCurrentPlayer(),
@@ -271,6 +279,9 @@ public class Server {
    * This method is called when a player commits a turn by clicking the "Done" button. It calculates
    * the turn and informs all players about the result with a TurnResponseMessage. If the turn is
    * valid the next player is included in the message as well.
+   *
+   * @author lurny
+   * @author pkoenig
    */
   public void handleCommitTurn(CommitTurnMessage m) {
     this.semaphoreReset = false;
@@ -278,8 +289,6 @@ public class Server {
       String from = m.getFrom();
       Turn turn = this.getGameController().getTurn();
       turn.endTurn();
-      // sendToAll(new UpdateChatMessage("", turn.toString(), null));
-
 
       if (turn.isValid()) {
         if (turn.getTurnScore() > 0) {
@@ -297,7 +306,6 @@ public class Server {
             t.setField(this.aiPlayers.get(from).getFreeRackField());
             t.setOnGameBoard(false);
             t.setOnRack(true);
-            // gpc.addTile(t);
           }
         } else if (m.getFrom().equals(this.getHost())) {
           // add new tiles to Domain and UI
@@ -346,22 +354,7 @@ public class Server {
 
 
         // check end game criteria
-        List<Turn> turns = this.getGameController().getTurns();
-        boolean fiveScorelessRounds = false;
-
-        if (turns.size() > 5) {
-          fiveScorelessRounds = true;
-          for (int i = 0; i < 5; i++) {
-            if (turns.get(i).getTurnScore() > 0) {
-              fiveScorelessRounds = false;
-              break;
-            }
-          }
-        }
-
-        if (!m.getTilesLeftOnRack() && this.gameController.getTileBag().isEmpty()
-            || fiveScorelessRounds || (GameSettings.getMaxScore() > -1
-                && this.gameState.getScore(from) > GameSettings.getMaxScore())) {
+        if (this.gameController.checkEndGame(m.getTilesLeftOnRack())) {
           Runnable r = new Runnable() {
             public void run() {
               endGame();
@@ -370,7 +363,6 @@ public class Server {
           new Thread(r).start();
           return;
         }
-
 
         if (!this.aiPlayers.containsKey(from)) {
           this.gameState.getGameStatisticsOfPlayer(from)
@@ -504,7 +496,7 @@ public class Server {
    * hashmap.
    */
 
-  public void addClient(PlayerData player, ServerProtocol serverProtocol) {
+  public void handleJoinLobby(PlayerData player, ServerProtocol serverProtocol) {
     this.gameState.joinGame(player);
     this.clients.put(player.getNickname(), serverProtocol);
   }
@@ -593,19 +585,6 @@ public class Server {
   /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
 
   public void handleMoveTile(MoveTileMessage m) {
-    // TODO temporary
-    if (this.gameState.getGameBoard().getField(m.getOldXCoordinate(), m.getOldYCoordinate())
-        .getTile() == null) {
-      if (m.getFrom().equals(this.host)) {
-        gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
-      } else {
-        InvalidMoveMessage im =
-            new InvalidMoveMessage(m.getFrom(), "Tile could not be added to GameBoard.");
-        clients.get(m.getFrom()).sendToClient(im);
-      }
-      return;
-    }
-
     Tile oldTile = this.gameState.getGameBoard()
         .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
     if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
@@ -890,7 +869,6 @@ public class Server {
     distributeInitialTiles();
 
     this.gameController.newTurn();
-    System.out.println("start game line 697");
     this.gameState.initializeScoresWithZero(this.gameState.getAllPlayers());
     initializeAi();
     Runnable r = new Runnable() {
@@ -944,7 +922,6 @@ public class Server {
    * @author lurny
    */
   public void calculateGameStatistics() {
-    System.out.println("Test2");
     for (Turn t : this.gameController.getTurns()) {
       String p = t.getPlayer();
       if (this.gameState.getGameStatisticsOfPlayer(p).getBestTurn() < t.getTurnScore()) {

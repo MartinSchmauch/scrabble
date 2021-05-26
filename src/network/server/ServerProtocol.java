@@ -108,7 +108,7 @@ public class ServerProtocol extends Thread {
             i++;
           }
           cm.getPlayerInfo().setNickname(this.clientName);
-          server.addClient(cm.getPlayerInfo(), this);
+          server.handleJoinLobby(cm.getPlayerInfo(), this);
           server.sendToAll(cm);
           server.sendLobbyStatus();
         } else if (!from.equals(this.clientName)) {
@@ -119,7 +119,7 @@ public class ServerProtocol extends Thread {
           out.reset();
           disconnect();
         } else {
-          server.addClient(cm.getPlayerInfo(), this);
+          server.handleJoinLobby(cm.getPlayerInfo(), this);
           server.sendToAll(cm);
           server.sendLobbyStatus();
         }
