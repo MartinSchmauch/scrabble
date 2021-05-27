@@ -319,11 +319,15 @@ public class TutorialController extends GamePanelController
             if (result2.get() == ButtonType.OK) {
               // remove Tiles from GUI
               for (Tile t : this.tilesToExchange) {
+            	 
                 // TODO bei dem gesetzten True koennte ein Fehler entstehen
                 this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
                 this.player.removeRackTile(t.getField().getxCoordinate());
+                Tile newTile = new TileBag().drawTile();
+                this.player.addTileToRack(newTile);
+                this.addTile(newTile);
               }
-              sendTileMessage(this.player.getNickname());
+             
               this.chat.appendText("\n\n THANK YOU FOR PLAYING");
               endTutorial();
             } else {
@@ -409,7 +413,7 @@ public class TutorialController extends GamePanelController
         if (validateTurn(indicator)) {
           this.playerOnePoints.setText("12");
           updateChat(
-              "\n\nWell done, you layed your first word!\n\nLook, your opponent has layed down a word as well.\n\nNow lay the words \"DO\" and \"NOMAINTE\" by dragging the letters onto the designated fields. Use the '*' as a 'T'. ");
+              "\n\nWell done, you layed your first word!\n\nLook, your opponent has layed down a word as well.\n\nNow lay the words \"DO\" and \"NOMINATE\" by dragging the letters onto the designated fields. Use the '*' as a 'T'. ");
           tutorialTurn(indicator);
           showTip(1);
           this.indicator++;
@@ -520,17 +524,7 @@ public class TutorialController extends GamePanelController
    */
   public boolean validateTurn(int index) {
     GameBoard gb = this.player.getServer().getGameController().getGameState().getGameBoard();
-    for (int i = 0; i < gb.getFields().length; i++) {
-      for (int k = 0; k < gb.getFields()[i].length; k++) {
-        if (gb.getFields()[i][k].getTile() != null) {
-          if (!this.layedDown.contains(gb.getFields()[i][k])) {
-            this.layedDown.add(gb.getFields()[i][k]);
-          }
-        }
-      }
-    }
-
-    switch (index) {
+       switch (index) {
       case 0:
         try {
           if (gb.getField(7, 8).getTile().getLetter().getCharacter() == 'B'
