@@ -36,7 +36,7 @@ public class AIplayer extends Player {
     EASY, MEDIUM, HARD, UNBEATABLE
   }
 
-  
+
   /**
    * 
    * Represent a combination of chars with a counter. The counter represents, how often this
@@ -50,6 +50,11 @@ public class AIplayer extends Player {
     private char[] chars;
     private int count;
 
+    /**
+     * Contructor
+     * 
+     * @param chars
+     */
     public AIcombination(char[] chars) {
       this.chars = chars;
       this.count = 1;
@@ -90,6 +95,11 @@ public class AIplayer extends Player {
       this.count = count;
     }
 
+    /**
+     * Overrinds compareTo from Comparable interface to enable sorting of AIcombinations
+     * 
+     * @param AIcombination o
+     */
     @Override
     public int compareTo(AIcombination o) {
       // equal chars
@@ -119,6 +129,11 @@ public class AIplayer extends Player {
       return Integer.valueOf(this.count).compareTo(Integer.valueOf(o.count));
     }
 
+    /**
+     * Overrides equals
+     * 
+     * @param Object o
+     */
     @Override
     public boolean equals(Object o) {
       AIcombination oA = (AIcombination) o;
@@ -135,6 +150,11 @@ public class AIplayer extends Player {
       return false;
     }
 
+    /**
+     * Overrinds toString from Object. Returns a String-representation of current instance
+     * 
+     * @param none
+     */
     @Override
     public String toString() {
       String out = "AIcombination with count: " + this.count + " -> ";
@@ -146,6 +166,14 @@ public class AIplayer extends Player {
 
   }
 
+  /**
+   * 
+   * Main Contructor used in game.
+   * 
+   * @param nickname
+   * @param gc
+   * @param level
+   */
   public AIplayer(String nickname, GameController gc, AiLevel level) {
     super(nickname);
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
@@ -221,6 +249,12 @@ public class AIplayer extends Player {
     super(nickname, avatar, volume, null, 0, 0, 0, null, 0, 0, 0);
   }
 
+  /**
+   * Called once for each AIplayer at creation-time
+   * 
+   * Creates a instance-HashMap of AIcombinations used from Method runAi
+   * 
+   */
   public void generateTileCombinations() {
     this.tileCombinations = new TreeSet<AIcombination>();
     AIcombination c;
@@ -373,6 +407,13 @@ public class AIplayer extends Player {
     return idealTurn;
   }
 
+  /**
+   * 
+   * Will be called at the Beginn of everiy Turn (i.e. call of runAi() ) Filters the HashMap of
+   * AIcombinations for the rack.
+   * 
+   * @return TreeSet<AIcombination> AIcombination, which can be used with current rack
+   */
   @SuppressWarnings("unchecked")
   private TreeSet<AIcombination> getFilteredCombinationList() {
     ArrayList<Character> charsOnRack = new ArrayList<Character>();
@@ -395,7 +436,16 @@ public class AIplayer extends Player {
     return currentTwoTilesCombinations;
   }
 
-
+  /**
+   * 
+   * Used internally for getValidPositions
+   * 
+   * @param gb
+   * @param i
+   * @param j
+   * @param numOfTiles
+   * @param results
+   */
   private static void addParallelTilesHorizontally_getValidTilePositionsForNumOfTilesHelper(
       GameBoard gb, int i, int j, int numOfTiles, HashSet<Field[]> results) {
     Field[] singleTilesPosition = new Field[numOfTiles];
@@ -415,6 +465,16 @@ public class AIplayer extends Player {
     }
   }
 
+  /**
+   * 
+   * Used internally for getValidTilePositionsForNumOfTiles
+   * 
+   * @param gb
+   * @param i
+   * @param j
+   * @param numOfTiles
+   * @param results
+   */
   private static void addParallelTilesVertically_getValidTilePositionsForNumOfTilesHelper(
       GameBoard gb, int i, int j, int numOfTiles, HashSet<Field[]> results) {
     Field[] singleTilesPosition = new Field[numOfTiles];
@@ -435,7 +495,15 @@ public class AIplayer extends Player {
   }
 
 
-
+  /**
+   * 
+   * Called at every runAi
+   * 
+   * 
+   * @param gb
+   * @param numOfTiles
+   * @return HashSet<Field[]> list of validTilePositions
+   */
   public HashSet<Field[]> getValidTilePositionsForNumOfTiles(GameBoard gb, int numOfTiles) {
     if (numOfTiles < 1) {
       return null;
