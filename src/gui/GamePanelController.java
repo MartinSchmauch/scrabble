@@ -24,6 +24,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -710,15 +711,38 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
 
   @FXML
   public void mousePressed(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    node.setMouseTransparent(true);
+    // Node node = (Node) event.getSource();
+    // node.setMouseTransparent(true);
   }
 
   @FXML
   public void mouseReleased(MouseEvent event) {
-    Node node = (Node) event.getSource();
-    node.setMouseTransparent(false);
+    // Node node = (Node) event.getSource();
+    // node.setMouseTransparent(false);
     rulesButton.getScene().setCursor(Cursor.DEFAULT);
+  }
+
+  /**
+   * Method that allows player to double click on a tile that the player placed on the game panel at
+   * the current turn. This has the effect, that the tile is put back on the rack.
+   * 
+   * @param event
+   */
+  @FXML
+  public void mouseClicked(MouseEvent event) {
+    if (event.getButton().equals(MouseButton.PRIMARY)) {
+      if (event.getClickCount() == 2) {
+        Node node = (Node) event.getSource();
+        selectedCoordinates = getPos(node, false);
+        selectedCoordinates[0] += 1;
+        selectedCoordinates[1] += 1;
+        targetCoordinates[0] = this.player.getFreeRackField().getxCoordinate();
+        targetCoordinates[1] = this.player.getFreeRackField().getyCoordinate();
+        sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+            targetCoordinates[0], targetCoordinates[1]);
+        resetCoordinates();
+      }
+    }
   }
 
   /**
