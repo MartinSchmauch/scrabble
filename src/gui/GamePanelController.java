@@ -84,20 +84,55 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @FXML
   private TextField chatInput;
   @FXML
-  private Button sendButton, skipAndChangeButton, doneButton, leaveGameButton, settingsButton,
-      rulesButton;
+  private Button sendButton;
+  @FXML
+  private Button skipAndChangeButton;
+  @FXML
+  private Button doneButton;
+  @FXML
+  private Button leaveGameButton;
+  @FXML
+  private Button settingsButton;
+  @FXML
+  private Button rulesButton;
   @FXML
   private ToggleButton activateFieldLabels;
   @FXML
-  private ImageView image1, image2, image3, image4;
+  private ImageView image1;
   @FXML
-  private Text player1, player2, player3, player4;
+  private ImageView image2;
   @FXML
-  private Text playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints;
+  private ImageView image3;
   @FXML
-  private Text pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4;
+  private ImageView image4;
   @FXML
-  private Text remainingLetters, timer;
+  private Text player1;
+  @FXML
+  private Text player2;
+  @FXML
+  private Text player3;
+  @FXML
+  private Text player4;
+  @FXML
+  private Text playerOnePoints;
+  @FXML
+  private Text playerTwoPoints;
+  @FXML
+  private Text playerThreePoints;
+  @FXML
+  private Text playerFourPoints;
+  @FXML
+  private Text pointsLabel1;
+  @FXML
+  private Text pointsLabel2;
+  @FXML
+  private Text pointsLabel3;
+  @FXML
+  private Text pointsLabel4;
+  @FXML
+  private Text remainingLetters;
+  @FXML
+  private Text timer;
   @FXML
   private Text dws0;
   @FXML
@@ -223,11 +258,41 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @FXML
   private Rectangle tile1;
   @FXML
-  private Rectangle currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4;
+  private Rectangle currentPlayer1;
   @FXML
-  private Rectangle r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11;
+  private Rectangle currentPlayer2;
   @FXML
-  private GridPane board, rack;
+  private Rectangle currentPlayer3;
+  @FXML
+  private Rectangle currentPlayer4;
+  @FXML
+  private Rectangle r0;
+  @FXML
+  private Rectangle r1;
+  @FXML
+  private Rectangle r2;
+  @FXML
+  private Rectangle r3;
+  @FXML
+  private Rectangle r4;
+  @FXML
+  private Rectangle r5;
+  @FXML
+  private Rectangle r6;
+  @FXML
+  private Rectangle r7;
+  @FXML
+  private Rectangle r8;
+  @FXML
+  private Rectangle r9;
+  @FXML
+  private Rectangle r10;
+  @FXML
+  private Rectangle r11;
+  @FXML
+  private GridPane board;
+  @FXML
+  private GridPane rack;
   @FXML
   private ProgressBar timeProgress;
   @FXML
