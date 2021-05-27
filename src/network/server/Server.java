@@ -516,6 +516,14 @@ public class Server {
   /** This method removes a client and ends the game is running and only the host is left. */
 
   public void handleLeaveGame(String player) {
+    Turn turn = gameController.getTurn();
+    
+    for (int i = 0; i < gameController.getTurns().size(); i++) {
+      if (gameController.getTurns().get(i).getPlayer().equals(player)) {
+        gameController.getTurns().remove(i);
+      }
+    }
+    
     this.gameState.leaveGame(player);
     this.clients.remove(player);
     if (this.gameState.getGameRunning() && this.gameState.getAllPlayers().size() < 2) {
@@ -535,7 +543,7 @@ public class Server {
     }
 
     if(this.gameState.getCurrentPlayer().equals(player)) {
-      for(Tile t : this.gameController.getTurn().getLaydDownTiles()) {
+      for(Tile t : turn.getLaydDownTiles()) {
         t.getField().setTileOneDirection(null);
       }
       
@@ -553,12 +561,6 @@ public class Server {
   
       };
       new Thread(r).start();
-    }
-    
-    for (int i = 0; i < gameController.getTurns().size(); i++) {
-      if (gameController.getTurns().get(i).getPlayer().equals(player)) {
-        gameController.getTurns().remove(i);
-      }
     }
   }
 
