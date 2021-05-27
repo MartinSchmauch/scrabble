@@ -438,12 +438,14 @@ public class Server {
    * @author pkoenig
    */
 
-  public void listen() {
+  public void listen(boolean tutorialMode) {
     running = true;
     try {
       serverSocket = new ServerSocket(GameSettings.port);
       System.out.println("Server runs");
-      LoginScreenController.getInstance().startLobby();
+      if(!tutorialMode) {
+        LoginScreenController.getInstance().startLobby();
+      }
       
       while (running) {
         Socket clientSocket = serverSocket.accept();

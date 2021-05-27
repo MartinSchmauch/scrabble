@@ -22,7 +22,7 @@ public class Tutorial {
 
   public Tutorial(Player player) {
     this.player = player;
-    this.player.host();
+    this.player.playTutorial();
     this.player.getServer().startGame();
     startScreen();
   }

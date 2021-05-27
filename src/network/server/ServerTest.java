@@ -45,7 +45,7 @@ public class ServerTest {
 
     Runnable r = new Runnable() {
       public void run() {
-        server.listen();
+        server.listen(true);
       }
     };
     new Thread(r).start();

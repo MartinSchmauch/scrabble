@@ -386,7 +386,7 @@ public class Player {
 
     Runnable r = new Runnable() {
       public void run() {
-        server.listen();
+        server.listen(false);
       }
     };
     new Thread(r).start();
@@ -408,5 +408,23 @@ public class Player {
       CustomAlert.showWarningAlert("Invalid link.", "Try another Link or try again later");
     }
   }
+  
+  /**
+   * This method is called, when a player plays the tutorial.
+   *
+   * @author nilbecke
+   */
+  public void playTutorial() {
+    this.getPlayerInfo().setHost(true);
+    this.server = new Server(this, null);
+
+    Runnable r = new Runnable() {
+      public void run() {
+        server.listen(true);
+      }
+    };
+    new Thread(r).start();
+  }
+
 
 }
