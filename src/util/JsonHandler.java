@@ -52,6 +52,7 @@ public class JsonHandler {
     Player player = null;
     try {
       player = objectMapper.readValue(file, Player.class);
+      Sound.setVolume(player.getVolume());
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -64,6 +65,7 @@ public class JsonHandler {
   public boolean savePlayerProfile(File file, Player player) {
     try {
       objectMapper.writeValue(file, player);
+      Sound.setVolume(player.getVolume());
     } catch (IOException e) {
       e.printStackTrace();
       return false;
@@ -123,7 +125,7 @@ public class JsonHandler {
         field = new Field(letterMultiplier, wordMultiplier, fieldNode.get("xCoordinate").asInt(),
             fieldNode.get("yCoordinate").asInt());
         specialFields.add(field);
-        
+
         if (fieldNode.has("starField") && fieldNode.get("starField").asBoolean()) {
           GameSettings.setStarField(field);
         }

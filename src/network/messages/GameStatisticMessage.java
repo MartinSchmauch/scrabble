@@ -26,6 +26,4 @@ public class GameStatisticMessage extends Message {
   public HashMap<String, GameStatistic> getGameStatistics() {
     return gameStatistics;
   }
-
-
 }

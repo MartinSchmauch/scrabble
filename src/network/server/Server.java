@@ -40,11 +40,11 @@ import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.ResetTurnMessage;
 import network.messages.SendChatMessage;
-import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
+import util.Sound;
 
 /**
  * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
@@ -443,10 +443,10 @@ public class Server {
     try {
       serverSocket = new ServerSocket(GameSettings.port);
       System.out.println("Server runs");
-      if(!tutorialMode) {
+      if (!tutorialMode) {
         LoginScreenController.getInstance().startLobby();
       }
-      
+
       while (running) {
         Socket clientSocket = serverSocket.accept();
 
@@ -454,11 +454,12 @@ public class Server {
         this.serverProtocol.start();
       }
 
-    } catch (IOException e) {   
+    } catch (IOException e) {
       if (serverSocket != null && serverSocket.isClosed()) {
         System.out.println("Server stopped.");
       } else {
-        CustomAlert.showWarningAlert("Already hosting!", "Sorry. You cannot host two games at a time.");
+        CustomAlert.showWarningAlert("Already hosting!",
+            "Sorry. You cannot host two games at a time.");
       }
     }
   }
@@ -516,13 +517,13 @@ public class Server {
 
   public void handleLeaveGame(String player) {
     Turn turn = gameController.getTurn();
-    
+
     for (int i = 0; i < gameController.getTurns().size(); i++) {
       if (gameController.getTurns().get(i).getPlayer().equals(player)) {
         gameController.getTurns().remove(i);
       }
     }
-    
+
     this.gameState.leaveGame(player);
     this.clients.remove(player);
     if (this.gameState.getGameRunning() && this.gameState.getAllPlayers().size() < 2) {
@@ -541,23 +542,23 @@ public class Server {
       return;
     }
 
-    if(this.gameState.getCurrentPlayer().equals(player)) {
-      for(Tile t : turn.getLaydDownTiles()) {
+    if (this.gameState.getCurrentPlayer().equals(player)) {
+      for (Tile t : turn.getLaydDownTiles()) {
         t.getField().setTileOneDirection(null);
       }
-      
+
       String nextPlayer = this.getGameController().getNextPlayer();
       this.sendToAll(new TurnResponseMessage(player, true, 0, null, nextPlayer,
           this.gameController.getTileBag().getRemaining(), null));
       gameState.setCurrentPlayer(nextPlayer);
       this.getGameController().newTurn();
-  
+
       Runnable r = new Runnable() {
-  
+
         public void run() {
           handleAi(nextPlayer);
         }
-  
+
       };
       new Thread(r).start();
     }
@@ -719,6 +720,7 @@ public class Server {
               break;
             case START_GAME:
               lsc.startGameScreen();
+              Sound.playStartGameSound();
               gpc.setTimerDuration(GameSettings.getTimePerPlayer());
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
@@ -768,6 +770,7 @@ public class Server {
             case ADD_TILE:
               AddTileMessage atm = (AddTileMessage) m;
               gpc.addTile(atm.getTile());
+              Sound.playMoveTileSound();
               break;
             case REMOVE_TILE:
               RemoveTileMessage rtm = (RemoveTileMessage) m;
@@ -811,6 +814,13 @@ public class Server {
                 semaphoreCommit = true;
                 semaphoreReset = true;
                 sem = true;
+                if (trm.getCalculatedTurnScore() > 0) {
+                  Sound.playSuccessfulTurnSound();
+                } else {
+                  Sound.playUnsuccessfulTurnSound();
+                }
+              } else {
+                Sound.playUnsuccessfulTurnSound();
               }
               break;
             case RESET_TURN:

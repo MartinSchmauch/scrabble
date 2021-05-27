@@ -33,6 +33,7 @@ import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
+import util.Sound;
 
 /**
  * This is the client Protocol, which is used for the client server communication. Every connected
@@ -121,6 +122,7 @@ public class ClientProtocol extends Thread {
                     atMessage.getTile().setOnRack(false);
                     atMessage.getTile().setOnGameBoard(true);
                     gpc.addTile(atMessage.getTile());
+                    Sound.playMoveTileSound();
                   }
                   break;
                 case REMOVE_TILE:
@@ -160,7 +162,7 @@ public class ClientProtocol extends Thread {
                       t.setOnRack(false);
                       t.setOnGameBoard(true);
                       gpc.addTile(t);
-                    } else { 
+                    } else {
                       // case "on board"
                       player.addTileToRack(t);
                       gpc.addTile(t);
@@ -194,6 +196,13 @@ public class ClientProtocol extends Thread {
                       gpc.changeDoneStatus(false);
                       gpc.changeSkipAndChangeStatus(false);
                     }
+                    if (trm.getCalculatedTurnScore() > 0) {
+                      Sound.playSuccessfulTurnSound();
+                    } else {
+                      Sound.playUnsuccessfulTurnSound();
+                    }
+                  } else {
+                    Sound.playUnsuccessfulTurnSound();
                   }
 
                   if (gpc.getAlert2() != null) {
@@ -217,6 +226,7 @@ public class ClientProtocol extends Thread {
                   break;
                 case START_GAME:
                   StartGameMessage sgMessage = (StartGameMessage) m;
+                  Sound.playStartGameSound();
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
                   lsc.startGameScreen();
@@ -277,7 +287,7 @@ public class ClientProtocol extends Thread {
                             false);
                       }
                     }
-                    
+
                     gpc.removeJoinedPlayer(discMessage.getFrom());
                   }
                   break;
