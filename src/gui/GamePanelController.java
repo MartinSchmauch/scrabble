@@ -22,6 +22,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -85,6 +86,8 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
   @FXML
   private Button sendButton, skipAndChangeButton, doneButton, leaveGameButton, settingsButton,
       rulesButton;
+  @FXML
+  private ToggleButton activateFieldLabels;
   @FXML
   private ImageView image1, image2, image3, image4;
   @FXML
@@ -546,6 +549,13 @@ public class GamePanelController implements Sender, EventHandler<ActionEvent>, R
           changeSkipAndChangeStatus(true);
         } else {
           sendCommitTurn(this.player.getNickname());
+        }
+        break;
+      case "activateFieldLabels":
+        if (activateFieldLabels.isSelected()) {
+          this.setFieldLabelVisibility(false);
+        } else {
+          this.setFieldLabelVisibility(true);
         }
         break;
       default:
