@@ -216,7 +216,7 @@ public class GameController {
   public boolean checkRemoveTileFromGameBoard(String player, int x, int y) {
     Field beforeField = gameState.getGameBoard().getField(x, y);
     if (!gameState.getCurrentPlayer().equals(player) || beforeField == null
-        || beforeField.getTile().isPlayed()) {
+        || beforeField.getTile() == null || beforeField.getTile().isPlayed()) {
       return false;
     }
 

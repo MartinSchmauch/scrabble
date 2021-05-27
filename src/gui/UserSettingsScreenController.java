@@ -193,6 +193,7 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
   public void labelToTextfield() {
     this.namefield.setText(this.nickname.getText());
     this.namefield.setOpacity(1);
+    this.namefield.requestFocus();
     cu.setText("Save");
   }
 

@@ -298,6 +298,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       lbl.setOpacity(0);
       tf.setOpacity(1);
       tf.setText(lbl.getText());
+      tf.requestFocus();
     } else { // Textfield to Label
       trigger.setText("Change");
       tf.setOpacity(0);
