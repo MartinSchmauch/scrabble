@@ -10,7 +10,6 @@ package mechanic;
 
 public class GameBoard {
   private Field[][] fields;
-  private Wordlist wordlist;
 
   /**
    * This method creates an instance of the class.
@@ -57,15 +56,6 @@ public class GameBoard {
       }
     }
     return res;
-  }
-
-  public Wordlist getWordlist() {
-    return wordlist;
-  }
-
-
-  public void setWordlist(Wordlist wordlist) {
-    this.wordlist = wordlist;
   }
 
 }

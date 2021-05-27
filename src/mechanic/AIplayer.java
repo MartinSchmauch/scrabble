@@ -182,9 +182,10 @@ public class AIplayer extends Player {
     this.tileCombinations = new TreeSet<AIcombination>();
     switchAilevel(level);
   }
-  
+
   /**
    * maps AiLevel to Parameters
+   * 
    * @param ailevel
    */
   private void switchAilevel(AiLevel ailevel) {
