@@ -1051,7 +1051,7 @@ public class TutorialController extends GamePanelController
    * the parameter determines wether the node is located in the rack gridpane or the gamepanel
    * gridpane - nodeFromRack==true means that the node is located in the rack.
    */
-  private int[] getPos(Node node, boolean nodeFromRack) {
+  public int[] getPos(Node node, boolean nodeFromRack) {
     int[] result = new int[2];
     Integer columnIndex = GridPane.getColumnIndex(node);
     Integer rowIndex = GridPane.getRowIndex(node);
