@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LobbyScreenController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LobbyScreenController">
    <center>
       <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="261.0" BorderPane.alignment="CENTER">
          <children>
@@ -72,7 +72,6 @@
                   <Button fx:id="leavelobby" layoutX="24.0" layoutY="361.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="90.0" stylesheets="@Buttons.css" text="Leave Lobby" />
                   <Button fx:id="start" layoutX="276.0" layoutY="362.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Start" />
                   <Button fx:id="send" layoutX="178.0" layoutY="294.0" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="49.0" stylesheets="@Buttons.css" text="Send" />
-                  <Label fx:id="countdown" layoutX="240.0" layoutY="366.0" text="10" />
                   <VBox alignment="TOP_CENTER" layoutX="240.0" layoutY="20.0" prefHeight="323.0" prefWidth="100.0" style="-fx-border-radius: 24px; -fx-border-color: #218f33; -fx-background-color: transparent;">
                      <children>
                         <GridPane fx:id="gp" prefHeight="320.0" prefWidth="98.0">

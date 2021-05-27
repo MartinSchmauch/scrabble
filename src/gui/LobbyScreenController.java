@@ -62,9 +62,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   private Label player3;
   @FXML
   private Label player4;
-  @FXML
-  private Label countdown;
-  @FXML
+    @FXML
   private Label bestWordKey;
   @FXML
   private Label bestTurnKey;
@@ -179,8 +177,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     instance = this;
     this.player = current;
-    this.countdown.setText(5 + "");
-    this.chat.setEditable(false);
+       this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
     this.cc = new ChatController(this.player);
 
@@ -373,9 +370,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 	  new LoginScreen().start(new Stage());
   }
 
-  public void updateCountdown(int c) {
-    this.countdown.setText(c + "");
-  }
 
   /**
    * Closes the current lobby window. Is called when game starts or user decides to leave lobby.
