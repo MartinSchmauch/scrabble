@@ -1,6 +1,7 @@
 package gui;
 
 /**
+ * @deprecated
  * @autor mschmauch
  * 
  *        This interface provice methods to be implemented in the GamePanelController to send gui

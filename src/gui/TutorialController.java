@@ -62,7 +62,7 @@ import network.server.Server;
  */
 
 public class TutorialController extends GamePanelController
-    implements Sender, EventHandler<ActionEvent>, Runnable {
+    implements EventHandler<ActionEvent>, Runnable {
 
 
 
@@ -319,7 +319,7 @@ public class TutorialController extends GamePanelController
             if (result2.get() == ButtonType.OK) {
               // remove Tiles from GUI
               for (Tile t : this.tilesToExchange) {
-            	 
+
                 // TODO bei dem gesetzten True koennte ein Fehler entstehen
                 this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
                 this.player.removeRackTile(t.getField().getxCoordinate());
@@ -327,7 +327,7 @@ public class TutorialController extends GamePanelController
                 this.player.addTileToRack(newTile);
                 this.addTile(newTile);
               }
-             
+
               this.chat.appendText("\n\n THANK YOU FOR PLAYING");
               endTutorial();
             } else {
@@ -524,7 +524,7 @@ public class TutorialController extends GamePanelController
    */
   public boolean validateTurn(int index) {
     GameBoard gb = this.player.getServer().getGameController().getGameState().getGameBoard();
-       switch (index) {
+    switch (index) {
       case 0:
         try {
           if (gb.getField(7, 8).getTile().getLetter().getCharacter() == 'B'
@@ -943,7 +943,18 @@ public class TutorialController extends GamePanelController
    * Methods to override sender interface methods; documentation in interface.
    */
 
-  @Override
+  /**
+   * This method creates a new TileRequestMessage that is supposed to inform the server that a
+   * client has moved a tile in his Client UI and the tile move needs to be checked for conformitiy.
+   * Therefore the new message is send to the server, using the sendMessageToServer() method; the
+   * confirmation of the move is handled in ClientProtocol
+   * 
+   * @param nickName
+   * @param oldX
+   * @param oldY
+   * @param newX
+   * @param newY
+   */
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
     MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
     if (this.player.isHost()) {
@@ -953,7 +964,13 @@ public class TutorialController extends GamePanelController
     }
   }
 
-  @Override
+  /**
+   * This method creates a new CommitTurnMessage that is supposed to inform the server that a client
+   * has completed a turn by clicking the 'done' button in his Client UI. Therefore the new message
+   * is send to the server, using the sendMessageToServer() method
+   * 
+   * @param nickName
+   */
   public void sendCommitTurn(String nickName) {
     Message m = new CommitTurnMessage(nickName, this.player.getRackTiles().isEmpty());
     if (this.player.isHost()) {
@@ -988,13 +1005,25 @@ public class TutorialController extends GamePanelController
     }
   }
 
-  @Override
+  /**
+   * This method creates a new DisconnectMessage that is supposed to inform the server that a client
+   * wants to disconnect from the server and stop the game. Therefore the new message is send to the
+   * server, using the sendMessageToServer() method.
+   * 
+   * @param nickName
+   */
   public void sendDisconnectMessage(String nickName) {
     Message m = new DisconnectMessage(nickName, null);
     sendMessage(m);
   }
 
-  @Override
+  /**
+   * This method is called, when the player wants to skip his turn and replace his tiles on the rack
+   * completely with new tiles. Therefore, a TileMessage is sent to the server, containing the name
+   * of the sender and the list of tiles, the player has on his rack.
+   * 
+   * @param nickName
+   */
   public void sendTileMessage(String nickName) {
     Message m = new TileMessage(nickName, tilesToExchange);
     if (this.player.isHost()) {
