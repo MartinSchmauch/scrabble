@@ -56,266 +56,266 @@ import network.server.Server;
 
 public class GamePanelController implements EventHandler<ActionEvent>, Runnable {
 
-  private Player player;
-  private List<PlayerData> players;
-  private ClientProtocol cp;
-  private Server server;
-  private static boolean exchangeTilesMode = false;
-  private List<Tile> tilesToExchange = new ArrayList<Tile>();
-  private static int selectedCoordinates[] = new int[2]; // row, column
-  private static int targetCoordinates[] = new int[2]; // row, column
-  private ChatController cc;
+  protected Player player;
+  protected List<PlayerData> players;
+  protected ClientProtocol cp;
+  protected Server server;
+  protected static boolean exchangeTilesMode = false;
+  protected List<Tile> tilesToExchange = new ArrayList<Tile>();
+  protected static int selectedCoordinates[] = new int[2]; // row, column
+  protected static int targetCoordinates[] = new int[2]; // row, column
+  protected ChatController cc;
 
-  private int min;
-  private int sec;
-  private Thread thread;
-  private int timerDuration;
+  protected int min;
+  protected int sec;
+  protected Thread thread;
+  protected int timerDuration;
 
-  private double timeLeftBar;
-  private boolean turnCountdown;
-  private CustomAlert alert2;
+  protected double timeLeftBar;
+  protected boolean turnCountdown;
+  protected CustomAlert alert2;
 
-  private static GamePanelController instance;
+  protected static GamePanelController instance;
 
-  private Text[] playerLabel;
-  private Text[] pointsLabel;
-  private Text[] playerNameLabel;
-  private ImageView[] avatarImageView;
-  private Rectangle[] rect;
-  private Text[] dlsLabel;
-  private Text[] tlsLabel;
-  private Text[] dwsLabel;
-  private Text[] twsLabel;
+  protected Text[] playerLabel;
+  protected Text[] pointsLabel;
+  protected Text[] playerNameLabel;
+  protected ImageView[] avatarImageView;
+  protected Rectangle[] rect;
+  protected Text[] dlsLabel;
+  protected Text[] tlsLabel;
+  protected Text[] dwsLabel;
+  protected Text[] twsLabel;
 
-  // private VisualTile cursorTile;
+  // protected VisualTile cursorTile;
 
   @FXML
-  private Pane upperPane;
+  protected Pane upperPane;
   @FXML
-  private TextArea chat;
+  protected TextArea chat;
   @FXML
-  private TextField chatInput;
+  protected TextField chatInput;
   @FXML
-  private Button sendButton;
+  protected Button sendButton;
   @FXML
-  private Button skipAndChangeButton;
+  protected Button skipAndChangeButton;
   @FXML
-  private Button doneButton;
+  protected Button doneButton;
   @FXML
-  private Button leaveGameButton;
+  protected Button leaveGameButton;
   @FXML
-  private Button settingsButton;
+  protected Button settingsButton;
   @FXML
-  private Button rulesButton;
+  protected Button rulesButton;
   @FXML
-  private ToggleButton activateFieldLabels;
+  protected ToggleButton activateFieldLabels;
   @FXML
-  private ImageView image1;
+  protected ImageView image1;
   @FXML
-  private ImageView image2;
+  protected ImageView image2;
   @FXML
-  private ImageView image3;
+  protected ImageView image3;
   @FXML
-  private ImageView image4;
+  protected ImageView image4;
   @FXML
-  private Text player1;
+  protected Text player1;
   @FXML
-  private Text player2;
+  protected Text player2;
   @FXML
-  private Text player3;
+  protected Text player3;
   @FXML
-  private Text player4;
+  protected Text player4;
   @FXML
-  private Text playerOnePoints;
+  protected Text playerOnePoints;
   @FXML
-  private Text playerTwoPoints;
+  protected Text playerTwoPoints;
   @FXML
-  private Text playerThreePoints;
+  protected Text playerThreePoints;
   @FXML
-  private Text playerFourPoints;
+  protected Text playerFourPoints;
   @FXML
-  private Text pointsLabel1;
+  protected Text pointsLabel1;
   @FXML
-  private Text pointsLabel2;
+  protected Text pointsLabel2;
   @FXML
-  private Text pointsLabel3;
+  protected Text pointsLabel3;
   @FXML
-  private Text pointsLabel4;
+  protected Text pointsLabel4;
   @FXML
-  private Text remainingLetters;
+  protected Text remainingLetters;
   @FXML
-  private Text timer;
+  protected Text timer;
   @FXML
-  private Text dws0;
+  protected Text dws0;
   @FXML
-  private Text dws1;
+  protected Text dws1;
   @FXML
-  private Text dws2;
+  protected Text dws2;
   @FXML
-  private Text dws3;
+  protected Text dws3;
   @FXML
-  private Text dws4;
+  protected Text dws4;
   @FXML
-  private Text dws5;
+  protected Text dws5;
   @FXML
-  private Text dws6;
+  protected Text dws6;
   @FXML
-  private Text dws7;
+  protected Text dws7;
   @FXML
-  private Text dws8;
+  protected Text dws8;
   @FXML
-  private Text dws9;
+  protected Text dws9;
   @FXML
-  private Text dws10;
+  protected Text dws10;
   @FXML
-  private Text dws11;
+  protected Text dws11;
   @FXML
-  private Text dws12;
+  protected Text dws12;
   @FXML
-  private Text dws13;
+  protected Text dws13;
   @FXML
-  private Text dws14;
+  protected Text dws14;
   @FXML
-  private Text dws15;
+  protected Text dws15;
   @FXML
-  private Text dws16;
+  protected Text dws16;
   @FXML
-  private Text tws0;
+  protected Text tws0;
   @FXML
-  private Text tws1;
+  protected Text tws1;
   @FXML
-  private Text tws2;
+  protected Text tws2;
   @FXML
-  private Text tws3;
+  protected Text tws3;
   @FXML
-  private Text tws4;
+  protected Text tws4;
   @FXML
-  private Text tws5;
+  protected Text tws5;
   @FXML
-  private Text tws6;
+  protected Text tws6;
   @FXML
-  private Text tws7;
+  protected Text tws7;
   @FXML
-  private Text dls0;
+  protected Text dls0;
   @FXML
-  private Text dls1;
+  protected Text dls1;
   @FXML
-  private Text dls2;
+  protected Text dls2;
   @FXML
-  private Text dls3;
+  protected Text dls3;
   @FXML
-  private Text dls4;
+  protected Text dls4;
   @FXML
-  private Text dls5;
+  protected Text dls5;
   @FXML
-  private Text dls6;
+  protected Text dls6;
   @FXML
-  private Text dls7;
+  protected Text dls7;
   @FXML
-  private Text dls8;
+  protected Text dls8;
   @FXML
-  private Text dls9;
+  protected Text dls9;
   @FXML
-  private Text dls10;
+  protected Text dls10;
   @FXML
-  private Text dls11;
+  protected Text dls11;
   @FXML
-  private Text dls12;
+  protected Text dls12;
   @FXML
-  private Text dls13;
+  protected Text dls13;
   @FXML
-  private Text dls14;
+  protected Text dls14;
   @FXML
-  private Text dls15;
+  protected Text dls15;
   @FXML
-  private Text dls16;
+  protected Text dls16;
   @FXML
-  private Text dls17;
+  protected Text dls17;
   @FXML
-  private Text dls18;
+  protected Text dls18;
   @FXML
-  private Text dls19;
+  protected Text dls19;
   @FXML
-  private Text dls20;
+  protected Text dls20;
   @FXML
-  private Text dls21;
+  protected Text dls21;
   @FXML
-  private Text dls22;
+  protected Text dls22;
   @FXML
-  private Text dls23;
+  protected Text dls23;
   @FXML
-  private Text tls0;
+  protected Text tls0;
   @FXML
-  private Text tls1;
+  protected Text tls1;
   @FXML
-  private Text tls2;
+  protected Text tls2;
   @FXML
-  private Text tls3;
+  protected Text tls3;
   @FXML
-  private Text tls4;
+  protected Text tls4;
   @FXML
-  private Text tls5;
+  protected Text tls5;
   @FXML
-  private Text tls6;
+  protected Text tls6;
   @FXML
-  private Text tls7;
+  protected Text tls7;
   @FXML
-  private Text tls8;
+  protected Text tls8;
   @FXML
-  private Text tls9;
+  protected Text tls9;
   @FXML
-  private Text tls10;
+  protected Text tls10;
   @FXML
-  private Text tls11;
+  protected Text tls11;
   @FXML
-  private Rectangle tile1;
+  protected Rectangle tile1;
   @FXML
-  private Rectangle currentPlayer1;
+  protected Rectangle currentPlayer1;
   @FXML
-  private Rectangle currentPlayer2;
+  protected Rectangle currentPlayer2;
   @FXML
-  private Rectangle currentPlayer3;
+  protected Rectangle currentPlayer3;
   @FXML
-  private Rectangle currentPlayer4;
+  protected Rectangle currentPlayer4;
   @FXML
-  private Rectangle r0;
+  protected Rectangle r0;
   @FXML
-  private Rectangle r1;
+  protected Rectangle r1;
   @FXML
-  private Rectangle r2;
+  protected Rectangle r2;
   @FXML
-  private Rectangle r3;
+  protected Rectangle r3;
   @FXML
-  private Rectangle r4;
+  protected Rectangle r4;
   @FXML
-  private Rectangle r5;
+  protected Rectangle r5;
   @FXML
-  private Rectangle r6;
+  protected Rectangle r6;
   @FXML
-  private Rectangle r7;
+  protected Rectangle r7;
   @FXML
-  private Rectangle r8;
+  protected Rectangle r8;
   @FXML
-  private Rectangle r9;
+  protected Rectangle r9;
   @FXML
-  private Rectangle r10;
+  protected Rectangle r10;
   @FXML
-  private Rectangle r11;
+  protected Rectangle r11;
   @FXML
-  private GridPane board;
+  protected GridPane board;
   @FXML
-  private GridPane rack;
+  protected GridPane rack;
   @FXML
-  private ProgressBar timeProgress;
+  protected ProgressBar timeProgress;
   @FXML
-  private Rectangle backgroundGamePanel;
+  protected Rectangle backgroundGamePanel;
 
   /**
    * This method initializes the GamePanelController and is being called upon creation of the
    * Controller. Here all the labels on the UI are being reset and adapted to the current game
    * state.
    * 
-   * @param player
+   * @param player the player reference of the user who starts this local controller
    */
   public void initData(Player player) {
     this.player = player;
@@ -512,7 +512,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   /**
    * Handles all button user inputs in the GamePanel
    */
-
   @Override
   public void handle(ActionEvent e) {
     String s = ((Node) e.getSource()).getId();
@@ -620,7 +619,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method sets the Disable property of the skipAndChange Button. When you set toBeActivated
    * on 'true', the Button is being activated.
    * 
-   * @param toBeActivated
+   * @param toBeActivated the boolean that determines whether the status should be activated
    */
   public void changeSkipAndChangeStatus(boolean toBeActivated) {
     skipAndChangeButton.setDisable(!toBeActivated);
@@ -630,7 +629,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method sets the Disable property of the done Button. When you set toBeActivated on 'true',
    * the Button is being activated.
    * 
-   * @param toBeActivated
+   * @param toBeActivated the boolean that determines whether the status should be activated
    */
   public void changeDoneStatus(boolean toBeActivated) {
     doneButton.setDisable(!toBeActivated);
@@ -642,7 +641,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * array.
    * 
    * 
-   * @param event
    */
   @FXML
   public void rackDragStarted(MouseEvent event) {
@@ -681,7 +679,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * coordinates of the event starting location are being saved for this drag event in the
    * selectedCoordinates array.
    * 
-   * @param event
    */
   @FXML
   public void boardDragStarted(MouseEvent event) {
@@ -700,7 +697,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   /**
    * 
-   * @param event
    */
   @FXML
   public void test2(MouseDragEvent event) {
@@ -711,7 +707,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   /**
    * 
-   * @param event
    */
   @FXML
   public void test3(MouseDragEvent event) {
@@ -724,8 +719,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Listener method that is called, when a user completes a drag&drop event by dropping the item on
    * a rack field. For the different tile movement scenarios, the events are passed on to the
    * backend.
-   * 
-   * @param event
    */
   @FXML
   public void rackDragReleased(MouseDragEvent event) {
@@ -750,8 +743,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Listener method that is called, when a user completes a drag&drop event by dropping the item on
    * a board field. For the different tile movement scenarios, the events are passed on to the
    * backend.
-   * 
-   * @param event
    */
   @FXML
   public void boardDragReleased(MouseDragEvent event) {
@@ -771,6 +762,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     resetCoordinates();
   }
 
+  /**
+   * 
+   */
   @FXML
   public void mousePressed(MouseEvent event) {
     // Node node = (Node) event.getSource();
@@ -780,7 +774,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   /**
    * Method that is executed upon the release of a mouse click and sets the cursor to default.
    * 
-   * @param event
    */
   @FXML
   public void mouseReleased(MouseEvent event) {
@@ -793,7 +786,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Method that allows player to double click on a tile that the player placed on the game panel at
    * the current turn. This has the effect, that the tile is put back on the rack.
    * 
-   * @param event
    */
   @FXML
   public void mouseClicked(MouseEvent event) {
@@ -817,7 +809,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * was selected before by clicking the Skip&Change button, the tile on the field is selected if
    * there is a tile on the specific field.
    * 
-   * @param event
    */
   @FXML
   public void selectToExchange(MouseEvent event) {
@@ -861,7 +852,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Method that sends a message that is supposed to appear in the chat area and informs the users
    * about a game event e.g. a player left the game. Therefore the sender is left blank.
    * 
-   * @param message
+   * @param message the message as String that is to be send in the chat
    */
   public void sendGameInfoMessage(String message) {
     this.cc.sendChatMessage("", message);
@@ -876,7 +867,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   /**
    * Lets a player disconnect
    * 
-   * @param nickname of the player disconnecting
+   * @param playerToBeRemoved nickname of the player disconnecting
    */
   public void removeJoinedPlayer(String playerToBeRemoved) {
     int indexRemoved = 5;
@@ -908,7 +899,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method sets the visibility of all field labels on the game board on true when the
    * parameter isVisible is true. Vice versa it sets the labels on invisible if isVisible is false.
    * 
-   * @param isVisible
    */
   public void setFieldLabelVisibility(boolean isVisible) {
     for (Text t : dwsLabel) {
@@ -930,9 +920,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * generated by this method from Chat Controller is appended to the chat TextArea and the
    * chatInput TextField is being cleared.
    * 
-   * @param message
-   * @param dateTime
-   * @param sender
+   * @param message the chat Message that is supposed to be send to everyone in the lobby
+   * @param dateTime local time and date that is used for the time stamp
+   * @param sender nickname of the player who sends this message
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
     this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
@@ -943,7 +933,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method highlights the player that is playing his turn at the moment by visually
    * emphasizing the players nickname on the game panel.
    * 
-   * @param nickName
+   * @param nextPlayer nickname of the player who is next
    */
   public void indicatePlayerTurn(String nextPlayer) {
     for (int i = 0; i < players.size(); i++) {
@@ -1285,7 +1275,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * @param nodeFromRack
    * @return
    */
-  private int[] getPos(Node node, boolean nodeFromRack) {
+  protected int[] getPos(Node node, boolean nodeFromRack) {
     int[] result = new int[2];
     Integer columnIndex = GridPane.getColumnIndex(node);
     Integer rowIndex = GridPane.getRowIndex(node);
