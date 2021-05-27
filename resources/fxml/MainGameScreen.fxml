@@ -28,20 +28,20 @@
 
 <Pane fx:id="upperPane" onMouseDragged="#test0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
    <children>
-      <StackPane layoutX="4.0" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0">
+      <StackPane layoutX="4.0" maxHeight="1000.0" maxWidth="1900.0" onMouseReleased="#mouseReleased" prefHeight="850.0" prefWidth="1600.0">
          <children>
             <ImageView fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
                <image>
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
             </ImageView>
-            <AnchorPane fx:id="parentPane" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-image: url(&quot;ScrabbleBoard.png&quot;);" stylesheets="@../src/gui/Buttons.css">
+            <AnchorPane fx:id="parentPane" maxHeight="1000.0" maxWidth="1900.0" onMouseReleased="#mouseReleased" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-image: url(&quot;ScrabbleBoard.png&quot;);" stylesheets="@../src/gui/Buttons.css">
                <children>
-                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="800.0" prefWidth="750.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" onMouseReleased="#mouseReleased" prefHeight="800.0" prefWidth="750.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <children>
-                        <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="820.0" prefWidth="750.0">
+                        <VBox alignment="BOTTOM_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseReleased="#mouseReleased" prefHeight="820.0" prefWidth="750.0">
                            <children>
-                              <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="700.0">
+                              <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseReleased="#mouseReleased" prefHeight="600.0" prefWidth="700.0">
                                  <children>
                                     <HBox alignment="BOTTOM_CENTER" layoutX="-14.0" layoutY="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="559.0" prefWidth="750.0">
                                        <children>
@@ -410,7 +410,7 @@
                                     </HBox>
                                  </children>
                               </Pane>
-                              <VBox alignment="CENTER_LEFT" maxHeight="230.0" maxWidth="1.7976931348623157E308" prefHeight="235.0" prefWidth="710.0">
+                              <VBox alignment="CENTER_LEFT" maxHeight="230.0" maxWidth="1.7976931348623157E308" onMouseReleased="#mouseReleased" prefHeight="235.0" prefWidth="710.0">
                                  <children>
                                     <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Rack">
                                        <font>
@@ -420,7 +420,7 @@
                                           <Insets left="100.0" />
                                        </VBox.margin>
                                     </Text>
-                                    <StackPane prefHeight="160.0" prefWidth="600.0">
+                                    <StackPane onMouseReleased="#mouseReleased" prefHeight="160.0" prefWidth="600.0">
                                        <children>
                                           <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="160.0" stroke="BLACK" strokeType="INSIDE" width="520.0" />
                                           <GridPane fx:id="rack" alignment="CENTER" maxHeight="140.0" maxWidth="500.0" prefHeight="130.0" prefWidth="500.0" vgap="8.0">
@@ -752,24 +752,309 @@
                               <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="14" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
                               <Rectangle fill="#8fb492" height="50.0" layoutX="118.0" layoutY="12.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                               <Rectangle fill="#ff7a7a" height="50.0" layoutX="385.0" layoutY="12.0" onDragDetected="#boardDragStarted" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="2x L" textAlignment="CENTER" wrappingWidth="26.912109375" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                              <Text fx:id="dls0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="9.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="223.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3x L" textAlignment="CENTER" wrappingWidth="26.912109375" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                              <Text fx:id="tls0" layoutX="223.0" layoutY="60.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="9.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="223.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2x W" textAlignment="CENTER" wrappingWidth="28.912109375" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                              <Text fx:id="dws0" layoutX="223.0" layoutY="59.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="9.0" />
                                  </font>
                               </Text>
-                              <Text layoutX="63.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3x W" textAlignment="CENTER" wrappingWidth="29.912109375" GridPane.halignment="LEFT" GridPane.valignment="BOTTOM">
+                              <Text fx:id="tws0" layoutX="63.0" layoutY="113.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                                  <font>
-                                    <Font size="10.0" />
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws1" layoutX="68.0" layoutY="82.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws2" layoutX="117.0" layoutY="135.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws3" layoutX="170.0" layoutY="189.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws4" layoutX="223.0" layoutY="242.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws5" layoutX="703.0" layoutY="82.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws6" layoutX="650.0" layoutY="135.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws7" layoutX="597.0" layoutY="189.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws8" layoutX="543.0" layoutY="242.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws9" layoutX="63.0" layoutY="722.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws10" layoutX="117.0" layoutY="669.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="11" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws11" layoutX="170.0" layoutY="615.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws12" layoutX="223.0" layoutY="562.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws13" layoutX="703.0" layoutY="722.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws14" layoutX="650.0" layoutY="669.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="11" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws15" layoutX="597.0" layoutY="615.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dws16" layoutX="543.0" layoutY="562.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE WORD SCORE" textAlignment="CENTER" wrappingWidth="43.912109375" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws1" layoutX="13.0" layoutY="29.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws2" layoutX="383.0" layoutY="29.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws3" layoutX="757.0" layoutY="29.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws5" layoutX="10.0" layoutY="402.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.halignment="CENTER" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws4" layoutX="10.0" layoutY="775.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws7" layoutX="757.0" layoutY="402.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tws6" layoutX="757.0" layoutY="775.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls1" layoutX="283.0" layoutY="82.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls3" layoutX="490.0" layoutY="82.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls2" layoutX="277.0" layoutY="295.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls4" layoutX="63.0" layoutY="295.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls5" layoutX="490.0" layoutY="295.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls6" layoutX="703.0" layoutY="295.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls7" layoutX="63.0" layoutY="509.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls8" layoutX="277.0" layoutY="509.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls9" layoutX="490.0" layoutY="509.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="13" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls10" layoutX="703.0" layoutY="509.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="tls11" layoutX="277.0" layoutY="722.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="40.912109375" GridPane.columnIndex="9" GridPane.halignment="CENTER" GridPane.rowIndex="13" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls1" layoutX="229.0" layoutY="29.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls2" layoutX="330.0" layoutY="135.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls3" layoutX="383.0" layoutY="189.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls4" layoutX="437.0" layoutY="135.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls19" layoutX="543.0" layoutY="29.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls5" layoutX="10.0" layoutY="242.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls18" layoutX="757.0" layoutY="242.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls17" layoutX="117.0" layoutY="349.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls16" layoutX="170.0" layoutY="402.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls15" layoutX="117.0" layoutY="455.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls20" layoutX="10.0" layoutY="562.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls21" layoutX="330.0" layoutY="349.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls6" layoutX="437.0" layoutY="349.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls23" layoutX="650.0" layoutY="349.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls22" layoutX="330.0" layoutY="455.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls7" layoutX="437.0" layoutY="455.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="11" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls8" layoutX="597.0" layoutY="402.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="12" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls9" layoutX="650.0" layoutY="455.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="14" GridPane.halignment="CENTER" GridPane.rowIndex="10" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls12" layoutX="757.0" layoutY="562.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="7" GridPane.halignment="CENTER" GridPane.rowIndex="11" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls13" layoutX="383.0" layoutY="615.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls11" layoutX="330.0" layoutY="669.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="8" GridPane.halignment="CENTER" GridPane.rowIndex="12" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls14" layoutX="437.0" layoutY="669.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="dls10" layoutX="223.0" layoutY="775.0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="DOUBLE LETTER SCORE" textAlignment="CENTER" wrappingWidth="42.912109375" GridPane.columnIndex="10" GridPane.halignment="CENTER" GridPane.rowIndex="14" GridPane.valignment="CENTER">
+                                 <font>
+                                    <Font size="9.0" />
                                  </font>
                               </Text>
                            </children>
