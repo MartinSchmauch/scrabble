@@ -312,15 +312,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     if (result.get() == ButtonType.OK) {
       Pattern p = Pattern.compile("AI\\s.");
       Matcher m = p.matcher(nickname);
+      
       if (m.matches()) {
-        this.player.getServer().handleLeaveLobby(nickname);
-        this.player.getServer().sendLobbyStatus();
-
         this.player.getServer().removeFromAiPlayers(nickname);
-      } else {
-        DisconnectMessage dm = new DisconnectMessage(nickname, null);
-        sendMessage(dm);
       }
+      
+      DisconnectMessage dm = new DisconnectMessage(nickname, null);
+      sendMessage(dm);
+      
+      this.player.getServer().handleLeaveLobby(nickname);
+
       updateJoinedPlayers();
     } else {
       alert.close();

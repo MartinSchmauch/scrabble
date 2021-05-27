@@ -263,7 +263,13 @@ public class ClientProtocol extends Thread {
                   gameState.leaveGame(discMessage.getFrom());
 
                   if (!gameState.getGameRunning()) {
-                    lsc.updateJoinedPlayers();
+                    if(discMessage.getFrom().equals(player.getNickname())) {
+                      disconnect();
+                      lsc.close();
+                      CustomAlert.showWarningAlert("You were kicked!", "The host kicked you from the lobby.");
+                    } else {
+                      lsc.updateJoinedPlayers();
+                    }
                   } else {
                     gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
                     if (discMessage.getTiles() != null) {
