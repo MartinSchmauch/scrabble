@@ -322,6 +322,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     cc = new ChatController(player);
     chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
+
     playerLabel = new Text[] {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
     pointsLabel =
         new Text[] {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
@@ -335,6 +336,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     dwsLabel = new Text[] {dws0, dws1, dws2, dws3, dws4, dws5, dws6, dws7, dws8, dws9, dws10, dws11,
         dws12, dws13, dws14, dws15, dws16};
     twsLabel = new Text[] {tws0, tws1, tws2, tws3, tws4, tws5, tws6, tws7};
+
     GameState gs;
     if (player.isHost()) {
       gs = player.getServer().getGameState();
@@ -877,23 +879,17 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * @param nickname of the player disconnecting
    */
   public void removeJoinedPlayer(String playerToBeRemoved) {
-    // Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
-    // Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
-    // Text[] playerNameLabel = {player1, player2, player3, player4};
-    // ImageView[] avatarImageView = {image1, image2, image3, image4};
     int indexRemoved = 5;
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).getNickname().equals(playerToBeRemoved)) {
         playerNameLabel[i].setText(null);
-        pointsLabel[i].setText(""); // better to use "" instead of null?
+        pointsLabel[i].setText(null);
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
         indexRemoved = i;
-        rect[i].setVisible(false);
-        players.remove(indexRemoved);
+        // rect[i].setVisible(false);
       }
       if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
-        // move other players up
         playerNameLabel[i - 1].setText(playerNameLabel[i].getText());
         pointsLabel[i - 1].setText(pointsLabel[i].getText());
         playerLabel[i - 1].setText(playerLabel[i].getText());
@@ -905,6 +901,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         avatarImageView[i].setImage(null);
       }
     }
+    players.remove(indexRemoved);
   }
 
   /**
@@ -1216,6 +1213,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     }
   }
 
+  /**
+   * 
+   */
+  // TODO: deprecated?
   public void sendResetTurn() {
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
