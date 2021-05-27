@@ -459,7 +459,6 @@ public class Server {
         System.out.println("Server stopped.");
       } else {
         CustomAlert.showWarningAlert("Already hosting!", "Sorry. You cannot host two games at a time.");
-        e.printStackTrace();
       }
     }
   }

@@ -327,7 +327,7 @@ public class TutorialController extends GamePanelController
                 this.player.addTileToRack(newTile);
                 this.addTile(newTile);
               }
-
+              setRackRectanglesBlack();
               this.chat.appendText("\n\n THANK YOU FOR PLAYING");
               endTutorial();
             } else {
@@ -417,10 +417,8 @@ public class TutorialController extends GamePanelController
           tutorialTurn(indicator);
           showTip(1);
           this.indicator++;
-          break;
-
         }
-
+        break;
       case 1:
         if (validateTurn(indicator)) {
           updateChat(

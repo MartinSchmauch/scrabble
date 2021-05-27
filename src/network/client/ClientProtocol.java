@@ -68,8 +68,7 @@ public class ClientProtocol extends Thread {
       out.reset();
       System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
     } catch (IOException e) {
-      e.printStackTrace();
-      System.out.println("Could not establish connection to " + ip + ":" + port);
+      CustomAlert.showWarningAlert("Invalid link.", "Try another Link or try again later");
     }
   }
 
