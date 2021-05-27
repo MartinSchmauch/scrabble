@@ -152,6 +152,14 @@ public class AIplayer extends Player {
     this.gc = gc;
     this.ailevel = level;
     this.tileCombinations = new TreeSet<AIcombination>();
+    switchAilevel(level);
+  }
+  
+  /**
+   * maps AiLevel to Parameters
+   * @param ailevel
+   */
+  private void switchAilevel(AiLevel ailevel) {
     switch (ailevel) {
       case EASY:
         this.maxNumOfTiles = 2;
@@ -556,6 +564,7 @@ public class AIplayer extends Player {
    */
   public void setAilevel(AiLevel ailevel) {
     this.ailevel = ailevel;
+    switchAilevel(ailevel);
   }
 
   /**

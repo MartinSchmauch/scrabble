@@ -25,7 +25,9 @@ public class AIplayerTest {
   GameBoard gb;
 
   /**
+   * 
    * @throws java.lang.Exception
+   * 
    */
   // @Before
   public void setUp() throws Exception {
