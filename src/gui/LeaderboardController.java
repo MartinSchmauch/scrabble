@@ -1,9 +1,9 @@
 package gui;
 
+import game.GameStatistic;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-import game.GameStatistic;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

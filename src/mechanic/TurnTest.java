@@ -1,10 +1,12 @@
 package mechanic;
 
 import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
+
 import game.GameController;
 import game.GameState;
+import org.junit.Before;
+import org.junit.Test;
+
 
 /**
  * This class test the Turn class which is used to find verify and words to calculate the turn

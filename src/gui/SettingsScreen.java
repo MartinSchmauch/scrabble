@@ -27,8 +27,6 @@ public class SettingsScreen extends Application {
 
   /**
    * Set up the Settings Screen with an instance of the GameSettings class.
-   *
-   * @param s Currently used settings
    */
   public SettingsScreen(Player p, boolean lobby) {
     if (p.isHost() == false || lobby == false) {

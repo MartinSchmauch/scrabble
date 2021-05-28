@@ -172,8 +172,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     }
   }
 
-
-
+/**
+ * This method initializes the LobbyScreenController and is being called upon creation of the
+ * Controller. Here all the labels on the UI are being reset and adapted to the current game
+ * state.
+ */
   public void initData(Player current, String connection) {
 
     instance = this;
@@ -378,20 +381,22 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
   public void close() {
     if (this.player.isHost()) {
-      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host closed the server session."));
+      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host "
+          + "closed the server session."));
       this.player.getServer().stopServer();
-    } else if (this.player.getClientProtocol().isOk()){
+    } else if (this.player.getClientProtocol().isOk()) {
       sendMessage(new DisconnectMessage(this.player.getNickname(), null));
       this.player.getClientProtocol().disconnect();
     }
     closeWindow();
-    /**
+    
+    /*
      * @author pkoenig
      */
     Stage newLoginStage = new Stage();
     newLoginStage.setX(this.chat.getScene().getWindow().getX());
     newLoginStage.setY(this.chat.getScene().getWindow().getY());
-    /**
+    /*
      * @author nilbecke
      */
     new LoginScreen().start(newLoginStage);
@@ -482,13 +487,13 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
 
-    /**
+    /*
      * Will ensure, that every Player sees him on top and with a "YOU"
      *
      * @author pkoenig
      */
     // TODO tbd
-    /**
+    /*
      * @author nilbecke
      */
 

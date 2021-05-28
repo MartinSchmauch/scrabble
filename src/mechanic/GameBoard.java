@@ -44,7 +44,7 @@ public class GameBoard {
     return fields;
   }
 
-  /**
+  /*
    * @author pkoenig
    */
   public String[] getRowsAsStrings() {

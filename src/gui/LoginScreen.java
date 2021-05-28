@@ -22,8 +22,8 @@ import mechanic.Player;
 import util.JsonHandler;
 
 /**
- * This Class launches the Login Screen of the Scrabble Application
- * 
+ * This Class launches the Login Screen of the Scrabble Application.
+ *
  * @author nilbecke
  **/
 
@@ -57,7 +57,7 @@ public class LoginScreen extends Application {
   /**
    * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create the Login
    * Screen.
-   * 
+   *
    * @param stage stage to be set
    */
 
