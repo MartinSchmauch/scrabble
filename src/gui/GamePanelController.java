@@ -62,6 +62,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected ClientProtocol cp;
   protected Server server;
   protected static boolean exchangeTilesMode = false;
+  protected static boolean fieldLabelsEnabled = true;
   protected List<Tile> tilesToExchange = new ArrayList<Tile>();
   protected static int[] selectedCoordinates = new int [2]; // row, column
   protected static int[] targetCoordinates = new int[2];
@@ -109,7 +110,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   protected Button rulesButton;
   @FXML
-  protected ToggleButton activateFieldLabels;
+  protected Button activateFieldLabels;
   @FXML
   protected ImageView image1;
   @FXML
@@ -336,6 +337,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     dwsLabel = new Text[] {dws0, dws1, dws2, dws3, dws4, dws5, dws6, dws7, dws8, dws9, dws10, dws11,
         dws12, dws13, dws14, dws15, dws16};
     twsLabel = new Text[] {tws0, tws1, tws2, tws3, tws4, tws5, tws6, tws7};
+    
+    activateFieldLabels.setText("Disable Labels");
+    this.setFieldLabelVisibility(true);
 
     GameState gs;
     if (player.isHost()) {
@@ -599,10 +603,14 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         }
         break;
       case "activateFieldLabels":
-        if (activateFieldLabels.isSelected()) {
+        if (fieldLabelsEnabled) {
           this.setFieldLabelVisibility(false);
+          activateFieldLabels.setText("Enable Labels");
+          fieldLabelsEnabled = false;
         } else {
           this.setFieldLabelVisibility(true);
+          activateFieldLabels.setText("Disable Labels");
+          fieldLabelsEnabled = true;
         }
         break;
       default:
@@ -644,7 +652,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       // Image image =
       // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
       // rulesButton.getScene().setCursor(new ImageCursor(image));
-      rulesButton.getScene().setCursor(Cursor.MOVE);
+      rulesButton.getScene().setCursor(Cursor.OPEN_HAND);
       node.startFullDrag();
       // cursorTile = new VisualTile("H", 3, true);
       // cursorTile.setId("cursorTileFromRack");
@@ -681,7 +689,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       selectedCoordinates = getPos(node, false);
       selectedCoordinates[0]++;
       selectedCoordinates[1]++;
-      rulesButton.getScene().setCursor(Cursor.MOVE);
+      rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
       // Image image =
       // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
       // rulesButton.getScene().setCursor(new ImageCursor(image));
@@ -694,6 +702,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   @FXML
   public void test2(MouseDragEvent event) {
+    rulesButton.getScene().setCursor(Cursor.OPEN_HAND);
     // Node node = (Node) event.getSource();
     // selectedCoordinates = getPos(node, true);
     // System.out.println("node entered: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
@@ -704,6 +713,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   @FXML
   public void test3(MouseDragEvent event) {
+    rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
     // Node node = (Node) event.getSource();
     // selectedCoordinates = getPos(node, true);
     // System.out.println("node exited: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);

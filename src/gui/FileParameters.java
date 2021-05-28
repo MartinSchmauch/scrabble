@@ -10,10 +10,10 @@ package gui;
 
 public class FileParameters {
 
-  public final static String sep = System.getProperty("file.separator");
-  public final static String datadir = System.getProperty("user.home") + sep + ".scrabble" + sep;
+  public static final String sep = System.getProperty("file.separator");
+  public static final String datadir = System.getProperty("user.home") + sep + ".scrabble" + sep;
 
-  public final static String generaldir = datadir + "general";
+  public static final String generaldir = datadir + "general";
 
-  public final static String fxmlPath = datadir + "fxml" + sep;
+  public static final String fxmlPath = datadir + "fxml" + sep;
 }
