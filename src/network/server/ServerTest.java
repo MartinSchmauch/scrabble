@@ -2,11 +2,14 @@ package network.server;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.junit.Before;
-import org.junit.Test;
+
 import game.GameSettings;
 import mechanic.Player;
 import network.client.ClientProtocol;
+import org.junit.Before;
+import org.junit.Test;
+
+
 
 
 /**

@@ -31,7 +31,7 @@ public class UserStatisticsScreen extends Application {
    * This constructor gurantees that player statistics are shown for the correct player.
    *
    * @param current indicates the player whomst statistics are to be shown.
-   * @param from Lobby indicates if the screen is launched from the loginscreen.
+   * @param fromLobby indicates if the screen is launched from the loginscreen.
    */
 
   public UserStatisticsScreen(PlayerData current, boolean fromLobby) {

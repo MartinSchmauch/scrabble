@@ -61,7 +61,7 @@ public class ServerProtocol extends Thread {
       out.reset();
     } catch (IOException e) {
       System.out.println("Client " + this.clientName + " removed (message delivery failed).");
-      if(this.server.getGameState().getGameRunning()) {
+      if (this.server.getGameState().getGameRunning()) {
         server.handleLeaveGame(this.clientName);
       } else {
         server.handleLeaveLobby(this.clientName);

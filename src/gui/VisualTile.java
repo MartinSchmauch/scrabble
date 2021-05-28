@@ -31,15 +31,15 @@ public class VisualTile extends Parent {
    * This method creates an instance of the class.
    */
   public VisualTile(String letter, int value, boolean onRack) {
-    StackPane sP = new StackPane();
-    sP.setAlignment(Pos.CENTER);
+    StackPane pane = new StackPane();
+    pane.setAlignment(Pos.CENTER);
 
     letterText = new Text(letter);
     valueText = new Text(String.valueOf(value));
 
     if (onRack) {
       shape = new Rectangle(RACK_TILE_SIZE - 5, RACK_TILE_SIZE - 5);
-      sP.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
+      pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
       letterText.setFont(Font.font(32));
       valueText.setFont(Font.font(16));
       if (letter.equals("Q")) {
@@ -47,7 +47,7 @@ public class VisualTile extends Parent {
       }
     } else {
       shape = new Rectangle(BOARD_TILE_SIZE - 5, BOARD_TILE_SIZE - 5);
-      sP.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
+      pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
       letterText.setFont(Font.font(26));
       valueText.setFont(Font.font(14));
       if (letter.equals("Q")) {
@@ -58,7 +58,7 @@ public class VisualTile extends Parent {
     shape.setArcWidth(10);
     shape.setFill(Color.rgb(226, 189, 160));
 
-    sP.getChildren().addAll(shape, letterText, valueText);
+    pane.getChildren().addAll(shape, letterText, valueText);
 
     StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
 
@@ -66,7 +66,7 @@ public class VisualTile extends Parent {
     double bottomMargin = 3;
     StackPane.setMargin(valueText, new Insets(0, bottomMargin, rightMargin, 0));
 
-    getChildren().add(sP);
+    getChildren().add(pane);
   }
 
   public Rectangle getShape() {

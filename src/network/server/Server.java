@@ -1,5 +1,14 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.CustomAlert;
+import gui.GamePanelController;
+import gui.LeaderboardScreen;
+import gui.LobbyScreenController;
+import gui.LoginScreenController;
+import gui.TutorialController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -10,15 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.CustomAlert;
-import gui.GamePanelController;
-import gui.LeaderboardScreen;
-import gui.LobbyScreenController;
-import gui.LoginScreenController;
-import gui.TutorialController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.AIplayer;
@@ -193,7 +193,7 @@ public class Server {
   }
 
 
-  private void handleExchangeTilesForAI(AIplayer aiplayer, List<Tile> rackTiles) {
+  private void handleExchangeTilesForAi(AIplayer aiplayer, List<Tile> rackTiles) {
     this.getGameController().addTilesToTileBag(rackTiles);
     for (Tile t : rackTiles) {
       this.player.removeRackTile(t.getField().getxCoordinate());
@@ -399,7 +399,7 @@ public class Server {
   }
 
 
-  /**
+  /*
    * @author pkoenig
    */
   private void handleAi(String player) {
@@ -408,7 +408,7 @@ public class Server {
 
       // if no Turn found, exchange all RackTiles
       if (aiTurn == null) {
-        handleExchangeTilesForAI(this.aiPlayers.get(player),
+        handleExchangeTilesForAi(this.aiPlayers.get(player),
             this.aiPlayers.get(player).getRackTiles());
       } else {
         TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
@@ -571,8 +571,8 @@ public class Server {
     if (this.gameController == null) {
       this.gameController = TutorialController.getController();
     }
-    if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
-        m.getNewYCoordinate())) {
+    if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewX(),
+        m.getNewY())) {
       sendToAll(m);
       try {
         Thread.sleep(100);
@@ -602,10 +602,10 @@ public class Server {
 
   public void handleMoveTile(MoveTileMessage m) {
     Tile oldTile = this.gameState.getGameBoard()
-        .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
-    if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
-      if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
-          m.getOldYCoordinate())) {
+        .getField(m.getOldX(), m.getOldY()).getTile();
+    if (m.getNewY() == -1 && m.getOldY() != -1) { // move to rack
+      if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldX(),
+          m.getOldY())) {
         if (m.getFrom().equals(this.host)) {
           gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
         } else {
@@ -617,16 +617,16 @@ public class Server {
       }
 
       if (m.getFrom().equals(this.getHost())) {
-        player.moveToRack(oldTile, m.getNewXCoordinate());
+        player.moveToRack(oldTile, m.getNewX());
       } else {
         AddTileMessage atm =
-            new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
+            new AddTileMessage(m.getFrom(), oldTile, m.getNewX(), m.getNewY());
         clients.get(m.getFrom()).sendToClient(atm);
       }
 
-    } else if (m.getNewYCoordinate() != -1 && m.getOldYCoordinate() != -1) { // move on game board
-      if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldXCoordinate(),
-          m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
+    } else if (m.getNewY() != -1 && m.getOldY() != -1) { // move on game board
+      if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldX(),
+          m.getOldY(), m.getNewX(), m.getNewY())) {
         if (m.getFrom().equals(this.host)) {
           gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
         } else {
@@ -638,7 +638,7 @@ public class Server {
       }
 
       AddTileMessage atm =
-          new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
+          new AddTileMessage(m.getFrom(), oldTile, m.getNewX(), m.getNewY());
       sendToAll(atm);
 
       try {
@@ -648,7 +648,7 @@ public class Server {
       }
 
       RemoveTileMessage rtm =
-          new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
+          new RemoveTileMessage(m.getFrom(), m.getOldX(), m.getOldY());
       sendToAll(rtm);
     }
 
@@ -1029,17 +1029,12 @@ public class Server {
     this.running = running;
   }
 
-  /**
-   * @author pkoenig
-   * @return the aiPlayers
-   */
+  /* @author pkoenig */
   public HashMap<String, AIplayer> getAiPlayers() {
     return aiPlayers;
   }
 
-  /**
-   * @param aiPlayers the aiPlayers to set
-   */
+  /* @author pkoenig */
   public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
     this.aiPlayers = aiPlayers;
   }

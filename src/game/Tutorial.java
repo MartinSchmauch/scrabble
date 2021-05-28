@@ -1,7 +1,7 @@
 package game;
 
-import java.io.IOException;
 import gui.TutorialController;
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,7 +11,7 @@ import mechanic.Player;
 /**
  * This class lets a user play the tutorial.
  * 
- * 
+ *
  * @author nilbecke
  *
  */

@@ -1,8 +1,7 @@
 package network.messages;
 
-import java.util.HashMap;
 import game.GameStatistic;
-
+import java.util.HashMap;
 
 /**
  * This Message sends relevant statistcs from the played and finished game to every player.

@@ -15,7 +15,7 @@ import game.GameSettings;
  * (mapped to different parameters) - the GameBoard - his rack - the dictionary
  * 
  * Depending on enum AiLevel the ai tries to create better or worse scores. Main Method is RunAi()
- * 
+ *
  * @author pkoenig
  *
  */
@@ -41,7 +41,7 @@ public class AIplayer extends Player {
    * 
    * Represent a combination of chars with a counter. The counter represents, how often this
    * combination of chars is present in the wordlist (i.e. dictionary)
-   * 
+   *
    * @author pkoenig
    *
    */

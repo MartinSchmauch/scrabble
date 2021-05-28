@@ -2,11 +2,12 @@ package util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Before;
-import org.junit.Test;
+
 import game.GameSettings;
 import java.io.File;
 import mechanic.Player;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * This class tests the json handler implementation.

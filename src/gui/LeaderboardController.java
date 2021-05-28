@@ -16,7 +16,7 @@ import util.JsonHandler;
 
 /**
  * This class initializes all leaderboard related labels.
- * 
+ *
  * @author nilbecke
  *
  */
@@ -143,8 +143,8 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   // }
 
   /**
-   * This methods updates all user statistics acooring to the game state
-   * 
+   * This methods updates all user statistics acooring to the game state.
+   *
    * @author lurny
    */
 

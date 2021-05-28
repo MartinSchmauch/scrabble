@@ -1,13 +1,12 @@
 package gui;
 
+import game.GameController;
+import game.GameSettings;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,7 +37,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mechanic.Field;
 import mechanic.GameBoard;
 import mechanic.Letter;
 import mechanic.Player;
@@ -73,15 +71,11 @@ public class TutorialController extends GamePanelController
   private Server server;
   private static boolean exchangeTilesMode = false;
   private List<Tile> tilesToExchange = new ArrayList<Tile>();
-  private static int selectedCoordinates[] = new int[2]; // row, column
-  private static int targetCoordinates[] = new int[2]; // row, column
-  private List<Field> layedDown = new ArrayList<Field>();
-
-
+  private static int[] selectedCoordinates = new int[2]; // row, column
+  private static int[] targetCoordinates = new int[2]; // row, column
 
   private ChatController cc;
   private static GameController gc;
-  private GameState gs;
   private List<Tile> tiles;
   private int indicator = 0;
   private int min;
@@ -89,8 +83,11 @@ public class TutorialController extends GamePanelController
   private Thread thread;
   private double timeLeftBar;
   private boolean turnCountdown;
-
-
+  
+  protected Text[] playerLabel;
+  protected Text[] pointsLabel;
+  protected Text[] playerNameLabel;
+  protected ImageView[] avatarImageView;
 
   @FXML
   private TextArea chat;
@@ -228,10 +225,11 @@ public class TutorialController extends GamePanelController
     cc = new ChatController(player);
     chat.setEditable(false);
     updateChat("\n\nStart by dragging the 'B','E' and 'D' on the marked fields and hit \"Done\".");
-    Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
-    Text[] pointsLabel = {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
-    Text[] playerNameLabel = {player1, player2, player3, player4};
-    ImageView[] avatarImageView = {image1, image2, image3, image4};
+    playerLabel = new Text[] {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
+    pointsLabel =
+        new Text[] {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
+    playerNameLabel = new Text[] {player1, player2, player3, player4};
+    avatarImageView = new ImageView[] {image1, image2, image3, image4};
 
 
     List<Letter> letters = new ArrayList<Letter>(GameSettings.getLetters().values());
@@ -259,7 +257,7 @@ public class TutorialController extends GamePanelController
 
 
   /**
-   * Handles all button user inputs in the GamePanel
+   * Handles all button user inputs in the GamePanel.
    */
   @Override
   public void handle(ActionEvent e) {
@@ -334,7 +332,7 @@ public class TutorialController extends GamePanelController
               alert2.close();
             }
 
-            Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+            Rectangle[] rect = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
             for (Rectangle r : rect) {
               r.setStroke(Color.BLACK);
             }
@@ -354,7 +352,7 @@ public class TutorialController extends GamePanelController
 
   /**
    * This method tells the user what to do.
-   * 
+   *
    * @param index indicates in which state of the tutorial is.
    */
   public void showTip(int index) {
@@ -571,12 +569,6 @@ public class TutorialController extends GamePanelController
 
   }
 
-  public void updateChat(String input) {
-    this.chat.setText(
-        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game. If you need help, click on \"Show Tip\"."
-            + input);
-  }
-
   /**
    * This method informs the user of a mistake in the tutorial.
    */
@@ -692,8 +684,6 @@ public class TutorialController extends GamePanelController
    * Listener method that is called, when a user completes a drag&drop event by dropping the item on
    * a board field. For the different tile movement scenarios, the events are passed on to the
    * backend.
-   *
-   * @param event
    */
   @FXML
   public void boardDropHandling(DragEvent event) {
@@ -721,7 +711,7 @@ public class TutorialController extends GamePanelController
   @FXML
   public void selectToExchange(MouseEvent event) {
     if (exchangeTilesMode) {
-      Rectangle rect[] = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+      Rectangle[] rect = {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
       Node node = (Node) event.getSource();
       int x = getPos(node, true)[0];
       if (player.getRackTile(x) != null && !tilesToExchange.contains(player.getRackTile(x))) {
@@ -766,7 +756,7 @@ public class TutorialController extends GamePanelController
 
 
   /**
-   * Lets a player disconnect
+   * Lets a player disconnect.
    */
   public void removeJoinedPlayer(String playerToBeRemoved) {
     Text[] playerLabel = {pointsLabel1, pointsLabel2, pointsLabel3, pointsLabel4};
@@ -797,6 +787,12 @@ public class TutorialController extends GamePanelController
     this.chat.setScrollTop(Double.MAX_VALUE);
   }
 
+  public void updateChat(String input) {
+    this.chat.setText(
+        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game. If you need help, click on \"Show Tip\"."
+            + input);
+  }
+  
   /**
    * This method highlights the player that is playing his turn at the moment by visually
    * emphasizing the players nickname on the game panel.
@@ -846,12 +842,12 @@ public class TutorialController extends GamePanelController
    * This method updates a Tile on the UI by putting the tile on a new position on the Rack provided
    * by the parameters parameters and removing it from the last position.
    */
-  public void moveToRack(Tile tile, int oldXCoordinate, int oldYCoordinate) {
+  public void moveToRack(Tile tile, int oldX, int oldY) {
     boolean fromRack = false;
-    if (oldYCoordinate == -1) {
+    if (oldY == -1) {
       fromRack = true;
     }
-    removeTile(oldXCoordinate, oldYCoordinate, fromRack);
+    removeTile(oldX, oldY, fromRack);
     tile.setOnRack(true);
     addTile(tile);
   }
@@ -860,12 +856,12 @@ public class TutorialController extends GamePanelController
    * This method updates a Tile on the UI by putting the tile on a new position on the GamePanel
    * provided by the coordinate parameters and removing it from the last position.
    */
-  public void moveToGamePanel(Tile tile, int oldXCoordinate, int oldYCoordinate) {
+  public void moveToGamePanel(Tile tile, int oldX, int oldY) {
     boolean fromRack = false;
-    if (oldYCoordinate == -1) {
+    if (oldY == -1) {
       fromRack = true;
     }
-    removeTile(oldXCoordinate, oldYCoordinate, fromRack);
+    removeTile(oldX, oldY, fromRack);
 
     addTile(tile);
   }
@@ -876,7 +872,8 @@ public class TutorialController extends GamePanelController
    * rack!
    */
   public void removeTile(int column, int row, boolean isOnRack) {
-    int x, y;
+    int x;
+    int y;
     ObservableList<Node> list;
     if (isOnRack) {
       list = rack.getChildren();
@@ -937,7 +934,7 @@ public class TutorialController extends GamePanelController
 
   }
 
-  /**
+  /*
    * Methods to override sender interface methods; documentation in interface.
    */
 
@@ -946,12 +943,12 @@ public class TutorialController extends GamePanelController
    * client has moved a tile in his Client UI and the tile move needs to be checked for conformitiy.
    * Therefore the new message is send to the server, using the sendMessageToServer() method; the
    * confirmation of the move is handled in ClientProtocol
-   * 
-   * @param nickName
-   * @param oldX
-   * @param oldY
-   * @param newX
-   * @param newY
+   *
+   * @param nickName name of the player who wants to move a tile
+   * @param oldX x-position of the tile that is supposed to be moved
+   * @param oldY y-position of the tile that is supposed to be moved
+   * @param newX x-position of the desired target location
+   * @param newY y-position of the desired target location
    */
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
     MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
@@ -966,8 +963,8 @@ public class TutorialController extends GamePanelController
    * This method creates a new CommitTurnMessage that is supposed to inform the server that a client
    * has completed a turn by clicking the 'done' button in his Client UI. Therefore the new message
    * is send to the server, using the sendMessageToServer() method
-   * 
-   * @param nickName
+   *
+   * @param nickName name of the sender
    */
   public void sendCommitTurn(String nickName) {
     Message m = new CommitTurnMessage(nickName, this.player.getRackTiles().isEmpty());
@@ -1007,8 +1004,8 @@ public class TutorialController extends GamePanelController
    * This method creates a new DisconnectMessage that is supposed to inform the server that a client
    * wants to disconnect from the server and stop the game. Therefore the new message is send to the
    * server, using the sendMessageToServer() method.
-   * 
-   * @param nickName
+   *
+   * @param nickName name of the sender
    */
   public void sendDisconnectMessage(String nickName) {
     Message m = new DisconnectMessage(nickName, null);
@@ -1019,8 +1016,8 @@ public class TutorialController extends GamePanelController
    * This method is called, when the player wants to skip his turn and replace his tiles on the rack
    * completely with new tiles. Therefore, a TileMessage is sent to the server, containing the name
    * of the sender and the list of tiles, the player has on his rack.
-   * 
-   * @param nickName
+   *
+   * @param nickName name of the sender
    */
   public void sendTileMessage(String nickName) {
     Message m = new TileMessage(nickName, tilesToExchange);
@@ -1050,6 +1047,10 @@ public class TutorialController extends GamePanelController
    * dimensional int array with x-coordinate on int[0] and y-coordinate on int[1]. The boolean in
    * the parameter determines wether the node is located in the rack gridpane or the gamepanel
    * gridpane - nodeFromRack==true means that the node is located in the rack.
+   *
+   * @param node the node from which the coordinates are supposed to be determined
+   * @param nodeFromRack is true when the node is on the rack
+   * @return x and y coordinates of the node as int array - array[0] is the x coord
    */
   public int[] getPos(Node node, boolean nodeFromRack) {
     int[] result = new int[2];

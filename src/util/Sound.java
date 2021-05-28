@@ -4,6 +4,11 @@ import java.net.URL;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+/**
+ * This class provides methods to play sounds from the sounds folder.
+ *
+ * @author lurny
+ */
 public class Sound {
   private static float volume = 1f;
 

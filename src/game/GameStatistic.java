@@ -1,15 +1,15 @@
 package game;
 
-/**
- * This class holds data for one player for one Game. It is later used to fill the
- * LeaderboardScreen.
- * 
- * @author lurny
- */
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * This class holds data for one player for one Game. It is later used to fill the
+ * LeaderboardScreen.
+ *
+ * @author lurny
+ */
 
 public class GameStatistic implements Serializable {
 

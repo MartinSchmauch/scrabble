@@ -25,8 +25,8 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
   private UserStatisticsScreen uss;
   private PlayerStatistics ps;
   private PlayerData player;
-  private String[] stats =
-      {"Total Score", "Wins", "Best Word", "Best Turn", "Played Tiles", "Good invested time"};
+  private String[] stats = {"Total Score", "Wins", "Best Word", "Best Turn", "Played Tiles",
+      "Good invested time"};
   private String[] values1 = new String[6];
   private String[] values2 = new String[6];
   private byte indicator = 0;
@@ -60,7 +60,7 @@ public class UserStatisticsScreenController implements EventHandler<ActionEvent>
     this.uss = UserStatisticsScreen.getInstance();
     this.player = uss.getPlayer();
     this.ps = this.player.getPlayerStatistics();
-    this.count.setText("Game Count: "+this.ps.getGameCount());
+    this.count.setText("Game Count: " + this.ps.getGameCount());
     setUpLabels();
     calculateStatistics();
     this.avatar

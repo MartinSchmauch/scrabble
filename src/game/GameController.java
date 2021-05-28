@@ -87,6 +87,16 @@ public class GameController {
     return turns;
   }
 
+  public List<Tile> drawTutorial(char[] chars) {
+    List<Tile> tiles = new ArrayList<Tile>();
+    for (int i = 0; i < chars.length; i++) {
+      if (!tileBag.isEmpty()) {
+        tiles.add(tileBag.drawTile(chars[i]));
+      }
+    }
+    return tiles;
+  }
+
   /**
    * This method gets the selected amount of tiles for the current player.
    *
@@ -101,17 +111,7 @@ public class GameController {
     }
     return tiles;
   }
-
-  public List<Tile> drawTutorial(char[] chars) {
-    List<Tile> tiles = new ArrayList<Tile>();
-    for (int i = 0; i < chars.length; i++) {
-      if (!tileBag.isEmpty()) {
-        tiles.add(tileBag.drawTile(chars[i]));
-      }
-    }
-    return tiles;
-  }
-
+  
   /**
    * This method gets the new tiles for the current player, determining the amount by checking the
    * placed tiles of the current turn. If the bag is empty no more tiles are returned.
@@ -225,7 +225,7 @@ public class GameController {
 
   /**
    * This method checks the end game criteria.
-   * 
+   *
    * @author ldreyer
    * @returns true if endGame criteria have been met
    */
