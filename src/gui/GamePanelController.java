@@ -20,8 +20,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -29,6 +31,7 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -63,9 +66,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected static boolean exchangeTilesMode = false;
   protected static boolean fieldLabelsEnabled = true;
   protected List<Tile> tilesToExchange = new ArrayList<Tile>();
-  protected static int[] selectedCoordinates = new int [2]; // row, column
+  protected static int[] selectedCoordinates = new int[2]; // row, column
   protected static int[] targetCoordinates = new int[2];
   protected ChatController cc;
+
 
   protected int min;
   protected int sec;
@@ -83,6 +87,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected Text[] playerNameLabel;
   protected ImageView[] avatarImageView;
   protected Rectangle[] rect;
+  protected Rectangle[] rackTiles;
   protected Text[] dlsLabel;
   protected Text[] tlsLabel;
   protected Text[] dwsLabel;
@@ -111,6 +116,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   protected Button activateFieldLabels;
   @FXML
+  protected Button darkMode;
+  @FXML
   protected ImageView image1;
   @FXML
   protected ImageView image2;
@@ -118,6 +125,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected ImageView image3;
   @FXML
   protected ImageView image4;
+  @FXML
+  protected ImageView background;
   @FXML
   protected Text player1;
   @FXML
@@ -269,6 +278,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   protected Text tls11;
   @FXML
+  protected Text remaining;
+  @FXML
+  protected Text timeLabel;
+  @FXML
+  protected Rectangle chatBox;
+  @FXML
+  protected Rectangle rackBox;
+  @FXML
+  protected Rectangle playerBox;
+  @FXML
   protected Rectangle tile1;
   @FXML
   protected Rectangle currentPlayer1;
@@ -310,6 +329,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected ProgressBar timeProgress;
   @FXML
   protected Rectangle backgroundGamePanel;
+  @FXML
+  protected VBox playerVbox;
 
   /**
    * This method initializes the GamePanelController and is being called upon creation of the
@@ -336,7 +357,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     dwsLabel = new Text[] {dws0, dws1, dws2, dws3, dws4, dws5, dws6, dws7, dws8, dws9, dws10, dws11,
         dws12, dws13, dws14, dws15, dws16};
     twsLabel = new Text[] {tws0, tws1, tws2, tws3, tws4, tws5, tws6, tws7};
-    
+    rackTiles = new Rectangle[] {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+
     activateFieldLabels.setText("Disable Labels");
     this.setFieldLabelVisibility(true);
 
@@ -612,10 +634,101 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
           fieldLabelsEnabled = true;
         }
         break;
+      case "darkMode":
+        switchDarkMode();
+        break;
       default:
         break;
     }
   }
+
+  /**
+   * This method switches the Theme from dark mode to light mode and vice versa.
+   * 
+   * @author nilbecke
+   */
+
+  public void switchDarkMode() {
+    ColorAdjust colorAdjust = new ColorAdjust();
+    switch (this.darkMode.getText()) {
+      case "Dark Mode":
+        colorAdjust.setBrightness(-0.7);
+        this.background.setOpacity(1);
+        this.background.setEffect(colorAdjust);
+        this.rack.setStyle("-fx-background-color: linear-gradient(to right, #218f33, #83d490)");
+        this.skipAndChangeButton.setTextFill(Color.LIGHTGRAY);
+        this.doneButton.setTextFill(Color.LIGHTGRAY);
+        this.settingsButton.setTextFill(Color.LIGHTGRAY);;
+        this.activateFieldLabels.setTextFill(Color.LIGHTGRAY);
+        this.rulesButton.setTextFill(Color.LIGHTGRAY);
+        this.leaveGameButton.setTextFill(Color.LIGHTGRAY);
+        this.sendButton.setTextFill(Color.LIGHTGRAY);
+                      
+        this.remaining.setFill(Color.LIGHTGRAY);
+        this.remainingLetters.setFill(Color.LIGHTGRAY);
+        this.timer.setFill(Color.LIGHTGRAY);
+        this.timeLabel.setFill(Color.LIGHTGRAY);
+        
+        this.rackBox.setStroke(Color.DARKGREEN);
+        this.chatBox.setStroke(Color.DARKGREEN);
+        this.playerBox.setStroke(Color.DARKGREEN);
+        
+        this.chat.getStylesheets().clear();
+        this.chat.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+        this.chatInput.getStylesheets().clear();
+        this.chatInput.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+        
+        for (int i = 0; i < rackTiles.length; i++) {
+          rackTiles[i].setFill(Color.DARKGRAY);
+        }
+        for (int i = 0; i < playerNameLabel.length; i++) {
+          playerNameLabel[i].setFill(Color.LIGHTGRAY);
+        }
+        this.darkMode.setText("Light Mode");
+        this.darkMode.setTextFill(Color.LIGHTGRAY);
+        break;
+        
+      case "Light Mode":
+        colorAdjust.setBrightness(0);
+        this.rack.setStyle("-fx-background-color: transparent");
+       
+        this.skipAndChangeButton.setTextFill(Color.BLACK);
+        this.doneButton.setTextFill(Color.BLACK);
+        this.darkMode.setTextFill(Color.BLACK);
+        this.settingsButton.setTextFill(Color.BLACK);;
+        this.activateFieldLabels.setTextFill(Color.BLACK);
+        this.rulesButton.setTextFill(Color.BLACK);
+        this.leaveGameButton.setTextFill(Color.BLACK);
+        this.sendButton.setTextFill(Color.BLACK);
+        
+        this.remaining.setFill(Color.BLACK);
+        this.remainingLetters.setFill(Color.BLACK);
+        this.timer.setFill(Color.BLACK);
+        this.timeLabel.setFill(Color.BLACK);
+        
+        this.rackBox.setStroke(Color.BLACK);
+        this.chatBox.setStroke(Color.BLACK);
+        this.playerBox.setStroke(Color.BLACK);
+        
+        this.chat.getStylesheets().add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
+        this.chatInput.getStylesheets().add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
+
+        this.skipAndChangeButton.setTextFill(Color.BLACK);
+        for (int i = 0; i < rackTiles.length; i++) {
+          rackTiles[i].setFill(Color.WHITE);
+        }
+        for (int i = 0; i < playerNameLabel.length; i++) {
+          playerNameLabel[i].setFill(Color.BLACK);
+        }
+        this.background.setEffect(colorAdjust);
+        this.background.setOpacity(0.12);
+        this.darkMode.setText("Dark Mode");
+        break;
+      default:
+        break;
+    }
+  }
+
 
 
   /**
@@ -857,10 +970,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     this.cc.sendChatMessage("", message);
   }
 
-  
+
   /* --Methods to be used by the ClientProtocol to change the UI of the Client-- */
 
-  
+
   /**
    * Lets a player disconnect.
    *

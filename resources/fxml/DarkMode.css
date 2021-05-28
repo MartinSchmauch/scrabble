@@ -1,0 +1,19 @@
+.text-area{
+	-fx-text-fill: #26d451;
+}
+
+.text-area .content {
+    	-fx-background-color: #171a18;
+
+}
+.text-area .scroll-pane{
+	 -fx-hbar-policy: never;
+   	 -fx-vbar-policy: never;
+}
+
+.text-field{
+	-fx-background-color: #171a18;
+ 	  -fx-text-fill: #26d451;
+}
+
+

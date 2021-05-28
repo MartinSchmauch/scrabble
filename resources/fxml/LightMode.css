@@ -1,0 +1,15 @@
+.text-area{
+	-fx-text-fill: #000000;
+}
+
+.text-area .content {
+    	-fx-background-color: #ffffff;
+}
+.text-area .scroll-pane{
+	 -fx-hbar-policy: never;
+   	 -fx-vbar-policy: never;
+}
+.text-field{
+	-fx-background-color: #ffffff;
+   	-fx-text-fill: #000000;
+}
