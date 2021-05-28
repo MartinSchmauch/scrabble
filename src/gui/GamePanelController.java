@@ -22,7 +22,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -1195,9 +1194,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * 
+   * This Method resets the turn for the actual playing player when the timer is up.
    */
-  // TODO: add javadoc comment
   public void sendResetTurn() {
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
