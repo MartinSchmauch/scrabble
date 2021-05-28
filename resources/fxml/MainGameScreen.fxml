@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ProgressBar?>
@@ -26,11 +19,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="upperPane" onMouseDragged="#test0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
+<Pane fx:id="upperPane" onMouseDragged="#test0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
    <children>
       <StackPane layoutX="4.0" maxHeight="1000.0" maxWidth="1900.0" onMouseReleased="#mouseReleased" prefHeight="850.0" prefWidth="1600.0">
          <children>
-            <ImageView fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
+            <ImageView fx:id="background" fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
                <image>
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
@@ -63,7 +56,7 @@
                                                 <StackPane alignment="BOTTOM_CENTER" prefHeight="450.0" prefWidth="370.0">
                                                    <children>
                                                       <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" />
-                                                      <VBox alignment="TOP_CENTER" prefHeight="460.0" prefWidth="370.0">
+                                                      <VBox fx:id="playerVbox" alignment="TOP_CENTER" prefHeight="460.0" prefWidth="370.0">
                                                          <children>
                                                             <VBox prefHeight="296.0" prefWidth="370.0">
                                                                <children>
@@ -327,7 +320,15 @@
                                           </VBox>
                                           <VBox alignment="BOTTOM_CENTER" prefHeight="544.0" prefWidth="330.0">
                                              <children>
-                                                <Button fx:id="activateFieldLabels" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Disable Labels" />
+                                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                                                   <children>
+                                                      <Button fx:id="darkMode" maxWidth="-Infinity" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Dark Mode" />
+                                                      <Button fx:id="activateFieldLabels" alignment="CENTER" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Disable Labels" />
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets />
+                                                   </VBox.margin>
+                                                </HBox>
                                                 <HBox alignment="BOTTOM_CENTER" prefHeight="43.0" prefWidth="330.0">
                                                    <children>
                                                       <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" prefHeight="33.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Leave Game">
