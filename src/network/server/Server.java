@@ -1,5 +1,14 @@
 package network.server;
 
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
+import gui.CustomAlert;
+import gui.GamePanelController;
+import gui.LeaderboardScreen;
+import gui.LobbyScreenController;
+import gui.LoginScreenController;
+import gui.TutorialController;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -10,15 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
-import gui.CustomAlert;
-import gui.GamePanelController;
-import gui.LeaderboardScreen;
-import gui.LobbyScreenController;
-import gui.LoginScreenController;
-import gui.TutorialController;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.AIplayer;
@@ -40,11 +40,11 @@ import network.messages.MoveTileMessage;
 import network.messages.RemoveTileMessage;
 import network.messages.ResetTurnMessage;
 import network.messages.SendChatMessage;
-import network.messages.ShutdownMessage;
 import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
+import util.Sound;
 
 /**
  * Manages network Scrabble game, by keeping track of GameState, addressing the GameController and
@@ -193,7 +193,7 @@ public class Server {
   }
 
 
-  private void handleExchangeTilesForAI(AIplayer aiplayer, List<Tile> rackTiles) {
+  private void handleExchangeTilesForAi(AIplayer aiplayer, List<Tile> rackTiles) {
     this.getGameController().addTilesToTileBag(rackTiles);
     for (Tile t : rackTiles) {
       this.player.removeRackTile(t.getField().getxCoordinate());
@@ -399,7 +399,7 @@ public class Server {
   }
 
 
-  /**
+  /*
    * @author pkoenig
    */
   private void handleAi(String player) {
@@ -408,7 +408,7 @@ public class Server {
 
       // if no Turn found, exchange all RackTiles
       if (aiTurn == null) {
-        handleExchangeTilesForAI(this.aiPlayers.get(player),
+        handleExchangeTilesForAi(this.aiPlayers.get(player),
             this.aiPlayers.get(player).getRackTiles());
       } else {
         TileMessage tm = new TileMessage(player, aiTurn.getLaydDownTiles());
@@ -443,10 +443,10 @@ public class Server {
     try {
       serverSocket = new ServerSocket(GameSettings.port);
       System.out.println("Server runs");
-      if(!tutorialMode) {
+      if (!tutorialMode) {
         LoginScreenController.getInstance().startLobby();
       }
-      
+
       while (running) {
         Socket clientSocket = serverSocket.accept();
 
@@ -454,12 +454,12 @@ public class Server {
         this.serverProtocol.start();
       }
 
-    } catch (IOException e) {   
+    } catch (IOException e) {
       if (serverSocket != null && serverSocket.isClosed()) {
         System.out.println("Server stopped.");
       } else {
-        CustomAlert.showWarningAlert("Already hosting!", "Sorry. You cannot host two games at a time.");
-        e.printStackTrace();
+        CustomAlert.showWarningAlert("Already hosting!",
+            "Sorry. You cannot host two games at a time.");
       }
     }
   }
@@ -517,13 +517,13 @@ public class Server {
 
   public void handleLeaveGame(String player) {
     Turn turn = gameController.getTurn();
-    
+
     for (int i = 0; i < gameController.getTurns().size(); i++) {
       if (gameController.getTurns().get(i).getPlayer().equals(player)) {
         gameController.getTurns().remove(i);
       }
     }
-    
+
     this.gameState.leaveGame(player);
     this.clients.remove(player);
     if (this.gameState.getGameRunning() && this.gameState.getAllPlayers().size() < 2) {
@@ -542,23 +542,23 @@ public class Server {
       return;
     }
 
-    if(this.gameState.getCurrentPlayer().equals(player)) {
-      for(Tile t : turn.getLaydDownTiles()) {
+    if (this.gameState.getCurrentPlayer().equals(player)) {
+      for (Tile t : turn.getLaydDownTiles()) {
         t.getField().setTileOneDirection(null);
       }
-      
+
       String nextPlayer = this.getGameController().getNextPlayer();
       this.sendToAll(new TurnResponseMessage(player, true, 0, null, nextPlayer,
           this.gameController.getTileBag().getRemaining(), null));
       gameState.setCurrentPlayer(nextPlayer);
       this.getGameController().newTurn();
-  
+
       Runnable r = new Runnable() {
-  
+
         public void run() {
           handleAi(nextPlayer);
         }
-  
+
       };
       new Thread(r).start();
     }
@@ -571,8 +571,8 @@ public class Server {
     if (this.gameController == null) {
       this.gameController = TutorialController.getController();
     }
-    if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewXCoordinate(),
-        m.getNewYCoordinate())) {
+    if (this.gameController.addTileToGameBoard(m.getFrom(), m.getTile(), m.getNewX(),
+        m.getNewY())) {
       sendToAll(m);
       try {
         Thread.sleep(100);
@@ -602,10 +602,10 @@ public class Server {
 
   public void handleMoveTile(MoveTileMessage m) {
     Tile oldTile = this.gameState.getGameBoard()
-        .getField(m.getOldXCoordinate(), m.getOldYCoordinate()).getTile();
-    if (m.getNewYCoordinate() == -1 && m.getOldYCoordinate() != -1) { // move to rack
-      if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldXCoordinate(),
-          m.getOldYCoordinate())) {
+        .getField(m.getOldX(), m.getOldY()).getTile();
+    if (m.getNewY() == -1 && m.getOldY() != -1) { // move to rack
+      if (!this.gameController.checkRemoveTileFromGameBoard(m.getFrom(), m.getOldX(),
+          m.getOldY())) {
         if (m.getFrom().equals(this.host)) {
           gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
         } else {
@@ -617,16 +617,16 @@ public class Server {
       }
 
       if (m.getFrom().equals(this.getHost())) {
-        player.moveToRack(oldTile, m.getNewXCoordinate());
+        player.moveToRack(oldTile, m.getNewX());
       } else {
         AddTileMessage atm =
-            new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
+            new AddTileMessage(m.getFrom(), oldTile, m.getNewX(), m.getNewY());
         clients.get(m.getFrom()).sendToClient(atm);
       }
 
-    } else if (m.getNewYCoordinate() != -1 && m.getOldYCoordinate() != -1) { // move on game board
-      if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldXCoordinate(),
-          m.getOldYCoordinate(), m.getNewXCoordinate(), m.getNewYCoordinate())) {
+    } else if (m.getNewY() != -1 && m.getOldY() != -1) { // move on game board
+      if (!this.gameController.moveTileOnGameBoard(m.getFrom(), m.getOldX(),
+          m.getOldY(), m.getNewX(), m.getNewY())) {
         if (m.getFrom().equals(this.host)) {
           gpc.indicateInvalidTurn(m.getFrom(), "Tile could not be added to GameBoard.");
         } else {
@@ -638,7 +638,7 @@ public class Server {
       }
 
       AddTileMessage atm =
-          new AddTileMessage(m.getFrom(), oldTile, m.getNewXCoordinate(), m.getNewYCoordinate());
+          new AddTileMessage(m.getFrom(), oldTile, m.getNewX(), m.getNewY());
       sendToAll(atm);
 
       try {
@@ -648,7 +648,7 @@ public class Server {
       }
 
       RemoveTileMessage rtm =
-          new RemoveTileMessage(m.getFrom(), m.getOldXCoordinate(), m.getOldYCoordinate());
+          new RemoveTileMessage(m.getFrom(), m.getOldX(), m.getOldY());
       sendToAll(rtm);
     }
 
@@ -720,6 +720,7 @@ public class Server {
               break;
             case START_GAME:
               lsc.startGameScreen();
+              Sound.playStartGameSound();
               gpc.setTimerDuration(GameSettings.getTimePerPlayer());
               gpc.startTimer();
               gpc.indicatePlayerTurn(gameState.getCurrentPlayer());
@@ -769,6 +770,7 @@ public class Server {
             case ADD_TILE:
               AddTileMessage atm = (AddTileMessage) m;
               gpc.addTile(atm.getTile());
+              Sound.playMoveTileSound();
               break;
             case REMOVE_TILE:
               RemoveTileMessage rtm = (RemoveTileMessage) m;
@@ -812,6 +814,13 @@ public class Server {
                 semaphoreCommit = true;
                 semaphoreReset = true;
                 sem = true;
+                if (trm.getCalculatedTurnScore() > 0) {
+                  Sound.playSuccessfulTurnSound();
+                } else {
+                  Sound.playUnsuccessfulTurnSound();
+                }
+              } else {
+                Sound.playUnsuccessfulTurnSound();
               }
               break;
             case RESET_TURN:
@@ -1020,17 +1029,12 @@ public class Server {
     this.running = running;
   }
 
-  /**
-   * @author pkoenig
-   * @return the aiPlayers
-   */
+  /* @author pkoenig */
   public HashMap<String, AIplayer> getAiPlayers() {
     return aiPlayers;
   }
 
-  /**
-   * @param aiPlayers the aiPlayers to set
-   */
+  /* @author pkoenig */
   public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
     this.aiPlayers = aiPlayers;
   }

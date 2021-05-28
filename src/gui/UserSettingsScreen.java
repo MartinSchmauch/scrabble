@@ -17,10 +17,10 @@ import mechanic.Player;
 
 
 /**
- * Opens the user settings menu
+ * Opens the user settings menu.
  *
  * @author nilbecke
- **/
+ */
 
 public class UserSettingsScreen extends Application {
 

@@ -327,7 +327,7 @@
                                           </VBox>
                                           <VBox alignment="BOTTOM_CENTER" prefHeight="544.0" prefWidth="330.0">
                                              <children>
-                                                <ToggleButton fx:id="activateFieldLabels" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Disable Field Labels" />
+                                                <Button fx:id="activateFieldLabels" mnemonicParsing="false" onAction="#handle" prefHeight="27.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Disable Labels" />
                                                 <HBox alignment="BOTTOM_CENTER" prefHeight="43.0" prefWidth="330.0">
                                                    <children>
                                                       <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" prefHeight="33.0" prefWidth="110.0" stylesheets="@Buttons.css" text="Leave Game">

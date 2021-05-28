@@ -19,22 +19,22 @@ public class AddTileMessage extends Message {
   /**
    * This method creates an instance of the class.
    */
-  public AddTileMessage(String from, Tile tile, int newxCoordinate, int newyCoordinate) {
+  public AddTileMessage(String from, Tile tile, int newX, int newY) {
     super(MessageType.ADD_TILE, from);
     this.tile = tile;
-    this.newxCoordinate = newxCoordinate;
-    this.newyCoordinate = newyCoordinate;
+    this.newxCoordinate = newX;
+    this.newyCoordinate = newY;
   }
 
   public Tile getTile() {
     return this.tile;
   }
 
-  public int getNewXCoordinate() {
+  public int getNewX() {
     return newxCoordinate;
   }
 
-  public int getNewYCoordinate() {
+  public int getNewY() {
     return newyCoordinate;
   }
 

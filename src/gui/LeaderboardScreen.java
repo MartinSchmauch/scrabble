@@ -1,8 +1,8 @@
 package gui;
 
+import game.GameStatistic;
 import java.io.IOException;
 import java.util.HashMap;
-import game.GameStatistic;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +17,7 @@ import mechanic.Player;
 /**
  * This class launches the leaderboard screen after a game has finished. Get's initialized with the
  * GameState at the end of the game.
- * 
+ *
  * @author nilbecke
  *
  */

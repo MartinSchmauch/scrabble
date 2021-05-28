@@ -1,7 +1,6 @@
 package gui;
 
 import java.io.IOException;
-/** @author nilbecke **/
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;

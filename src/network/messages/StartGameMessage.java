@@ -2,7 +2,7 @@ package network.messages;
 
 /**
  * The StartGameMessage indicates a start of the game and initiates a countdown.
- * 
+ *
  * @author lurny
  */
 
@@ -13,6 +13,10 @@ public class StartGameMessage extends Message {
   private String currrentPlayer;
   private int timerDuration;
 
+  /**
+   * Constructor for the StartGameMessage that indicates a start of the game and initiates a 
+   * countdown.
+   */
   public StartGameMessage(String from, int countdown, int remainingTilesInTileBag,
       String currentPlayer, int timerDuration) {
     super(MessageType.START_GAME, from);

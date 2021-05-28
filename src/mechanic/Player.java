@@ -1,13 +1,13 @@
 package mechanic;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameSettings;
-import gui.CustomAlert;
 import gui.GamePanelController;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Platform;
 import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
@@ -404,8 +404,6 @@ public class Player {
 
     if (this.client.isOk()) {
       this.client.start();
-    } else {
-      CustomAlert.showWarningAlert("Invalid link.", "Try another Link or try again later");
     }
   }
   

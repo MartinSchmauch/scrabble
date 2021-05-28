@@ -1,10 +1,5 @@
 package network.client;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.List;
 import game.GameSettings;
 import game.GameState;
 import gui.CustomAlert;
@@ -12,6 +7,11 @@ import gui.GamePanelController;
 import gui.LeaderboardScreen;
 import gui.LobbyScreenController;
 import gui.LoginScreenController;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mechanic.Field;
@@ -33,6 +33,7 @@ import network.messages.StartGameMessage;
 import network.messages.TileMessage;
 import network.messages.TurnResponseMessage;
 import network.messages.UpdateChatMessage;
+import util.Sound;
 
 /**
  * This is the client Protocol, which is used for the client server communication. Every connected
@@ -46,7 +47,7 @@ public class ClientProtocol extends Thread {
   private GamePanelController gpc;
   private LobbyScreenController lsc;
   private Player player;
-  private Message m;
+  private Message message;
   private String ipFromServer;
   private int portFromServer;
   private Socket clientSocket;
@@ -68,8 +69,7 @@ public class ClientProtocol extends Thread {
       out.reset();
       System.out.println("Local Port (Client): " + this.clientSocket.getLocalPort());
     } catch (IOException e) {
-      e.printStackTrace();
-      System.out.println("Could not establish connection to " + ip + ":" + port);
+      CustomAlert.showWarningAlert("Invalid link.", "Try another Link or try again later");
     }
   }
 
@@ -82,28 +82,28 @@ public class ClientProtocol extends Thread {
    */
   public void run() {
     try {
-      m = (Message) in.readObject();
+      message = (Message) in.readObject();
 
-      if (m.getMessageType() == MessageType.CONNECT) {
-        ConnectMessage cm = (ConnectMessage) m;
+      if (message.getMessageType() == MessageType.CONNECT) {
+        ConnectMessage cm = (ConnectMessage) message;
         this.player.setNickname(cm.getPlayerInfo().getNickname());
         System.out.println("New username: " + player.getNickname());
         LoginScreenController.getInstance().startLobby();
-      } else if (m.getMessageType() == MessageType.CONNECTION_REFUSED) {
-        ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) m;
+      } else if (message.getMessageType() == MessageType.CONNECTION_REFUSED) {
+        ConnectionRefusedMessage mrMessage = (ConnectionRefusedMessage) message;
         CustomAlert.showWarningAlert(mrMessage.getReason(), "Try another Link or try again later.");
         disconnect();
       }
       while (running) {
         try {
-          m = (Message) in.readObject(); // read message from server
+          message = (Message) in.readObject(); // read message from server
 
           Platform.runLater(new Runnable() {
             @Override
             public void run() {
-              switch (m.getMessageType()) {
+              switch (message.getMessageType()) {
                 case SHUTDOWN:
-                  ShutdownMessage shutMessage = (ShutdownMessage) m;
+                  ShutdownMessage shutMessage = (ShutdownMessage) message;
                   disconnect();
                   if (gameState.getGameRunning()) {
                     gpc.showShutdownMessage(shutMessage.getFrom(), shutMessage.getReason());
@@ -113,30 +113,31 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case ADD_TILE:
-                  AddTileMessage atMessage = (AddTileMessage) m;
-                  if (atMessage.getNewYCoordinate() == -1) {
-                    player.moveToRack(atMessage.getTile(), atMessage.getNewXCoordinate());
+                  AddTileMessage atMessage = (AddTileMessage) message;
+                  if (atMessage.getNewY() == -1) {
+                    player.moveToRack(atMessage.getTile(), atMessage.getNewX());
                   } else {
                     atMessage.getTile().setField(
-                        new Field(atMessage.getNewXCoordinate(), atMessage.getNewYCoordinate()));
+                        new Field(atMessage.getNewX(), atMessage.getNewY()));
                     atMessage.getTile().setOnRack(false);
                     atMessage.getTile().setOnGameBoard(true);
                     gpc.addTile(atMessage.getTile());
+                    Sound.playMoveTileSound();
                   }
                   break;
                 case REMOVE_TILE:
-                  RemoveTileMessage rtMessage = (RemoveTileMessage) m;
+                  RemoveTileMessage rtMessage = (RemoveTileMessage) message;
                   if (rtMessage.getY() == -1) {
                     player.removeRackTile(rtMessage.getX());
                   }
                   gpc.removeTile(rtMessage.getX(), rtMessage.getY(), (rtMessage.getY() == -1));
                   break;
                 case INVALID:
-                  InvalidMoveMessage imm = (InvalidMoveMessage) m;
+                  InvalidMoveMessage imm = (InvalidMoveMessage) message;
                   gpc.indicateInvalidTurn(imm.getFrom(), imm.getReason());
                   break;
                 case RESET_TURN:
-                  ResetTurnMessage resettMessage = (ResetTurnMessage) m;
+                  ResetTurnMessage resettMessage = (ResetTurnMessage) message;
                   List<Tile> tileList = resettMessage.getTiles();
                   System.out.println(resettMessage.getFrom() + "  " + tileList.size());
                   // remove Tiles from UI Gameboard and domain Gameboard
@@ -153,7 +154,7 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case TILE:
-                  TileMessage trMessage = (TileMessage) m;
+                  TileMessage trMessage = (TileMessage) message;
 
                   for (Tile t : trMessage.getTiles()) {
                     if (t.getField() != null && t.getField().getyCoordinate() != -1) {
@@ -161,7 +162,7 @@ public class ClientProtocol extends Thread {
                       t.setOnRack(false);
                       t.setOnGameBoard(true);
                       gpc.addTile(t);
-                    } else { 
+                    } else {
                       // case "on board"
                       player.addTileToRack(t);
                       gpc.addTile(t);
@@ -171,7 +172,7 @@ public class ClientProtocol extends Thread {
                   break;
                 case TURN_RESPONSE:
                   System.out.println("TurnResponseMessageReceived");
-                  TurnResponseMessage trm = (TurnResponseMessage) m;
+                  TurnResponseMessage trm = (TurnResponseMessage) message;
                   if (trm.getTurnInfo() != null) {
                     gpc.updateChat(trm.getTurnInfo(), null, "");
                   }
@@ -195,6 +196,13 @@ public class ClientProtocol extends Thread {
                       gpc.changeDoneStatus(false);
                       gpc.changeSkipAndChangeStatus(false);
                     }
+                    if (trm.getCalculatedTurnScore() > 0) {
+                      Sound.playSuccessfulTurnSound();
+                    } else {
+                      Sound.playUnsuccessfulTurnSound();
+                    }
+                  } else {
+                    Sound.playUnsuccessfulTurnSound();
                   }
 
                   if (gpc.getAlert2() != null) {
@@ -204,7 +212,7 @@ public class ClientProtocol extends Thread {
                   break;
                 case LOBBY_STATUS:
                   if (lsc != null) {
-                    LobbyStatusMessage lsMessage = (LobbyStatusMessage) m;
+                    LobbyStatusMessage lsMessage = (LobbyStatusMessage) message;
                     gameState = lsMessage.getGameState();
                     lsc.updateJoinedPlayers();
                     GameSettings.setTimePerPlayer(lsMessage.getTimePerPlayer());
@@ -217,7 +225,8 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case START_GAME:
-                  StartGameMessage sgMessage = (StartGameMessage) m;
+                  StartGameMessage sgMessage = (StartGameMessage) message;
+                  Sound.playStartGameSound();
                   gameState.setCurrentPlayer(sgMessage.getFrom());
                   gameState.setRunning(true);
                   lsc.startGameScreen();
@@ -233,7 +242,7 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case UPDATE_CHAT:
-                  UpdateChatMessage ucMessage = (UpdateChatMessage) m;
+                  UpdateChatMessage ucMessage = (UpdateChatMessage) message;
                   if (gameState == null) { // only true for AIplayer
                     break;
                   }
@@ -247,23 +256,30 @@ public class ClientProtocol extends Thread {
                   break;
                 case CONNECT:
                   if (lsc != null) {
-                    ConnectMessage conMessage = (ConnectMessage) m;
+                    ConnectMessage conMessage = (ConnectMessage) message;
                     gameState.joinGame(conMessage.getPlayerInfo());
                     lsc.addJoinedPlayer(conMessage.getPlayerInfo());
                   }
                   break;
                 case GAME_STATISTIC:
-                  GameStatisticMessage gsMessage = (GameStatisticMessage) m;
+                  GameStatisticMessage gsMessage = (GameStatisticMessage) message;
                   gpc.stopTimer();
                   gpc.close();
                   new LeaderboardScreen(gsMessage.getGameStatistics(), player).start(new Stage());
                   break;
                 case DISCONNECT:
-                  DisconnectMessage discMessage = (DisconnectMessage) m;
+                  DisconnectMessage discMessage = (DisconnectMessage) message;
                   gameState.leaveGame(discMessage.getFrom());
 
                   if (!gameState.getGameRunning()) {
-                    lsc.updateJoinedPlayers();
+                    if (discMessage.getFrom().equals(player.getNickname())) {
+                      disconnect();
+                      lsc.close();
+                      CustomAlert.showWarningAlert("You were kicked!", "The host kicked you from "
+                          + "the lobby.");
+                    } else {
+                      lsc.updateJoinedPlayers();
+                    }
                   } else {
                     gpc.updateChat("-- " + discMessage.getFrom() + " left the Game! --", null, "");
                     if (discMessage.getTiles() != null) {
@@ -272,7 +288,7 @@ public class ClientProtocol extends Thread {
                             false);
                       }
                     }
-                    
+
                     gpc.removeJoinedPlayer(discMessage.getFrom());
                   }
                   break;
@@ -308,6 +324,9 @@ public class ClientProtocol extends Thread {
     }
   }
 
+  /**
+   * This method sends a given message to the server that will be handled in ServerProtocol.
+   */
   public void sendToServer(Message message) {
     try {
       this.out.writeObject(message);
@@ -346,34 +365,22 @@ public class ClientProtocol extends Thread {
     this.lsc = lsc;
   }
 
-  /**
+  /*
    * @author pkoenig
    */
 
-  /**
-   * @return the ipFromServer
-   */
   public String getIpFromServer() {
     return ipFromServer;
   }
 
-  /**
-   * @param ipFromServer the ipFromServer to set
-   */
   public void setIpFromServer(String ipFromServer) {
     this.ipFromServer = ipFromServer;
   }
 
-  /**
-   * @return the portFromServer
-   */
   public int getPortFromServer() {
     return portFromServer;
   }
 
-  /**
-   * @param portFromServer the portFromServer to set
-   */
   public void setPortFromServer(int portFromServer) {
     this.portFromServer = portFromServer;
   }

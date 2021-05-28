@@ -13,6 +13,7 @@ public class UpdateChatMessage extends Message {
   private static final long serialVersionUID = 1L;
   private String text;
   private LocalDateTime dateTime;
+  @SuppressWarnings("unused")
   private String owner;
 
   /**

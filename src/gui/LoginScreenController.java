@@ -26,8 +26,8 @@ import javafx.stage.StageStyle;
 import mechanic.Player;
 
 /**
- * This Class is a Basic Handler for all the input options present in the Login Screen
- * 
+ * This Class is a Basic Handler for all the input options present in the Login Screen.
+ *
  * @author nilbecke
  **/
 
@@ -56,7 +56,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
 
   /**
    * Handles the different Buttons in the Login Screen.
-   * 
+   *
    * @param e Input event .
    **/
   @Override
@@ -111,7 +111,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   /**
    * Lets a user access the user settings. If no user profile is present the system asks the user if
    * he wants to create one.
-   * 
+   *
    * @param s defines the Stage which is closes if the user settings screen is launched
    */
   public void openAccount(Stage s) {
@@ -220,13 +220,13 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           stage.initStyle(StageStyle.UNDECORATED);
           stage.setTitle("Lobby");
           stage.setOnCloseRequest(e -> controller.close());
-          /**
+          /*
            * @author pkoenig
            */
           stage.setX(LinkField.getScene().getWindow().getX());
           stage.setY(LinkField.getScene().getWindow().getY());
 
-          /**
+          /*
            * @author nilbecke
            */
 
@@ -251,8 +251,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   }
 
   /**
-   * Access the current instane of the LognScreenController
-   * 
+   * Access the current instane of the LognScreenController.
+   *
    * @return current instance of the controller
    */
   public static LoginScreenController getInstance() {
@@ -261,7 +261,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
 
   /**
    * Change the text of the username label.
-   * 
+   *
    * @param input Nickname of current player
    */
   public void setUsername(String input) {
@@ -271,7 +271,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
 
   /**
    * Updates the avatar image of the current player.
-   * 
+   *
    * @param avatar String to the location of the new avatar
    */
   public void setAvatar(String avatar) {

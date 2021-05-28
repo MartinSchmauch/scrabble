@@ -55,9 +55,9 @@ public class ChatController {
    * has send a chat message in his Client UI. Therefore the new message is send to the server,
    * using the sendMessage() method. If the sender is the actual host, only an UpdateChatMessage is
    * created and send to the server.
-   * 
-   * @param sender
-   * @param message
+   *
+   * @param sender nickname of the player who sends this message
+   * @param message the chat Message that is supposed to be send to everyone in the lobby
    */
   public void sendChatMessage(String sender, String message) {
     String chatRegex = ".*\\S+.*";

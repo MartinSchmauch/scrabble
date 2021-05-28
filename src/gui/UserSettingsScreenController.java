@@ -92,13 +92,13 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
           SettingsScreenController.getInstance().setUserLabel(this.player.getNickname());
         }
         s.close();
-        /**
+        /*
          * @author pkoenig
          */
         Stage newLoginStage = new Stage();
         newLoginStage.setX(s.getScene().getWindow().getX());
         newLoginStage.setY(s.getScene().getWindow().getY());
-        /**
+        /*
          * @author nilbecke
          */
         new LoginScreen().start(newLoginStage);

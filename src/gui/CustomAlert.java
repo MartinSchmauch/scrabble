@@ -12,19 +12,19 @@ import javafx.stage.StageStyle;
 /**
  * This class is an extention of the JavaFX Alert Class to provide styling options like css support
  * for alerts used within the application.
- * 
+ *
  * @author nilbecke
  *
  */
 
 public class CustomAlert extends Alert {
 
-  private double xOffset;
-  private double yOffset;
+  private double horizontalOffset;
+  private double verticalOffset;
 
   /**
    * Creates a custom alert with a css style applied.
-   * 
+   *
    * @param arg0 defines the alert type
    */
 
@@ -37,15 +37,15 @@ public class CustomAlert extends Alert {
     dp.getScene().getRoot().setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
-        xOffset = event.getSceneX();
-        yOffset = event.getSceneY();
+        horizontalOffset = event.getSceneX();
+        verticalOffset = event.getSceneY();
       }
     });
     dp.getScene().getRoot().setOnMouseDragged(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent event) {
-        dp.getScene().getWindow().setX(event.getScreenX() - xOffset);
-        dp.getScene().getWindow().setY(event.getScreenY() - yOffset);
+        dp.getScene().getWindow().setX(event.getScreenX() - horizontalOffset);
+        dp.getScene().getWindow().setY(event.getScreenY() - verticalOffset);
       }
     });
 
@@ -69,6 +69,8 @@ public class CustomAlert extends Alert {
         alert.setHeaderText(title);
         alert.setContentText(reason);
         alert.show();
-      }});
+      }
+    }
+    );
   }
 }

@@ -1,14 +1,13 @@
 package gui;
 
-
+import game.GameSettings;
+import game.GameState;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import game.GameSettings;
-import game.GameState;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -200,7 +199,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * This methods gets called if a user clicks on the avatar or username of another player to show
    * the statistics of the user.
-   * 
+   *
    * @param index defines in which position the user is placed.
    */
   public void showStatistics(int index) {
@@ -219,7 +218,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   /**
    * This method adds an AI Player to the Lobby. Gets called when the host clicks on the "+" button.
    * Can only be called by the host. in the Lobby.
-   * 
+   *
    * @param index defines in which slot the ai player needs to be put.
    */
   public void addAiPlayer(int index) {
@@ -291,7 +290,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   /**
    * "Kicks" a player. Can only be called by host. Requires confirmation before kick.
-   * 
+   *
    * @param index represents the position of the player to be removed.
    */
   public void removePlayer(int index) {
@@ -309,15 +308,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     if (result.get() == ButtonType.OK) {
       Pattern p = Pattern.compile("AI\\s.");
       Matcher m = p.matcher(nickname);
+      
       if (m.matches()) {
-        this.player.getServer().handleLeaveLobby(nickname);
-        this.player.getServer().sendLobbyStatus();
-
         this.player.getServer().removeFromAiPlayers(nickname);
-      } else {
-        DisconnectMessage dm = new DisconnectMessage(nickname, null);
-        sendMessage(dm);
       }
+      
+      DisconnectMessage dm = new DisconnectMessage(nickname, null);
+      sendMessage(dm);
+      
+      this.player.getServer().handleLeaveLobby(nickname);
+
       updateJoinedPlayers();
     } else {
       alert.close();
@@ -361,13 +361,37 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   
   /**
    * Opens Loginscreen updon closing the main game.
-   * 
+   *
    * @param c indicates the gpc the leaving player is having.
    */
   
   public void close(GamePanelController c) {
-	  c.close();
-	  new LoginScreen().start(new Stage());
+    c.close();
+	new LoginScreen().start(new Stage());
+  }
+  
+  /**
+   * Closes the Lobby and stops the server.
+   */
+  public void close() {
+    if (this.player.isHost()) {
+      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host closed the server session."));
+      this.player.getServer().stopServer();
+    } else if (this.player.getClientProtocol().isOk()){
+      sendMessage(new DisconnectMessage(this.player.getNickname(), null));
+      this.player.getClientProtocol().disconnect();
+    }
+    closeWindow();
+    /**
+     * @author pkoenig
+     */
+    Stage newLoginStage = new Stage();
+    newLoginStage.setX(this.chat.getScene().getWindow().getX());
+    newLoginStage.setY(this.chat.getScene().getWindow().getY());
+    /**
+     * @author nilbecke
+     */
+    new LoginScreen().start(newLoginStage);
   }
 
 
@@ -378,10 +402,18 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     Stage s = (Stage) this.chat.getScene().getWindow();
     s.close();
   }
+  
+  /**
+   * Closes current window.
+   */
+  public void closeWindow(Button b) {
+    Stage st = (Stage) b.getScene().getWindow();
+    st.close();
+  }
 
   /**
    * Sends a given message to all players.
-   * 
+   *
    * @param m The Message to be sent
    */
   public boolean sendMessage(Message m) {
@@ -396,10 +428,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Updates Lobbychat by using the updateChat method in the Chat Controller.
-   * 
-   * @param message
-   * @param dateTime
-   * @param sender
+   *
+   * @param message the chat Message that is supposed to be send to everyone in the lobby
+   * @param dateTime local time and date that is used for the time stamp
+   * @param sender nickname of the player who sends this message
    */
   public void updateChat(String message, LocalDateTime dateTime, String sender) {
     this.chat.appendText("\n" + this.cc.updateChat(message, dateTime, sender));
@@ -446,7 +478,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
     /**
      * Will ensure, that every Player sees him on top and with a "YOU"
-     * 
+     *
      * @author pkoenig
      */
     // TODO tbd
@@ -483,7 +515,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Reads updated game settings and distributes them to all players.
-   * 
+   *
    * @param: settings new Instance of game settings
    */
   public void updateGameSettings(GameSettings settings) {
@@ -492,7 +524,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Get a reference onto the game settings currently used.
-   * 
+   *
    * @return Currently used game settings
    */
   public GameSettings getSettings() {
@@ -501,7 +533,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Lets a player connects, is calles by the server.
-   * 
+   *
    * @param player Playerdata of the player to be (dis-)connecting
    */
   public void addJoinedPlayer(PlayerData player) {
@@ -510,45 +542,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
 
   /**
    * Lets a player disconnect, is called by the server.
-   * 
+   *
    * @param nickname of the player disconnecting
    */
 
   public void removeJoinedPlayer(String nickname) {
     updateJoinedPlayers();
-  }
-
-  /**
-   * Closes the Lobby and stops the server.
-   */
-  public void close() {
-    if (this.player.isHost()) {
-      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host closed the server session."));
-      this.player.getServer().stopServer();
-    } else if (this.player.getClientProtocol().isOk()){
-      sendMessage(new DisconnectMessage(this.player.getNickname(), null));
-      this.player.getClientProtocol().disconnect();
-    }
-    closeWindow();
-    /**
-     * @author pkoenig
-     */
-    Stage newLoginStage = new Stage();
-    newLoginStage.setX(this.chat.getScene().getWindow().getX());
-    newLoginStage.setY(this.chat.getScene().getWindow().getY());
-    /**
-     * @author nilbecke
-     */
-    new LoginScreen().start(newLoginStage);
-  }
-
-
-  /**
-   * Closes current window.
-   */
-  public void closeWindow(Button b) {
-    Stage st = (Stage) b.getScene().getWindow();
-    st.close();
   }
 
   public Player getPlayer() {
