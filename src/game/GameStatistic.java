@@ -20,7 +20,6 @@ public class GameStatistic implements Serializable {
   private int totalPlayTime;
   private int totalTurns;
   private int score;
-  private int position;
   private int playedTiles;
   private List<String> allPlayers;
 
@@ -93,14 +92,6 @@ public class GameStatistic implements Serializable {
 
   public void setScore(int score) {
     this.score = score;
-  }
-
-  public int getPosition() {
-    return position;
-  }
-
-  public void setPosition(int position) {
-    this.position = position;
   }
 
   public int getPlayedTiles() {
