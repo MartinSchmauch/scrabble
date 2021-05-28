@@ -1,10 +1,10 @@
 package gui;
 
+import game.GameState;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import game.GameState;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,10 +48,11 @@ import network.messages.ShutdownMessage;
 import network.messages.TileMessage;
 import network.server.Server;
 
+
 /**
- * @author mschmauc
+ * This class is the Controller Class for the Main Gamel Panel UI for the Client.
  * 
- *         This class is the Controller Class for the Main Gamel Panel UI for the Client
+ * @author mschmauc
  */
 
 public class GamePanelController implements EventHandler<ActionEvent>, Runnable {
@@ -63,7 +64,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected static boolean exchangeTilesMode = false;
   protected List<Tile> tilesToExchange = new ArrayList<Tile>();
   protected static int selectedCoordinates[] = new int[2]; // row, column
-  protected static int targetCoordinates[] = new int[2]; // row, column
+  protected static int targetCoordinates[] = new int[2];
   protected ChatController cc;
 
   protected int min;
@@ -503,14 +504,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     timeProgress.setProgress(progress);
   }
 
-  /**
-   * 
-   * Listener methods that are executed upon Player UI Interaction
-   * 
-   */
+  /* --Listener methods that are executed upon Player UI Interaction-- */
 
   /**
-   * Handles all button user inputs in the GamePanel
+   * Handles all button user inputs in the GamePanel.
    */
   @Override
   public void handle(ActionEvent e) {
@@ -639,8 +636,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Listener that is called, when a user starts a drag movement from a rack field. The coordinates
    * of the event starting location are being saved for this drag event in the selectedCoordinates
    * array.
-   * 
-   * 
    */
   @FXML
   public void rackDragStarted(MouseEvent event) {
@@ -696,7 +691,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * 
+   * Method that is executed when the cursor enters a node during a drag and drop event.
    */
   @FXML
   public void test2(MouseDragEvent event) {
@@ -706,7 +701,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * 
+   * Method that is executed when the cursor leaves a node during a drag and drop event.
    */
   @FXML
   public void test3(MouseDragEvent event) {
@@ -763,7 +758,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * 
+   * Method that is executed upon the pressing of the mouse.
    */
   @FXML
   public void mousePressed(MouseEvent event) {
@@ -773,7 +768,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   /**
    * Method that is executed upon the release of a mouse click and sets the cursor to default.
-   * 
    */
   @FXML
   public void mouseReleased(MouseEvent event) {
@@ -785,7 +779,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   /**
    * Method that allows player to double click on a tile that the player placed on the game panel at
    * the current turn. This has the effect, that the tile is put back on the rack.
-   * 
    */
   @FXML
   public void mouseClicked(MouseEvent event) {
@@ -808,7 +801,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Listener method that is called when a field on the rack is clicked. When the exchangeTilesMode
    * was selected before by clicking the Skip&Change button, the tile on the field is selected if
    * there is a tile on the specific field.
-   * 
    */
   @FXML
   public void selectToExchange(MouseEvent event) {
@@ -841,7 +833,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * Method to be executed when a player clicks on the "Send" button of the chat area in the
    * GamePanel The ChatController handles this event and gets the text from the textfield of the
    * chat area.
-   * 
    */
   public void sendMessageFromInput() {
     this.cc.sendChatMessage(this.player.getNickname(), this.chatInput.getText());
@@ -858,14 +849,12 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     this.cc.sendChatMessage("", message);
   }
 
-  /**
-   * 
-   * Methods to be used by the ClientProtocol to change the UI of the Client
-   * 
-   */
+  
+  /* --Methods to be used by the ClientProtocol to change the UI of the Client-- */
 
+  
   /**
-   * Lets a player disconnect
+   * Lets a player disconnect.
    * 
    * @param playerToBeRemoved nickname of the player disconnecting
    */
@@ -950,7 +939,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * board. For instance when a player draws new tiles after he has put some tiles on the game
    * board.
    * 
-   * @param tile
    */
   public void addTile(Tile tile) {
     char letter = tile.getLetter().getCharacter();
@@ -987,16 +975,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method updates a Tile on the UI by putting the tile on a new position on the Rack provided
    * by the parameters parameters and removing it from the last position.
    * 
-   * @param tile
-   * @param oldXCoordinate
-   * @param oldYCoordinate
+   * @param tile the tile that is supposed to be moved to the rack
+   * @param oldX old x-coordinate of the tile
+   * @param oldY old y-coordinate that is -1 if the tile was on the rack
    */
-  public void moveToRack(Tile tile, int oldXCoordinate, int oldYCoordinate) {
+  public void moveToRack(Tile tile, int oldX, int oldY) {
     boolean fromRack = false;
-    if (oldYCoordinate == -1) {
+    if (oldY == -1) {
       fromRack = true;
     }
-    removeTile(oldXCoordinate, oldYCoordinate, fromRack);
+    removeTile(oldX, oldY, fromRack);
     addTile(tile);
   }
 
@@ -1004,16 +992,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method updates a Tile on the UI by putting the tile on a new position on the GamePanel
    * provided by the coordinate parameters and removing it from the last position.
    * 
-   * @param tile
-   * @param oldXCoordinate
-   * @param oldYCoordinate
+   * @param tile the tile that is supposed to be moved to the game board
+   * @param oldX old x-coordinate of the tile
+   * @param oldY old y-coordinate that is -1 if the tile was on the rack
    */
-  public void moveToGamePanel(Tile tile, int oldXCoordinate, int oldYCoordinate) {
+  public void moveToGamePanel(Tile tile, int oldX, int oldY) {
     boolean fromRack = false;
-    if (oldYCoordinate == -1) {
+    if (oldY == -1) {
       fromRack = true;
     }
-    removeTile(oldXCoordinate, oldYCoordinate, fromRack);
+    removeTile(oldX, oldY, fromRack);
     addTile(tile);
   }
 
@@ -1022,12 +1010,13 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * a tile during his turn. This method can only remove a tile from the GamePanel and NOT from the
    * rack!
    * 
-   * @param column
-   * @param row
-   * @param isOnRack
+   * @param column x-position in the gridpane of the tile that is supposed to be removed
+   * @param row y-position in the gridpane of the tile that is supposed to be removed
+   * @param isOnRack is true when the node is on the rack otherwise tile is on game board
    */
   public void removeTile(int column, int row, boolean isOnRack) {
-    int x, y;
+    int x;
+    int y;
     ObservableList<Node> list;
     if (isOnRack) {
       list = rack.getChildren();
@@ -1059,8 +1048,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method is getting returned to the UI after the sendTileMove method has been triggered from
    * the UI. A visual confirmation for a valid turn is shown in the UI.
    * 
-   * @param nickName
-   * @param message
+   * @param nickName name of the player who did an invalid turn
+   * @param message message that is shown as content text inside the alert window
    */
   public void indicateInvalidTurn(String nickName, String message) {
     Platform.runLater(new Runnable() {
@@ -1083,8 +1072,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method is called, when the host decides to shut down the server. For the clients this
    * method creates a warning alert and after confirmation, the game panel is closed.
    * 
-   * @param hostName
-   * @param reason
+   * @param hostName name of the player/host who stops the server
+   * @param reason message that is shown to the client as reason for a server shutdown
    */
   public void showShutdownMessage(String hostName, String reason) {
     Platform.runLater(new Runnable() {
@@ -1111,8 +1100,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   /**
    * This method updates the score of an Player on the UI and shows a new totalScore.
    * 
-   * @param nickName
-   * @param totalScore
+   * @param nickName name of the player, whomst score should be updated
+   * @param totalScore the overall score of the player that replaces the actual score
    */
   public void updateScore(String nickName, int totalScore) {
     String newScore = String.valueOf(totalScore);
@@ -1136,7 +1125,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * Method resets all variables associated with the skip&exchange mode
+   * Method resets all variables associated with the skip&exchange mode.
    */
   public void resetSkipAndChange() {
     this.setExchangeTilesMode(false);
@@ -1145,23 +1134,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * 
-   * Methods to override sender interface methods; documentation in interface
-   * 
-   */
-
-
-  /**
    * This method creates a new TileRequestMessage that is supposed to inform the server that a
    * client has moved a tile in his Client UI and the tile move needs to be checked for conformitiy.
    * Therefore the new message is send to the server, using the sendMessageToServer() method; the
    * confirmation of the move is handled in ClientProtocol
    * 
-   * @param nickName
-   * @param oldX
-   * @param oldY
-   * @param newX
-   * @param newY
+   * @param nickName name of the player who wants to move a tile
+   * @param oldX x-position of the tile that is supposed to be moved
+   * @param oldY y-position of the tile that is supposed to be moved
+   * @param newX x-position of the desired target location
+   * @param newY y-position of the desired target location
    */
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
     MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
@@ -1177,7 +1159,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * has completed a turn by clicking the 'done' button in his Client UI. Therefore the new message
    * is send to the server, using the sendMessageToServer() method
    * 
-   * @param nickName
+   * @param nickName name of the sender
    */
   public void sendCommitTurn(String nickName) {
     Message m = new CommitTurnMessage(nickName, this.player.getRackTiles().isEmpty());
@@ -1206,7 +1188,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   /**
    * 
    */
-  // TODO: deprecated?
+  // TODO: add javadoc comment
   public void sendResetTurn() {
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
@@ -1228,7 +1210,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * wants to disconnect from the server and stop the game. Therefore the new message is send to the
    * server, using the sendMessageToServer() method.
    * 
-   * @param nickName
+   * @param nickName the name of the sender
    */
   public void sendDisconnectMessage(String nickName) {
     Message m = new DisconnectMessage(nickName, null);
@@ -1240,7 +1222,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * completely with new tiles. Therefore, a TileMessage is sent to the server, containing the name
    * of the sender and the list of tiles, the player has on his rack.
    * 
-   * @param nickName
+   * @param nickName the name of the sender
    */
   public void sendTileMessage(String nickName) {
     Message m = new TileMessage(nickName, tilesToExchange);
@@ -1271,9 +1253,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * the parameter determines wether the node is located in the rack gridpane or the gamepanel
    * gridpane - nodeFromRack==true means that the node is located in the rack.
    * 
-   * @param node
-   * @param nodeFromRack
-   * @return
+   * @param node the node from which the coordinates are supposed to be determined
+   * @param nodeFromRack is true when the node is on the rack
+   * @return x and y coordinates of the node as int array - array[0] is the x coord
    */
   protected int[] getPos(Node node, boolean nodeFromRack) {
     int[] result = new int[2];
@@ -1299,7 +1281,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   }
 
   /**
-   * Closes the Game and stops the server.
+   * Closes the Game and stops the server if the person who calls the method is the host, otherwise
+   * the player is disconnected and the game panel is closed.
    */
   public void close() {
     stopTimer();
