@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 public class Tile implements Serializable {
   private static final long serialVersionUID = 1L;
-  final boolean IS_JOKER;
+  final boolean isJoker;
   private Letter letter;
   private Field field;
   private boolean isPlayed;
@@ -28,12 +28,12 @@ public class Tile implements Serializable {
   public Tile(Letter letter, Field field) {
     this.letter = letter;
     setField(field);
-    this.IS_JOKER = (letter.getCharacter() == '*');
+    this.isJoker = (letter.getCharacter() == '*');
   }
 
   public Tile(Letter letter) {
     this.letter = letter;
-    this.IS_JOKER = (letter.getCharacter() == '*');
+    this.isJoker = (letter.getCharacter() == '*');
   }
 
   public Field getField() {
@@ -78,7 +78,7 @@ public class Tile implements Serializable {
   /** If the tile is a joker tile, the value for joker tiles is returned from the GameSettings. */
 
   public int getValue() {
-    if (!IS_JOKER) {
+    if (!isJoker) {
       return this.letter.getLetterValue();
     } else {
       return this.letter.getJokerValue();

@@ -20,6 +20,9 @@ public class Tutorial {
 
   private Player player;
 
+  /**
+   * creates an instance of the class.
+   */
   public Tutorial(Player player) {
     this.player = player;
     this.player.playTutorial();

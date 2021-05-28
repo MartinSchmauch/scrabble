@@ -25,8 +25,7 @@ public class AIplayerTest {
   GameBoard gb;
 
   /**
-   * 
-   * @throws java.lang.Exception
+   * set´s up a junit testcase.
    * 
    */
   // @Before

@@ -32,6 +32,9 @@ public class GameController {
   private int currentPlayerIndex;
   private HashSet<String> dictionary;
 
+  /**
+   * creates an instance of the class.
+   */
   public GameController(GameState gameState) {
     fillDictionary();
     this.gameState = gameState;

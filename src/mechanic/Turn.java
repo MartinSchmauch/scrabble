@@ -1,11 +1,13 @@
 package mechanic;
 
+import game.GameController;
+import game.GameSettings;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import game.GameController;
-import game.GameSettings;
+
+
 
 /**
  * An object of this class is used for each player turn. It is used to find all words that emerge

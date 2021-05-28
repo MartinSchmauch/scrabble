@@ -15,7 +15,7 @@ public class RemoveTileMessage extends Message {
   private int collumn;
 
   /**
-   * This method creates an instance of the class.
+   * creates an instance of the class.
    */
   public RemoveTileMessage(String from, int row, int collumn) {
     super(MessageType.REMOVE_TILE, from);

@@ -22,16 +22,17 @@ public class GameBoard {
         this.fields[i][j].setGameBoard(this);
       }
     }
-    // File file = new File(GameSettings.getDictionary());
-    // this.setWordlist(new Wordlist(file));
   }
 
-  public Field getField(int xCoordinate, int yCoordinate) {
-    if (xCoordinate < 1 || yCoordinate < 1 || xCoordinate > this.fields.length
-        || yCoordinate > this.fields.length) {
+  /**
+   * gives back the Gameboard Field at x1Coordinate and y1Coordinate.
+   */
+  public Field getField(int x1Coordinate, int y1Coordinate) {
+    if (x1Coordinate < 1 || y1Coordinate < 1 || x1Coordinate > this.fields.length
+        || y1Coordinate > this.fields.length) {
       return null;
     }
-    return fields[xCoordinate - 1][yCoordinate - 1];
+    return fields[x1Coordinate - 1][y1Coordinate - 1];
   }
 
   /**
@@ -45,7 +46,6 @@ public class GameBoard {
 
   /**
    * @author pkoenig
-   * @return rowStrings
    */
   public String[] getRowsAsStrings() {
     String[] res = new String[15];

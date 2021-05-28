@@ -308,7 +308,10 @@ public class Player {
     }
   }
 
-
+  /**
+   * Moves a tile t (which has to be currently on the rack, I.e. 
+   * has yCoordinate==1) to Field f by calling removeRackTile and setTile.
+   */
   public void personalMoveToGameBoard(Tile t, Field f) {
     if (t.getField().getyCoordinate() != -1) {
       System.out.println("\nINVALID: personalMovetoGameboard + \n");

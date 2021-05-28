@@ -1,9 +1,9 @@
 package mechanic;
 
+import game.GameSettings;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import game.GameSettings;
 
 
 /**

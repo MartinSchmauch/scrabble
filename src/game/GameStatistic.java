@@ -25,7 +25,9 @@ public class GameStatistic implements Serializable {
   private List<String> allPlayers;
 
 
-
+  /**
+  * creates an instance of the class.
+  */
   public GameStatistic() {
     this.bestWords = new ArrayList<String>();
     this.allPlayers = new ArrayList<String>();
@@ -53,7 +55,7 @@ public class GameStatistic implements Serializable {
   }
 
   /**
-   * This method returns the best words as a continous String.
+   * provides the best words as a continous String.
    */
   public String getBestWordAsString() {
     String s = "";

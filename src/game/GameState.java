@@ -30,7 +30,9 @@ public class GameState implements Serializable {
   private HashMap<String, GameStatistic> gameStatistics = new HashMap<>();
 
 
-
+  /**
+   * creates an instance of the class.
+   */
   public GameState(PlayerData host, String customGameSettings) {
     this.isRunning = false;
     this.host = host;

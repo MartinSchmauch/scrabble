@@ -1,7 +1,8 @@
 package mechanic;
 
-import java.io.Serializable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+
 
 /**
  * The Field class is essential part of the domain model. It has a Tile attribute that refers to the

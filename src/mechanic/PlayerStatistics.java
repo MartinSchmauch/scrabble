@@ -89,7 +89,7 @@ public class PlayerStatistics implements Serializable {
 
   /**
    * This method gives back the total game Time in minutes.
-   * 
+   *
    * @author lurny
    */
   public int getPlayTimeInMinutes() {
