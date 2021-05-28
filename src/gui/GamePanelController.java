@@ -651,7 +651,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       // Image image =
       // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
       // rulesButton.getScene().setCursor(new ImageCursor(image));
-      rulesButton.getScene().setCursor(Cursor.OPEN_HAND);
+      rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
       node.startFullDrag();
       // cursorTile = new VisualTile("H", 3, true);
       // cursorTile.setId("cursorTileFromRack");
@@ -701,7 +701,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   @FXML
   public void test2(MouseDragEvent event) {
-    rulesButton.getScene().setCursor(Cursor.OPEN_HAND);
+    // rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
     // Node node = (Node) event.getSource();
     // selectedCoordinates = getPos(node, true);
     // System.out.println("node entered: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
@@ -712,7 +712,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   @FXML
   public void test3(MouseDragEvent event) {
-    rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
+    // rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
     // Node node = (Node) event.getSource();
     // selectedCoordinates = getPos(node, true);
     // System.out.println("node exited: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
