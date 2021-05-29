@@ -652,10 +652,11 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     ColorAdjust colorAdjust = new ColorAdjust();
     switch (this.darkMode.getText()) {
       case "Dark Mode":
-        colorAdjust.setBrightness(-0.7);
+               this.background.setImage(new Image(getClass().getResource("/fxml/images/ScrabbleBoardDark.png").toString()));
+        colorAdjust.setBrightness(-0.2);
         this.background.setOpacity(1);
         this.background.setEffect(colorAdjust);
-        this.rack.setStyle("-fx-background-color: linear-gradient(to right, #218f33, #83d490)");
+       // this.rack.setStyle("-fx-background-color: linear-gradient(to right, #218f33, #83d490)");
         this.skipAndChangeButton.setTextFill(Color.LIGHTGRAY);
         this.doneButton.setTextFill(Color.LIGHTGRAY);
         this.settingsButton.setTextFill(Color.LIGHTGRAY);;
@@ -689,7 +690,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         break;
         
       case "Light Mode":
-        colorAdjust.setBrightness(0);
+        
         this.rack.setStyle("-fx-background-color: transparent");
        
         this.skipAndChangeButton.setTextFill(Color.BLACK);
@@ -720,6 +721,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.BLACK);
         }
+        this.background.setImage(new Image(getClass().getResource("/fxml/images/ScrabbleBoard.png").toString()));      
+        colorAdjust.setBrightness(0);
         this.background.setEffect(colorAdjust);
         this.background.setOpacity(0.12);
         this.darkMode.setText("Dark Mode");

@@ -266,7 +266,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    if (this.score.getText().equals("∞")) {
+    if (this.score.getText().equals("\u221e")) {
       GameSettings.setMaxScore(-1);
     } else {
       GameSettings.setMaxScore(Integer.parseInt(score.getText()));
@@ -331,14 +331,14 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
     this.tor.setText(GameSettings.getTilesOnRack() + "");
     if (GameSettings.getMaxScore() < 0) {
-      this.score.setText("∞");
+      this.score.setText("\u221e");
     } else {
       this.score.setText(GameSettings.getMaxScore() + "");
     }
     this.bingo.setText(GameSettings.getBingo() + "");
     String input = GameSettings.getAiDifficulty();
     switch (input) {
-      case "LOW":
+      case "EASY":
         this.ai.setText("Easy");
         break;
       case "MEDIUM":
