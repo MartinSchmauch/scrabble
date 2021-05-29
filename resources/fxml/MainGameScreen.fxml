@@ -19,7 +19,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="upperPane" onMouseReleased="#mouseReleased" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
+
+<StackPane fx:id="upperPane" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
+
    <children>
       <ImageView fx:id="background" fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
          <image>

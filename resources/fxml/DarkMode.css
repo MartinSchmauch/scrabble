@@ -15,5 +15,23 @@
 	-fx-background-color: #171a18;
  	  -fx-text-fill: #26d451;
 }
+.button{
+	-fx-transition-duration: 1.5s;
+	-fx-border-color:  linear-gradient(to right, #218f33, #83d490);
+	-fx-border-radius: 24px;
+	-fx-background-color: transparent;
+	-fx-color: #666666;
+}
+
+.button:hover{
+	-fx-background-radius: 24px;
+	-fx-background-color: linear-gradient(to right, #218f33, #83d490);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+.progress-bar > .track {
+  -fx-text-box-border: #a9a9a9 ;
+  -fx-control-inner-background: #666666;
+}
+
 
 

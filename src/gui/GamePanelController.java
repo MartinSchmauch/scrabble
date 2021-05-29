@@ -112,6 +112,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected Text[] tlsLabel;
   protected Text[] dwsLabel;
   protected Text[] twsLabel;
+  protected Button[]buttons;
 
 
 
@@ -397,6 +398,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         dws12, dws13, dws14, dws15, dws16};
     twsLabel = new Text[] {tws0, tws1, tws2, tws3, tws4, tws5, tws6, tws7};
     rackTiles = new Rectangle[] {r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11};
+    buttons = new Button[] {this.doneButton, this.skipAndChangeButton, this.activateFieldLabels,
+        this.sendButton, this.darkMode, this.settingsButton, this.leaveGameButton,
+        this.rulesButton};
+
 
     activateFieldLabels.setText("Disable Labels");
     this.setFieldLabelVisibility(true);
@@ -453,7 +458,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // public void changed(ObservableValue observable, Object oldValue, Object newValue) {
     //// Double changeWidth = (Double)newValue - (Double)oldValue;
     // Double newWidth = (Double)newValue;
-    // System.out.println("### WIDTH HAT SICH GEÃ„NDERT AUF " + newWidth + " ###");
+    // System.out.println("### WIDTH HAT SICH GEÄNDERT AUF " + newWidth + " ###");
     // backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
     // board.setPrefWidth(board.getPrefWidth() + changeWidth);
     // backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
@@ -656,6 +661,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
      */
 
   }
+
 
   /**
    * Thread to countdown the maxmimum length of a turn.
@@ -869,14 +875,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         colorAdjust.setBrightness(-0.2);
         this.background.setOpacity(1);
         this.background.setEffect(colorAdjust);
-        // this.rack.setStyle("-fx-background-color: linear-gradient(to right, #218f33, #83d490)");
-        this.skipAndChangeButton.setTextFill(Color.LIGHTGRAY);
-        this.doneButton.setTextFill(Color.LIGHTGRAY);
-        this.settingsButton.setTextFill(Color.LIGHTGRAY);;
-        this.activateFieldLabels.setTextFill(Color.LIGHTGRAY);
-        this.rulesButton.setTextFill(Color.LIGHTGRAY);
-        this.leaveGameButton.setTextFill(Color.LIGHTGRAY);
-        this.sendButton.setTextFill(Color.LIGHTGRAY);
 
         this.remaining.setFill(Color.LIGHTGRAY);
         this.remainingLetters.setFill(Color.LIGHTGRAY);
@@ -888,6 +886,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.playerBox.setStroke(Color.DARKGREY);
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
 
+        this.timeProgress.getStylesheets()
+            .add(getClass().getResource("/fxml/DarkMode.css").toString());
+
 
         this.chat.getStylesheets().clear();
         this.chat.getStylesheets()
@@ -896,8 +897,15 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.chatInput.getStylesheets()
             .add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
 
+        for (int i = 0; i < buttons.length; i++) {
+          buttons[i].getStylesheets().clear();
+          buttons[i].getStylesheets()
+              .add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+        }
+
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.DARKGRAY);
+          rackTiles[i].setStroke(Color.DARKGRAY);
         }
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.LIGHTGRAY);
@@ -908,16 +916,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       case "Light Mode":
 
-        this.rack.setStyle("-fx-background-color: transparent");
-
-        this.skipAndChangeButton.setTextFill(Color.BLACK);
-        this.doneButton.setTextFill(Color.BLACK);
-        this.darkMode.setTextFill(Color.BLACK);
-        this.settingsButton.setTextFill(Color.BLACK);;
-        this.activateFieldLabels.setTextFill(Color.BLACK);
-        this.rulesButton.setTextFill(Color.BLACK);
-        this.leaveGameButton.setTextFill(Color.BLACK);
-        this.sendButton.setTextFill(Color.BLACK);
+        this.timeProgress.getStylesheets().clear();
 
         this.remaining.setFill(Color.BLACK);
         this.remainingLetters.setFill(Color.BLACK);
@@ -934,9 +933,15 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.chatInput.getStylesheets()
             .add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
 
-        this.skipAndChangeButton.setTextFill(Color.BLACK);
+        for (int i = 0; i < buttons.length; i++) {
+          buttons[i].getStylesheets().clear();
+          buttons[i].getStylesheets()
+              .add(getClass().getResource("/fxml/Buttons.css").toExternalForm());
+        }
+        this.darkMode.setTextFill(Color.BLACK);
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.WHITE);
+          rackTiles[i].setStroke(Color.WHITE);
         }
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.BLACK);
@@ -1500,7 +1505,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * @param newY y-position of the desired target location
    */
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
-    
+
     MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
     try {
       if (this.player.isHost()) {
