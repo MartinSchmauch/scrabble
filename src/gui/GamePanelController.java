@@ -425,7 +425,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     }
     remainingLetters.setText("");
     timer.setText("");
-    timeProgress.setProgress(0.0);
+    this.dws16.setText("✧");
     // backgroundGamePanel.heightProperty().bind(((StackPane)
     // backgroundGamePanel.getParent()).heightProperty());
     // backgroundGamePanel.widthProperty().bind(((StackPane)
@@ -440,7 +440,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // public void changed(ObservableValue observable, Object oldValue, Object newValue) {
     //// Double changeWidth = (Double)newValue - (Double)oldValue;
     // Double newWidth = (Double)newValue;
-    // System.out.println("### WIDTH HAT SICH GEÄNDERT AUF " + newWidth + " ###");
+    // System.out.println("### WIDTH HAT SICH GEÃ„NDERT AUF " + newWidth + " ###");
     // backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
     // board.setPrefWidth(board.getPrefWidth() + changeWidth);
     // backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);

@@ -40,12 +40,20 @@ public class Sound {
   public static void playUnsuccessfulTurnSound() {
     playMedia("/sounds/invalidTurn.mp3");
   }
-  
+
   /**
    * plays a sound if a tile is sent back via double click.
    */
-    public static void playFastBack() {
+  public static void playFastBack() {
     playMedia("/sounds/fastBack.mp3");
+  }
+
+  /**
+   * playes a sound id a player leaves.
+   * ** Sound from Zapsplat.com**
+   */
+  public static void playLeave() {
+    playMedia("/sounds/leave.mp3");
   }
 
   /**

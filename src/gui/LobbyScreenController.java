@@ -389,6 +389,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.player.getClientProtocol().disconnect();
     }
     closeWindow();
+    Sound.playLeave();
 
     /*
      * @author pkoenig
@@ -543,7 +544,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
 
   public void removeJoinedPlayer(String nickname) {
-    Sound.playUnsuccessfulTurnSound();
+    Sound.playLeave();
     updateJoinedPlayers();
   }
 
