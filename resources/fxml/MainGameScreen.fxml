@@ -38,19 +38,22 @@
             <RowConstraints vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane hgap="10.0" vgap="10.0">
+            <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
                <columnConstraints>
                   <ColumnConstraints />
                   <ColumnConstraints />
                </columnConstraints>
                <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints />
+                  <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
                </rowConstraints>
                <children>
-                  <Rectangle fx:id="chatBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                  <StackPane fx:id="playerBoxStackPane" GridPane.rowIndex="1">
+                  <Rectangle fx:id="chatBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <StackPane fx:id="playerBoxStackPane" GridPane.rowIndex="2">
                      <children>
                         <GridPane>
                            <columnConstraints>
@@ -296,7 +299,7 @@
                         </GridPane>
                      </children>
                   </StackPane>
-                  <StackPane fx:id="chatStackPane" alignment="BOTTOM_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <StackPane fx:id="chatStackPane" alignment="BOTTOM_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <children>
                         <GridPane alignment="CENTER" vgap="10.0">
                            <columnConstraints>
@@ -307,7 +310,7 @@
                               <RowConstraints />
                            </rowConstraints>
                            <children>
-                              <TextArea fx:id="chat" promptText="Welcome to the chat!" wrapText="true">
+                              <TextArea fx:id="chat" prefHeight="204.0" prefWidth="295.0" promptText="Welcome to the chat!" wrapText="true">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
@@ -339,85 +342,57 @@
                         </GridPane>
                      </children>
                   </StackPane>
-                  <GridPane GridPane.columnSpan="2" GridPane.rowIndex="2">
-                     <columnConstraints>
+                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Rack" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="System Bold" size="29.0" />
+                     </font>
+                  </Text>
+                  <GridPane fx:id="rack" alignment="CENTER" hgap="8.0" vgap="8.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                    <columnConstraints>
+                      <ColumnConstraints />
                         <ColumnConstraints />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                     </rowConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                      <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints />
+                      <RowConstraints />
+                    </rowConstraints>
                      <children>
-                        <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="Rack">
-                           <font>
-                              <Font name="System Bold" size="29.0" />
-                           </font>
-                        </Text>
-                        <StackPane fx:id="rackStack" onMouseReleased="#mouseReleased" GridPane.rowIndex="1">
-                           <children>
-                              <GridPane fx:id="rack" alignment="CENTER" hgap="8.0" vgap="8.0">
-                                <columnConstraints>
-                                  <ColumnConstraints />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints />
-                                    <ColumnConstraints />
-                                  <ColumnConstraints />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints />
-                                  <RowConstraints />
-                                </rowConstraints>
-                                 <children>
-                                    <Rectangle fx:id="r1" fill="WHITE" height="60.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r4" fill="WHITE" height="60.0" layoutX="106.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r3" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r2" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r0" fill="WHITE" height="60.0" layoutX="344.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r5" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r6" fill="WHITE" height="60.0" layoutX="427.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r7" fill="WHITE" height="60.0" layoutX="10.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r8" fill="WHITE" height="60.0" layoutX="94.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r9" fill="WHITE" height="60.0" layoutX="178.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r10" fill="WHITE" height="60.0" layoutX="261.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                    <Rectangle fx:id="r11" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </StackPane>
-                        <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0" GridPane.rowIndex="2">
-                           <children>
-                              <Button fx:id="skipAndChangeButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Skip &amp; Change">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets right="20.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Done">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="20.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
-                        </HBox>
-                        <Rectangle fx:id="rackBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="160.0" stroke="BLACK" strokeType="INSIDE" width="520.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r1" fill="WHITE" height="60.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r4" fill="WHITE" height="60.0" layoutX="106.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r3" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r2" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r0" fill="WHITE" height="60.0" layoutX="344.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r5" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r6" fill="WHITE" height="60.0" layoutX="427.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r7" fill="WHITE" height="60.0" layoutX="10.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r8" fill="WHITE" height="60.0" layoutX="94.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r9" fill="WHITE" height="60.0" layoutX="178.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r10" fill="WHITE" height="60.0" layoutX="261.0" layoutY="87.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Rectangle fx:id="r11" fill="WHITE" height="60.0" layoutX="10.0" layoutY="13.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                      </children>
                   </GridPane>
-                  <Pane>
+                  <Button fx:id="skipAndChangeButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Skip &amp; Change" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="doneButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" prefWidth="160.0" stylesheets="@Buttons.css" text="Done" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Rectangle fx:id="rackBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="160.0" stroke="BLACK" strokeType="INSIDE" width="520.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+                  <Pane GridPane.rowSpan="2">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Version 1.0.0" />
                      </children>
                   </Pane>
-                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="SCRABBLE" textAlignment="CENTER">
+                  <Rectangle fx:id="playerBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <Text fill="#8fb492" strokeType="OUTSIDE" strokeWidth="0.0" text="SCRABBLE" textAlignment="CENTER" GridPane.rowSpan="2">
                      <font>
                         <Font name="Arial Bold" size="46.0" />
                      </font>
@@ -428,7 +403,7 @@
                         <Button fx:id="activateFieldLabels" alignment="CENTER" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Disable Labels" />
                      </children>
                   </HBox>
-                  <HBox alignment="BOTTOM_CENTER" GridPane.columnIndex="1">
+                  <HBox alignment="BOTTOM_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <children>
                         <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Leave Game">
                            <HBox.margin>
@@ -459,7 +434,6 @@
                         <Insets />
                      </opaqueInsets>
                   </HBox>
-                  <Rectangle fx:id="playerBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="370.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                </children>
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -2612,7 +2586,7 @@
                   </GridPane>
                </children>
             </StackPane>
-            <Rectangle fx:id="backgroundGamePanel" arcHeight="15.0" arcWidth="15.0" fill="#ffffff00" height="830.0" stroke="BLACK" strokeType="INSIDE" width="830.0" GridPane.columnIndex="1" />
+            <Rectangle fx:id="backgroundGamePanel" arcHeight="15.0" arcWidth="15.0" fill="#ffffff00" height="830.0" stroke="BLACK" strokeType="INSIDE" width="830.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
          </children>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
