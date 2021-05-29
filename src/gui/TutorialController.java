@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
@@ -56,11 +57,11 @@ public class TutorialController extends GamePanelController
   private static int[] selectedCoordinates = new int[2]; // row, column
   private static int[] targetCoordinates = new int[2]; // row, column
 
-  
+
   private static GameController gc;
   private List<Tile> tiles;
   private int indicator = 0;
-  
+
   protected Text[] playerLabel;
   protected Text[] pointsLabel;
   protected Text[] playerNameLabel;
@@ -228,8 +229,34 @@ public class TutorialController extends GamePanelController
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
-
+    instance = this;
+    List<Node> list = this.board.getChildren();
+    for (Node n : list) {
+      if (n.getClass() == Rectangle.class) {
+        // @author mschmauch
+        n.setOnMouseClicked(new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {
+            if (event.getButton().equals(MouseButton.PRIMARY)) {
+              if (event.getClickCount() == 2) {
+                Node node = (Node) event.getSource();
+                selectedCoordinates = getPos(node, false);
+                selectedCoordinates[0] += 1;
+                selectedCoordinates[1] += 1;
+                targetCoordinates[0] = player.getFreeRackField().getxCoordinate();
+                targetCoordinates[1] = player.getFreeRackField().getyCoordinate();
+                sendTileMove(player.getNickname(), selectedCoordinates[0], selectedCoordinates[1],
+                    targetCoordinates[0], targetCoordinates[1]);
+                resetCoordinates();
+              }
+            }
+          }
+        });
+      }
+    }
   }
+
+
 
   /**
    * Handles all button user inputs in the GamePanel.
@@ -320,7 +347,7 @@ public class TutorialController extends GamePanelController
           nextTurn(indicator);
         }
         break;
-      
+
       default:
         break;
     }
@@ -338,7 +365,7 @@ public class TutorialController extends GamePanelController
         alert.setHeaderText("Lay your first word");
         alert.setContentText(
             "Drag the correct letters on their designated place.\nFirst word has to go through "
-            + "the middle!");
+                + "the middle!\n\nDoubleclick on a tile to put it back onto rack.");
         break;
       case 1:
         alert.setHeaderText("React");
@@ -351,7 +378,7 @@ public class TutorialController extends GamePanelController
         alert.setHeaderText("Exhange your tiles");
         alert.setContentText(
             "Hit \"Skip & Change\"!\nSelect the tiles you want to change and hit \"Done\".\nIf"
-            + " you change tiles, you can't lay words in this round.");
+                + " you change tiles, you can't lay words in this round.");
         break;
       default:
         break;
@@ -421,10 +448,8 @@ public class TutorialController extends GamePanelController
    */
 
   public void updateChat(String input) {
-    this.chat.setText(
-        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the"
-        + " basic mechanics of this game. If you need help, click on \"Show Tip\"."
-            + input);
+    this.chat.setText("Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the"
+        + " basic mechanics of this game. If you need help, click on \"Show Tip\"." + input);
   }
 
 
@@ -587,8 +612,7 @@ public class TutorialController extends GamePanelController
     st.close();
     new LoginScreen().start(new Stage());
   }
-  
-  
+
   /**
    * Listener that is called, when a user starts a drag movement from a rack field. The coordinates
    * of the event starting location are being saved for this drag event in the selectedCoordinates
@@ -617,7 +641,7 @@ public class TutorialController extends GamePanelController
   @FXML
   public void boardDragHandling(MouseEvent event) {
     Node node = (Node) event.getSource();
-       
+
     selectedCoordinates = getPos(node, false);
     selectedCoordinates[0]++;
     selectedCoordinates[1]++;
