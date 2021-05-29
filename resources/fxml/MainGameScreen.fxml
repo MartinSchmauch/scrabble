@@ -35,10 +35,10 @@
             <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints vgrow="ALWAYS" />
+            <RowConstraints minHeight="0.0" vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane alignment="CENTER" hgap="7.0" vgap="7.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <GridPane alignment="CENTER" hgap="7.0" minHeight="0.0" vgap="7.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <columnConstraints>
                   <ColumnConstraints percentWidth="50.0" />
                   <ColumnConstraints percentWidth="50.0" />
@@ -457,7 +457,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </GridPane.margin>
             </GridPane>
-            <StackPane fx:id="boardStack" GridPane.columnIndex="1">
+            <StackPane fx:id="boardStack" minHeight="0.0" GridPane.columnIndex="1">
                <children>
                   <GridPane fx:id="board" alignment="CENTER" hgap="5.0" vgap="5.0">
                     <columnConstraints>
