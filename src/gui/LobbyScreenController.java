@@ -354,6 +354,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       stage.setOnCloseRequest(e -> close(controller));
       stage.setTitle("Scrabble3");
       // stage.setResizable(false);
+//      stage.minWidthProperty().bind(stage.getScene().heightProperty().multiply(2)); // lock Acpect-Ratio 
+//      stage.minHeightProperty().bind(stage.getScene().widthProperty().divide(2));
       stage.show();
 
       closeWindow();

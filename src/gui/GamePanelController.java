@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.NumberBinding;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,8 +31,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -331,6 +337,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected Rectangle backgroundGamePanel;
   @FXML
   protected VBox playerVbox;
+   @FXML
+   protected StackPane boardStack;
 
   /**
    * This method initializes the GamePanelController and is being called upon creation of the
@@ -437,6 +445,87 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // board.setPrefWidth(800);
     // backgroundGamePanel.setHeight(820);
     // board.setPrefHeight(800);
+
+    // for (int j = 0; j < 15; j++) {
+    // ColumnConstraints cc = new ColumnConstraints();
+    // cc.setHgrow(Priority.ALWAYS);
+    // cc.setPercentWidth(100 / 15);
+    // board.getColumnConstraints().add(cc);
+    // }
+    //
+    // for (int j = 0; j < 15; j++) {
+    // RowConstraints rc = new RowConstraints();
+    // rc.setVgrow(Priority.ALWAYS);
+    // rc.setPercentHeight(100 / 15);
+    // board.getRowConstraints().add(rc);
+    // }
+
+    // backgroundGamePanel.heightProperty().bind(bGpStackPane.heightProperty());
+    // backgroundGamePanel.widthProperty().bind(bGpStackPane.widthProperty());
+    
+//    final NumberBinding binding = Bindings.min(widthProperty(), heightProperty());
+    
+    backgroundGamePanel.heightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
+    backgroundGamePanel.widthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
+    
+//    board.heightProperty().(board.widthProperty());
+    board.prefHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.prefWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.maxWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.minHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.minWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.minHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+
+    Pane p;
+    Rectangle r;
+    Text t;
+
+    ObservableList<Node> guiTiles = board.getChildren();
+
+    for (Node n : guiTiles) {
+      p = (Pane) n;
+      try {
+        r = (Rectangle) p.getChildren().get(0);
+        // r.setWidth(50);
+        // r.setHeight(50);
+        r.heightProperty().bind(p.heightProperty());
+        r.widthProperty().bind(p.widthProperty());
+        System.out.println("Property set");
+        p.setMinSize(0, 0);
+
+      } catch (Exception e) {
+        System.out.println("no rectangle");
+      }
+      try {
+        t = (Text) p.getChildren().get(1);
+        // r.setWidth(50);
+        // r.setHeight(50);
+        t.setManaged(true);
+        System.out.println("Property set");
+        p.setMinSize(0, 0);
+
+      } catch (Exception e) {
+        System.out.println("no text");
+      }
+
+    }
+
+    //
+    // for (Node n : guiTiles) {
+    // try {
+    // r = (Rectangle) n;
+    // r.heightProperty().bind(board.getRowConstraints().get(0).);
+    // r.setWidth(30);
+    // System.out.println("Property set");
+    //
+    // } catch (Exception e) {
+    // System.out.println("no rectangle");
+    // }
+    //
+    // }
+
 
 
     /**
@@ -663,21 +752,23 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.rulesButton.setTextFill(Color.LIGHTGRAY);
         this.leaveGameButton.setTextFill(Color.LIGHTGRAY);
         this.sendButton.setTextFill(Color.LIGHTGRAY);
-                      
+
         this.remaining.setFill(Color.LIGHTGRAY);
         this.remainingLetters.setFill(Color.LIGHTGRAY);
         this.timer.setFill(Color.LIGHTGRAY);
         this.timeLabel.setFill(Color.LIGHTGRAY);
-        
+
         this.rackBox.setStroke(Color.DARKGREEN);
         this.chatBox.setStroke(Color.DARKGREEN);
         this.playerBox.setStroke(Color.DARKGREEN);
-        
+
         this.chat.getStylesheets().clear();
-        this.chat.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+        this.chat.getStylesheets()
+            .add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
         this.chatInput.getStylesheets().clear();
-        this.chatInput.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
-        
+        this.chatInput.getStylesheets()
+            .add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.DARKGRAY);
         }
@@ -687,11 +778,11 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.darkMode.setText("Light Mode");
         this.darkMode.setTextFill(Color.LIGHTGRAY);
         break;
-        
+
       case "Light Mode":
         colorAdjust.setBrightness(0);
         this.rack.setStyle("-fx-background-color: transparent");
-       
+
         this.skipAndChangeButton.setTextFill(Color.BLACK);
         this.doneButton.setTextFill(Color.BLACK);
         this.darkMode.setTextFill(Color.BLACK);
@@ -700,18 +791,20 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.rulesButton.setTextFill(Color.BLACK);
         this.leaveGameButton.setTextFill(Color.BLACK);
         this.sendButton.setTextFill(Color.BLACK);
-        
+
         this.remaining.setFill(Color.BLACK);
         this.remainingLetters.setFill(Color.BLACK);
         this.timer.setFill(Color.BLACK);
         this.timeLabel.setFill(Color.BLACK);
-        
+
         this.rackBox.setStroke(Color.BLACK);
         this.chatBox.setStroke(Color.BLACK);
         this.playerBox.setStroke(Color.BLACK);
-        
-        this.chat.getStylesheets().add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
-        this.chatInput.getStylesheets().add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
+
+        this.chat.getStylesheets()
+            .add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
+        this.chatInput.getStylesheets()
+            .add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
 
         this.skipAndChangeButton.setTextFill(Color.BLACK);
         for (int i = 0; i < rackTiles.length; i++) {
