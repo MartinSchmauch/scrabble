@@ -112,7 +112,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected Text[] tlsLabel;
   protected Text[] dwsLabel;
   protected Text[] twsLabel;
-  protected Button[]buttons;
+  protected Button[] buttons;
 
 
 
@@ -458,7 +458,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // public void changed(ObservableValue observable, Object oldValue, Object newValue) {
     //// Double changeWidth = (Double)newValue - (Double)oldValue;
     // Double newWidth = (Double)newValue;
-    // System.out.println("### WIDTH HAT SICH GEÄNDERT AUF " + newWidth + " ###");
+    // System.out.println("### WIDTH HAT SICH GEï¿½NDERT AUF " + newWidth + " ###");
     // backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
     // board.setPrefWidth(board.getPrefWidth() + changeWidth);
     // backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
@@ -522,19 +522,19 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
 
     // PlayerBox
-     playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(15));
-     playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(15));
+    playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(15));
+    playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(15));
 
 
     // ChatBox
-     chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(15));
-     chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(15));
+    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(15));
+    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(15));
 
     // Chat
-//    chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
-//    chat.prefWidthProperty().bind(upperPane.prefWidthProperty().divide(4));
-//     chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
-     chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20));
+    // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+    // chat.prefWidthProperty().bind(upperPane.prefWidthProperty().divide(4));
+    // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+    chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20));
 
 
     // RackBox
@@ -542,8 +542,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // rackBox.widthProperty().bind(rackStack.widthProperty().subtract(15));
     // rackBox.heightProperty().bind(rack.heightProperty().subtract(15));
     // rackBox.widthProperty().bind(rack.widthProperty().subtract(15));
-    rackBox.heightProperty().bind(referenceSizeForRack.heightProperty().multiply(2).add(20));
-    rackBox.widthProperty().bind(referenceSizeForRack.widthProperty().multiply(6).add(55));
+    rackBox.heightProperty().bind(referenceSizeForRack.heightProperty().multiply(2).add(72));
+    rackBox.widthProperty().bind(referenceSizeForRack.widthProperty().multiply(6).add(190));
 
 
     // RackFields
@@ -551,23 +551,23 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     ObservableList<Node> rackTiles = rack.getChildren();
     for (Node n : rackTiles) {
       rackField = (Rectangle) n;
-      rackField.widthProperty().bind(referenceSizeForRack.widthProperty());
-      rackField.heightProperty().bind(referenceSizeForRack.heightProperty());
+      rackField.widthProperty().bind(referenceSizeForRack.widthProperty().add(20));
+      rackField.heightProperty().bind(referenceSizeForRack.heightProperty().add(20));
     }
 
 
     // CurrentPlayer Boxes
-     currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(5));
-     currentPlayer1.widthProperty().bind(playerBox.widthProperty().subtract(10));
-    
-     currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(5));
-     currentPlayer2.widthProperty().bind(playerBox.widthProperty().subtract(10));
-    
-     currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(5));
-     currentPlayer3.widthProperty().bind(playerBox.widthProperty().subtract(10));
-    
-     currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(5));
-     currentPlayer4.widthProperty().bind(playerBox.widthProperty().subtract(10));
+    currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(5));
+    currentPlayer1.widthProperty().bind(playerBox.widthProperty().subtract(10));
+
+    currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(5));
+    currentPlayer2.widthProperty().bind(playerBox.widthProperty().subtract(10));
+
+    currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(5));
+    currentPlayer3.widthProperty().bind(playerBox.widthProperty().subtract(10));
+
+    currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(5));
+    currentPlayer4.widthProperty().bind(playerBox.widthProperty().subtract(10));
 
 
 
@@ -1296,13 +1296,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     int column = tile.getField().getxCoordinate();
     int row = tile.getField().getyCoordinate();
 
-    /**
-     * @author pkoenig
-     */
+
     VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
-    visualTile.getShape().heightProperty()
-        .bind(referenceSizeForRack.heightProperty().multiply(0.9));
-    visualTile.getShape().widthProperty().bind(referenceSizeForRack.widthProperty().multiply(0.9));
 
 
     if (tile.isOnRack()) {

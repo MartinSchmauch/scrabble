@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="upperPane" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
+<StackPane fx:id="upperPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
 
    <children>
       <ImageView fx:id="background" fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
@@ -39,7 +39,7 @@
             <RowConstraints vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <GridPane alignment="CENTER" hgap="7.0" vgap="7.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <columnConstraints>
                   <ColumnConstraints percentWidth="50.0" />
                   <ColumnConstraints percentWidth="50.0" />
@@ -454,6 +454,9 @@
                <padding>
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
+               <GridPane.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </GridPane.margin>
             </GridPane>
             <StackPane fx:id="boardStack" GridPane.columnIndex="1">
                <children>
