@@ -31,17 +31,17 @@
       </ImageView>
       <GridPane alignment="CENTER">
          <columnConstraints>
-            <ColumnConstraints hgrow="NEVER" />
-            <ColumnConstraints hgrow="ALWAYS" />
+            <ColumnConstraints hgrow="NEVER" percentWidth="50.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane alignment="CENTER" hgap="10.0" vgap="10.0">
+            <GridPane alignment="CENTER" hgap="10.0" vgap="10.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
+                  <ColumnConstraints percentWidth="50.0" />
+                  <ColumnConstraints percentWidth="50.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" />
@@ -53,11 +53,11 @@
                </rowConstraints>
                <children>
                   <Rectangle fx:id="chatBox" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="440.0" stroke="BLACK" strokeType="INSIDE" width="330.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-                  <StackPane fx:id="playerBoxStackPane" GridPane.rowIndex="2">
+                  <StackPane fx:id="playerBoxStackPane" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <children>
-                        <GridPane>
+                        <GridPane alignment="CENTER" StackPane.alignment="CENTER">
                            <columnConstraints>
-                              <ColumnConstraints />
+                              <ColumnConstraints halignment="CENTER" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints />
@@ -69,7 +69,7 @@
                               <RowConstraints minHeight="30.0" />
                            </rowConstraints>
                            <children>
-                              <StackPane fx:id="stackPlayer1">
+                              <StackPane fx:id="stackPlayer1" alignment="CENTER_LEFT">
                                  <children>
                                     <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -117,7 +117,7 @@
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </padding>
                               </StackPane>
-                              <StackPane fx:id="stackPlayer2" GridPane.rowIndex="1">
+                              <StackPane fx:id="stackPlayer2" alignment="CENTER_LEFT" GridPane.rowIndex="1">
                                  <children>
                                     <HBox fx:id="player2Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -168,7 +168,7 @@
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </padding>
                               </StackPane>
-                              <StackPane fx:id="stackPlayer3" GridPane.rowIndex="2">
+                              <StackPane fx:id="stackPlayer3" alignment="CENTER_LEFT" GridPane.rowIndex="2">
                                  <children>
                                     <HBox fx:id="player3Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -219,7 +219,7 @@
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </padding>
                               </StackPane>
-                              <StackPane fx:id="stackPlayer4" GridPane.rowIndex="3">
+                              <StackPane fx:id="stackPlayer4" alignment="CENTER_LEFT" GridPane.rowIndex="3">
                                  <children>
                                     <HBox fx:id="player4Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -271,23 +271,38 @@
                                  <font>
                                     <Font size="16.0" />
                                  </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
                               </Text>
                               <Text fx:id="remainingLetters" strokeType="OUTSIDE" strokeWidth="0.0" text="50" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
                               </Text>
                               <Text fx:id="timeLabel" strokeType="OUTSIDE" strokeWidth="0.0" text="Timer" GridPane.halignment="LEFT" GridPane.rowIndex="5">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
                               </Text>
                               <Text fx:id="timer" strokeType="OUTSIDE" strokeWidth="0.0" text="20:30 min" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
                               </Text>
-                              <ProgressBar fx:id="timeProgress" progress="0.35" style="-fx-accent: #8FB492;" GridPane.rowIndex="6" />
+                              <ProgressBar fx:id="timeProgress" prefHeight="20.0" prefWidth="330.0" progress="0.35" style="-fx-accent: #8FB492;" GridPane.rowIndex="6">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin></ProgressBar>
                               <Rectangle fx:id="currentPlayer1" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" />
                               <Rectangle fx:id="currentPlayer2" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" GridPane.rowIndex="1" />
                               <Rectangle fx:id="currentPlayer3" arcHeight="10.0" arcWidth="10.0" fill="#ffffff00" height="60.0" stroke="#f80000" strokeType="INSIDE" visible="false" width="350.0" GridPane.rowIndex="2" />
@@ -304,37 +319,37 @@
                         <GridPane alignment="CENTER" vgap="10.0">
                            <columnConstraints>
                               <ColumnConstraints />
+                              <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints />
                               <RowConstraints />
                            </rowConstraints>
                            <children>
-                              <TextArea fx:id="chat" prefHeight="204.0" prefWidth="295.0" promptText="Welcome to the chat!" wrapText="true">
+                              <TextArea fx:id="chat" prefHeight="378.0" prefWidth="370.0" promptText="Welcome to the chat!" wrapText="true" GridPane.columnSpan="2" GridPane.hgrow="NEVER">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
                               </TextArea>
-                              <HBox alignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                                 <children>
-                                    <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" onAction="#handle" promptText="Message...">
-                                       <font>
-                                          <Font size="14.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </TextField>
-                                    <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Send" textAlignment="CENTER">
-                                       <font>
-                                          <Font size="11.0" />
-                                       </font>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </Button>
-                                 </children>
-                              </HBox>
+                              <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" onAction="#handle" prefHeight="47.0" prefWidth="265.0" promptText="Message..." GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Send" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </Button>
                            </children>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

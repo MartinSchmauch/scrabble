@@ -516,16 +516,19 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
 
     // PlayerBox
-    // playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(15));
-    // playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(15));
+     playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(15));
+     playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(15));
 
 
     // ChatBox
-    // chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(15));
-    // chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(15));
+     chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(15));
+     chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(15));
 
     // Chat
-    chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+//    chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+//    chat.prefWidthProperty().bind(upperPane.prefWidthProperty().divide(4));
+//     chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+     chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20));
 
 
     // RackBox
@@ -548,17 +551,17 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
 
     // CurrentPlayer Boxes
-    // currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(5));
-    // currentPlayer1.widthProperty().bind(stackPlayer1.widthProperty().subtract(5));
-    //
-    // currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(5));
-    // currentPlayer2.widthProperty().bind(stackPlayer2.widthProperty().subtract(5));
-    //
-    // currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(5));
-    // currentPlayer3.widthProperty().bind(stackPlayer3.widthProperty().subtract(5));
-    //
-    // currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(5));
-    // currentPlayer4.widthProperty().bind(stackPlayer4.widthProperty().subtract(5));
+     currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(5));
+     currentPlayer1.widthProperty().bind(playerBox.widthProperty().subtract(10));
+    
+     currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(5));
+     currentPlayer2.widthProperty().bind(playerBox.widthProperty().subtract(10));
+    
+     currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(5));
+     currentPlayer3.widthProperty().bind(playerBox.widthProperty().subtract(10));
+    
+     currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(5));
+     currentPlayer4.widthProperty().bind(playerBox.widthProperty().subtract(10));
 
 
 
