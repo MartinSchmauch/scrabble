@@ -33,6 +33,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
@@ -348,10 +349,25 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   protected Rectangle backgroundGamePanel;
   @FXML
-  protected VBox playerVbox;
-   @FXML
-   protected StackPane boardStack;
-
+  protected StackPane boardStack;
+  @FXML
+  protected StackPane playerBoxStackPane;
+  @FXML
+  protected StackPane chatStackPane;
+  @FXML
+  protected StackPane stackPlayer1;
+  @FXML
+  protected StackPane stackPlayer2;
+  @FXML
+  protected StackPane stackPlayer3;
+  @FXML
+  protected StackPane stackPlayer4;
+  @FXML
+  protected StackPane rackStack;
+  @FXML
+  protected StackPane referenceSizeForRack;
+  
+  
   /**
    * This method initializes the GamePanelController and is being called upon creation of the
    * Controller. Here all the labels on the UI are being reset and adapted to the current game
@@ -496,13 +512,56 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 //    };
 
     
+    // PlayerBox
+//    playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(15));
+//    playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(15));
+    
+    
+    // ChatBox
+//    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(15));
+//    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(15));
+    
+    
+    // RackBox
+//    rackBox.heightProperty().bind(rackStack.heightProperty().subtract(15));
+//    rackBox.widthProperty().bind(rackStack.widthProperty().subtract(15));
+    
+    
+    // RackFields
+    Rectangle rackField;
+    ObservableList<Node> rackTiles = rack.getChildren();
+    for (Node n : rackTiles) {
+      rackField = (Rectangle) n;
+      rackField.widthProperty().bind(referenceSizeForRack.widthProperty());
+      rackField.heightProperty().bind(referenceSizeForRack.heightProperty());
+    }
+    
+    
+    // CurrentPlayer Boxes
+//    currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(5));
+//    currentPlayer1.widthProperty().bind(stackPlayer1.widthProperty().subtract(5));
+//    
+//    currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(5));
+//    currentPlayer2.widthProperty().bind(stackPlayer2.widthProperty().subtract(5));
+//    
+//    currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(5));
+//    currentPlayer3.widthProperty().bind(stackPlayer3.widthProperty().subtract(5));
+//    
+//    currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(5));
+//    currentPlayer4.widthProperty().bind(stackPlayer4.widthProperty().subtract(5));
+    
+    
+    
+    // Background
     background.fitHeightProperty().bind(upperPane.heightProperty());
     background.fitWidthProperty().bind(upperPane.widthProperty());
     
+    
+    
+    // Gameboard
     backgroundGamePanel.heightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
     backgroundGamePanel.widthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
     
-//    board.heightProperty().(board.widthProperty());
     board.prefHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
     board.prefWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
     board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
@@ -529,11 +588,11 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         // r.setHeight(50);
         r.heightProperty().bind(p.heightProperty());
         r.widthProperty().bind(p.widthProperty());
-        System.out.println("Property set");
+//        System.out.println("Property set");
         p.setMinSize(0, 0);
 
       } catch (Exception e) {
-        System.out.println("no rectangle");
+//        System.out.println("no rectangle");
       }
       try {
         t = (Text) p.getChildren().get(1);
@@ -543,11 +602,11 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
 
         t.setManaged(true);
-        System.out.println("Property set");
+//        System.out.println("Property set");
         p.setMinSize(0, 0);
 
       } catch (Exception e) {
-        System.out.println("no text");
+//        System.out.println("no text");
       }
 
     }
