@@ -111,6 +111,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected Text[] tlsLabel;
   protected Text[] dwsLabel;
   protected Text[] twsLabel;
+  
+
 
   // protected VisualTile cursorTile;
 
@@ -521,6 +523,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 //    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(15));
 //    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(15));
     
+    // Chat
+    chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+    
     
     // RackBox
 //    rackBox.heightProperty().bind(rackStack.heightProperty().subtract(15));
@@ -577,8 +582,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
     ObservableList<Node> guiTiles = board.getChildren();
     
-    DoubleProperty fontSize = new SimpleDoubleProperty(10);
-    fontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
+    DoubleProperty tileFontSize = new SimpleDoubleProperty(10);
+    tileFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
 
     for (Node n : guiTiles) {
       p = (Pane) n;
@@ -598,7 +603,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         t = (Text) p.getChildren().get(1);
         // r.setWidth(50);
         // r.setHeight(50);
-        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"));
+        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
 
         t.setManaged(true);
@@ -1258,28 +1263,36 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     int tileValue = tile.getValue();
     int column = tile.getField().getxCoordinate();
     int row = tile.getField().getyCoordinate();
+    
+    /**
+     * @author pkoenig
+     */
+    VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
+    visualTile.getShape().heightProperty().bind(referenceSizeForRack.heightProperty().multiply(0.9));
+    visualTile.getShape().widthProperty().bind(referenceSizeForRack.widthProperty().multiply(0.9));
 
+    
     if (tile.isOnRack()) {
       row = 0;
       if (column > 5) { // case: tile is in the second row of the rack
         row = 1;
         column -= 6;
       }
-      VisualTile rackTile = new VisualTile(Character.toString(letter), tileValue, true);
-      rackTile.setMouseTransparent(true);
-      rack.add(rackTile, column, row);
-      GridPane.setHalignment(rackTile, HPos.CENTER);
-      GridPane.setValignment(rackTile, VPos.BOTTOM);
-      GridPane.setMargin(rackTile, new Insets(0, 0, 5, 0));
+      
+      visualTile.setMouseTransparent(true);
+      rack.add(visualTile, column, row);
+      GridPane.setHalignment(visualTile, HPos.CENTER);
+      GridPane.setValignment(visualTile, VPos.CENTER);
+//      GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
-      VisualTile boardTile = new VisualTile(Character.toString(letter), tileValue, false);
-      boardTile.setMouseTransparent(true);
-      board.add(boardTile, column, row);
-      GridPane.setHalignment(boardTile, HPos.CENTER);
-      GridPane.setValignment(boardTile, VPos.BOTTOM);
-      GridPane.setMargin(boardTile, new Insets(0, 0, 3, 0));
+      
+      visualTile.setMouseTransparent(true);
+      board.add(visualTile, column, row);
+      GridPane.setHalignment(visualTile, HPos.CENTER);
+      GridPane.setValignment(visualTile, VPos.CENTER);
+//      GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }
 
@@ -1664,5 +1677,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   public void setExchangeTilesMode(boolean exchangeTilesMode) {
     GamePanelController.exchangeTilesMode = exchangeTilesMode;
+  }
+
+  public static void setInstance(GamePanelController controller) {
+    instance = controller;
+    
   }
 }

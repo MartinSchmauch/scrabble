@@ -341,6 +341,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
+      GamePanelController.setInstance(controller);
 
       if (player.isHost()) {
         player.getServer().setGamePanelController(controller);
