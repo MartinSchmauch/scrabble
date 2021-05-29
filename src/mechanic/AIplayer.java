@@ -253,7 +253,7 @@ public class AIplayer extends Player {
   /**
    * Called once for each AIplayer at creation-time
    * 
-   * Creates a instance-HashMap of AIcombinations used from Method runAi
+   * Creates a instance-HashMap of AIcombinations used by Method runAi
    * 
    */
   public void generateTileCombinations() {
@@ -288,7 +288,9 @@ public class AIplayer extends Player {
    * 
    */
   public Turn runAi(GameBoard gb) {
-    System.out.println("\nAI is running with setting " + this.ailevel + "....");
+    if (this.testmode) {
+      System.out.println("\nAI is running with setting " + this.ailevel + "....");
+    }
 
     // init
     TreeSet<AIcombination> currentAiCombinations =
@@ -386,6 +388,7 @@ public class AIplayer extends Player {
         System.out.println(w.toString());
       }
       System.out.println("----------------------");
+      System.out.println("AI finished");
     } else {
       // add Tiles to gameboard
       Field[] maxLocation = new Field[idealTurn.getLaydDownFields().size()];
@@ -403,7 +406,6 @@ public class AIplayer extends Player {
         maxLocation[ii].setTileOneDirection(maxTiles.get(ii));
       }
     }
-    System.out.println("AI finished");
 
     return idealTurn;
   }
