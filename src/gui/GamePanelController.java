@@ -1028,7 +1028,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   public void boardDragStarted(MouseEvent event) {
     if (!exchangeTilesMode) {
       Node node = (Node) event.getSource();
-      selectedCoordinates = getPos(node, false);
+      selectedCoordinates = getPos(node.getParent(), false);
       selectedCoordinates[0]++;
       selectedCoordinates[1]++;
       rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
@@ -1093,7 +1093,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   public void boardDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
-    targetCoordinates = getPos(node, false);
+    targetCoordinates = getPos(node.getParent(), false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
     rulesButton.getScene().setCursor(Cursor.DEFAULT);
@@ -1390,7 +1390,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       for (Node node : list) {
         x = getPos(node, false)[0];
         y = getPos(node, false)[1];
-        if (node instanceof Parent && x == column && y == row) {
+        if (node instanceof VisualTile && x == column && y == row) {
           board.getChildren().remove(node);
           break;
         }
