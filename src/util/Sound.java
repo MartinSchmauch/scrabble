@@ -42,6 +42,21 @@ public class Sound {
   }
 
   /**
+   * plays a sound if a tile is sent back via double click.
+   */
+  public static void playFastBack() {
+    playMedia("/sounds/fastBack.mp3");
+  }
+
+  /**
+   * playes a sound id a player leaves.
+   * ** Sound from Zapsplat.com**
+   */
+  public static void playLeave() {
+    playMedia("/sounds/leave.mp3");
+  }
+
+  /**
    * plays the wav file saved at url filepath.
    */
   public static void playMedia(String url) {

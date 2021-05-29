@@ -47,6 +47,7 @@ public class Tutorial {
       stage.setTitle("Scrabble3");
       // stage.setResizable(false);
       stage.show();
+      TutorialController.getInstance().showTip(0);
 
     } catch (IOException e) {
       e.printStackTrace();
