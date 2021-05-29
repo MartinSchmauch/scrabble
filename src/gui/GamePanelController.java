@@ -6,16 +6,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -104,7 +114,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   // protected VisualTile cursorTile;
 
   @FXML
-  protected Pane upperPane;
+  protected StackPane upperPane;
   @FXML
   protected TextArea chat;
   @FXML
@@ -467,6 +477,28 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     
 //    final NumberBinding binding = Bindings.min(widthProperty(), heightProperty());
     
+//    Rectangle2D r2d = new Rectangle2D(
+//    0, 
+//    0, 
+//    0, 0);
+        
+  //Custom ObjectBinding of Rectangle2D with three dependencies
+//    ObjectProperty<Bounds> boundsInLocalProperty = new SimpleObjectProperty<>();
+//    ReadOnlyDoubleProperty widthProperty = upperPane.widthProperty();
+//    ReadOnlyDoubleProperty heightProperty = upperPane.heightProperty();
+//
+//    ObjectBinding<Rectangle2D> rectBinding = new ObjectBinding<Rectangle2D>() {
+//        {bind(boundsInLocalProperty,widthProperty, heightProperty);}
+//        protected Rectangle2D computeValue() {
+//            Bounds bounds = boundsInLocalProperty.get();
+//            return new Rectangle2D(bounds.getMinX(), bounds.getMinY(), widthProperty.get(), heightProperty.get());
+//        }
+//    };
+
+    
+    background.fitHeightProperty().bind(upperPane.heightProperty());
+    background.fitWidthProperty().bind(upperPane.widthProperty());
+    
     backgroundGamePanel.heightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
     backgroundGamePanel.widthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
     
@@ -487,7 +519,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     ObservableList<Node> guiTiles = board.getChildren();
     
     DoubleProperty fontSize = new SimpleDoubleProperty(10);
-    fontSize.bind(board.widthProperty().divide(85));
+    fontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
 
     for (Node n : guiTiles) {
       p = (Pane) n;
@@ -508,6 +540,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         // r.setWidth(50);
         // r.setHeight(50);
         t.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"));
+        t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
 
         t.setManaged(true);
         System.out.println("Property set");
