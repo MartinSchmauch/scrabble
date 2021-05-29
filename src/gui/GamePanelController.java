@@ -842,6 +842,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       case "Light Mode":
 
+        this.timeProgress.getStylesheets().clear();
       
         this.remaining.setFill(Color.BLACK);
         this.remainingLetters.setFill(Color.BLACK);
