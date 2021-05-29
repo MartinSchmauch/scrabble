@@ -1,5 +1,8 @@
 package gui;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -26,6 +29,8 @@ public class VisualTile extends Parent {
   private Text letterText;
   private Text valueText;
 
+  private DoubleProperty letterTextFontSize = new SimpleDoubleProperty(10);
+  private DoubleProperty valueTextFontSize = new SimpleDoubleProperty(10);
 
   /**
    * This method creates an instance of the class.
@@ -36,22 +41,43 @@ public class VisualTile extends Parent {
 
     letterText = new Text(letter);
     valueText = new Text(String.valueOf(value));
+    
+
+    
+    shape = new Rectangle(RACK_TILE_SIZE - 5, RACK_TILE_SIZE - 5);
 
     if (onRack) {
-      shape = new Rectangle(RACK_TILE_SIZE - 5, RACK_TILE_SIZE - 5);
-      pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
-      letterText.setFont(Font.font(32));
-      valueText.setFont(Font.font(16));
+      
+//      pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
+//      letterText.setFont(Font.font(32));
+//      valueText.setFont(Font.font(16));
+      
+      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(45));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(75));
+      
+      letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
+      
       if (letter.equals("Q")) {
-        valueText.setFont(Font.font(14));
+        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
       }
+      else {
+        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
+      }
+      
     } else {
-      shape = new Rectangle(BOARD_TILE_SIZE - 5, BOARD_TILE_SIZE - 5);
-      pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
-      letterText.setFont(Font.font(26));
-      valueText.setFont(Font.font(14));
+//      pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
+      
+      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(55));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(85));
+      
+      
+//      letterText.setFont(Font.font(26));
+//      valueText.setFont(Font.font(14));
       if (letter.equals("Q")) {
-        valueText.setFont(Font.font(11));
+        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
+      }
+      else {
+        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
       }
     }
     shape.setArcHeight(10);
@@ -91,6 +117,20 @@ public class VisualTile extends Parent {
 
   public void setValueText(Text valueText) {
     this.valueText = valueText;
+  }
+
+  /**
+   * @return the tileFontSize
+   */
+  public DoubleProperty getTileFontSize() {
+    return letterTextFontSize;
+  }
+
+  /**
+   * @param tileFontSize the tileFontSize to set
+   */
+  public void setTileFontSize(DoubleProperty tileFontSize) {
+    this.letterTextFontSize = tileFontSize;
   }
 
 }

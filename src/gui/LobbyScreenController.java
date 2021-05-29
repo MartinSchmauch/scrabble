@@ -339,6 +339,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       stage.setScene(new Scene(loader.load()));
 
       GamePanelController controller = loader.getController();
+      GamePanelController.setInstance(controller);
 
       if (player.isHost()) {
         player.getServer().setGamePanelController(controller);
@@ -351,6 +352,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       controller.initData(player);
       stage.setOnCloseRequest(e -> close(controller));
       stage.setTitle("Scrabble3");
+      stage.setMinHeight(800);
+      stage.setMinWidth(1200);
       // stage.setResizable(false);
 //      stage.minWidthProperty().bind(stage.getScene().heightProperty().multiply(2)); // lock Acpect-Ratio 
 //      stage.minHeightProperty().bind(stage.getScene().widthProperty().divide(2));
