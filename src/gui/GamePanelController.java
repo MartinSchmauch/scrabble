@@ -802,15 +802,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         colorAdjust.setBrightness(-0.2);
         this.background.setOpacity(1);
         this.background.setEffect(colorAdjust);
-        //
-        // this.skipAndChangeButton.setTextFill(Color.LIGHTGRAY);
-        // this.doneButton.setTextFill(Color.LIGHTGRAY);
-        // this.settingsButton.setTextFill(Color.LIGHTGRAY);;
-        // this.activateFieldLabels.setTextFill(Color.LIGHTGRAY);
-        // this.rulesButton.setTextFill(Color.LIGHTGRAY);
-        // this.leaveGameButton.setTextFill(Color.LIGHTGRAY);
-        // this.sendButton.setTextFill(Color.LIGHTGRAY);
-
+       
         this.remaining.setFill(Color.LIGHTGRAY);
         this.remainingLetters.setFill(Color.LIGHTGRAY);
         this.timer.setFill(Color.LIGHTGRAY);
@@ -820,6 +812,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.chatBox.setStroke(Color.DARKGRAY);
         this.playerBox.setStroke(Color.DARKGREY);
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
+        
+        this.timeProgress.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toString());
 
 
         this.chat.getStylesheets().clear();
@@ -837,6 +831,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.DARKGRAY);
+          rackTiles[i].setStroke(Color.DARKGRAY);
         }
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.LIGHTGRAY);
@@ -847,15 +842,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       case "Light Mode":
 
-        // this.skipAndChangeButton.setTextFill(Color.BLACK);
-        // this.doneButton.setTextFill(Color.BLACK);
-        // this.darkMode.setTextFill(Color.BLACK);
-        // this.settingsButton.setTextFill(Color.BLACK);;
-        // this.activateFieldLabels.setTextFill(Color.BLACK);
-        // this.rulesButton.setTextFill(Color.BLACK);
-        // this.leaveGameButton.setTextFill(Color.BLACK);
-        // this.sendButton.setTextFill(Color.BLACK);
-
+      
         this.remaining.setFill(Color.BLACK);
         this.remainingLetters.setFill(Color.BLACK);
         this.timer.setFill(Color.BLACK);
@@ -879,6 +866,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.darkMode.setTextFill(Color.BLACK);
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.WHITE);
+          rackTiles[i].setStroke(Color.WHITE);
         }
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.BLACK);

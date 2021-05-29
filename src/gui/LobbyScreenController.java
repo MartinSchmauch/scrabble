@@ -35,6 +35,7 @@ import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.ShutdownMessage;
+import util.Sound;
 
 /**
  * Handles all User inputs in the Lobby Screen as well as the connection of players.
@@ -352,9 +353,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       stage.setOnCloseRequest(e -> close(controller));
       stage.setTitle("Scrabble3");
       // stage.setResizable(false);
-//      stage.minWidthProperty().bind(stage.getScene().heightProperty().multiply(2)); // lock Acpect-Ratio 
-//      stage.minHeightProperty().bind(stage.getScene().widthProperty().divide(2));
-      
+      // stage.minWidthProperty().bind(stage.getScene().heightProperty().multiply(2)); // lock
+      // Acpect-Ratio
+      // stage.minHeightProperty().bind(stage.getScene().widthProperty().divide(2));
+
       stage.show();
 
       closeWindow();
@@ -530,6 +532,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param player Playerdata of the player to be (dis-)connecting
    */
   public void addJoinedPlayer(PlayerData player) {
+    Sound.playSuccessfulTurnSound();
     updateJoinedPlayers();
   }
 
@@ -540,6 +543,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    */
 
   public void removeJoinedPlayer(String nickname) {
+    Sound.playUnsuccessfulTurnSound();
     updateJoinedPlayers();
   }
 
