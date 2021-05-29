@@ -469,14 +469,14 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     backgroundGamePanel.widthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
     
 //    board.heightProperty().(board.widthProperty());
-    board.prefHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.prefWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.maxWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.minHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.minWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.minHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
-    board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(20));
+    board.prefHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.prefWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.maxWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.minHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.minWidthProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.minHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
+    board.maxHeightProperty().bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
 
     Pane p;
     Rectangle r;
