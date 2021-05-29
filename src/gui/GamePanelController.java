@@ -8,6 +8,8 @@ import java.util.Optional;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -483,6 +485,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     Text t;
 
     ObservableList<Node> guiTiles = board.getChildren();
+    
+    DoubleProperty fontSize = new SimpleDoubleProperty(10);
+    fontSize.bind(board.widthProperty().divide(85));
 
     for (Node n : guiTiles) {
       p = (Pane) n;
@@ -502,6 +507,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         t = (Text) p.getChildren().get(1);
         // r.setWidth(50);
         // r.setHeight(50);
+        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"));
+
         t.setManaged(true);
         System.out.println("Property set");
         p.setMinSize(0, 0);

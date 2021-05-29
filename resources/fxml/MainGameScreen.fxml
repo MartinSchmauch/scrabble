@@ -540,11 +540,6 @@
                            </GridPane.margin>
                            <children>
                               <Rectangle fill="#8fb492" height="50.0" onDragDetected="#boardDragStarted" onMouseClicked="#mouseClicked" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" />
-                              <Text fx:id="tws0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375">
-                                 <font>
-                                    <Font size="9.0" />
-                                 </font>
-                              </Text>
                            </children>
                         </StackPane>
                         <StackPane GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
@@ -2637,6 +2632,11 @@
                            </GridPane.margin>
                            <children>
                               <Rectangle fill="#ff7a7a" height="50.0" onDragDetected="#boardDragStarted" onMouseClicked="#mouseClicked" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#boardDragReleased" onMousePressed="#mousePressed" onMouseReleased="#mouseReleased" stroke="BLACK" strokeWidth="0.0" width="50.0" />
+                              <Text fx:id="tws0" mouseTransparent="true" opacity="0.4" strokeType="OUTSIDE" strokeWidth="0.0" text="TRIPLE WORD SCORE" textAlignment="CENTER" wrappingWidth="47.912109375">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font>
+                              </Text>
                            </children>
                         </StackPane>
                      </children>
