@@ -532,7 +532,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
    * @param player Playerdata of the player to be (dis-)connecting
    */
   public void addJoinedPlayer(PlayerData player) {
-    Sound.playSuccessfulTurnSound();
+    Sound.playFastBack();
     updateJoinedPlayers();
   }
 

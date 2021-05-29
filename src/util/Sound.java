@@ -40,6 +40,13 @@ public class Sound {
   public static void playUnsuccessfulTurnSound() {
     playMedia("/sounds/invalidTurn.mp3");
   }
+  
+  /**
+   * plays a sound if a tile is sent back via double click.
+   */
+    public static void playFastBack() {
+    playMedia("/sounds/fastBack.mp3");
+  }
 
   /**
    * plays the wav file saved at url filepath.

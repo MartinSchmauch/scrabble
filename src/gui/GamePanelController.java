@@ -67,6 +67,7 @@ import network.messages.ResetTurnMessage;
 import network.messages.ShutdownMessage;
 import network.messages.TileMessage;
 import network.server.Server;
+import util.Sound;
 
 
 
@@ -802,7 +803,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         colorAdjust.setBrightness(-0.2);
         this.background.setOpacity(1);
         this.background.setEffect(colorAdjust);
-       
+
         this.remaining.setFill(Color.LIGHTGRAY);
         this.remainingLetters.setFill(Color.LIGHTGRAY);
         this.timer.setFill(Color.LIGHTGRAY);
@@ -812,8 +813,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.chatBox.setStroke(Color.DARKGRAY);
         this.playerBox.setStroke(Color.DARKGREY);
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
-        
-        this.timeProgress.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toString());
+
+        this.timeProgress.getStylesheets()
+            .add(getClass().getResource("/fxml/DarkMode.css").toString());
 
 
         this.chat.getStylesheets().clear();
@@ -843,7 +845,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       case "Light Mode":
 
         this.timeProgress.getStylesheets().clear();
-      
+
         this.remaining.setFill(Color.BLACK);
         this.remainingLetters.setFill(Color.BLACK);
         this.timer.setFill(Color.BLACK);
