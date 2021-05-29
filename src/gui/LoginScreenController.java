@@ -40,11 +40,15 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   private String connection;
 
   @FXML
-  private TextField LinkField;
+  private TextField linkField;
   @FXML
   private Label username;
   @FXML
   private ImageView avatar;
+  
+  /**
+   * This method initializes all relevant data on the login screen.
+   */
 
   @FXML
   public void initialize() {
@@ -156,7 +160,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    */
 
   public void connectOrHost() {
-    if (this.LinkField.getText() == "") {
+    if (this.linkField.getText() == "") {
       try {
         this.connection = InetAddress.getLocalHost().getHostAddress();
       } catch (UnknownHostException e) {
@@ -164,7 +168,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
         return;
       }
     } else {
-      this.connection = this.LinkField.getText();
+      this.connection = this.linkField.getText();
     }
 
     if (this.player.isHost()) {
@@ -223,8 +227,8 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
           /*
            * @author pkoenig
            */
-          stage.setX(LinkField.getScene().getWindow().getX());
-          stage.setY(LinkField.getScene().getWindow().getY());
+          stage.setX(linkField.getScene().getWindow().getX());
+          stage.setY(linkField.getScene().getWindow().getY());
 
           /*
            * @author nilbecke
@@ -246,7 +250,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
    */
   public void closeScreen() {
 
-    Stage s = (Stage) LinkField.getScene().getWindow();
+    Stage s = (Stage) linkField.getScene().getWindow();
     s.close();
   }
 

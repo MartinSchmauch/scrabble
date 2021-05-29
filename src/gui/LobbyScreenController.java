@@ -61,7 +61,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
   private Label player3;
   @FXML
   private Label player4;
-    @FXML
+  @FXML
   private Label bestWordKey;
   @FXML
   private Label bestTurnKey;
@@ -170,16 +170,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     }
   }
 
-/**
- * This method initializes the LobbyScreenController and is being called upon creation of the
- * Controller. Here all the labels on the UI are being reset and adapted to the current game
- * state.
- */
+  /**
+   * This method initializes the LobbyScreenController and is being called upon creation of the
+   * Controller. Here all the labels on the UI are being reset and adapted to the current game
+   * state.
+   */
   public void initData(Player current, String connection) {
 
     instance = this;
     this.player = current;
-       this.chat.setEditable(false);
+    this.chat.setEditable(false);
     this.chat.appendText("Welcome to the chat! Please be gentle :)");
     this.cc = new ChatController(this.player);
 
@@ -311,14 +311,12 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     if (result.get() == ButtonType.OK) {
       Pattern p = Pattern.compile("AI\\s.");
       Matcher m = p.matcher(nickname);
-      
       if (m.matches()) {
         this.player.getServer().removeFromAiPlayers(nickname);
       }
-      
       DisconnectMessage dm = new DisconnectMessage(nickname, null);
       sendMessage(dm);
-      
+
       this.player.getServer().handleLeaveLobby(nickname);
 
       updateJoinedPlayers();
@@ -361,32 +359,32 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       e.printStackTrace();
     }
   }
-  
+
   /**
    * Opens Loginscreen updon closing the main game.
    *
    * @param c indicates the gpc the leaving player is having.
    */
-  
+
   public void close(GamePanelController c) {
     c.close();
-	new LoginScreen().start(new Stage());
+    new LoginScreen().start(new Stage());
   }
-  
+
   /**
    * Closes the Lobby and stops the server.
    */
   public void close() {
     if (this.player.isHost()) {
-      this.player.getServer().sendToAll(new ShutdownMessage(this.player.getNickname(), "Host "
-          + "closed the server session."));
+      this.player.getServer().sendToAll(
+          new ShutdownMessage(this.player.getNickname(), "Host " + "closed the server session."));
       this.player.getServer().stopServer();
     } else if (this.player.getClientProtocol().isOk()) {
       sendMessage(new DisconnectMessage(this.player.getNickname(), null));
       this.player.getClientProtocol().disconnect();
     }
     closeWindow();
-    
+
     /*
      * @author pkoenig
      */
@@ -407,7 +405,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     Stage s = (Stage) this.chat.getScene().getWindow();
     s.close();
   }
-  
+
   /**
    * Closes current window.
    */
@@ -476,20 +474,16 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     updateLabels(this.players);
   }
 
+  /**
+   * This methods updates the nametags and avatars for the lobby.
+   *
+   * @param list contains all players currently in the lobby.
+   */
+
   public void updateLabels(List<PlayerData> list) {
 
     Label[] nicknames = {player1, player2, player3, player4};
     ImageView[] avatars = {pic1, pic2, pic3, pic4};
-
-    /*
-     * Will ensure, that every Player sees him on top and with a "YOU"
-     *
-     * @author pkoenig
-     */
-    // TODO tbd
-    /*
-     * @author nilbecke
-     */
 
     for (int i = 0; i <= 3; i++) {
       if (i < players.size()) {
@@ -516,15 +510,6 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
         avatars[i].setImage(null);
       }
     }
-  }
-
-  /**
-   * Reads updated game settings and distributes them to all players.
-   *
-   * @param: settings new Instance of game settings
-   */
-  public void updateGameSettings(GameSettings settings) {
-    // TODO
   }
 
   /**

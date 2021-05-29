@@ -51,6 +51,7 @@ import network.messages.TileMessage;
 import network.server.Server;
 
 
+
 /**
  * This class is the Controller Class for the Main Gamel Panel UI for the Client.
  *
@@ -652,11 +653,12 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     ColorAdjust colorAdjust = new ColorAdjust();
     switch (this.darkMode.getText()) {
       case "Dark Mode":
-               this.background.setImage(new Image(getClass().getResource("/fxml/images/ScrabbleBoardDark.png").toString()));
+        this.background.setImage(
+            new Image(getClass().getResource("/fxml/images/ScrabbleBoardDark.png").toString()));
         colorAdjust.setBrightness(-0.2);
         this.background.setOpacity(1);
         this.background.setEffect(colorAdjust);
-       // this.rack.setStyle("-fx-background-color: linear-gradient(to right, #218f33, #83d490)");
+        // this.rack.setStyle("-fx-background-color: linear-gradient(to right, #218f33, #83d490)");
         this.skipAndChangeButton.setTextFill(Color.LIGHTGRAY);
         this.doneButton.setTextFill(Color.LIGHTGRAY);
         this.settingsButton.setTextFill(Color.LIGHTGRAY);;
@@ -664,21 +666,24 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.rulesButton.setTextFill(Color.LIGHTGRAY);
         this.leaveGameButton.setTextFill(Color.LIGHTGRAY);
         this.sendButton.setTextFill(Color.LIGHTGRAY);
-                      
+
         this.remaining.setFill(Color.LIGHTGRAY);
         this.remainingLetters.setFill(Color.LIGHTGRAY);
         this.timer.setFill(Color.LIGHTGRAY);
         this.timeLabel.setFill(Color.LIGHTGRAY);
-        
-        this.rackBox.setStroke(Color.DARKGREEN);
-        this.chatBox.setStroke(Color.DARKGREEN);
-        this.playerBox.setStroke(Color.DARKGREEN);
-        
+
+        this.rackBox.setStroke(Color.DARKGREY);
+        this.chatBox.setStroke(Color.DARKGRAY);
+        this.playerBox.setStroke(Color.DARKGREY);
+        this.backgroundGamePanel.setStroke(Color.DARKGRAY);
+
         this.chat.getStylesheets().clear();
-        this.chat.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+        this.chat.getStylesheets()
+            .add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
         this.chatInput.getStylesheets().clear();
-        this.chatInput.getStylesheets().add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
-        
+        this.chatInput.getStylesheets()
+            .add(getClass().getResource("/fxml/DarkMode.css").toExternalForm());
+
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.DARKGRAY);
         }
@@ -688,11 +693,11 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.darkMode.setText("Light Mode");
         this.darkMode.setTextFill(Color.LIGHTGRAY);
         break;
-        
+
       case "Light Mode":
-        
+
         this.rack.setStyle("-fx-background-color: transparent");
-       
+
         this.skipAndChangeButton.setTextFill(Color.BLACK);
         this.doneButton.setTextFill(Color.BLACK);
         this.darkMode.setTextFill(Color.BLACK);
@@ -701,18 +706,21 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.rulesButton.setTextFill(Color.BLACK);
         this.leaveGameButton.setTextFill(Color.BLACK);
         this.sendButton.setTextFill(Color.BLACK);
-        
+
         this.remaining.setFill(Color.BLACK);
         this.remainingLetters.setFill(Color.BLACK);
         this.timer.setFill(Color.BLACK);
         this.timeLabel.setFill(Color.BLACK);
-        
+
         this.rackBox.setStroke(Color.BLACK);
         this.chatBox.setStroke(Color.BLACK);
         this.playerBox.setStroke(Color.BLACK);
-        
-        this.chat.getStylesheets().add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
-        this.chatInput.getStylesheets().add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
+        this.backgroundGamePanel.setStroke(Color.BLACK);
+
+        this.chat.getStylesheets()
+            .add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
+        this.chatInput.getStylesheets()
+            .add(getClass().getResource("/fxml/LightMode.css").toExternalForm());
 
         this.skipAndChangeButton.setTextFill(Color.BLACK);
         for (int i = 0; i < rackTiles.length; i++) {
@@ -721,7 +729,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.BLACK);
         }
-        this.background.setImage(new Image(getClass().getResource("/fxml/images/ScrabbleBoard.png").toString()));      
+        this.background.setImage(
+            new Image(getClass().getResource("/fxml/images/ScrabbleBoard.png").toString()));
         colorAdjust.setBrightness(0);
         this.background.setEffect(colorAdjust);
         this.background.setOpacity(0.12);
@@ -1270,11 +1279,18 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * @param newY y-position of the desired target location
    */
   public void sendTileMove(String nickName, int oldX, int oldY, int newX, int newY) {
+    
     MoveTileMessage m = new MoveTileMessage(nickName, oldX, oldY, newX, newY);
-    if (this.player.isHost()) {
-      this.player.getServer().handleMoveTile(m);
-    } else {
-      sendMessage(m);
+    try {
+      if (this.player.isHost()) {
+        this.player.getServer().handleMoveTile(m);
+
+      } else {
+        sendMessage(m);
+
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 

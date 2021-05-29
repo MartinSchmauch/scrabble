@@ -2,22 +2,15 @@ package gui;
 
 import game.GameController;
 import game.GameSettings;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -43,14 +36,9 @@ import mechanic.Player;
 import mechanic.PlayerData;
 import mechanic.Tile;
 import mechanic.TileBag;
-import network.client.ClientProtocol;
-import network.messages.CommitTurnMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
-import network.messages.MoveTileMessage;
-import network.messages.ResetTurnMessage;
-import network.messages.TileMessage;
-import network.server.Server;
+
 
 /**
  * This class is a modification of the game panel controller to play the tutorial.
@@ -62,28 +50,17 @@ import network.server.Server;
 public class TutorialController extends GamePanelController
     implements EventHandler<ActionEvent>, Runnable {
 
-
-
-  private Player player;
-
   private List<PlayerData> players;
-  private ClientProtocol cp;
-  private Server server;
   private static boolean exchangeTilesMode = false;
   private List<Tile> tilesToExchange = new ArrayList<Tile>();
   private static int[] selectedCoordinates = new int[2]; // row, column
   private static int[] targetCoordinates = new int[2]; // row, column
 
-  private ChatController cc;
+  
   private static GameController gc;
   private List<Tile> tiles;
   private int indicator = 0;
-  private int min;
-  private int sec;
-  private Thread thread;
-  private double timeLeftBar;
-  private boolean turnCountdown;
-
+  
   protected Text[] playerLabel;
   protected Text[] pointsLabel;
   protected Text[] playerNameLabel;
@@ -439,13 +416,14 @@ public class TutorialController extends GamePanelController
 
   /**
    * This methods appends text to chat area, depending on tutorial status.
-   * 
+   *
    * @param input indicates the input.
    */
 
   public void updateChat(String input) {
     this.chat.setText(
-        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the basic mechanics of this game. If you need help, click on \"Show Tip\"."
+        "Welcome to the Tutorial :)\n\nYou will be shown Tips to learn the"
+        + " basic mechanics of this game. If you need help, click on \"Show Tip\"."
             + input);
   }
 
@@ -609,8 +587,8 @@ public class TutorialController extends GamePanelController
     st.close();
     new LoginScreen().start(new Stage());
   }
-
-
+  
+  
   /**
    * Listener that is called, when a user starts a drag movement from a rack field. The coordinates
    * of the event starting location are being saved for this drag event in the selectedCoordinates
@@ -639,6 +617,7 @@ public class TutorialController extends GamePanelController
   @FXML
   public void boardDragHandling(MouseEvent event) {
     Node node = (Node) event.getSource();
+       
     selectedCoordinates = getPos(node, false);
     selectedCoordinates[0]++;
     selectedCoordinates[1]++;
@@ -648,7 +627,6 @@ public class TutorialController extends GamePanelController
     ClipboardContent cb = new ClipboardContent();
     cb.putString("[" + selectedCoordinates[0] + "," + selectedCoordinates[1] + "]");
     db.setContent(cb);
-
     event.consume();
   }
 
