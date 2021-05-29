@@ -38,7 +38,7 @@
             <RowConstraints vgrow="ALWAYS" />
          </rowConstraints>
          <children>
-            <GridPane alignment="CENTER" gridLinesVisible="true" hgap="7.0" vgap="7.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
+            <GridPane alignment="CENTER" hgap="7.0" vgap="7.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <columnConstraints>
                   <ColumnConstraints percentWidth="50.0" />
                   <ColumnConstraints percentWidth="50.0" />
