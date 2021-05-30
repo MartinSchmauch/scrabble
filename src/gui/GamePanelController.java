@@ -518,6 +518,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // heightProperty.get());
     // }
     // };
+    
 
 
     // PlayerBox
@@ -602,15 +603,55 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     board.maxHeightProperty()
         .bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
 
+//    Runnable r = new Runnable() {
+//      public void run() {
+//        Pane p;
+//        Rectangle r;
+//        Text t;
+//        ObservableList<Node> guiTiles = board.getChildren();
+//        DoubleProperty tileFontSize = new SimpleDoubleProperty(10);
+//        tileFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
+//        for (Node n : guiTiles) {
+//          p = (Pane) n;
+//          try {
+//            r = (Rectangle) p.getChildren().get(0);
+//            // r.setWidth(50);
+//            // r.setHeight(50);
+//            r.heightProperty().bind(p.heightProperty());
+//            r.widthProperty().bind(p.widthProperty());
+//            // System.out.println("Property set");
+//            p.setMinSize(0, 0);
+//
+//          } catch (Exception e) {
+//            // System.out.println("no rectangle");
+//          }
+//          try {
+//            t = (Text) p.getChildren().get(1);
+//            // r.setWidth(50);
+//            // r.setHeight(50);
+//            t.styleProperty()
+//                .bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
+//            t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
+//
+//            t.setManaged(true);
+//            // System.out.println("Property set");
+//            p.setMinSize(0, 0);
+//
+//          } catch (Exception e) {
+//            // System.out.println("no text");
+//          }
+//
+//        }
+//      }
+//    };
+//    new Thread(r).start();
+    
     Pane p;
     Rectangle r;
     Text t;
-
     ObservableList<Node> guiTiles = board.getChildren();
-
     DoubleProperty tileFontSize = new SimpleDoubleProperty(10);
     tileFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
-
     for (Node n : guiTiles) {
       p = (Pane) n;
       try {
@@ -621,7 +662,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         r.widthProperty().bind(p.widthProperty());
         // System.out.println("Property set");
         p.setMinSize(0, 0);
-
+  
       } catch (Exception e) {
         // System.out.println("no rectangle");
       }
@@ -629,17 +670,18 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         t = (Text) p.getChildren().get(1);
         // r.setWidth(50);
         // r.setHeight(50);
-        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
+        t.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
-
+  
         t.setManaged(true);
         // System.out.println("Property set");
         p.setMinSize(0, 0);
-
+  
       } catch (Exception e) {
         // System.out.println("no text");
       }
-
+  
     }
 
     //
