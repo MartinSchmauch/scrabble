@@ -134,32 +134,57 @@ public class VisualTile extends StackPane {
       getChildren().add(pane);
     }
   }
+  
+/**
+ * retruns the current rectangle.
+ */
 
   public Rectangle getMyShape() {
     return shape;
   }
+  /**
+   * set the current rectangle.
+   */
 
   public void setShape(Rectangle shape) {
     this.shape = shape;
   }
+  
+  /**
+   * Get the current letter text.
+   */
 
   public Text getLetterText() {
     return this.letterText;
   }
+  
+  /**
+   * Set the current letter text.
+   */
 
   public void setLetterText(Text letterText) {
     this.letterText = letterText;
   }
+  
+  /**
+   * Get current value as text.
+   */
 
   public Text getValueText() {
     return this.valueText;
   }
+  
+  /**
+   * Set current value from text.
+   */
 
   public void setValueText(Text valueText) {
     this.valueText = valueText;
   }
 
   /**
+   * Returns the Tile font size 
+   *
    * @return the tileFontSize
    */
   public DoubleProperty getTileFontSize() {
@@ -167,6 +192,8 @@ public class VisualTile extends StackPane {
   }
 
   /**
+   * Sets the font size for tiles. 
+   *
    * @param tileFontSize the tileFontSize to set
    */
   public void setTileFontSize(DoubleProperty tileFontSize) {
