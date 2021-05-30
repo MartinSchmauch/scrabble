@@ -87,7 +87,7 @@ public class VisualTile extends StackPane {
           GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
 
       letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(25));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(45));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(55));
 
       letterText.styleProperty()
           .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
