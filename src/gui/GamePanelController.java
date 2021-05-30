@@ -522,14 +522,14 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
 
     // PlayerBox
-    playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(22));
-    playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(22));
+//    playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(22));
+//    playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(22));
     
 
 
     // ChatBox
-    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(22));
-    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(22));
+//    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(22));
+//    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(22));
 //    chatBox.setVisible(false); // TODO
 
     // Chat
@@ -544,8 +544,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // rackBox.widthProperty().bind(rackStack.widthProperty().subtract(15));
     // rackBox.heightProperty().bind(rack.heightProperty().subtract(15));
     // rackBox.widthProperty().bind(rack.widthProperty().subtract(15));
-    rackBox.heightProperty().bind(referenceSizeForRack.heightProperty().multiply(2).add(72));
-    rackBox.widthProperty().bind(referenceSizeForRack.widthProperty().multiply(6).add(190));
+//    rackBox.heightProperty().bind(referenceSizeForRack.heightProperty().multiply(2).add(72));
+//    rackBox.widthProperty().bind(referenceSizeForRack.widthProperty().multiply(6).add(190));
 //    rackBox.setVisible(false); // TODO
 
 
@@ -561,16 +561,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
     // CurrentPlayer Boxes
     currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(15));
-    currentPlayer1.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer1.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
     currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(15));
-    currentPlayer2.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer2.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
     currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(15));
-    currentPlayer3.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer3.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
     currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(15));
-    currentPlayer4.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer4.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
 
 
