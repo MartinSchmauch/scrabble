@@ -1298,8 +1298,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     int row = tile.getField().getyCoordinate();
 
 
-    VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
-
+    
 
     if (tile.isOnRack()) {
       row = 0;
@@ -1307,6 +1306,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         row = 1;
         column -= 6;
       }
+
+      VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
 
       visualTile.setMouseTransparent(true);
       rack.add(visualTile, column, row);
@@ -1316,6 +1317,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     } else {
       row -= 1;
       column -= 1;
+      VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, false);
 
       visualTile.setMouseTransparent(true);
       board.add(visualTile, column, row);
