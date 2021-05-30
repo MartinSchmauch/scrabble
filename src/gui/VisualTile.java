@@ -52,8 +52,8 @@ public class VisualTile extends Parent {
 // letterText.setFont(Font.font(32));
 // valueText.setFont(Font.font(16));
       
-      shape.heightProperty().unbind();
-      shape.widthProperty().unbind();
+//      shape.heightProperty().unbind();
+//      shape.widthProperty().unbind();
 
       shape.heightProperty()
           .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().add(20).multiply(0.9));
@@ -61,13 +61,13 @@ public class VisualTile extends Parent {
           .bind(GamePanelController.getInstance().referenceSizeForRack.widthProperty().add(20).multiply(0.9));
 
       
-      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(40));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(70));
+      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(20));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(40));
       
       letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
       
       if (letter.equals("Q")) {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
+        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
       }
       else {
         valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
@@ -76,22 +76,23 @@ public class VisualTile extends Parent {
     } else {
 //      pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
       
-      shape.heightProperty().unbind();
-      shape.widthProperty().unbind();
+//      shape.heightProperty().unbind();
+//      shape.widthProperty().unbind();
       
       shape.heightProperty()
       .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
       shape.widthProperty()
           .bind(GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
       
-      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(55));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(85));
+      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(25));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(45));
       
+      letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
       
 //      letterText.setFont(Font.font(26));
 //      valueText.setFont(Font.font(14));
       if (letter.equals("Q")) {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
+        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
       }
       else {
         valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));

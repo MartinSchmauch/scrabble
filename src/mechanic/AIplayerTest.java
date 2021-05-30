@@ -12,7 +12,7 @@ import org.junit.Test;
 import game.GameController;
 import game.GameSettings;
 import game.GameState;
-import mechanic.AIplayer.AIcombination;
+import mechanic.AiPlayer.AIcombination;
 import com.opencsv.CSVWriter;
 
 /**
@@ -20,7 +20,7 @@ import com.opencsv.CSVWriter;
  *
  */
 public class AIplayerTest {
-  AIplayer aiplayer;
+  AiPlayer aiplayer;
   ArrayList<Field[]> results = new ArrayList<Field[]>();
   GameBoard gb;
 
@@ -35,7 +35,7 @@ public class AIplayerTest {
     GameController gc1 = new GameController(gs1);
     gs1.setUpGameboard();
     gb = gs1.getGameBoard();
-    aiplayer = new AIplayer("test", gc1, AIplayer.AiLevel.UNBEATABLE);
+    aiplayer = new AiPlayer("test", gc1, AiPlayer.AiLevel.UNBEATABLE);
 
     aiplayer.generateTileCombinations();
     int i = aiplayer.getTwoTilesCombinations().size();
@@ -52,7 +52,7 @@ public class AIplayerTest {
    */
   // @Test
   public void testGetValidPositionsForWordLength() {
-    aiplayer = new AIplayer("test", 5, 20, null);
+    aiplayer = new AiPlayer("test", 5, 20, null);
     gb = new GameBoard(15);
 
 
@@ -124,7 +124,7 @@ public class AIplayerTest {
       gb = gs1.getGameBoard();
       setUpGameBoard1(gb);
 
-      aiplayer = new AIplayer("test-1-" + i, 0, 0, gc1);
+      aiplayer = new AiPlayer("test-1-" + i, 0, 0, gc1);
       aiplayer.setTestmode(true);
 
       for (int ii = 0; ii < 7; ii++) {
@@ -218,7 +218,7 @@ public class AIplayerTest {
     GameController gc1 = new GameController(gs1);
     gs1.setUpGameboard();
     gb = gs1.getGameBoard();
-    aiplayer = new AIplayer("test", gc1, AIplayer.AiLevel.UNBEATABLE);
+    aiplayer = new AiPlayer("test", gc1, AiPlayer.AiLevel.UNBEATABLE);
 
     aiplayer.generateTileCombinations();
     int i = aiplayer.getTwoTilesCombinations().size();
@@ -249,7 +249,7 @@ public class AIplayerTest {
     // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
     // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
     // }
-    aiplayer = new AIplayer("test", 7, 15, gc1);
+    aiplayer = new AiPlayer("test", 7, 15, gc1);
     char newRackChar;
     for (int ii = 0; ii < 7; ii++) {
       newRackChar = (char) ((Math.random() * (92 - 'A')) + 'A');
@@ -623,7 +623,7 @@ public class AIplayerTest {
     // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
     // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
     // }
-    aiplayer = new AIplayer("test", 7, 150, gc1);
+    aiplayer = new AiPlayer("test", 7, 150, gc1);
     for (int ii = 0; ii < 7; ii++) {
       aiplayer.addTileToRack(new Tile(
           new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1), new Field(0, 0)));
@@ -1073,7 +1073,7 @@ public class AIplayerTest {
     // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
     // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
     // }
-    aiplayer = new AIplayer("test2", 7, 15, gc1);
+    aiplayer = new AiPlayer("test2", 7, 15, gc1);
     for (int ii = 0; ii < 7; ii++) {
       aiplayer.addTileToRack(new Tile(
           new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1), new Field(0, 0)));

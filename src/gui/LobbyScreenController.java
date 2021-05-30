@@ -28,7 +28,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import mechanic.AIplayer;
+import mechanic.AiPlayer;
 import mechanic.Player;
 import mechanic.PlayerData;
 import network.messages.ConnectMessage;
@@ -232,8 +232,8 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       i++;
       aiName = "AI " + i;
     }
-    AIplayer p = new AIplayer(aiName, this.getPlayer().getServer().getGameController(),
-        AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
+    AiPlayer p = new AiPlayer(aiName, this.getPlayer().getServer().getGameController(),
+        AiPlayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     p.setHost(false);
     p.setAvatar("/avatars/avatar" + (int) (Math.random() * 10) + ".png");
 
