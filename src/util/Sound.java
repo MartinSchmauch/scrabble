@@ -50,7 +50,6 @@ public class Sound {
 
   /**
    * plays a sound if a player joins the lobby.
-   * ** Sound from Zapsplat.com**
    */
   public static void playJoin() {
     playMedia("/sounds/join.mp3");
@@ -58,7 +57,6 @@ public class Sound {
 
   /**
    * playes a sound id a player leaves.
-   * ** Sound from Zapsplat.com**
    */
   public static void playLeave() {
     playMedia("/sounds/leave.mp3");

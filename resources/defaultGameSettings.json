@@ -1,6 +1,6 @@
 {
-  "timePerPlayer" : 500,
-  "maxOvertime" : 600,
+  "timePerPlayer" : 300,
+  "maxOvertime" : 300,
   "maxScore" : -1,
   "dictionary" : "CollinsScrabbleWords",
   "bingo" : 50,
@@ -111,6 +111,18 @@
       "letterValue" : 10,
       "count" : 1
     },
+	"Ä" : {
+	  "letterValue" : 5,
+	  "count" : 0
+	},
+	"Ü" : {
+	  "letterValue" : 5,
+	  "count" : 0
+	},
+	"Ö" : {
+	  "letterValue" : 5,
+	  "count" : 0
+	},
     "*" : {
       "letterValue" : 0,
       "count" : 2
