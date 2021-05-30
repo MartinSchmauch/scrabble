@@ -69,22 +69,50 @@ public class GameController {
       e.printStackTrace();
     }
   }
+  
+  /**
+   * Start new turn.
+   */
 
   public void newTurn() {
     this.turn = new Turn(gameState.getCurrentPlayer(), this);
   }
+  
+  /**
+   * get the dictionary. 
+   *
+   * @return dictionary as the currently used dic.
+   */
 
   public HashSet<String> getDictionary() {
     return dictionary;
   }
+  
+  /**
+   * get current turn.
+   *
+   * @return turns as the current turn.
+   */
 
   public Turn getTurn() {
     return this.turn;
   }
+  
+  /**
+   * set the current turn. 
+   *
+   * @param turn as the turn to be set.
+   */
 
   public void setTurn(Turn turn) {
     this.turn = turn;
   }
+  
+  /**
+   * get a list of all turns. 
+   *
+   * @return turns as all turns.
+   */
 
   public List<Turn> getTurns() {
     return turns;
@@ -267,22 +295,52 @@ public class GameController {
     this.currentPlayerIndex++;
     return nextPlayer;
   }
+  
+  /**
+   * get current game state. 
+   *
+   * @return gameState as current instance.
+   */
 
   public GameState getGameState() {
     return gameState;
   }
+  
+  /**
+   * get current tile bag. 
+   *
+   * @return tileBag as current instance.
+   */
 
   public TileBag getTileBag() {
     return tileBag;
   }
+  
+  /**
+   * get all turn scores. 
+   *
+   * @return scoredTurns as current instance.
+   */
 
   public List<Turn> getScoredTurns() {
     return scoredTurns;
   }
+  
+  /**
+   * add a scored turn. 
+   *
+   * @param t as the turn to be scored.
+   */
 
   public void addScoredTurn(Turn t) {
     this.scoredTurns.add(0, t);
   }
+  
+  /**
+   * add turn. 
+   *
+   * @param t as turn to be added.
+   */
 
   public void addTurn(Turn t) {
     this.turns.add(0, t);

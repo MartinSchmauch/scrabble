@@ -72,39 +72,73 @@ public class GameState implements Serializable {
     }
   }
 
+  /**
+   * get data from current host.
+   */
 
   public PlayerData getHost() {
     return this.host;
   }
 
+  /**
+   * checks if the game is currently running.
+   */
+  
   public boolean getGameRunning() {
-
     return this.isRunning;
   }
+  
+  /**
+   * Set the game running or stop it.
+   */
 
   public void setRunning(boolean running) {
     this.isRunning = running;
   }
+  
+  /**
+   * Get the current players nickname.
+   */
 
   public String getCurrentPlayer() {
     return this.currentPlayer;
   }
+  
+  /**
+   * Update the current player.
+   */
 
   public void setCurrentPlayer(String nextPlayer) {
     this.currentPlayer = nextPlayer;
   }
+  
+  /**
+   * get a list of all current players.
+   */
 
   public List<PlayerData> getAllPlayers() {
     return new ArrayList<PlayerData>(this.allPlayers.values());
   }
+  
+  /**
+   * Add a player with his player data to the current game state.
+   */
 
   public void addPlayer(PlayerData p) {
     this.allPlayers.put(this.host.getNickname(), p);
   }
+  
+  /**
+   * get a specific player data by nickname.
+   */
 
   public PlayerData getPlayerData(String nickname) {
     return this.allPlayers.get(nickname);
   }
+  
+  /**
+   * Get the score for a player by his nickname.
+   */
 
   public int getScore(String nickName) {
     return this.scores.get(nickName);
@@ -148,14 +182,26 @@ public class GameState implements Serializable {
 
     return false;
   }
+  
+  /**
+   * Stop the game.
+   */
 
   public void stopGame() {
     this.isRunning = false;
   }
+  
+  /**
+   * Get the currently used gameboard.
+   */
 
   public GameBoard getGameBoard() {
     return gb;
   }
+  
+  /**
+   * Update the currently used gameboard.
+   */
 
   public void setGameBoard(GameBoard gameBoard) {
     this.gb = gameBoard;
@@ -179,14 +225,26 @@ public class GameState implements Serializable {
       this.scores.put(player.getNickname(), 0);
     }
   }
+  
+  /**
+   * Get a hashmap of the current game statistics.
+   */
 
   public HashMap<String, GameStatistic> getGameStatistics() {
     return gameStatistics;
   }
+  
+  /**
+   * get the statistic of a player given his nickname.
+   */
 
   public GameStatistic getGameStatisticsOfPlayer(String player) {
     return gameStatistics.get(player);
   }
+  
+  /**
+   * Add a player to the statistic tracking.
+   */
 
   public void addGameStatistics(String player) {
     this.gameStatistics.put(player, new GameStatistic());
