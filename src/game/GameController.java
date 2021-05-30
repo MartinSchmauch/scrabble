@@ -352,7 +352,7 @@ public class GameController {
   
   public void resetCurrentPlayerIndex() {
     int i;
-    for (i = 0; i < this.gameState.getAllPlayers().size(); i++) {
+    for (i = 0; i < this.gameState.getAllPlayers().size() - 1; i++) {
       if (this.gameState.getCurrentPlayer()
           .equals(this.gameState.getAllPlayers().get(i).getNickname())) {
         break;
