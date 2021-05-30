@@ -1013,59 +1013,98 @@ public class Server {
     sendToAll(lsm);
   }
 
-
+  /**
+   * gets the Player of the current instance.
+   */
   public Player getPlayer() {
     return player;
   }
 
+  /**
+   * sets the Player of the current instance on parameter player.
+   */
   public void setPlayer(Player player) {
     this.player = player;
   }
 
+  /**
+   * gets the ServerProtocol of the current instance.
+   */
   public ServerProtocol getServerProtocol() {
     return this.serverProtocol;
   }
 
+  /**
+   * gets the gamePanelController of the current instance.
+   */
   public GamePanelController getGamePanelController() {
     return gpc;
   }
 
+  /**
+   * sets the GamePanelController of the current instance on parameter gpc.
+   */
   public void setGamePanelController(GamePanelController gpc) {
     this.gpc = gpc;
   }
 
+  /**
+   * sets the LobbyScreenController of the current instance on parameter lsc.
+   */
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lsc = lsc;
   }
 
+  /**
+   * gets the lobbyScreenController of the current instance.
+   */
   public LobbyScreenController getLobbyScreenController() {
     return this.lsc;
   }
 
-
+  /**
+   * sets the variable running of the current instance.
+   */
   public void setRunning(boolean running) {
     this.running = running;
   }
 
-  /* @author pkoenig */
+  /**
+   * gets the AiPlayers list.
+   *
+   * @author pkoenig 
+   */
   public HashMap<String, AIplayer> getAiPlayers() {
     return aiPlayers;
   }
 
-  /* @author pkoenig */
+  /**
+   * sets the variable aiPlayers list of the class server.
+   *
+   * @author pkoenig
+   */
   public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
     this.aiPlayers = aiPlayers;
   }
 
+  /**
+   * adds an aiPlayer to the aiPlayers List and joins the game.
+   */
   public void addAiPlayer(AIplayer aiPlayer) {
     this.aiPlayers.put(aiPlayer.getNickname(), aiPlayer);
     this.gameState.joinGame(aiPlayer.getPlayerInfo());
   }
 
+  /**
+   * checks if the aiPlayer is in the aiPlayers list.
+   */
   public boolean isinAiPlayer(AIplayer aiPlayer) {
     return this.aiPlayers.containsKey(aiPlayer.getNickname());
   }
 
+  /**
+   * removes the player (nickname) from the aiPlayers list.
+   */
   public void removeFromAiPlayers(String nickname) {
     this.aiPlayers.remove(nickname);
   }
