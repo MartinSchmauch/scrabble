@@ -3,7 +3,7 @@
 }
 
 .text-area .content {
-    	-fx-background-color: #171a18;
+    	-fx-background-color: #444444;
 
 }
 .text-area .scroll-pane{
@@ -12,8 +12,8 @@
 }
 
 .text-field{
-	-fx-background-color: #171a18;
- 	  -fx-text-fill: #26d451;
+	-fx-background-color: #666666;
+ 	  -fx-text-fill: #D3D3D3;
 }
 .button{
 	-fx-transition-duration: 1.5s;

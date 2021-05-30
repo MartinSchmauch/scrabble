@@ -112,15 +112,15 @@
       "count" : 1
     },
 	"Ä" : {
-	  "letterValue" : 5,
+	  "letterValue" : 6,
 	  "count" : 0
 	},
 	"Ü" : {
-	  "letterValue" : 5,
+	  "letterValue" : 6,
 	  "count" : 0
 	},
 	"Ö" : {
-	  "letterValue" : 5,
+	  "letterValue" : 8,
 	  "count" : 0
 	},
     "*" : {
