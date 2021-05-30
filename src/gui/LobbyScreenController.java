@@ -35,6 +35,7 @@ import network.messages.ConnectMessage;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
 import network.messages.ShutdownMessage;
+import util.FileParameters;
 import util.Sound;
 
 /**

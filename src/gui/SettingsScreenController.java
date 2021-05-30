@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import mechanic.Letter;
 import mechanic.Player;
 import network.messages.UpdateChatMessage;
+import util.FileParameters;
 import util.JsonHandler;
 
 /**

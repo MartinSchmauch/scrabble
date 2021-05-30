@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.GameSettings;
-import gui.FileParameters;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

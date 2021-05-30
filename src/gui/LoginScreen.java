@@ -20,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
+import util.FileParameters;
 import util.JsonHandler;
 
 /**

@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import mechanic.PlayerData;
 import mechanic.PlayerStatistics;
+import util.FileParameters;
 
 /**
  * This Class handles all User Inputs concerning the user statistics screen launchable from the
