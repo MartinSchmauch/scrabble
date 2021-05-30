@@ -795,7 +795,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.darkMode.setTextFill(Color.BLACK);
         for (int i = 0; i < rackTiles.length; i++) {
           rackTiles[i].setFill(Color.WHITE);
-          rackTiles[i].setStroke(Color.WHITE);
+          rackTiles[i].setStroke(Color.BLACK);
         }
         for (int i = 0; i < playerNameLabel.length; i++) {
           playerNameLabel[i].setFill(Color.BLACK);
