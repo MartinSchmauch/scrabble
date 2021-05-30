@@ -26,7 +26,7 @@
             <Image url="@images/ScrabbleBoard.png" />
          </image>
       </ImageView>
-      <AnchorPane fx:id="parentPane" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-image: url(&quot;ScrabbleBoard.png&quot;);" stylesheets="@../src/gui/Buttons.css">
+      <AnchorPane fx:id="parentPane" maxHeight="1000.0" maxWidth="1900.0" prefHeight="850.0" prefWidth="1600.0" style="-fx-background-image: url(&quot;ScrabbleBoard.png&quot;);" stylesheets="@Buttons.css">
          <children>
             <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" prefHeight="800.0" prefWidth="750.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                <children>
