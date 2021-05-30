@@ -150,7 +150,7 @@ public class ServerProtocol extends Thread {
             RemoveTileMessage rtm = (RemoveTileMessage) m;
             server.getGameController().removeTileFromGameBoard(rtm.getFrom(), rtm.getX(),
                 rtm.getY());
-            server.sendToAll(rtm);
+            server.sendToAllBut(rtm.getFrom(), rtm);
             break;
           case MOVE_TILE:
             MoveTileMessage mtm = (MoveTileMessage) m;

@@ -4,6 +4,7 @@ import gui.TutorialController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
@@ -45,6 +46,7 @@ public class Tutorial {
       controller.initData(player);
       stage.setOnCloseRequest(e -> controller.closeTutorial());
       stage.setTitle("Scrabble3");
+      stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
       stage.show();
       TutorialController.getInstance().showTip(0);
 

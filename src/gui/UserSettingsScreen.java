@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -60,6 +61,7 @@ public class UserSettingsScreen extends Application {
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.initStyle(StageStyle.UNDECORATED);
+      stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
 
       root.setOnMousePressed(new EventHandler<MouseEvent>() {
         @Override

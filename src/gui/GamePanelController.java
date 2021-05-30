@@ -67,7 +67,6 @@ import network.messages.ResetTurnMessage;
 import network.messages.ShutdownMessage;
 import network.messages.TileMessage;
 import network.server.Server;
-import util.Sound;
 
 
 
@@ -113,6 +112,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   protected Text[] dwsLabel;
   protected Text[] twsLabel;
   protected Button[] buttons;
+
+
 
   // protected VisualTile cursorTile;
 
@@ -351,9 +352,24 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   protected Rectangle backgroundGamePanel;
   @FXML
-  protected VBox playerVbox;
-  @FXML
   protected StackPane boardStack;
+  @FXML
+  protected StackPane playerBoxStackPane;
+  @FXML
+  protected StackPane chatStackPane;
+  @FXML
+  protected StackPane stackPlayer1;
+  @FXML
+  protected StackPane stackPlayer2;
+  @FXML
+  protected StackPane stackPlayer3;
+  @FXML
+  protected StackPane stackPlayer4;
+  @FXML
+  protected StackPane rackStack;
+  @FXML
+  protected StackPane referenceSizeForRack;
+
 
   /**
    * This method initializes the GamePanelController and is being called upon creation of the
@@ -384,6 +400,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     buttons = new Button[] {this.doneButton, this.skipAndChangeButton, this.activateFieldLabels,
         this.sendButton, this.darkMode, this.settingsButton, this.leaveGameButton,
         this.rulesButton};
+
 
     activateFieldLabels.setText("Disable Labels");
     this.setFieldLabelVisibility(true);
@@ -425,7 +442,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     }
     remainingLetters.setText("");
     timer.setText("");
-    this.dws16.setText("✧");
+    timeProgress.setProgress(0.0);
     // backgroundGamePanel.heightProperty().bind(((StackPane)
     // backgroundGamePanel.getParent()).heightProperty());
     // backgroundGamePanel.widthProperty().bind(((StackPane)
@@ -440,7 +457,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // public void changed(ObservableValue observable, Object oldValue, Object newValue) {
     //// Double changeWidth = (Double)newValue - (Double)oldValue;
     // Double newWidth = (Double)newValue;
-    // System.out.println("### WIDTH HAT SICH GEÃ„NDERT AUF " + newWidth + " ###");
+    // System.out.println("### WIDTH HAT SICH GE�NDERT AUF " + newWidth + " ###");
     // backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
     // board.setPrefWidth(board.getPrefWidth() + changeWidth);
     // backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
@@ -503,15 +520,70 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // };
 
 
+    // PlayerBox
+    playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(22));
+    playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(22));
+
+
+    // ChatBox
+    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(22));
+    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(22));
+//    chatBox.setVisible(false); // TODO
+
+    // Chat
+    // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+    // chat.prefWidthProperty().bind(upperPane.prefWidthProperty().divide(4));
+    // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
+    chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20));
+
+
+    // RackBox
+    // rackBox.heightProperty().bind(rackStack.heightProperty().subtract(15));
+    // rackBox.widthProperty().bind(rackStack.widthProperty().subtract(15));
+    // rackBox.heightProperty().bind(rack.heightProperty().subtract(15));
+    // rackBox.widthProperty().bind(rack.widthProperty().subtract(15));
+    rackBox.heightProperty().bind(referenceSizeForRack.heightProperty().multiply(2).add(72));
+    rackBox.widthProperty().bind(referenceSizeForRack.widthProperty().multiply(6).add(190));
+//    rackBox.setVisible(false); // TODO
+
+
+    // RackFields
+    Rectangle rackField;
+    ObservableList<Node> rackTiles = rack.getChildren();
+    for (Node n : rackTiles) {
+      rackField = (Rectangle) n;
+      rackField.widthProperty().bind(referenceSizeForRack.widthProperty().add(20));
+      rackField.heightProperty().bind(referenceSizeForRack.heightProperty().add(20));
+    }
+
+
+    // CurrentPlayer Boxes
+    currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(15));
+    currentPlayer1.widthProperty().bind(playerBox.widthProperty().subtract(20));
+
+    currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(15));
+    currentPlayer2.widthProperty().bind(playerBox.widthProperty().subtract(20));
+
+    currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(15));
+    currentPlayer3.widthProperty().bind(playerBox.widthProperty().subtract(20));
+
+    currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(15));
+    currentPlayer4.widthProperty().bind(playerBox.widthProperty().subtract(20));
+
+
+
+    // Background
     background.fitHeightProperty().bind(upperPane.heightProperty());
     background.fitWidthProperty().bind(upperPane.widthProperty());
 
+
+
+    // Gameboard
     backgroundGamePanel.heightProperty()
         .bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
     backgroundGamePanel.widthProperty()
         .bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(10));
 
-    // board.heightProperty().(board.widthProperty());
     board.prefHeightProperty()
         .bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
     board.prefWidthProperty()
@@ -535,8 +607,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
     ObservableList<Node> guiTiles = board.getChildren();
 
-    DoubleProperty fontSize = new SimpleDoubleProperty(10);
-    fontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
+    DoubleProperty tileFontSize = new SimpleDoubleProperty(10);
+    tileFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
 
     for (Node n : guiTiles) {
       p = (Pane) n;
@@ -546,25 +618,25 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         // r.setHeight(50);
         r.heightProperty().bind(p.heightProperty());
         r.widthProperty().bind(p.widthProperty());
-        System.out.println("Property set");
+        // System.out.println("Property set");
         p.setMinSize(0, 0);
 
       } catch (Exception e) {
-        System.out.println("no rectangle");
+        // System.out.println("no rectangle");
       }
       try {
         t = (Text) p.getChildren().get(1);
         // r.setWidth(50);
         // r.setHeight(50);
-        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString(), ";"));
+        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
 
         t.setManaged(true);
-        System.out.println("Property set");
+        // System.out.println("Property set");
         p.setMinSize(0, 0);
 
       } catch (Exception e) {
-        System.out.println("no text");
+        // System.out.println("no text");
       }
 
     }
@@ -590,6 +662,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
      */
 
   }
+
 
   /**
    * Thread to countdown the maxmimum length of a turn.
@@ -955,7 +1028,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   public void boardDragStarted(MouseEvent event) {
     if (!exchangeTilesMode) {
       Node node = (Node) event.getSource();
-      selectedCoordinates = getPos(node, false);
+      selectedCoordinates = getPos(node.getParent(), false);
       selectedCoordinates[0]++;
       selectedCoordinates[1]++;
       rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
@@ -1020,7 +1093,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   public void boardDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
-    targetCoordinates = getPos(node, false);
+    targetCoordinates = getPos(node.getParent(), false);
     targetCoordinates[0] += 1;
     targetCoordinates[1] += 1;
     rulesButton.getScene().setCursor(Cursor.DEFAULT);
@@ -1224,27 +1297,33 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     int column = tile.getField().getxCoordinate();
     int row = tile.getField().getyCoordinate();
 
+
+    
+
     if (tile.isOnRack()) {
       row = 0;
       if (column > 5) { // case: tile is in the second row of the rack
         row = 1;
         column -= 6;
       }
-      VisualTile rackTile = new VisualTile(Character.toString(letter), tileValue, true);
-      rackTile.setMouseTransparent(true);
-      rack.add(rackTile, column, row);
-      GridPane.setHalignment(rackTile, HPos.CENTER);
-      GridPane.setValignment(rackTile, VPos.BOTTOM);
-      GridPane.setMargin(rackTile, new Insets(0, 0, 5, 0));
+
+      VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
+
+      visualTile.setMouseTransparent(true);
+      rack.add(visualTile, column, row);
+      GridPane.setHalignment(visualTile, HPos.CENTER);
+      GridPane.setValignment(visualTile, VPos.CENTER);
+      // GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
-      VisualTile boardTile = new VisualTile(Character.toString(letter), tileValue, false);
-      boardTile.setMouseTransparent(true);
-      board.add(boardTile, column, row);
-      GridPane.setHalignment(boardTile, HPos.CENTER);
-      GridPane.setValignment(boardTile, VPos.BOTTOM);
-      GridPane.setMargin(boardTile, new Insets(0, 0, 3, 0));
+      VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, false);
+
+      visualTile.setMouseTransparent(true);
+      board.add(visualTile, column, row);
+      GridPane.setHalignment(visualTile, HPos.CENTER);
+      GridPane.setValignment(visualTile, VPos.CENTER);
+      // GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }
 
@@ -1313,7 +1392,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       for (Node node : list) {
         x = getPos(node, false)[0];
         y = getPos(node, false)[1];
-        if (node instanceof Parent && x == column && y == row) {
+        if (node instanceof VisualTile && x == column && y == row) {
           board.getChildren().remove(node);
           break;
         }
@@ -1461,7 +1540,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * @author lurny
    */
   public void sendResetTurnForEveryPlayer(String nickName) {
-    System.out.println("Test1");
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);
@@ -1582,59 +1660,59 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     st.close();
   }
 
-  public Server getServer() {
-    return server;
-  }
-
-  public void setServer(Server server) {
-    this.server = server;
-  }
-
-  public ClientProtocol getCp() {
-    return cp;
-  }
-
-  public void setCp(ClientProtocol cp) {
-    this.cp = cp;
-  }
-
-  public static int[] getCoordinates() {
-    return selectedCoordinates;
-  }
-
-  public static void setCoordinates(int[] coordinates) {
-    GamePanelController.selectedCoordinates = coordinates;
-  }
-
+  /**
+   * Getter-Method to get the reference to the object variable alert2.
+   */
   public CustomAlert getAlert2() {
     return alert2;
   }
 
+  /**
+   * Getter-Method to get the reference to the instance of the GamePanelController.
+   */
   public static GamePanelController getInstance() {
     return instance;
   }
-
+  
+  /**
+   * Getter-Method to get the reference to the object variable min.
+   */
   public int getMin() {
     return min;
   }
 
+  /**
+   * Getter-Method to get the reference to the object variable sec.
+   */
   public int getSec() {
     return sec;
   }
 
+  /**
+   * Setter-Method to mutate the object variable timerDuration.
+   */
   public void setTimerDuration(int timerDuration) {
     this.timerDuration = timerDuration;
   }
 
+  /**
+   * Getter-Method to get the reference to the object variable timerDuration.
+   */
   public int getTimerDuration() {
     return timerDuration;
   }
 
-  public boolean isExchangeTilesMode() {
-    return exchangeTilesMode;
-  }
-
+  /**
+   * Setter-Method to mutate the object variable exchangeTilesMode.
+   */
   public void setExchangeTilesMode(boolean exchangeTilesMode) {
     GamePanelController.exchangeTilesMode = exchangeTilesMode;
+  }
+
+  /**
+   * Setter-Method to mutate the instance of the GamePanelController.
+   */
+  public static void setInstance(GamePanelController controller) {
+    instance = controller;
   }
 }

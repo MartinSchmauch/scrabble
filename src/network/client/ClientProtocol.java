@@ -139,7 +139,6 @@ public class ClientProtocol extends Thread {
                 case RESET_TURN:
                   ResetTurnMessage resettMessage = (ResetTurnMessage) message;
                   List<Tile> tileList = resettMessage.getTiles();
-                  System.out.println(resettMessage.getFrom() + "  " + tileList.size());
                   // remove Tiles from UI Gameboard and domain Gameboard
                   for (Tile t : tileList) {
                     gpc.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(),
@@ -171,7 +170,6 @@ public class ClientProtocol extends Thread {
                   }
                   break;
                 case TURN_RESPONSE:
-                  System.out.println("TurnResponseMessageReceived");
                   TurnResponseMessage trm = (TurnResponseMessage) message;
                   if (trm.getTurnInfo() != null) {
                     gpc.updateChat(trm.getTurnInfo(), null, "");
@@ -196,10 +194,14 @@ public class ClientProtocol extends Thread {
                       gpc.changeDoneStatus(false);
                       gpc.changeSkipAndChangeStatus(false);
                     }
-                    if (trm.getCalculatedTurnScore() > 0) {
-                      Sound.playSuccessfulTurnSound();
-                    } else {
+                    
+                    // Audio output
+                    if (trm.getWinner() != null) {
+                      Sound.playEndGameSound();
+                    } else if (trm.getTurnInfo().equals("Time's up!")) {
                       Sound.playUnsuccessfulTurnSound();
+                    } else {
+                      Sound.playSuccessfulTurnSound();
                     }
                   } else {
                     Sound.playUnsuccessfulTurnSound();

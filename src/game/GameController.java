@@ -152,7 +152,6 @@ public class GameController {
    */
 
   public boolean addTileToGameBoard(String player, Tile tile, int x, int y) {
-    System.out.println(gameState.getGameBoard());
     if (!gameState.getCurrentPlayer().equals(player)
         || gameState.getGameBoard().getField(x, y).getTile() != null) {
       return false;
@@ -261,11 +260,11 @@ public class GameController {
    * @return String nextPlayer
    */
   public String getNextPlayer() {
-    this.currentPlayerIndex++;
     if (this.currentPlayerIndex >= this.gameState.getAllPlayers().size()) {
       this.currentPlayerIndex = 0;
     }
     String nextPlayer = this.gameState.getAllPlayers().get(currentPlayerIndex).getNickname();
+    this.currentPlayerIndex++;
     return nextPlayer;
   }
 

@@ -53,20 +53,6 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
     this.gs = LeaderboardScreen.getGameStatistic();
     this.player = LeaderboardScreen.getPlayer();
 
-    // this.gs = new GameState(new Player("test1").getPlayerInfo(), null);
-    // this.gs.joinGame(new Player("test2").getPlayerInfo());
-    // this.gs.joinGame(new Player("test3").getPlayerInfo());
-    // this.gs.joinGame(new Player("test4").getPlayerInfo());
-    //
-    //
-    //
-    // this.gs.initializeScoresWithZero(this.gs.getAllPlayers());
-    //
-    // this.gs.addScore("test1", 15);
-    // this.gs.addScore("test2", 435);
-    // this.gs.addScore("test3", 34);
-    // this.gs.addScore("test4", 4);
-
     Font f = Font.loadFont(getClass().getResourceAsStream("/fxml/Scrabble.ttf"), 40);
     leaderboard.setFont(f);
     this.players = this.gs.get(player.getNickname()).getAllPlayers();
@@ -149,33 +135,21 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
    */
 
   public void updateStatistics() {
-    System.out.println("Game play time in seconds " + gs.get(player.getNickname()).getPlayTime());
-
     PlayerData pd = player.getPlayerInfo();
-    System.out
-        .println("Total game Time in seconds " + pd.getPlayerStatistics().getPlayTime());
-    System.out.println("Total game Time in Minutes " + pd.getPlayerStatistics().getPlayTimeInMinutes());
     pd.getPlayerStatistics().incrementGameCount();
     pd.getPlayerStatistics()
         .setScore(pd.getPlayerStatistics().getScore() + gs.get(player.getNickname()).getScore());
     pd.getPlayerStatistics().setPlayedTiles(
         pd.getPlayerStatistics().getPlayedTiles() + gs.get(player.getNickname()).getPlayedTiles());
-    System.out.println("time wird auf x gesetz: " + (pd.getPlayerStatistics().getPlayTime()
-        + gs.get(player.getNickname()).getPlayTime()));
     pd.getPlayerStatistics().setPlayTime(pd.getPlayerStatistics().getPlayTime()
         + gs.get(player.getNickname()).getPlayTime());
-    System.out.println("BestWords: " + gs.get(player.getNickname()).getBestWordAsString());
     if (pd.getPlayerStatistics().getBestTurn() < gs.get(player.getNickname()).getBestTurn()) {
       pd.getPlayerStatistics().setBestTurn(gs.get(player.getNickname()).getBestTurn());
       pd.getPlayerStatistics().setBestWord(gs.get(player.getNickname()).getBestWordAsString());
     }
-    for (String p : players) {
-      System.out.println(p);
-    }
     if (players.get(0).equals(player.getNickname())) {
       pd.getPlayerStatistics().incrementWins();
     }
-    // TODO best word
     new JsonHandler().savePlayerProfile(new File(FileParameters.datadir + "playerProfile.json"),
         this.player);
   }

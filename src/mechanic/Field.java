@@ -23,17 +23,17 @@ public class Field implements Serializable {
   @JsonIgnore
   private Tile tile;
 
-  private int xCoordinate; // starting at 1
-  private int yCoordinate; // starting at 1
+  private int x1; // starting at 1
+  private int y1; // starting at 1
   private int letterMultiplier;
   private int wordMultiplier;
 
   /**
    * This method creates an instance of the class.
    */
-  public Field(int letterMultiplier, int wordMultiplier, int xCoordinate, int yCoordinate) {
-    this.xCoordinate = xCoordinate;
-    this.yCoordinate = yCoordinate;
+  public Field(int letterMultiplier, int wordMultiplier, int x, int y) {
+    this.x1 = x;
+    this.y1 = y;
     this.letterMultiplier = letterMultiplier;
     this.wordMultiplier = wordMultiplier;
   }
@@ -41,9 +41,9 @@ public class Field implements Serializable {
   /**
    * This method creates an instance of the class.
    */
-  public Field(int xCoordinate, int yCoordinate) {
-    this.xCoordinate = xCoordinate;
-    this.yCoordinate = yCoordinate;
+  public Field(int x, int y) {
+    this.x1 = x;
+    this.y1 = y;
     this.letterMultiplier = 1;
     this.wordMultiplier = 1;
   }
@@ -59,7 +59,6 @@ public class Field implements Serializable {
    * @author lurny
    */
   public void setTile(Tile tile) {
-    System.out.println(tile);
     if (tile == null) {
       if (this.tile != null) {
         this.tile.setFieldOneDirection(null);
@@ -93,19 +92,11 @@ public class Field implements Serializable {
 
 
   public int getxCoordinate() {
-    return xCoordinate;
-  }
-
-  public void setxCoordinate(int xCoordinate) {
-    this.xCoordinate = xCoordinate;
+    return x1;
   }
 
   public int getyCoordinate() {
-    return yCoordinate;
-  }
-
-  public void setyCoordinate(int yCoordinate) {
-    this.yCoordinate = yCoordinate;
+    return y1;
   }
 
   public int getLetterMultiplier() {
@@ -136,8 +127,8 @@ public class Field implements Serializable {
    */
   @JsonIgnore
   public Field getLeft() {
-    if (this.xCoordinate > 1) {
-      return this.gameBoard.getField(this.xCoordinate - 1, this.yCoordinate);
+    if (this.x1 > 1) {
+      return this.gameBoard.getField(this.x1 - 1, this.y1);
     } else {
       return null;
     }
@@ -151,8 +142,8 @@ public class Field implements Serializable {
    */
   @JsonIgnore
   public Field getRight() {
-    if (this.xCoordinate <= 14) {
-      return this.gameBoard.getField(this.xCoordinate + 1, this.yCoordinate);
+    if (this.x1 <= 14) {
+      return this.gameBoard.getField(this.x1 + 1, this.y1);
     } else {
       return null;
     }
@@ -166,8 +157,8 @@ public class Field implements Serializable {
    */
   @JsonIgnore
   public Field getTop() {
-    if (this.yCoordinate > 1) {
-      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate - 1);
+    if (this.y1 > 1) {
+      return this.gameBoard.getField(this.x1, this.y1 - 1);
     } else {
       return null;
     }
@@ -181,8 +172,8 @@ public class Field implements Serializable {
    */
   @JsonIgnore
   public Field getBottom() {
-    if (this.yCoordinate <= 14) {
-      return this.gameBoard.getField(this.xCoordinate, this.yCoordinate + 1);
+    if (this.y1 <= 14) {
+      return this.gameBoard.getField(this.x1, this.y1 + 1);
     } else {
       return null;
     }
@@ -195,7 +186,7 @@ public class Field implements Serializable {
    */
   @Override
   public String toString() {
-    return "(x, y): = (" + this.xCoordinate + ", " + this.yCoordinate + ")";
+    return "(x, y): = (" + this.x1 + ", " + this.y1 + ")";
   }
 
   /**
@@ -212,7 +203,7 @@ public class Field implements Serializable {
     } else {
       t = (Field) other;
       if (t.letterMultiplier == this.letterMultiplier && t.wordMultiplier == this.wordMultiplier
-          && t.xCoordinate == this.xCoordinate && t.yCoordinate == this.yCoordinate) {
+          && t.x1 == this.x1 && t.y1 == this.y1) {
         return true;
       } else {
         return false;

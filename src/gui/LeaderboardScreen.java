@@ -8,6 +8,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -55,6 +56,7 @@ public class LeaderboardScreen extends Application {
     Scene scene = new Scene(root);
     stage.setScene(scene);
     stage.initStyle(StageStyle.UNDECORATED);
+    stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
 
     root.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override

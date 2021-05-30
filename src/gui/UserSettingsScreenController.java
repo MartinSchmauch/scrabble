@@ -257,26 +257,5 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     return instance;
   }
 
-  /**
-   * Opens a dialog window for user inputs (unused).
-   *
-   * @param title of the dialog window
-   * @param oldValue Old value now to be changed
-   * @param content of the subject to be changed
-   * @return changed content
-   */
-
-  public String openInputDialog(String title, String oldValue, String content) {
-    TextInputDialog dialog = new TextInputDialog(oldValue);
-    dialog.setTitle(title);
-    dialog.setHeaderText(null);
-    dialog.setContentText(content);
-    Optional<String> result = dialog.showAndWait();
-
-    System.out.println(this.player.getNickname());
-    if (result.isPresent()) {
-      return result.get();
-    }
-    return nickname.getText();
-  }
+  
 }
