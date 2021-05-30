@@ -248,10 +248,20 @@ public class UserSettingsScreenController implements EventHandler<ActionEvent> {
     this.avatar
         .setImage(new Image(getClass().getResource(this.player.getAvatar()).toExternalForm()));
   }
+  
+  /**
+   * This method disables the buttons for non-hosts.
+   */
 
   public void disableDeletion() {
     this.delete.setDisable(true);
   }
+  
+  /**
+   * This method gives the current user settings controller instance.
+   *
+   * @return instance as the current instance.
+   */
 
   public static UserSettingsScreenController getInstance() {
     return instance;

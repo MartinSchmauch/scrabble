@@ -282,6 +282,4 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
   public void setAvatar(String avatar) {
     this.avatar.setImage(new Image(avatar));
   }
-
-
 }

@@ -44,17 +44,6 @@ public class LoginScreen extends Application {
   @FXML
   private Label username;
 
-
-  /**
-   * Set up the avatar picture before loginscreen is visible and ask user for profile creation if no
-   * profile is present.
-   */
-
-
-  public void setUp() {
-
-  }
-
   /**
    * This method reads the "LoginScreenFXML.fxml" (@author nilbecke) file to create the Login
    * Screen.
@@ -146,14 +135,30 @@ public class LoginScreen extends Application {
     setFirstLaunch(true);
   }
 
+  /**
+   * Set up if the applictaion was launched before.
+   *
+   * @param launch indicates launch.
+   */
+
   public void setFirstLaunch(boolean launch) {
     alreadyLaunched = true;
   }
 
-
+  /**
+   * Get the application parent.
+   *
+   * @return root as the Parent.
+   */
   public Parent getParent() {
     return this.root;
   }
+
+  /**
+   * Get the loginscreen instance.
+   *
+   * @return this as the current instance.
+   */
 
   public LoginScreen getLoginScreen() {
     return this;

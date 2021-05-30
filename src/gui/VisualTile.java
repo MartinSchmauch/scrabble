@@ -41,60 +41,63 @@ public class VisualTile extends Parent {
 
     letterText = new Text(letter);
     valueText = new Text(String.valueOf(value));
-    
 
-    
+
+
     shape = new Rectangle(RACK_TILE_SIZE - 5, RACK_TILE_SIZE - 5);
 
     if (onRack) {
-      
-//      pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
-// letterText.setFont(Font.font(32));
-// valueText.setFont(Font.font(16));
-      
+
+      // pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
+      // letterText.setFont(Font.font(32));
+      // valueText.setFont(Font.font(16));
+
       shape.heightProperty().unbind();
       shape.widthProperty().unbind();
 
-      shape.heightProperty()
-          .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().add(20).multiply(0.9));
-      shape.widthProperty()
-          .bind(GamePanelController.getInstance().referenceSizeForRack.widthProperty().add(20).multiply(0.9));
+      shape.heightProperty().bind(GamePanelController.getInstance().referenceSizeForRack
+          .heightProperty().add(20).multiply(0.9));
+      shape.widthProperty().bind(GamePanelController.getInstance().referenceSizeForRack
+          .widthProperty().add(20).multiply(0.9));
 
-      
+
       letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(40));
       valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(70));
-      
-      letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
-      
+
+      letterText.styleProperty()
+          .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
+
       if (letter.equals("Q")) {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
+        valueText.styleProperty().bind(
+            Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
+      } else {
+        valueText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
       }
-      else {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
-      }
-      
+
     } else {
-//      pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
-      
+      // pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
+
       shape.heightProperty().unbind();
       shape.widthProperty().unbind();
-      
-      shape.heightProperty()
-      .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
-      shape.widthProperty()
-          .bind(GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
-      
+
+      shape.heightProperty().bind(
+          GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
+      shape.widthProperty().bind(
+          GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
+
       letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(55));
       valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(85));
-      
-      
-//      letterText.setFont(Font.font(26));
-//      valueText.setFont(Font.font(14));
+
+
+      // letterText.setFont(Font.font(26));
+      // valueText.setFont(Font.font(14));
       if (letter.equals("Q")) {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
-      }
-      else {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
+        valueText.styleProperty().bind(
+            Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(2).asString(), ";"));
+      } else {
+        valueText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
       }
     }
     shape.setArcHeight(10);
@@ -111,43 +114,4 @@ public class VisualTile extends Parent {
 
     getChildren().add(pane);
   }
-
-  public Rectangle getShape() {
-    return shape;
-  }
-
-  public void setShape(Rectangle shape) {
-    this.shape = shape;
-  }
-
-  public Text getLetterText() {
-    return this.letterText;
-  }
-
-  public void setLetterText(Text letterText) {
-    this.letterText = letterText;
-  }
-
-  public Text getValueText() {
-    return this.valueText;
-  }
-
-  public void setValueText(Text valueText) {
-    this.valueText = valueText;
-  }
-
-  /**
-   * @return the tileFontSize
-   */
-  public DoubleProperty getTileFontSize() {
-    return letterTextFontSize;
-  }
-
-  /**
-   * @param tileFontSize the tileFontSize to set
-   */
-  public void setTileFontSize(DoubleProperty tileFontSize) {
-    this.letterTextFontSize = tileFontSize;
-  }
-
 }

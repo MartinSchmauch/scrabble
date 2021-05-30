@@ -47,6 +47,10 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
   private Label bestWordKey;
   @FXML
   private Label bestTurnKey;
+  
+  /**
+   * Initializes all labels etc. with corresponding values.
+   */
 
   @FXML
   public void initialize() {
@@ -109,24 +113,6 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
     st.close();
     new LoginScreen().start(new Stage());
   }
-
-  /**
-   * Determines the winner based on the score archieved. Players will be sorted by descending order
-   * into the "players" List.
-   */
-  // public void determineWinner() {
-  // boolean swap = true;
-  // while (swap) {
-  // swap = false;
-  // for (int i = 0; i < players.size() - 1; i++) {
-  // if (gs.getScore(players.get(i).getNickname()) < gs
-  // .getScore(players.get(i + 1).getNickname())) {
-  // Collections.swap(this.players, i, i + 1);
-  // swap = true;
-  // }
-  // }
-  // }
-  // }
 
   /**
    * This methods updates all user statistics acooring to the game state.

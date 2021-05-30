@@ -863,7 +863,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   /**
    * This method switches the Theme from dark mode to light mode and vice versa.
-   * 
+   *
    * @author nilbecke
    */
 

@@ -12,7 +12,9 @@ import java.io.IOException;
 public class OpenExternalScreen {
 
   /**
-   * Opens ScrabbleRulebook.pdf Can be accessed statically as the Rules don't change.
+   * Opens an external file given by its path.
+   *
+   * @param path as the path to the file. 
    */
 
   public static void open(String path) {

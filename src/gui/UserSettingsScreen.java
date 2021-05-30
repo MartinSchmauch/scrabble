@@ -43,6 +43,12 @@ public class UserSettingsScreen extends Application {
   private ImageView question;
   @FXML
   private TextField namefield;
+  
+  /**
+   * Genererates a new user settings screen. 
+   *
+   * @param currentPlayer as the current player.
+   */
 
   public UserSettingsScreen(Player currentPlayer) {
     player = currentPlayer;
@@ -84,6 +90,12 @@ public class UserSettingsScreen extends Application {
       e.printStackTrace();
     }
   }
+  
+  /**
+   * Get the currently used player. 
+   *
+   * @return player as the current player.
+   */
 
   public static Player getPlayer() {
     return player;
