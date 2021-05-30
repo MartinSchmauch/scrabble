@@ -22,7 +22,7 @@ import org.junit.Test;
  *
  * @author pkoenig
  */
-public class AIplayerTest {
+public class AiPlayerTest {
   AiPlayer aiplayer;
   ArrayList<Field[]> results = new ArrayList<Field[]>();
   GameBoard gb;
@@ -49,8 +49,8 @@ public class AIplayerTest {
   }
 
   /**
-   * Test method for
-   * {@link mechanic.AIplayer_firstGeneration#getValidPositionsForWordLength(mechanic.Field[][], int)}.
+   * Test method for 
+   * mechanic.AIplayer_firstGeneration#getValidPositionsForWordLength(mechanic.Field[][], int).
    * Code is not fully dynamic with size
    */
   // @Test
@@ -86,11 +86,8 @@ public class AIplayerTest {
   }
 
   @Test
-  public void testRunAI_dynamic() {
-    int iterations = 10;
+  public void testRunAi_dynamic() {
     int maxNumberOfCombinationsToUse;
-
-
     // DOCUMENTATION
     File file = null;
     file = new File(System.getProperty("user.dir") + System.getProperty("file.separator")
@@ -118,15 +115,16 @@ public class AIplayerTest {
     System.out.println();
     System.out.println("-------------------------------------------------------------\n");
 
+    int iterations = 10;
     for (int i = 0; i < iterations; i++) {
 
       PlayerData pd1 = new PlayerData("test-" + i);
       GameState gs1 = new GameState(pd1, null);
-      GameController gc1 = new GameController(gs1);
       gs1.setUpGameboard();
       gb = gs1.getGameBoard();
       setUpGameBoard1(gb);
 
+      GameController gc1 = new GameController(gs1);
       aiplayer = new AiPlayer("test-1-" + i, 0, 0, gc1);
       aiplayer.setTestmode(true);
 
@@ -152,8 +150,8 @@ public class AIplayerTest {
         maxNumberOfCombinationsToUse += helper;
 
         for (int numberOfCombinationsToUse =
-            15; numberOfCombinationsToUse <= maxNumberOfCombinationsToUse; numberOfCombinationsToUse *=
-                2) { // TODO
+            15; numberOfCombinationsToUse <= maxNumberOfCombinationsToUse; 
+            numberOfCombinationsToUse *= 2) { // TODO
           for (int goodScore = 5; goodScore < 200; goodScore *= 2) {
             System.out.println("\n-------------------------------------------------------------");
             System.out.println(
@@ -169,15 +167,15 @@ public class AIplayerTest {
             /*
              * TIMED AREA BEGIN
              */
-//            timeOverall.start();
+            //timeOverall.start();
             idealTurn = aiplayer.runAi(gb);
-//            timeOverall.stop();
+            //timeOverall.stop();
 
             /*
              * TIMED AREA END
              */
             if (idealTurn == null) {
-//              timeOverall.reset();
+              //timeOverall.reset();
               break;
             }
 
@@ -190,8 +188,8 @@ public class AIplayerTest {
               currentTurnWithParam[4] = currentTurnWithParam[4] + ", "
                   + aiplayer.getRackTile(k).getLetter().getCharacter();
             }
-//            currentTurnWithParam[5] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
-//            timeOverall.reset();
+            //currentTurnWithParam[5] = timeOverall.elapsed(TimeUnit.MILLISECONDS) + "";
+            //timeOverall.reset();
 
             temp = idealTurn.toStringArray();
 
@@ -214,6 +212,9 @@ public class AIplayerTest {
     }
   }
 
+  /**
+   * this Test tests the method generate tile combinations.
+   */
   // @Test
   public void testgenerateTileCombinations() {
     PlayerData pd1 = new PlayerData("test1");
