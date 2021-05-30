@@ -1659,64 +1659,59 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     st.close();
   }
 
-  public Server getServer() {
-    return server;
-  }
-
-  public void setServer(Server server) {
-    this.server = server;
-  }
-
-  public ClientProtocol getCp() {
-    return cp;
-  }
-
-  public void setCp(ClientProtocol cp) {
-    this.cp = cp;
-  }
-
-  public static int[] getCoordinates() {
-    return selectedCoordinates;
-  }
-
-  public static void setCoordinates(int[] coordinates) {
-    GamePanelController.selectedCoordinates = coordinates;
-  }
-
+  /**
+   * Getter-Method to get the reference to the object variable alert2.
+   */
   public CustomAlert getAlert2() {
     return alert2;
   }
 
+  /**
+   * Getter-Method to get the reference to the instance of the GamePanelController.
+   */
   public static GamePanelController getInstance() {
     return instance;
   }
-
+  
+  /**
+   * Getter-Method to get the reference to the object variable min.
+   */
   public int getMin() {
     return min;
   }
 
+  /**
+   * Getter-Method to get the reference to the object variable sec.
+   */
   public int getSec() {
     return sec;
   }
 
+  /**
+   * Setter-Method to mutate the object variable timerDuration.
+   */
   public void setTimerDuration(int timerDuration) {
     this.timerDuration = timerDuration;
   }
 
+  /**
+   * Getter-Method to get the reference to the object variable timerDuration.
+   */
   public int getTimerDuration() {
     return timerDuration;
   }
 
-  public boolean isExchangeTilesMode() {
-    return exchangeTilesMode;
-  }
-
+  /**
+   * Setter-Method to mutate the object variable exchangeTilesMode.
+   */
   public void setExchangeTilesMode(boolean exchangeTilesMode) {
     GamePanelController.exchangeTilesMode = exchangeTilesMode;
   }
 
+  /**
+   * Setter-Method to mutate the instance of the GamePanelController.
+   */
   public static void setInstance(GamePanelController controller) {
     instance = controller;
-
   }
 }
