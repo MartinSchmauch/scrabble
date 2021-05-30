@@ -6,26 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
-import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.Rectangle2D;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -34,7 +22,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
@@ -47,14 +34,10 @@ import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -371,8 +354,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   @FXML
   protected StackPane stackPlayer4;
   @FXML
-  protected StackPane rackStack;
-  @FXML
   protected StackPane referenceSizeForRack;
 
 
@@ -465,21 +446,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     }
 
 
-    // CurrentPlayer Boxes
-    // currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(15));
-    // currentPlayer1.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-    //
-    // currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(15));
-    // currentPlayer2.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-    //
-    // currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(15));
-    // currentPlayer3.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-    //
-    // currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(15));
-    // currentPlayer4.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-
-
-
     // Background
     background.fitHeightProperty().bind(upperPane.heightProperty());
     background.fitWidthProperty().bind(upperPane.widthProperty());
@@ -537,13 +503,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       }
 
     }
-
-
-
-    /**
-     * @author nilbecke
-     */
-
   }
 
 
