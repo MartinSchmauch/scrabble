@@ -438,6 +438,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         playerLabel[i].setText("Points: ");
         avatarImageView[i].setImage(
             new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
+        avatarImageView[i].setFitHeight(50); // TODO 
+        avatarImageView[i].setFitWidth(50); // TODO
       } else {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
@@ -764,9 +766,14 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.LIGHTGRAY);
         this.timeLabel.setFill(Color.LIGHTGRAY);
 
-        // this.rackBox.setStroke(Color.DARKGREY);
-        // this.chatBox.setStroke(Color.DARKGRAY);
-        // this.playerBox.setStroke(Color.DARKGREY);
+        rack.setBorder(new Border(new BorderStroke(Color.DARKGREY, 
+            BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        chatStackPane.setBorder(new Border(new BorderStroke(Color.DARKGREY, 
+            BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        playerBoxStackPane.setBorder(new Border(new BorderStroke(Color.DARKGREY, 
+            BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        
+        
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
 
         this.timeProgress.getStylesheets()
@@ -806,9 +813,13 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.BLACK);
         this.timeLabel.setFill(Color.BLACK);
 
-        // this.rackBox.setStroke(Color.BLACK);
-        // this.chatBox.setStroke(Color.BLACK);
-        // this.playerBox.setStroke(Color.BLACK);
+        rack.setBorder(new Border(new BorderStroke(Color.BLACK, 
+            BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        chatStackPane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+            BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        playerBoxStackPane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+            BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        
         this.backgroundGamePanel.setStroke(Color.BLACK);
 
         this.chat.getStylesheets()
@@ -1157,36 +1168,38 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * emphasizing the players nickname on the game panel.
    *
    * @param nextPlayer nickname of the player who is next
-   * @author pkoenig
+   * 
    */
   public void indicatePlayerTurn(String nextPlayer) {
     if (players.get(0).getNickname().equals(nextPlayer)) {
       stackPlayer1.setBorder(new Border(new BorderStroke(Color.RED, 
           BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
     } else {
-      stackPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, 
-          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+      stackPlayer1.setBorder(null);
     }
-    if (players.get(1).getNickname().equals(nextPlayer)) {
-      stackPlayer2.setBorder(new Border(new BorderStroke(Color.RED, 
-          BorderStrokeStyle.SOLID,  new CornerRadii(10), BorderWidths.DEFAULT)));
-    } else {
-      stackPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, 
-          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
-    }
-    if (players.get(2).getNickname().equals(nextPlayer)) {
-      stackPlayer3.setBorder(new Border(new BorderStroke(Color.RED, 
-          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
-    } else {
-      stackPlayer3.setBorder(new Border(new BorderStroke(Color.BLACK, 
-          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
-    }
-    if (players.get(3).getNickname().equals(nextPlayer)) {
-      stackPlayer4.setBorder(new Border(new BorderStroke(Color.RED, 
-          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
-    } else {
-      stackPlayer4.setBorder(new Border(new BorderStroke(Color.BLACK, 
-          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    if (players.size() > 1) {
+      if (players.get(1).getNickname().equals(nextPlayer)) {
+        stackPlayer2.setBorder(new Border(new BorderStroke(Color.RED, 
+            BorderStrokeStyle.SOLID,  new CornerRadii(10), BorderWidths.DEFAULT)));
+      } else {
+        stackPlayer2.setBorder(null);
+      }
+      if (players.size() > 2) {
+        if (players.get(2).getNickname().equals(nextPlayer)) {
+          stackPlayer3.setBorder(new Border(new BorderStroke(Color.RED, 
+              BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+        } else {
+          stackPlayer3.setBorder(null);
+        }
+        if (players.size() > 3) {
+          if (players.get(3).getNickname().equals(nextPlayer)) {
+            stackPlayer4.setBorder(new Border(new BorderStroke(Color.RED, 
+                BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+          } else {
+            stackPlayer4.setBorder(null);
+          }
+        }
+      }
     }
   }
 

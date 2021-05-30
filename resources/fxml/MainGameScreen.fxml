@@ -29,7 +29,7 @@
             <Rectangle2D />
          </viewport>
       </ImageView>
-      <GridPane alignment="CENTER">
+      <GridPane alignment="CENTER" prefHeight="850.0" prefWidth="1600.0">
          <columnConstraints>
             <ColumnConstraints hgrow="NEVER" percentWidth="50.0" />
             <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
@@ -70,17 +70,21 @@
                            <children>
                               <StackPane fx:id="stackPlayer1" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0">
                                  <children>
-                                    <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
                                           <ImageView fx:id="image1" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@creeper.png" />
                                              </image>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
                                           </ImageView>
-                                          <VBox alignment="CENTER_LEFT" minHeight="0.0" prefWidth="70.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0" prefWidth="70.0" GridPane.columnIndex="1">
                                              <children>
                                                 <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                                    <font>
@@ -105,30 +109,28 @@
                                                    </children>
                                                 </HBox>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="10.0" />
-                                       </padding>
-                                    </HBox>
+                                    </GridPane>
                                  </children>
                               </StackPane>
                               <StackPane fx:id="stackPlayer2" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1">
                                  <children>
-                                    <HBox fx:id="player2Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
                                           <ImageView fx:id="image2" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@creeper.png" />
                                              </image>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
                                           </ImageView>
-                                          <VBox alignment="CENTER_LEFT" minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0" GridPane.columnIndex="1">
                                              <children>
                                                 <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                                    <font>
@@ -153,33 +155,28 @@
                                                    </children>
                                                 </HBox>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
                                           </VBox>
                                        </children>
-                                       <StackPane.margin>
-                                          <Insets />
-                                       </StackPane.margin>
-                                       <padding>
-                                          <Insets bottom="5.0" left="10.0" />
-                                       </padding>
-                                    </HBox>
+                                    </GridPane>
                                  </children>
                               </StackPane>
                               <StackPane fx:id="stackPlayer3" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2">
                                  <children>
-                                    <HBox fx:id="player3Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
                                           <ImageView fx:id="image3" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@creeper.png" />
                                              </image>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
                                           </ImageView>
-                                          <VBox alignment="CENTER_LEFT" minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0" GridPane.columnIndex="1">
                                              <children>
                                                 <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
                                                    <font>
@@ -204,33 +201,28 @@
                                                    </children>
                                                 </HBox>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
                                           </VBox>
                                        </children>
-                                       <StackPane.margin>
-                                          <Insets />
-                                       </StackPane.margin>
-                                       <padding>
-                                          <Insets bottom="5.0" left="10.0" />
-                                       </padding>
-                                    </HBox>
+                                    </GridPane>
                                  </children>
                               </StackPane>
                               <StackPane fx:id="stackPlayer4" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="3">
                                  <children>
-                                    <HBox fx:id="player4Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
                                        <children>
                                           <ImageView fx:id="image4" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@creeper.png" />
                                              </image>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
                                           </ImageView>
-                                          <VBox alignment="CENTER_LEFT" minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0" GridPane.columnIndex="1">
                                              <children>
                                                 <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
                                                    <font>
@@ -255,15 +247,9 @@
                                                    </children>
                                                 </HBox>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
                                           </VBox>
                                        </children>
-                                       <padding>
-                                          <Insets bottom="5.0" left="10.0" />
-                                       </padding>
-                                    </HBox>
+                                    </GridPane>
                                  </children>
                               </StackPane>
                               <Text fx:id="remaining" strokeType="OUTSIDE" strokeWidth="0.0" text="Remaining Letters" GridPane.halignment="LEFT" GridPane.rowIndex="4">
@@ -342,7 +328,7 @@
                                     <Font size="11.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </GridPane.margin>
                               </Button>
                            </children>
@@ -423,7 +409,7 @@
                         <Button fx:id="activateFieldLabels" alignment="CENTER" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" stylesheets="@Buttons.css" text="Disable Labels" />
                      </children>
                   </HBox>
-                  <HBox alignment="BOTTOM_CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                  <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                      <children>
                         <Button fx:id="leaveGameButton" mnemonicParsing="false" onAction="#handle" prefHeight="30.0" stylesheets="@Buttons.css" text="Leave Game">
                            <HBox.margin>
