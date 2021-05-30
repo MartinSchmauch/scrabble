@@ -345,5 +345,13 @@ public class GameController {
   public void addTurn(Turn t) {
     this.turns.add(0, t);
   }
+  
+  /**
+   * Decreases currentPlayerIndex if a player leaves to avoid player skip.
+   */
+  
+  public void decreaseCurrentPlayerIndex() {
+    this.currentPlayerIndex--;
+  }
 
 }
