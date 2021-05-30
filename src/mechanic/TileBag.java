@@ -77,10 +77,16 @@ public class TileBag {
     this.tiles.add(tile);
   }
 
+  /**
+   * gets the variable isEmpty of the current instance.
+   */
   public boolean isEmpty() {
     return isEmpty;
   }
 
+  /**
+   * gets the variable remaining of the current instance.
+   */
   public int getRemaining() {
     return remaining;
   }

@@ -22,26 +22,40 @@ public class PlayerData implements Serializable {
   private String nickname;
   private String avatar;
 
-  // private GameStatistic Statistic;
 
+  /**
+   * creates an instance of the class.
+   */
   public PlayerData(String nickname) {
     this.nickname = nickname;
     statistics = new PlayerStatistics();
   }
 
+  /**
+   * gets the variable nickname of the current instance.
+   */
   public String getNickname() {
     return nickname;
   }
 
+  /**
+   * sets the variable nickname of the current instance.
+   */
   public void setNickname(String nickname) {
     this.nickname = nickname;
   }
 
+  /**
+   * gets the variable avatar of the current instance.
+   */
   public String getAvatar() {
 
     return this.avatar;
   }
 
+  /**
+   * gets the variable statistics of the current instance.
+   */
   public PlayerStatistics getPlayerStatistics() {
     return this.statistics;
   }
@@ -59,7 +73,6 @@ public class PlayerData implements Serializable {
    * @param w represents the total amount of wins.
    * @param pt2 represents the sum of all tiles ever played.
    */
-
   public void setStatistics(int gc, int bs, String bw, int s, int pt1, int w, int pt2) {
 
     this.statistics.setGameCount(gc);
@@ -71,10 +84,16 @@ public class PlayerData implements Serializable {
     this.statistics.setPlayedTiles(pt2);
   }
 
+  /**
+   * sets the variable avatar of the current instance.
+   */
   public void setAvatar(String input) {
     this.avatar = input;
   }
 
+  /**
+   * sets the variable avatar of the current instance.
+   */
   public void setAvatar(Image input) {
     this.avatar = input.getUrl();
   }
@@ -101,21 +120,31 @@ public class PlayerData implements Serializable {
     return (Image) wr;
   }
 
-
+  /**
+   * gets the variable isHost of the current instance.
+   */
   public boolean isHost() {
     return this.isHost;
   }
 
+  /**
+   * sets the variable host of the current instance.
+   */
   public void setHost(boolean host) {
     this.isHost = host;
   }
 
-
+  /**
+   * gives back a string representation of the cuurent instance.
+   */
   @Override
   public String toString() {
     return nickname;
   }
 
+  /**
+   * equals method to compare two instances.
+   */
   @Override
   public boolean equals(Object other) {
     boolean equals;

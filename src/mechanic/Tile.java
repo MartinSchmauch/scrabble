@@ -31,11 +31,17 @@ public class Tile implements Serializable {
     this.isJoker = (letter.getCharacter() == '*');
   }
 
+  /**
+   * creates an instance of the class.
+   */
   public Tile(Letter letter) {
     this.letter = letter;
     this.isJoker = (letter.getCharacter() == '*');
   }
 
+  /**
+   * gets the variable field of the current instance.
+   */
   public Field getField() {
     return this.field;
   }
@@ -85,18 +91,30 @@ public class Tile implements Serializable {
     }
   }
 
+  /**
+   * gets the variable letter of the current instance.
+   */
   public Letter getLetter() {
     return this.letter;
   }
 
+  /**
+   * sets the variable letter of the current instance.
+   */
   public void setLetter(Letter letter) {
     this.letter = letter;
   }
 
+  /**
+   * gets the variable isPlayed of the current instance.
+   */
   public boolean isPlayed() {
     return isPlayed;
   }
 
+  /**
+   * sets the variable played of the current instance.
+   */
   public void setPlayed(boolean played) {
     this.isPlayed = played;
   }
@@ -129,26 +147,34 @@ public class Tile implements Serializable {
     }
   }
 
-  /** @author lurny */
+  /**
+   * gets the variable onGameBoard of the current instance.
+   */
   public boolean isOnGameBoard() {
     return onGameBoard;
   }
 
-  /** @author lurny */
+  /**
+   * sets the variable onGameBoard of the current instance.
+   */
   public void setOnGameBoard(boolean onGameBoard) {
     this.onGameBoard = onGameBoard;
-    this.onRack = !onGameBoard; // TODO: check that this does not create errors
+    this.onRack = !onGameBoard; 
   }
 
-  /** @author lurny */
+  /**
+   * gets the variable onRack of the current instance.
+   */
   public boolean isOnRack() {
     return onRack;
   }
 
-  /** @author lurny */
+  /**
+   * sets the variable onRack of the current instance.
+   */
   public void setOnRack(boolean onRack) {
     this.onRack = onRack;
-    this.onGameBoard = !onRack; // TODO: check that this does not create errors
+    this.onGameBoard = !onRack; 
   }
 
   /**
@@ -231,6 +257,9 @@ public class Tile implements Serializable {
     }
   }
 
+  /**
+   * gets a String representation of the current instance.
+   */
   @Override
   public String toString() {
     if (this.field == null) {

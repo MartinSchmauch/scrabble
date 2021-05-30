@@ -79,63 +79,95 @@ public class Player {
    * PLAYER INFO
    */
 
+  /**
+   * gets the variable playerInfo of the current instance.
+   */
   @JsonIgnore
   public PlayerData getPlayerInfo() {
     return this.info;
   }
 
+  /**
+   * sets the variable nickname of the current instance.
+   */
   public void setNickname(String nickname) {
     this.info.setNickname(nickname);
   }
 
+  /**
+   * gets the variable nickname of the current instance.
+   */
   public String getNickname() {
     return this.info.getNickname();
   }
 
+  /**
+   * sets the variable avatar of the current instance.
+   */
   public void setAvatar(String avatar) {
     this.info.setAvatar(avatar);
   }
 
+  /**
+   * gets the variable avatar of the current instance.
+   */
   public String getAvatar() {
     return this.info.getAvatar();
   }
 
+  /**
+   * gets the variable playerStatistics of the current instance.
+   */
   @JsonIgnore
   public PlayerStatistics getStatistics() {
     return this.info.getPlayerStatistics();
   }
 
-
+  /**
+   * gets the variable gameCount of the current instance.
+   */
   public int getGameCount() {
     return getStatistics().getGameCount();
   }
 
-
+  /**
+   * gets the variable bestTurn of the current instance.
+   */
   public int getBestTurn() {
     return this.getStatistics().getBestTurn();
   }
 
-
+  /**
+   * gets the variable bestWord of the current instance.
+   */
   public String getBestWord() {
     return this.getStatistics().getBestWord();
   }
 
-
+  /**
+   * gets the variable winner of the current instance.
+   */
   public int getPlayTime() {
     return this.getStatistics().getPlayTime();
   }
 
-
+  /**
+   * gets the variable score of the current instance.
+   */
   public int getScore() {
     return this.getStatistics().getScore();
   }
 
-
+  /**
+   * gets the variable wins of the current instance.
+   */
   public int getWins() {
     return this.getStatistics().getWins();
   }
 
-
+  /**
+   * gets the variable playedTiles of the current instance.
+   */
   public int getPlayedTiles() {
     return this.getStatistics().getPlayedTiles();
   }
@@ -146,10 +178,16 @@ public class Player {
    * RACK METHODS
    */
 
+  /**
+   * gets the rackTile at parameter index.
+   */
   public Tile getRackTile(int index) {
     return this.rack[index].getTile();
   }
 
+  /**
+   * sets a Tile onto the rack at Index index.
+   */
   public void setRackTile(int index, Tile tile) {
 
     this.rack[index].setTile(tile);
@@ -328,59 +366,83 @@ public class Player {
     }
   }
 
-
-  /*
-   * PLAYER SETTINGS
+  /**
+   * gets the variable volume of the current instance.
    */
-
   public int getVolume() {
     return volume;
   }
 
+  /**
+   * gets the variable winner of the current instance.
+   */
   public void setVolume(int volume) {
     this.volume = volume;
   }
 
+  /**
+   * gets the variable customGameSettings of the current instance.
+   */
   public String getCustomGameSettings() {
     return customGameSettings;
   }
 
+  /**
+   * sets the variable customGameSettings of the current instance.
+   */
   public void setCustomGameSettings(String customGameSettings) {
     this.customGameSettings = customGameSettings;
   }
 
-  /*
-   * NETWORK
+  /**
+   * gets the variable host of the current instance.
    */
-
   @JsonIgnore
   public boolean isHost() {
     return this.info.isHost();
   }
 
+  /**
+   * sets the variable host of the current instance.
+   */
   public void setHost(boolean host) {
     this.info.setHost(host);
   }
 
+  /**
+   * sets the variable server of the current instance.
+   */
   public void setServer(Server s) {
     this.server = s;
   }
 
+  /**
+   * gets the variable server of the current instance.
+   */
   @JsonIgnore
   public Server getServer() {
     return this.server;
   }
 
+  /**
+   * gets the variable client of the current instance.
+   */
   @JsonIgnore
   public ClientProtocol getClientProtocol() {
     return this.client;
   }
 
+  /**
+   * gets the variable gpc of the current instance.
+   */
   @JsonIgnore
   public GamePanelController getGamePanelController() {
     return this.gpc;
   }
 
+  /**
+   * sets the variable gpc of the current instance.
+   */
   public void setGamePanelController(GamePanelController gpc) {
     this.gpc = gpc;
   }

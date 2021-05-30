@@ -344,7 +344,6 @@ public class Turn implements Serializable {
   /**
    * Ends the current turn and calculates turn score.
    */
-
   public void endTurn() {
     this.isValid = calculateWords();
     if (this.isValid) {
@@ -364,34 +363,58 @@ public class Turn implements Serializable {
     this.getGameController().addTurn(this);
   }
 
+  /**
+   * sets the variable laydDownTiles of the current instance.
+   */
   public void setLaydDownTiles(List<Tile> laydDownTiles) {
     this.laydDownTiles = laydDownTiles;
   }
 
+  /**
+   * gets the variable laydDownTiles of the current instance.
+   */
   public List<Tile> getLaydDownTiles() {
     return laydDownTiles;
   }
 
+  /**
+   * gets the variable words of the current instance.
+   */
   public List<Word> getWords() {
     return words;
   }
 
+  /**
+   * gets the variable turnScore of the current instance.
+   */
   public int getTurnScore() {
     return turnScore;
   }
 
+  /**
+   * sets the variable turnScore of the current instance.
+   */
   public void setTurnScore(int turnScore) {
     this.turnScore = turnScore;
   }
 
+  /**
+   * gets the variable player of the current instance.
+   */
   public String getPlayer() {
     return player;
   }
 
+  /**
+   * gets the variable isValid of the current instance.
+   */
   public boolean isValid() {
     return isValid;
   }
 
+  /**
+   * sets the variable isValid of the current instance.
+   */
   public void setValid(boolean valid) {
     this.isValid = valid;
   }
@@ -425,14 +448,23 @@ public class Turn implements Serializable {
     return res;
   }
 
+  /**
+   * gets the variable gameController of the current instance.
+   */
   public GameController getGameController() {
     return gameController;
   }
 
+  /**
+   * gets a stringRepresentation.
+   */
   public String toString() {
     return stringRepresentation;
   }
 
+  /**
+   * sets the variable stringRepresentation of the current instance.
+   */
   public void setStringRepresentation(String s) {
     this.stringRepresentation = s;
   }
@@ -455,33 +487,51 @@ public class Turn implements Serializable {
     return res;
   }
 
-
+  /**
+   * gets the variable containedStarTiles of the current instance.
+   */
   public boolean isContainedStarTiles() {
     return containedStarTiles;
   }
 
+  /**
+   * sets the variable containedStarTiles of the current instance.
+   */
   public void setContainedStarTiles(boolean containedStarTiles) {
     this.containedStarTiles = containedStarTiles;
   }
 
-
+  /**
+   * gets the variable starTiles of the current instance.
+   */
   public List<Tile> getStarTiles() {
     return starTiles;
   }
 
+  /**
+   * sets the starTiles winner of the current instance.
+   */
   public void setStarTiles(List<Tile> starTiles) {
     this.starTiles = starTiles;
   }
 
-
+  /**
+   * gets the variable laydDownFields of the current instance.
+   */
   public List<Field> getLaydDownFields() {
     return laydDownFields;
   }
 
+  /**
+   * sets the variable laydDownFileds of the current instance.
+   */
   public void setLaydDownFields(List<Field> laydDownFields) {
     this.laydDownFields = laydDownFields;
   }
 
+  /**
+   * sets the variable laydDownFields of the current instance.
+   */
   public void setLaydDownFields(Field[] currentLocation) {
     this.laydDownFields = Arrays.asList(currentLocation);
 

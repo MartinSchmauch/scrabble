@@ -13,10 +13,16 @@ import java.util.List;
 public class Word {
   private List<Tile> tiles;
 
+  /**
+   * creates an instance of the class.
+   */
   public Word(List<Tile> tiles) {
     this.tiles = new ArrayList<Tile>(tiles);
   }
-
+  
+  /**
+   * gets the variable tiles of the current instance.
+   */
   public List<Tile> getTiles() {
     return tiles;
   }

@@ -30,22 +30,37 @@ public class PlayerStatistics implements Serializable {
     this.gameCount++;
   }
 
+  /**
+   * sets the variable gameCount of the current instance.
+   */
   public void setGameCount(int gameCount) {
     this.gameCount = gameCount;
   }
 
+  /**
+   * sets the variable bestTurn of the current instance.
+   */
   public void setBestTurn(int turn) {
     this.bestTurn = turn;
   }
 
+  /**
+   * sets the variable bestWord of the current instance.
+   */
   public void setBestWord(String word) {
     this.bestWord = word;
   }
 
+  /**
+   * sets the variable playTime of the current instance.
+   */
   public void setPlayTime(int time) {
     this.playTime = time;
   }
 
+  /**
+   * sets the variable score of the current instance.
+   */
   public void setScore(int score) {
     this.score = score;
   }
@@ -60,6 +75,9 @@ public class PlayerStatistics implements Serializable {
   }
 
 
+  /**
+   * sets the variable playedTiles of the current instance.
+   */
   public void setPlayedTiles(int tiles) {
     this.playedTiles += tiles;
   }
@@ -71,18 +89,30 @@ public class PlayerStatistics implements Serializable {
     return this.gameCount;
   }
 
+  /**
+   * sets the variable wins of the current instance.
+   */
   public void setWins(int wins) {
     this.wins = wins;
   }
 
+  /**
+   * gets the variable bestTurn of the current instance.
+   */
   public int getBestTurn() {
     return this.bestTurn;
   }
 
+  /**
+   * gets the variable bestWord of the current instance.
+   */
   public String getBestWord() {
     return this.bestWord;
   }
 
+  /**
+   * gets the variable playtime of the current instance.
+   */
   public int getPlayTime() {
     return this.playTime;
   }
@@ -96,14 +126,23 @@ public class PlayerStatistics implements Serializable {
     return this.playTime / 60;
   }
 
+  /**
+   * gets the variable score of the current instance.
+   */
   public int getScore() {
     return this.score;
   }
 
+  /**
+   * gets the variable wins of the current instance.
+   */
   public int getWins() {
     return this.wins;
   }
 
+  /**
+   * gets the variable playedTiles of the current instance.
+   */
   public int getPlayedTiles() {
     return this.playedTiles;
   }
