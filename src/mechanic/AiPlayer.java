@@ -30,7 +30,7 @@ public class AiPlayer extends Player {
   private boolean testmode = false;
 
   /**
-   * Sets the difficulty
+   * Sets the difficulty.
    *
    */
   public enum AiLevel {
