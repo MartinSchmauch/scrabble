@@ -215,7 +215,7 @@
                   <Image url="@images/ScrabbleBoard.png" />
                </image>
             </ImageView>
-            <TextArea fx:id="chat" layoutX="113.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;" wrapText="true">
+            <TextArea fx:id="chat" layoutX="113.0" layoutY="27.0" prefHeight="253.0" prefWidth="202.0" style="-fx-background-color: ffffff;" stylesheets="@Buttons.css" wrapText="true">
                <font>
                   <Font size="10.0" />
                </font>

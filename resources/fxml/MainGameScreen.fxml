@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="upperPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
+<StackPane fx:id="upperPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
 
    <children>
       <ImageView fx:id="background" fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
@@ -326,7 +326,7 @@
                               <RowConstraints />
                            </rowConstraints>
                            <children>
-                              <TextArea fx:id="chat" prefHeight="378.0" prefWidth="370.0" promptText="Welcome to the chat!" wrapText="true" GridPane.columnSpan="2" GridPane.hgrow="NEVER">
+                              <TextArea fx:id="chat" prefHeight="378.0" prefWidth="370.0" promptText="Welcome to the chat!" stylesheets="@Buttons.css" wrapText="true" GridPane.columnSpan="2" GridPane.hgrow="NEVER">
                                  <font>
                                     <Font size="15.0" />
                                  </font>

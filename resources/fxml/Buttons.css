@@ -6,6 +6,11 @@
 	-fx-color: #ffffff;
 }
 
+.text-area .scroll-pane{
+	 -fx-hbar-policy: never;
+   	 -fx-vbar-policy: never;
+}
+
 .button:hover{
 	-fx-background-radius: 24px;
 	-fx-background-color: linear-gradient(to right, #218f33, #83d490);
