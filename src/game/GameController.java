@@ -347,10 +347,24 @@ public class GameController {
   }
   
   /**
-   * Decreases currentPlayerIndex if a player leaves to avoid player skip.
+   * Sets currentPlayerIndex if a player leaves to avoid player skip.
    */
   
-  public void decreaseCurrentPlayerIndex() {
-      this.currentPlayerIndex--;
+  public void resetCurrentPlayerIndex() {
+    int i;
+    for (i = 0; i < this.gameState.getAllPlayers().size(); i++) {
+      if (this.gameState.getCurrentPlayer()
+          .equals(this.gameState.getAllPlayers().get(i).getNickname())) {
+        break;
+      }
+    }
+    
+    if (this.gameState.getCurrentPlayer()
+          .equals(this.gameState.getAllPlayers().get(i).getNickname())) {
+      this.currentPlayerIndex = i; // other player left
+    } else {
+      this.currentPlayerIndex--; // current player left
+    }
   }
+
 }
