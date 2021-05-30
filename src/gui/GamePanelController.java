@@ -43,7 +43,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -388,7 +393,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         new Text[] {playerOnePoints, playerTwoPoints, playerThreePoints, playerFourPoints};
     playerNameLabel = new Text[] {player1, player2, player3, player4};
     avatarImageView = new ImageView[] {image1, image2, image3, image4};
-    rect = new Rectangle[] {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
+    // rect = new Rectangle[] {currentPlayer1, currentPlayer2, currentPlayer3, currentPlayer4};
     dlsLabel = new Text[] {dls0, dls1, dls2, dls3, dls4, dls5, dls6, dls7, dls8, dls9, dls10, dls11,
         dls12, dls13, dls14, dls15, dls16, dls17, dls18, dls19, dls20, dls21, dls22, dls23};
     tlsLabel =
@@ -460,17 +465,17 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
 
     // CurrentPlayer Boxes
-    currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(15));
-    currentPlayer1.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-
-    currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(15));
-    currentPlayer2.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-
-    currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(15));
-    currentPlayer3.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
-
-    currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(15));
-    currentPlayer4.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
+    // currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(15));
+    // currentPlayer1.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
+    //
+    // currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(15));
+    // currentPlayer2.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
+    //
+    // currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(15));
+    // currentPlayer3.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
+    //
+    // currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(15));
+    // currentPlayer4.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
 
 
@@ -503,7 +508,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     board.maxHeightProperty()
         .bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
 
-    
+
     Pane p;
     Rectangle r;
     Text t;
@@ -517,18 +522,19 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         r.heightProperty().bind(p.heightProperty());
         r.widthProperty().bind(p.widthProperty());
         p.setMinSize(0, 0);
-  
-      } catch (Exception e) {}
-      
+
+      } catch (Exception e) {
+      }
+
       try {
         t = (Text) p.getChildren().get(1);
-        t.styleProperty()
-            .bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
+        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
         p.setMinSize(0, 0);
-  
-      } catch (Exception e) {}
-  
+
+      } catch (Exception e) {
+      }
+
     }
 
 
@@ -758,9 +764,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.LIGHTGRAY);
         this.timeLabel.setFill(Color.LIGHTGRAY);
 
-//        this.rackBox.setStroke(Color.DARKGREY);
-//        this.chatBox.setStroke(Color.DARKGRAY);
-//        this.playerBox.setStroke(Color.DARKGREY);
+        // this.rackBox.setStroke(Color.DARKGREY);
+        // this.chatBox.setStroke(Color.DARKGRAY);
+        // this.playerBox.setStroke(Color.DARKGREY);
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
 
         this.timeProgress.getStylesheets()
@@ -800,9 +806,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.BLACK);
         this.timeLabel.setFill(Color.BLACK);
 
-//        this.rackBox.setStroke(Color.BLACK);
-//        this.chatBox.setStroke(Color.BLACK);
-//        this.playerBox.setStroke(Color.BLACK);
+        // this.rackBox.setStroke(Color.BLACK);
+        // this.chatBox.setStroke(Color.BLACK);
+        // this.playerBox.setStroke(Color.BLACK);
         this.backgroundGamePanel.setStroke(Color.BLACK);
 
         this.chat.getStylesheets()
@@ -1043,6 +1049,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         rect[x].setStroke(Color.BLACK);
       }
     }
+
   }
 
   /**
@@ -1150,14 +1157,36 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * emphasizing the players nickname on the game panel.
    *
    * @param nextPlayer nickname of the player who is next
+   * @author pkoenig
    */
   public void indicatePlayerTurn(String nextPlayer) {
-    for (int i = 0; i < players.size(); i++) {
-      if (players.get(i).getNickname().equals(nextPlayer)) {
-        rect[i].setVisible(true);
-      } else {
-        rect[i].setVisible(false);
-      }
+    if (players.get(0).getNickname().equals(nextPlayer)) {
+      stackPlayer1.setBorder(new Border(new BorderStroke(Color.RED, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    } else {
+      stackPlayer1.setBorder(new Border(new BorderStroke(Color.BLACK, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    }
+    if (players.get(1).getNickname().equals(nextPlayer)) {
+      stackPlayer2.setBorder(new Border(new BorderStroke(Color.RED, 
+          BorderStrokeStyle.SOLID,  new CornerRadii(10), BorderWidths.DEFAULT)));
+    } else {
+      stackPlayer2.setBorder(new Border(new BorderStroke(Color.BLACK, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    }
+    if (players.get(2).getNickname().equals(nextPlayer)) {
+      stackPlayer3.setBorder(new Border(new BorderStroke(Color.RED, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    } else {
+      stackPlayer3.setBorder(new Border(new BorderStroke(Color.BLACK, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    }
+    if (players.get(3).getNickname().equals(nextPlayer)) {
+      stackPlayer4.setBorder(new Border(new BorderStroke(Color.RED, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
+    } else {
+      stackPlayer4.setBorder(new Border(new BorderStroke(Color.BLACK, 
+          BorderStrokeStyle.SOLID, new CornerRadii(10), BorderWidths.DEFAULT)));
     }
   }
 
@@ -1165,6 +1194,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method adds a tile at a location at the game panel either on the rack or on the game
    * board. For instance when a player draws new tiles after he has put some tiles on the game
    * board.
+   * @author mschmauch
    * 
    */
   public void addTile(Tile tile) {
@@ -1174,7 +1204,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     int row = tile.getField().getyCoordinate();
 
 
-    
 
     if (tile.isOnRack()) {
       row = 0;
@@ -1187,23 +1216,23 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       visualTile.setMouseTransparent(true);
       rack.add(visualTile, column, row);
-      
+
       GridPane.setHalignment(visualTile, HPos.CENTER);
       GridPane.setValignment(visualTile, VPos.CENTER);
-      
-//       GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
+
+      // GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
       VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, false);
-      
-      
+
+
 
       visualTile.setMouseTransparent(true);
       board.add(visualTile, column, row);
       GridPane.setHalignment(visualTile, HPos.CENTER);
       GridPane.setValignment(visualTile, VPos.CENTER);
-//       GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
+      // GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }
 
@@ -1553,7 +1582,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   public static GamePanelController getInstance() {
     return instance;
   }
-  
+
   /**
    * Getter-Method to get the reference to the object variable min.
    */
