@@ -26,8 +26,8 @@ public class Turn implements Serializable {
   private boolean isValid;
   private GameController gameController;
   private String stringRepresentation;
-  private boolean containedStarTiles;
-  private List<Tile> starTiles;
+  private boolean containedJokerTiles;
+  private List<Tile> jokerTiles;
 
 
   /**
@@ -41,8 +41,8 @@ public class Turn implements Serializable {
     this.laydDownTiles = new ArrayList<Tile>();
     this.turnScore = 0;
     this.laydDownFields = new ArrayList<Field>();
-    this.containedStarTiles = false;
-    this.starTiles = new ArrayList<Tile>();
+    this.containedJokerTiles = false;
+    this.jokerTiles = new ArrayList<Tile>();
     this.isValid = true;
   }
 
@@ -70,7 +70,8 @@ public class Turn implements Serializable {
    * from the layd down tiles after a turn is commited. After all words are found, every word is
    * verified with Collins Scrabble Words. If one word does not exists the method returns false.
    *
-   * @author ldreyer, pkoenig
+   * @author ldreyer
+   * @author pkoenig
    * @return boolean validWord
    */
   public boolean calculateWords() {
@@ -87,50 +88,37 @@ public class Turn implements Serializable {
     }
     for (Tile t : this.laydDownTiles) {
       if (t.getLetter().getCharacter() == '*') {
-        this.containedStarTiles = true;
-        this.starTiles.add(t);
+        this.containedJokerTiles = true;
+        this.jokerTiles.add(t);
       }
     }
-    if (this.containedStarTiles) {
-      int maxScore = -1;
+    if (this.containedJokerTiles) {
       int maxIndex = -1;
-      for (int i = 0; i < Math.pow(26, this.starTiles.size()); i++) {
-        for (int k = 0; k < starTiles.size(); k++) {
+      for (int i = 0; i < Math.pow(26, this.jokerTiles.size()); i++) {
+        for (int k = 0; k < jokerTiles.size(); k++) {
           if (k == 0) {
-            this.starTiles.get(starTiles.size() - k - 1)
+            this.jokerTiles.get(jokerTiles.size() - k - 1)
                 .setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / 1) % 26))));
           } else {
-            this.starTiles.get(starTiles.size() - k - 1)
+            this.jokerTiles.get(jokerTiles.size() - k - 1)
                 .setLetter(GameSettings.getLetterForChar((char) ('A' + ((i / (k * 26)) % 26))));
           }
         }
         if (calculateWordsHelper()) {
-          if (maxScore < calculateTurnScore()) {
-            maxScore = getTurnScore();
-            maxIndex = i;
-          }
+          maxIndex = i;
+          break;
         }
       }
       if (maxIndex == -1) {
         this.stringRepresentation = "Invalid: No word with joker tile found.";
-        for (Tile t : starTiles) {
+        for (Tile t : jokerTiles) {
           t.setLetter(GameSettings.getLetters().get('*'));
         }
-        this.starTiles.clear();
+        this.jokerTiles.clear();
         return false;
-      } else {
-        for (int k = 0; k < this.starTiles.size(); k++) {
-          if (k == 0) {
-            this.starTiles.get(this.starTiles.size() - k - 1)
-                .setLetter(GameSettings.getLetterForChar((char) ('A' + ((maxIndex / 1) % 26))));
-          } else {
-            this.starTiles.get(this.starTiles.size() - k - 1).setLetter(
-                GameSettings.getLetterForChar((char) ('A' + ((maxIndex / (k * 26)) % 26))));
-          }
-        }
-        calculateWordsHelper();
-        return true;
       }
+      calculateWordsHelper();
+      return true;
     } else {
       return calculateWordsHelper();
     }
@@ -480,8 +468,8 @@ public class Turn implements Serializable {
       res[1] = res[1] + ", " + f;
     }
     res[2] = this.turnScore + "";
-    res[3] = this.containedStarTiles + "";
-    for (Tile t : this.starTiles) {
+    res[3] = this.containedJokerTiles + "";
+    for (Tile t : this.jokerTiles) {
       res[4] = res[4] + ", " + t;
     }
     return res;
@@ -491,28 +479,28 @@ public class Turn implements Serializable {
    * gets the variable containedStarTiles of the current instance.
    */
   public boolean isContainedStarTiles() {
-    return containedStarTiles;
+    return containedJokerTiles;
   }
 
   /**
    * sets the variable containedStarTiles of the current instance.
    */
   public void setContainedStarTiles(boolean containedStarTiles) {
-    this.containedStarTiles = containedStarTiles;
+    this.containedJokerTiles = containedStarTiles;
   }
 
   /**
    * gets the variable starTiles of the current instance.
    */
   public List<Tile> getStarTiles() {
-    return starTiles;
+    return jokerTiles;
   }
 
   /**
    * sets the starTiles winner of the current instance.
    */
   public void setStarTiles(List<Tile> starTiles) {
-    this.starTiles = starTiles;
+    this.jokerTiles = starTiles;
   }
 
   /**
