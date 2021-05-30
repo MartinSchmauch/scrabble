@@ -1,37 +1,38 @@
 package mechanic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeSet;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import game.GameController;
 import game.GameSettings;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeSet;
+
 
 /**
- * 
  * AI player can play scrabble. He searches for a valid Turn (see class turn) based on - the AiLevel
  * (mapped to different parameters) - the GameBoard - his rack - the dictionary
- * 
  * Depending on enum AiLevel the ai tries to create better or worse scores. Main Method is RunAi()
  *
  * @author pkoenig
  *
  */
-public class AIplayer extends Player {
+public class AiPlayer extends Player {
 
   private int maxNumOfTiles;
   private GameController gc;
   private TreeSet<AIcombination> tileCombinations;
   private AiLevel ailevel;
-  private int numberOfCombinationsToUse; // use only the top x AIcombination (top in
-                                         // regards to
-                                         // count)
+  private int numberOfCombinationsToUse; // use only the top x AIcombination (in regards to count)
 
   private int goodScore;
   private boolean testmode = false;
 
+  /**
+   * Sets the difficulty
+   *
+   */
   public enum AiLevel {
     EASY, MEDIUM, HARD, UNBEATABLE
   }
@@ -174,7 +175,7 @@ public class AIplayer extends Player {
    * @param gc
    * @param level
    */
-  public AIplayer(String nickname, GameController gc, AiLevel level) {
+  public AiPlayer(String nickname, GameController gc, AiLevel level) {
     super(nickname);
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
@@ -226,7 +227,7 @@ public class AIplayer extends Player {
    * @param gc
    * 
    */
-  public AIplayer(String nickname, int maxNumOfTiles, int numberOfCombinationsToUse,
+  public AiPlayer(String nickname, int maxNumOfTiles, int numberOfCombinationsToUse,
       GameController gc) {
     super(nickname);
     this.maxNumOfTiles = maxNumOfTiles;
@@ -245,7 +246,7 @@ public class AIplayer extends Player {
    * 
    */
   @JsonCreator
-  public AIplayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
+  public AiPlayer(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
       @JsonProperty("volume") int volume) {
     super(nickname, avatar, volume, null, 0, 0, 0, null, 0, 0, 0);
   }

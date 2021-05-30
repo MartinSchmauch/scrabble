@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import mechanic.AIplayer;
+import mechanic.AiPlayer;
 import mechanic.Field;
 import mechanic.Player;
 import mechanic.PlayerData;
@@ -73,7 +73,7 @@ public class Server {
 
   private String host;
   private HashMap<String, ServerProtocol> clients = new HashMap<>();
-  private HashMap<String, AIplayer> aiPlayers = new HashMap<>();
+  private HashMap<String, AiPlayer> aiPlayers = new HashMap<>();
 
 
   /**
@@ -111,7 +111,7 @@ public class Server {
     }
 
     // add Tiles to AI Rack TODO
-    for (AIplayer a : this.aiPlayers.values()) {
+    for (AiPlayer a : this.aiPlayers.values()) {
       a.addTilesToRack(this.gameController.drawTiles(GameSettings.getTilesOnRack()));
     }
 
@@ -195,7 +195,7 @@ public class Server {
   }
 
 
-  private void handleExchangeTilesForAi(AIplayer aiplayer, List<Tile> rackTiles) {
+  private void handleExchangeTilesForAi(AiPlayer aiplayer, List<Tile> rackTiles) {
     this.getGameController().addTilesToTileBag(rackTiles);
     for (Tile t : rackTiles) {
       this.player.removeRackTile(t.getField().getxCoordinate());
@@ -924,10 +924,10 @@ public class Server {
   }
 
   private void initializeAi() {
-    for (AIplayer a : this.aiPlayers.values()) {
+    for (AiPlayer a : this.aiPlayers.values()) {
       a.setGc(this.gameController);
       a.generateTileCombinations();
-      a.setAilevel(AIplayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
+      a.setAilevel(AiPlayer.AiLevel.valueOf(GameSettings.getAiDifficulty().toUpperCase()));
     }
   }
 
@@ -1048,21 +1048,21 @@ public class Server {
   }
 
   /* @author pkoenig */
-  public HashMap<String, AIplayer> getAiPlayers() {
+  public HashMap<String, AiPlayer> getAiPlayers() {
     return aiPlayers;
   }
 
   /* @author pkoenig */
-  public void setAiPlayers(HashMap<String, AIplayer> aiPlayers) {
+  public void setAiPlayers(HashMap<String, AiPlayer> aiPlayers) {
     this.aiPlayers = aiPlayers;
   }
 
-  public void addAiPlayer(AIplayer aiPlayer) {
+  public void addAiPlayer(AiPlayer aiPlayer) {
     this.aiPlayers.put(aiPlayer.getNickname(), aiPlayer);
     this.gameState.joinGame(aiPlayer.getPlayerInfo());
   }
 
-  public boolean isinAiPlayer(AIplayer aiPlayer) {
+  public boolean isinAiPlayer(AiPlayer aiPlayer) {
     return this.aiPlayers.containsKey(aiPlayer.getNickname());
   }
 

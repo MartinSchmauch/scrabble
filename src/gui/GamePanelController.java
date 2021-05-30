@@ -523,6 +523,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // PlayerBox
     playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(22));
     playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(22));
+    
 
 
     // ChatBox
@@ -534,7 +535,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
     // chat.prefWidthProperty().bind(upperPane.prefWidthProperty().divide(4));
     // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
-    chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20));
+//    chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20)); // TODO
 
 
     // RackBox
