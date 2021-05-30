@@ -36,7 +36,7 @@ public class Tutorial {
 
   public void startScreen() {
     try {
-      Stage stage = new Stage(StageStyle.DECORATED);
+      Stage stage = new Stage(StageStyle.UNDECORATED);
       FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/TutorialScreen.fxml"));
       stage.setScene(new Scene(loader.load()));
       TutorialController controller = loader.getController();
@@ -45,7 +45,6 @@ public class Tutorial {
       controller.initData(player);
       stage.setOnCloseRequest(e -> controller.closeTutorial());
       stage.setTitle("Scrabble3");
-      // stage.setResizable(false);
       stage.show();
       TutorialController.getInstance().showTip(0);
 

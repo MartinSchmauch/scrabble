@@ -50,6 +50,13 @@ public class CustomAlert extends Alert {
     });
 
   }
+  
+  /**
+   * Changes button text. 
+   *
+   * @param content is the new Text of the Button.
+   * @param type is the Button Type.
+   */
 
   public void changeButtonText(String content, ButtonType type) {
     ((Button) this.getDialogPane().lookupButton(type)).setText(content);
@@ -58,6 +65,9 @@ public class CustomAlert extends Alert {
   
   /** 
    * Displays an alert if the connection to the lobby has been refused.
+   *
+   * @param title is the title of the alarm.
+   * @param reason is the content of alarm.
    */
 
   public static void showWarningAlert(String title, String reason) {

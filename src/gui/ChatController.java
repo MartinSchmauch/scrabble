@@ -17,6 +17,12 @@ import network.messages.UpdateChatMessage;
 public class ChatController {
 
   private Player player;
+  
+  /**
+   * Starts a new Chat controller. 
+   *
+   * @param p is palyer whos tarts controller.
+   */
 
   public ChatController(Player p) {
     this.player = p;

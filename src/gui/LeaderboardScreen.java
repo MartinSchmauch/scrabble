@@ -28,6 +28,13 @@ public class LeaderboardScreen extends Application {
   private double yoffset;
   private static HashMap<String, GameStatistic> gameStatistics = new HashMap<>();
   private static Player player;
+  
+  /**
+   * Start a new Leaderboard screen. 
+   *
+   * @param gameStatistic as statistics of current game.
+   * @param p as current player.
+   */
 
   public LeaderboardScreen(HashMap<String, GameStatistic> gameStatistic, Player p) {
     gameStatistics = gameStatistic;
@@ -70,11 +77,21 @@ public class LeaderboardScreen extends Application {
 
   }
 
+  /**
+   * Get current game statistics.
+   *
+   * @return gameStatistics as instance of current game.
+   */
+
   public static HashMap<String, GameStatistic> getGameStatistic() {
     return gameStatistics;
   }
 
-
+  /**
+   * Get current player.
+   *
+   * @return player as current player.
+   */
 
   public static Player getPlayer() {
     return player;
