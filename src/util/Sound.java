@@ -63,6 +63,14 @@ public class Sound {
   public static void playLeave() {
     playMedia("/sounds/leave.mp3");
   }
+  
+  /**
+   * plays sound if yourself leaves.
+   */
+  
+  public static void playSelfLeave() {
+    playMedia("/sounds/leaveSelf.mp3");
+  }
 
   /**
    * plays the wav file saved at url filepath.

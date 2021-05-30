@@ -393,7 +393,7 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       this.player.getClientProtocol().disconnect();
     }
     closeWindow();
-    Sound.playLeave();
+    Sound.playSelfLeave();
 
     /*
      * @author pkoenig
