@@ -421,8 +421,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         playerLabel[i].setText("Points: ");
         avatarImageView[i].setImage(
             new Image(getClass().getResource(players.get(i).getAvatar()).toExternalForm()));
-        avatarImageView[i].setFitHeight(50); // TODO 
-        avatarImageView[i].setFitWidth(50); // TODO
+        avatarImageView[i].setFitHeight(50);
+        avatarImageView[i].setFitWidth(50); 
       } else {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
@@ -646,7 +646,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
           // Message m = new DisconnectMessage(this.player.getNickname());
           // sendMessage(m);
           // }
-          close(); // TODO: close method not neccesary anymore?
+          close(); 
           // Button b = (Button) e.getSource();
           // Stage st = (Stage) (b.getScene().getWindow());
           // st.close();
@@ -683,8 +683,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
             if (result2.get() == ButtonType.OK) {
               // remove Tiles from GUI
               for (Tile t : this.tilesToExchange) {
-                // TODO bei dem gesetzten True koennte ein Fehler entstehen
-                this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
+                               this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
                 this.player.removeRackTile(t.getField().getxCoordinate());
               }
               sendTileMessage(this.player.getNickname());
@@ -693,7 +692,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
             }
 
             this.setRackRectanglesBlack();
-            tilesToExchange.removeAll(tilesToExchange); // TODO: correct way to clear list?
+            tilesToExchange.removeAll(tilesToExchange); 
           }
 
           exchangeTilesMode = false;

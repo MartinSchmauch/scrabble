@@ -151,7 +151,7 @@ public class AiPlayerTest {
 
         for (int numberOfCombinationsToUse =
             15; numberOfCombinationsToUse <= maxNumberOfCombinationsToUse; 
-            numberOfCombinationsToUse *= 2) { // TODO
+            numberOfCombinationsToUse *= 2) { 
           for (int goodScore = 5; goodScore < 200; goodScore *= 2) {
             System.out.println("\n-------------------------------------------------------------");
             System.out.println(

@@ -432,7 +432,7 @@ public class Turn implements Serializable {
       res.laydDownFields.add(t.getField());
     }
     res.player = this.player;
-    res.isValid = true; // TODO not so nice
+    res.isValid = true; 
     for (Tile t : this.laydDownTiles) {
       res.laydDownTiles.add(t);
     }

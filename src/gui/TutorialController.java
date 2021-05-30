@@ -321,7 +321,7 @@ public class TutorialController extends GamePanelController
               // remove Tiles from GUI
               for (Tile t : this.tilesToExchange) {
 
-                // TODO bei dem gesetzten True koennte ein Fehler entstehen
+               
                 this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
                 this.player.removeRackTile(t.getField().getxCoordinate());
                 Tile newTile = new TileBag().drawTile();
@@ -736,7 +736,7 @@ public class TutorialController extends GamePanelController
    * Closes the Game and stops the server.
    */
   public void close() {
-    if (this.player.getServer() != null) { // TODO: this.player.isHost() nutzen?
+    if (this.player.getServer() != null) { 
       this.player.getServer().stopServer();
       // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
       // sendMessage(m);
@@ -745,7 +745,7 @@ public class TutorialController extends GamePanelController
       for (int i = 0; i < players.size(); i++) {
         if (players.get(i).getNickname().equals(this.player.getNickname())) {
           if (rect[i].isVisible()) {
-            sendResetTurnForEveryPlayer(this.player.getNickname()); // TODO:
+            sendResetTurnForEveryPlayer(this.player.getNickname()); 
           }
         }
       }

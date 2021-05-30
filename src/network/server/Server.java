@@ -110,7 +110,7 @@ public class Server {
 
     }
 
-    // add Tiles to AI Rack TODO
+    // add Tiles to AI Rack 
     for (AiPlayer a : this.aiPlayers.values()) {
       a.addTilesToRack(this.gameController.drawTiles(GameSettings.getTilesOnRack()));
     }
