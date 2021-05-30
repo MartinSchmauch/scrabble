@@ -405,7 +405,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       } catch (NullPointerException e) {
         return;
       }
-      leaveGameButton.setText("Leave Game");
+      leaveGameButton.setText("Leave");
     }
 
     for (int i = 0; i <= 3; i++) {
@@ -438,12 +438,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     /**
      * @author pkoenig
      */
-    
-    // Buuton-Font sizes
-    DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
-    buttonFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
-    
-//    leaveGameButton.fontProperty().bind(Bindings.concat("-fx-font-size: " + buttonFontSize.toString() + ";"));
 
 
     // RackFields
