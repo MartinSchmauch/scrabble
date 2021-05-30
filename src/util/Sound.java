@@ -49,10 +49,11 @@ public class Sound {
   }
 
   /**
-   * plays a sound if a tile is sent back via double click.
+   * plays a sound if a player joins the lobby.
+   * ** Sound from Zapsplat.com**
    */
-  public static void playFastBack() {
-    playMedia("/sounds/fastBack.mp3");
+  public static void playJoin() {
+    playMedia("/sounds/join.mp3");
   }
 
   /**
@@ -61,6 +62,14 @@ public class Sound {
    */
   public static void playLeave() {
     playMedia("/sounds/leave.mp3");
+  }
+  
+  /**
+   * plays sound if yourself leaves.
+   */
+  
+  public static void playSelfLeave() {
+    playMedia("/sounds/leaveSelf.mp3");
   }
 
   /**
