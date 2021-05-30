@@ -557,7 +557,7 @@ public class Server {
     }
 
     if (this.gameState.getCurrentPlayer().equals(player)) {
-      for (Tile t : turn.getLaydDownTiles()) { //?
+      for (Tile t : turn.getLaydDownTiles()) {
         t.getField().setTileOneDirection(null);
       }
 

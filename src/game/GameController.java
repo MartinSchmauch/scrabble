@@ -352,7 +352,6 @@ public class GameController {
   
   public void resetCurrentPlayerIndex(String player) {
     if (this.gameState.getCurrentPlayer().equals(player)) {
-      this.currentPlayerIndex--; // current player left
       return;
     }
     
@@ -364,7 +363,7 @@ public class GameController {
       }
     }
     
-    this.currentPlayerIndex = i; // other player left
+    this.currentPlayerIndex = i + 1; // other player left
   }
 
 }
