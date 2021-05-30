@@ -74,6 +74,9 @@ public class Sound {
     mediaPlayer.play();
   }
 
+  /**
+   * set the static volume variable.
+   */
   public static void setVolume(int newVolume) {
     volume = (float) (((float) newVolume) / 100f);
   }
