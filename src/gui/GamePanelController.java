@@ -1070,7 +1070,24 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
         indexRemoved = i;
-        // rect[i].setVisible(false);
+        switch (i) {
+          case 0:
+            stackPlayer1.setBorder(null);
+            break;
+          case 1:
+            stackPlayer2.setBorder(null);
+            break;
+            
+          case 2:
+            stackPlayer3.setBorder(null);
+            break;
+            
+          case 3:
+            stackPlayer4.setBorder(null);
+            break;
+          default:
+            break;
+        }
       }
       if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
         playerNameLabel[i - 1].setText(playerNameLabel[i].getText());
