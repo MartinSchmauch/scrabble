@@ -431,6 +431,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
+    this.dws16.setText("✧");
 
     /**
      * @author pkoenig
