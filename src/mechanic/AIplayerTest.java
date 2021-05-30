@@ -1,6 +1,11 @@
 package mechanic;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
+import com.opencsv.CSVWriter;
+import game.GameController;
+import game.GameSettings;
+import game.GameState;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,16 +13,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
-import game.GameController;
-import game.GameSettings;
-import game.GameState;
 import mechanic.AiPlayer.AIcombination;
-import com.opencsv.CSVWriter;
+import org.junit.Test;
 
-/**
- * @author pkoenig
+
+
+/**This class tests the AIplayer.
  *
+ * @author pkoenig
  */
 public class AIplayerTest {
   AiPlayer aiplayer;
