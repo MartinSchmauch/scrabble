@@ -1064,6 +1064,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   public void removeJoinedPlayer(String playerToBeRemoved) {
     int indexRemoved = 5;
+    int currentPlayerIndex = 5;
+    StackPane[] sP = {stackPlayer1, stackPlayer2, stackPlayer3, stackPlayer4};
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).getNickname().equals(playerToBeRemoved)) {
         playerNameLabel[i].setText(null);
@@ -1071,23 +1073,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
         indexRemoved = i;
-        switch (i) {
-          case 0:
-            stackPlayer1.setBorder(null);
-            break;
-          case 1:
-            stackPlayer2.setBorder(null);
-            break;
-            
-          case 2:
-            stackPlayer3.setBorder(null);
-            break;
-            
-          case 3:
-            stackPlayer4.setBorder(null);
-            break;
-          default:
-            break;
+        if (sP[i].getBorder() != null) {
+          currentPlayerIndex = i;
         }
       }
       if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
@@ -1100,6 +1087,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         pointsLabel[i].setText("");
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
+        
+        if (i == currentPlayerIndex) {
+          sP[i].setBorder(null);
+        }
       }
     }
     players.remove(indexRemoved);
