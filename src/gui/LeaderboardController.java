@@ -104,6 +104,9 @@ public class LeaderboardController implements EventHandler<ActionEvent> {
       time.setText("" + min + ":" + secondString);
     }
     updateStatistics();
+    this.first.setWrapText(true);
+    this.second.setWrapText(true);
+    this.third.setWrapText(true);
   }
 
   @Override
