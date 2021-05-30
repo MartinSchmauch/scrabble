@@ -443,110 +443,10 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
-    // backgroundGamePanel.heightProperty().bind(((StackPane)
-    // backgroundGamePanel.getParent()).heightProperty());
-    // backgroundGamePanel.widthProperty().bind(((StackPane)
-    // backgroundGamePanel.getParent()).widthProperty());
-    // backgroundGamePanel.heightProperty().bind(board.heightProperty());
-    // backgroundGamePanel.widthProperty().bind(board.widthProperty());
 
     /**
      * @author pkoenig
      */
-    // ChangeListener cl = new ChangeListener() {
-    // public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-    //// Double changeWidth = (Double)newValue - (Double)oldValue;
-    // Double newWidth = (Double)newValue;
-    // System.out.println("### WIDTH HAT SICH GE�NDERT AUF " + newWidth + " ###");
-    // backgroundGamePanel.setWidth(backgroundGamePanel.getWidth() + changeWidth);
-    // board.setPrefWidth(board.getPrefWidth() + changeWidth);
-    // backgroundGamePanel.setHeight(backgroundGamePanel.getWidth() + changeWidth);
-    // board.setPrefHeight(board.getPrefWidth() + changeWidth);
-
-    // backgroundGamePanel.setWidth(newWidth / 1.9);
-    // board.setPrefWidth(newWidth / 2.0);
-    // board.setMaxWidth(newWidth / 2.0);
-    // board.setMinWidth(newWidth / 2.0);
-    // backgroundGamePanel.setHeight(newWidth / 1.9);
-    //// board.setPrefHeight(newWidth / 2.0);
-    //// board.setMaxHeight(newWidth / 2.0);
-    //// board.setMinHeight(newWidth / 2.0);
-    // }
-    // };
-    // scene.widthProperty().addListener(cl);
-    //
-    // scene.heightProperty().addListener(cl);
-    //// backgroundGamePanel.setWidth(820);
-    // board.setPrefWidth(800);
-    // backgroundGamePanel.setHeight(820);
-    // board.setPrefHeight(800);
-
-    // for (int j = 0; j < 15; j++) {
-    // ColumnConstraints cc = new ColumnConstraints();
-    // cc.setHgrow(Priority.ALWAYS);
-    // cc.setPercentWidth(100 / 15);
-    // board.getColumnConstraints().add(cc);
-    // }
-    //
-    // for (int j = 0; j < 15; j++) {
-    // RowConstraints rc = new RowConstraints();
-    // rc.setVgrow(Priority.ALWAYS);
-    // rc.setPercentHeight(100 / 15);
-    // board.getRowConstraints().add(rc);
-    // }
-
-    // backgroundGamePanel.heightProperty().bind(bGpStackPane.heightProperty());
-    // backgroundGamePanel.widthProperty().bind(bGpStackPane.widthProperty());
-
-    // final NumberBinding binding = Bindings.min(widthProperty(), heightProperty());
-
-    // Rectangle2D r2d = new Rectangle2D(
-    // 0,
-    // 0,
-    // 0, 0);
-
-    // Custom ObjectBinding of Rectangle2D with three dependencies
-    // ObjectProperty<Bounds> boundsInLocalProperty = new SimpleObjectProperty<>();
-    // ReadOnlyDoubleProperty widthProperty = upperPane.widthProperty();
-    // ReadOnlyDoubleProperty heightProperty = upperPane.heightProperty();
-    //
-    // ObjectBinding<Rectangle2D> rectBinding = new ObjectBinding<Rectangle2D>() {
-    // {bind(boundsInLocalProperty,widthProperty, heightProperty);}
-    // protected Rectangle2D computeValue() {
-    // Bounds bounds = boundsInLocalProperty.get();
-    // return new Rectangle2D(bounds.getMinX(), bounds.getMinY(), widthProperty.get(),
-    // heightProperty.get());
-    // }
-    // };
-    
-
-
-    // PlayerBox
-    playerBox.heightProperty().bind(playerBoxStackPane.heightProperty().subtract(22));
-    playerBox.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(22));
-    
-
-
-    // ChatBox
-    chatBox.heightProperty().bind(chatStackPane.heightProperty().subtract(22));
-    chatBox.widthProperty().bind(chatStackPane.widthProperty().subtract(22));
-//    chatBox.setVisible(false); // TODO
-
-    // Chat
-    // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
-    // chat.prefWidthProperty().bind(upperPane.prefWidthProperty().divide(4));
-    // chat.maxWidthProperty().bind(upperPane.widthProperty().divide(4));
-//    chat.prefWidthProperty().bind(chatStackPane.widthProperty().subtract(20)); // TODO
-
-
-    // RackBox
-    // rackBox.heightProperty().bind(rackStack.heightProperty().subtract(15));
-    // rackBox.widthProperty().bind(rackStack.widthProperty().subtract(15));
-    // rackBox.heightProperty().bind(rack.heightProperty().subtract(15));
-    // rackBox.widthProperty().bind(rack.widthProperty().subtract(15));
-    rackBox.heightProperty().bind(referenceSizeForRack.heightProperty().multiply(2).add(72));
-    rackBox.widthProperty().bind(referenceSizeForRack.widthProperty().multiply(6).add(190));
-//    rackBox.setVisible(false); // TODO
 
 
     // RackFields
@@ -561,16 +461,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
     // CurrentPlayer Boxes
     currentPlayer1.heightProperty().bind(stackPlayer1.heightProperty().subtract(15));
-    currentPlayer1.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer1.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
     currentPlayer2.heightProperty().bind(stackPlayer2.heightProperty().subtract(15));
-    currentPlayer2.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer2.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
     currentPlayer3.heightProperty().bind(stackPlayer3.heightProperty().subtract(15));
-    currentPlayer3.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer3.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
     currentPlayer4.heightProperty().bind(stackPlayer4.heightProperty().subtract(15));
-    currentPlayer4.widthProperty().bind(playerBox.widthProperty().subtract(20));
+    currentPlayer4.widthProperty().bind(playerBoxStackPane.widthProperty().subtract(20));
 
 
 
@@ -603,48 +503,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     board.maxHeightProperty()
         .bind(Bindings.min(boardStack.widthProperty(), boardStack.heightProperty()).subtract(25));
 
-//    Runnable r = new Runnable() {
-//      public void run() {
-//        Pane p;
-//        Rectangle r;
-//        Text t;
-//        ObservableList<Node> guiTiles = board.getChildren();
-//        DoubleProperty tileFontSize = new SimpleDoubleProperty(10);
-//        tileFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
-//        for (Node n : guiTiles) {
-//          p = (Pane) n;
-//          try {
-//            r = (Rectangle) p.getChildren().get(0);
-//            // r.setWidth(50);
-//            // r.setHeight(50);
-//            r.heightProperty().bind(p.heightProperty());
-//            r.widthProperty().bind(p.widthProperty());
-//            // System.out.println("Property set");
-//            p.setMinSize(0, 0);
-//
-//          } catch (Exception e) {
-//            // System.out.println("no rectangle");
-//          }
-//          try {
-//            t = (Text) p.getChildren().get(1);
-//            // r.setWidth(50);
-//            // r.setHeight(50);
-//            t.styleProperty()
-//                .bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
-//            t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
-//
-//            t.setManaged(true);
-//            // System.out.println("Property set");
-//            p.setMinSize(0, 0);
-//
-//          } catch (Exception e) {
-//            // System.out.println("no text");
-//          }
-//
-//        }
-//      }
-//    };
-//    new Thread(r).start();
     
     Pane p;
     Rectangle r;
@@ -656,47 +514,22 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       p = (Pane) n;
       try {
         r = (Rectangle) p.getChildren().get(0);
-        // r.setWidth(50);
-        // r.setHeight(50);
         r.heightProperty().bind(p.heightProperty());
         r.widthProperty().bind(p.widthProperty());
-        // System.out.println("Property set");
         p.setMinSize(0, 0);
   
-      } catch (Exception e) {
-        // System.out.println("no rectangle");
-      }
+      } catch (Exception e) {}
+      
       try {
         t = (Text) p.getChildren().get(1);
-        // r.setWidth(50);
-        // r.setHeight(50);
         t.styleProperty()
             .bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
-  
-        t.setManaged(true);
-        // System.out.println("Property set");
         p.setMinSize(0, 0);
   
-      } catch (Exception e) {
-        // System.out.println("no text");
-      }
+      } catch (Exception e) {}
   
     }
-
-    //
-    // for (Node n : guiTiles) {
-    // try {
-    // r = (Rectangle) n;
-    // r.heightProperty().bind(board.getRowConstraints().get(0).);
-    // r.setWidth(30);
-    // System.out.println("Property set");
-    //
-    // } catch (Exception e) {
-    // System.out.println("no rectangle");
-    // }
-    //
-    // }
 
 
 
@@ -906,7 +739,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   /**
    * This method switches the Theme from dark mode to light mode and vice versa.
-   *
+   * 
    * @author nilbecke
    */
 
@@ -925,9 +758,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.LIGHTGRAY);
         this.timeLabel.setFill(Color.LIGHTGRAY);
 
-        this.rackBox.setStroke(Color.DARKGREY);
-        this.chatBox.setStroke(Color.DARKGRAY);
-        this.playerBox.setStroke(Color.DARKGREY);
+//        this.rackBox.setStroke(Color.DARKGREY);
+//        this.chatBox.setStroke(Color.DARKGRAY);
+//        this.playerBox.setStroke(Color.DARKGREY);
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
 
         this.timeProgress.getStylesheets()
@@ -967,9 +800,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.BLACK);
         this.timeLabel.setFill(Color.BLACK);
 
-        this.rackBox.setStroke(Color.BLACK);
-        this.chatBox.setStroke(Color.BLACK);
-        this.playerBox.setStroke(Color.BLACK);
+//        this.rackBox.setStroke(Color.BLACK);
+//        this.chatBox.setStroke(Color.BLACK);
+//        this.playerBox.setStroke(Color.BLACK);
         this.backgroundGamePanel.setStroke(Color.BLACK);
 
         this.chat.getStylesheets()
@@ -1179,7 +1012,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     if (event.getButton().equals(MouseButton.PRIMARY)) {
       if (event.getClickCount() == 2) {
         Node node = (Node) event.getSource();
-        selectedCoordinates = getPos(node, false);
+        selectedCoordinates = getPos(node.getParent(), false);
         selectedCoordinates[0] += 1;
         selectedCoordinates[1] += 1;
         targetCoordinates[0] = this.player.getFreeRackField().getxCoordinate();
@@ -1350,23 +1183,27 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         column -= 6;
       }
 
-      VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
+      final VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
 
       visualTile.setMouseTransparent(true);
       rack.add(visualTile, column, row);
+      
       GridPane.setHalignment(visualTile, HPos.CENTER);
       GridPane.setValignment(visualTile, VPos.CENTER);
-      // GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
+      
+//       GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
       VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, false);
+      
+      
 
       visualTile.setMouseTransparent(true);
       board.add(visualTile, column, row);
       GridPane.setHalignment(visualTile, HPos.CENTER);
       GridPane.setValignment(visualTile, VPos.CENTER);
-      // GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
+//       GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }
 
