@@ -533,6 +533,7 @@ public class Server {
     for (int i = 0; i < gameController.getTurns().size(); i++) {
       if (gameController.getTurns().get(i).getPlayer().equals(player)) {
         gameController.getTurns().remove(i);
+        i--;
       }
     }
 
@@ -556,7 +557,7 @@ public class Server {
     }
 
     if (this.gameState.getCurrentPlayer().equals(player)) {
-      for (Tile t : turn.getLaydDownTiles()) {
+      for (Tile t : turn.getLaydDownTiles()) { //?
         t.getField().setTileOneDirection(null);
       }
 
