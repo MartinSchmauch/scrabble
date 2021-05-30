@@ -64,8 +64,8 @@ public class VisualTile extends StackPane {
           .widthProperty().add(20).multiply(0.9));
 
 
-      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(20));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(40));
+      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(30));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(50));
 
       letterText.styleProperty()
           .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
@@ -86,8 +86,8 @@ public class VisualTile extends StackPane {
       shape.widthProperty().bind(
           GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
 
-      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(25));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(55));
+      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(35));
+      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(65));
 
       letterText.styleProperty()
           .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
