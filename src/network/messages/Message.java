@@ -15,19 +15,31 @@ public abstract class Message implements Serializable {
   private MessageType meType;
   private String from;
 
+  /**
+   * creats an instance of the class.
+   */
   public Message(MessageType type, String from) {
     this.meType = type;
     this.from = new String(from);
   }
 
+  /**
+   * gets the enum MessageType of the current instance.
+   */
   public MessageType getMessageType() {
     return this.meType;
   }
 
+  /**
+   * gets the variable from of the current instance.
+   */
   public String getFrom() {
     return this.from;
   }
 
+  /**
+   * sets the variable from of the current instance.
+   */
   public void setFrom(String name) {
     this.from = name;
   }

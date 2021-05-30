@@ -24,26 +24,44 @@ public class SendChatMessage extends Message {
     this.setSender(from);
   }
 
+  /**
+   * gets the variable text of the current instance.
+   */
   public String getText() {
     return text;
   }
 
+  /**
+   * sets the variable text of the current instance.
+   */
   public void setText(String text) {
     this.text = text;
   }
 
+  /**
+   * gets the variable dateTime of the current instance.
+   */
   public LocalDateTime getDateTime() {
     return dateTime;
   }
 
+  /**
+   * sets the variable dateTime of the current instance.
+   */
   public void setDateTime(LocalDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
+  /**
+   * gets the variable sender of the current instance.
+   */
   public String getSender() {
     return sender;
   }
 
+  /**
+   * sets the variable sender of the current instance.
+   */
   public void setSender(String sender) {
     this.sender = sender;
   }

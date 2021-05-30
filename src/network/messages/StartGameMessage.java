@@ -26,22 +26,37 @@ public class StartGameMessage extends Message {
     this.timerDuration = timerDuration;
   }
 
+  /**
+   * gets the variable countdown of the current instance.
+   */
   public int getCountdown() {
     return countdown;
   }
 
+  /**
+   * sets the variable countdown of the current instance.
+   */
   public void setCountdown(int countdown) {
     this.countdown = countdown;
   }
 
+  /**
+   * gets the variable remainingTilesInTileBag of the current instance.
+   */
   public int getRemainingTilesInTileBag() {
     return remainingTilesInTileBag;
   }
 
+  /**
+   * gets the variable currentPlayer of the current instance.
+   */
   public String getCurrrentPlayer() {
     return currrentPlayer;
   }
 
+  /**
+   * gets the variable timerDuration of the current instance.
+   */
   public int getTimerDuration() {
     return timerDuration;
   }

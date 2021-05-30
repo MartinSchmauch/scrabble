@@ -32,26 +32,44 @@ public class TurnResponseMessage extends Message {
     this.winner = winner;
   }
 
+  /**
+   * gets the variable isValid of the current instance.
+   */
   public boolean getIsValid() {
     return isValid;
   }
 
+  /**
+   * gets the variable calculatedTurnScore of the current instance.
+   */
   public int getCalculatedTurnScore() {
     return calculatedTurnScore;
   }
 
+  /**
+   * gets the variable turnInfo of the current instance.
+   */
   public String getTurnInfo() {
     return turnInfo;
   }
 
+  /**
+   * gets the variable nextPlayer of the current instance.
+   */
   public String getNextPlayer() {
     return nextPlayer;
   }
 
+  /**
+   * gets the variable remainingTilesInTileBag of the current instance.
+   */
   public int getRemainingTilesInTileBag() {
     return remainingTilesInTileBag;
   }
 
+  /**
+   * gets the variable winner of the current instance.
+   */
   public String getWinner() {
     return winner;
   }

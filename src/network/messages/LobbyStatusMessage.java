@@ -41,42 +41,59 @@ public class LobbyStatusMessage extends Message {
     this.letters = letters;
     this.gameState = gameState;
   }
-
+  
+  /**
+   * gets the variable gameState of the current instance.
+   */
   public GameState getGameState() {
     return this.gameState;
   }
 
-
+  /**
+   * gets the variable timePerPlayer of the current instance.
+   */
   public int getTimePerPlayer() {
     return timePerPlayer;
   }
 
-
+  /**
+   * gets the variable maxScore of the current instance.
+   */
   public int getMaxScore() {
     return maxScore;
   }
 
-
+  /**
+   * gets the variable bingo of the current instance.
+   */
   public int getBingo() {
     return bingo;
   }
 
-
+  /**
+   * gets the variable dictionary of the current instance.
+   */
   public String getDictionary() {
     return dictionary;
   }
 
-
+  /**
+   * gets the variable aiDifficulty of the current instance.
+   */
   public String getAiDifficulty() {
     return aiDifficulty;
   }
 
-
+  /**
+   * gets the variable tilesOnRack of the current instance.
+   */
   public int getTilesOnRack() {
     return tilesOnRack;
   }
 
-
+  /**
+   * gets the variable letters of the current instance.
+   */
   public HashMap<Character, Letter> getLetters() {
     return letters;
   }

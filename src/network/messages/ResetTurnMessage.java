@@ -21,7 +21,9 @@ public class ResetTurnMessage extends Message {
     this.tiles = tiles;
   }
 
-
+  /**
+   * gets the variable tiles of the current instance.
+   */
   public List<Tile> getTiles() {
     return tiles;
   }

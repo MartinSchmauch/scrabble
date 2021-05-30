@@ -26,14 +26,23 @@ public class AddTileMessage extends Message {
     this.newyCoordinate = newY;
   }
 
+  /**
+   * gets the variable tile of the current instance.
+   */
   public Tile getTile() {
     return this.tile;
   }
 
+  /**
+   * gets the variable newxCoordinate of the current instance.
+   */
   public int getNewX() {
     return newxCoordinate;
   }
 
+  /**
+   * gets the variable newyCoordinate of the current instance.
+   */
   public int getNewY() {
     return newyCoordinate;
   }

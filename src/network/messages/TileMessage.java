@@ -21,6 +21,9 @@ public class TileMessage extends Message {
     this.tiles = new ArrayList<Tile>(tiles);
   }
 
+  /**
+   * gets the variable tiles of the current instance.
+   */
   public List<Tile> getTiles() {
     return tiles;
   }

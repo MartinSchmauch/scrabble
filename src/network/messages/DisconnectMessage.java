@@ -15,15 +15,24 @@ public class DisconnectMessage extends Message {
   private static final long serialVersionUID = 1L;
   private List<Tile> tiles;
 
+  /**
+   * creates an instance of the class.
+   */
   public DisconnectMessage(String nickname, List<Tile> tiles) {
     super(MessageType.DISCONNECT, nickname);
     this.tiles = tiles;
   }
 
+  /**
+   * gets the variable tiles of the current instance.
+   */
   public List<Tile> getTiles() {
     return tiles;
   }
 
+  /**
+   * sets the variable tiles of the current instance.
+   */
   public void setTiles(List<Tile> tiles) {
     this.tiles = tiles;
   }

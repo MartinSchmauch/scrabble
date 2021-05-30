@@ -18,6 +18,9 @@ public class CommitTurnMessage extends Message {
     this.tilesLeftOnRack = tilesLeftOnRack;
   }
 
+  /**
+   * gets the variable tilesLeftOnRack of the current instance.
+   */
   public boolean getTilesLeftOnRack() {
     return tilesLeftOnRack;
   }

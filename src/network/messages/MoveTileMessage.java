@@ -29,19 +29,30 @@ public class MoveTileMessage extends Message {
     this.oldY = oldY;
   }
 
-
+  /**
+   * gets the variable newX of the current instance.
+   */
   public int getNewX() {
     return newX;
   }
 
+  /**
+   * gets the variable newY of the current instance.
+   */
   public int getNewY() {
     return newY;
   }
 
+  /**
+   * gets the variable oldX of the current instance.
+   */
   public int getOldX() {
     return oldX;
   }
 
+  /**
+   * gets the variable oldY of the current instance.
+   */
   public int getOldY() {
     return oldY;
   }

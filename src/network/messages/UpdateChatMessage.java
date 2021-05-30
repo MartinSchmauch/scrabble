@@ -27,10 +27,16 @@ public class UpdateChatMessage extends Message {
     this.owner = from;
   }
 
+  /**
+   * gets the Text of the current instance
+   */
   public String getText() {
     return text;
   }
 
+  /**
+   * gets the dateTime of the current instance.
+   */
   public LocalDateTime getDateTime() {
     return dateTime;
   }

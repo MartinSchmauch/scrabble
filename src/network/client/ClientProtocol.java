@@ -339,50 +339,79 @@ public class ClientProtocol extends Thread {
     }
   }
 
+  /**
+   * gets the variable gameState of the current instance.
+   */
   public GameState getGameState() {
     return gameState;
   }
 
+  /**
+   * sets the variable gameState of the current instance.
+   */
   public void setGameState(GameState gameState) {
     this.gameState = gameState;
   }
 
+  /**
+   * gets the variable player of the current instance.
+   */
   public Player getPlayer() {
     return player;
   }
 
+  /**
+   * sets the variable player of the current instance.
+   */
   public void setPlayer(Player player) {
     this.player = player;
   }
 
+  /**
+   * gets the variable gpc of the current instance.
+   */
   public GamePanelController getGamePanelController() {
     return gpc;
   }
 
+  /**
+   * sets the variable gpc of the current instance.
+   */
   public void setGamePanelController(GamePanelController gpc) {
     this.gpc = gpc;
   }
 
+  /**
+   * sets the variable lsc of the current instance.
+   */
   public void setLobbyScreenController(LobbyScreenController lsc) {
     this.lsc = lsc;
   }
 
-  /*
-   * @author pkoenig
+  /**
+   * gets the variable ipFromServer of the current instance.
    */
-
   public String getIpFromServer() {
     return ipFromServer;
   }
 
+  /**
+   * sets the variable ipFromServer of the current instance.
+   */
   public void setIpFromServer(String ipFromServer) {
     this.ipFromServer = ipFromServer;
   }
 
+  /**
+   * gets the variable portFromServer of the current instance.
+   */
   public int getPortFromServer() {
     return portFromServer;
   }
 
+  /**
+   * sets the variable portFromServer of the current instance.
+   */
   public void setPortFromServer(int portFromServer) {
     this.portFromServer = portFromServer;
   }

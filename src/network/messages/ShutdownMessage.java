@@ -18,6 +18,9 @@ public class ShutdownMessage extends Message {
     this.reason = reason;
   }
 
+  /**
+   * gets the variable reason of the current instance.
+   */
   public String getReason() {
     return reason;
   }

@@ -22,6 +22,9 @@ public class ConnectMessage extends Message {
     this.playerInfo = playerInfo;
   }
 
+  /**
+   * gets the variable playerInfo of the current instance.
+   */
   public PlayerData getPlayerInfo() {
     return this.playerInfo;
   }

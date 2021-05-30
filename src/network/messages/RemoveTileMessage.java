@@ -23,10 +23,16 @@ public class RemoveTileMessage extends Message {
     this.collumn = collumn;
   }
 
+  /**
+   * gets the variable row of the current instance.
+   */
   public int getX() {
     return row;
   }
 
+  /**
+   * gets the variable collumn of the current instance.
+   */
   public int getY() {
     return collumn;
   }

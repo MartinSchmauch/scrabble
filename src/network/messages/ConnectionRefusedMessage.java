@@ -21,6 +21,9 @@ public class ConnectionRefusedMessage extends Message {
     this.reason = reason;
   }
 
+  /**
+   * gets the variable reason of the current instance.
+   */
   public String getReason() {
     return this.reason;
   }

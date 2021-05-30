@@ -22,6 +22,9 @@ public class GameStatisticMessage extends Message {
     this.gameStatistics = gameStatistics;
   }
 
+  /**
+   * gets the variable gameStatistics of the current instance.
+   */
   public HashMap<String, GameStatistic> getGameStatistics() {
     return gameStatistics;
   }
