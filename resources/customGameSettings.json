@@ -1,6 +1,6 @@
 {
-  "timePerPlayer" : 500,
-  "maxOvertime" : 600,
+  "timePerPlayer" : 300,
+  "maxOvertime" : 300,
   "maxScore" : -1,
   "dictionary" : "C:\\Users\\Luis\\.scrabble\\CollinsScrabbleWords.txt",
   "bingo" : 50,
@@ -22,6 +22,10 @@
     "D" : {
       "letterValue" : 2,
       "count" : 4
+    },
+    "Ä" : {
+      "letterValue" : 5,
+      "count" : 0
     },
     "E" : {
       "letterValue" : 1,
@@ -95,6 +99,10 @@
       "letterValue" : 4,
       "count" : 2
     },
+    "Ö" : {
+      "letterValue" : 5,
+      "count" : 0
+    },
     "W" : {
       "letterValue" : 4,
       "count" : 2
@@ -110,6 +118,10 @@
     "Z" : {
       "letterValue" : 10,
       "count" : 1
+    },
+    "Ü" : {
+      "letterValue" : 5,
+      "count" : 0
     },
     "*" : {
       "letterValue" : 0,

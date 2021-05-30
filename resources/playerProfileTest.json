@@ -1,40 +1,13 @@
 {
-<<<<<<< HEAD
-  "nickname" : "user",
-  "avatar" : "/avatars/avatar7.png",
-  "volume" : 37,
-=======
   "nickname" : "Guest",
   "avatar" : "/avatars/default.png",
   "volume" : 60,
->>>>>>> refs/heads/develop
   "customGameSettings" : null,
-<<<<<<< HEAD
-  "playerInfo" : {
-    "nickname" : "user",
-    "avatar" : "/avatars/avatar7.png",
-    "host" : false,
-    "playerStatistics" : {
-      "gameCount" : 0,
-      "bestTurn" : 0,
-      "bestWord" : null,
-      "playTime" : 0,
-      "score" : 0,
-      "wins" : 0,
-      "playedTiles" : 0
-    }
-  },
-  "host" : false,
-  "clientProtocol" : null
-=======
-  "statistics" : {
-    "gameCount" : 0,
-    "bestTurn" : 0,
-    "bestWord" : null,
-    "playTime" : 0,
-    "score" : 0,
-    "wins" : 0,
-    "playedTiles" : 0
-  }
->>>>>>> refs/heads/develop
+  "gameCount" : 0,
+  "bestTurn" : 0,
+  "score" : 0,
+  "bestWord" : null,
+  "playTime" : 0,
+  "wins" : 0,
+  "playedTiles" : 0
 }
