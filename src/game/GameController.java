@@ -351,7 +351,9 @@ public class GameController {
    */
   
   public void decreaseCurrentPlayerIndex() {
-    this.currentPlayerIndex--;
+    if (this.currentPlayerIndex != 0) {
+      this.currentPlayerIndex--;
+    }
   }
 
 }
