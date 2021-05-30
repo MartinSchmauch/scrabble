@@ -83,7 +83,7 @@ public class PlayerStatistics implements Serializable {
   }
 
   /**
-   * Getter Methods.
+   * gets the variable gameCount of the current instance.
    */
   public int getGameCount() {
     return this.gameCount;
