@@ -25,7 +25,7 @@ import javafx.scene.text.Text;
  *
  * @author mschmauc
  */
-public class VisualTile extends Parent {
+public class VisualTile extends StackPane {
 
   private static final int RACK_TILE_SIZE = 60;
   private static final int BOARD_TILE_SIZE = 50;
@@ -41,32 +41,24 @@ public class VisualTile extends Parent {
    * This method creates an instance of the class.
    */
   public VisualTile(String letter, int value, boolean onRack) {
-    StackPane pane = new StackPane();
-    pane.setAlignment(Pos.CENTER);
+    this.setAlignment(Pos.CENTER);
 
     letterText = new Text(letter);
     valueText = new Text(String.valueOf(value));
     
-    pane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+    this.setBorder(new Border(new BorderStroke(Color.BLACK, 
         BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
     
 
     
     shape = new Rectangle();
-//    shape.minHeight(0);
-//    shape.minWidth(0);
-//    shape.widthProperty().bind(pane.widthProperty().subtract(10));
-//    shape.heightProperty().bind(pane.heightProperty().subtract(10));
     
 
     if (onRack) {
       
-//      pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
+      this.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
        letterText.setFont(Font.font(32));
        valueText.setFont(Font.font(16));
-      
-//      shape.heightProperty().unbind();
-//      shape.widthProperty().unbind();
 
       shape.heightProperty()
           .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().add(20).multiply(0.9));
@@ -87,10 +79,7 @@ public class VisualTile extends Parent {
       }
       
     } else {
-//      pane.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
-      
-//      shape.heightProperty().unbind();
-//      shape.widthProperty().unbind();
+      this.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
       
       shape.heightProperty()
       .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
@@ -115,18 +104,10 @@ public class VisualTile extends Parent {
     shape.setArcWidth(10);
     shape.setFill(Color.rgb(226, 189, 160));
 
-    pane.getChildren().addAll(shape, letterText, valueText);
-
-//    StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
-
-//    double rightMargin = 3;
-//    double bottomMargin = 3;
-//    StackPane.setMargin(valueText, new Insets(0, bottomMargin, rightMargin, 0));
-
-    getChildren().add(pane);
+    this.getChildren().addAll(shape, letterText, valueText);
   }
 
-  public Rectangle getShape() {
+  public Rectangle getMyShape() {
     return shape;
   }
 

@@ -1179,7 +1179,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     if (event.getButton().equals(MouseButton.PRIMARY)) {
       if (event.getClickCount() == 2) {
         Node node = (Node) event.getSource();
-        selectedCoordinates = getPos(node, false);
+        selectedCoordinates = getPos(node.getParent(), false);
         selectedCoordinates[0] += 1;
         selectedCoordinates[1] += 1;
         targetCoordinates[0] = this.player.getFreeRackField().getxCoordinate();
@@ -1350,25 +1350,64 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         column -= 6;
       }
 
-      VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
+      final VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, true);
 
       visualTile.setMouseTransparent(true);
       rack.add(visualTile, column, row);
-//      GridPane.setHalignment(visualTile, HPos.CENTER);
-//      GridPane.setValignment(visualTile, VPos.CENTER);
       
-      // GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
+
+      // TODO
+      final int rowF = row;
+      final int colF = column;
+      Runnable r = new Runnable() {
+        public void run() {
+          System.out.println("Tile at row " + rowF + " at col " + colF + "has Layout: x="
+              + visualTile.getLayoutX() + " y=" + visualTile.getLayoutY());
+          try {
+            Thread.sleep(5000);
+          } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+      };
+      new Thread(r).start();
+      
+      
+      // END TODO
+      
+      GridPane.setHalignment(visualTile, HPos.CENTER);
+      GridPane.setValignment(visualTile, VPos.CENTER);
+      
+//       GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
       VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, false);
       
+      final int rowF = row;
+      final int colF = column;
+      Runnable r = new Runnable() {
+        public void run() {
+          System.out.println("Tile at row " + rowF + " at col " + colF + "has Layout: x="
+              + visualTile.getLayoutX() + " y=" + visualTile.getLayoutY());
+          try {
+            Thread.sleep(5000);
+          } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+      };
+      new Thread(r).start();
+      
+      
 
       visualTile.setMouseTransparent(true);
       board.add(visualTile, column, row);
-//      GridPane.setHalignment(visualTile, HPos.CENTER);
-//      GridPane.setValignment(visualTile, VPos.CENTER);
-      // GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
+      GridPane.setHalignment(visualTile, HPos.CENTER);
+      GridPane.setValignment(visualTile, VPos.CENTER);
+//       GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }
 
