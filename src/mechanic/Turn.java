@@ -339,9 +339,6 @@ public class Turn implements Serializable {
       this.stringRepresentation += "\n";
       this.turnScore = this.turnScore + singleWordScore;
     }
-    if (this.words.size() > 1) {
-      this.stringRepresentation += "TOTAL SCORE = " + this.turnScore;
-    }
 
     return this.turnScore;
   }
