@@ -548,6 +548,11 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
     updateJoinedPlayers();
   }
 
+  /**
+   * get the currently used player.
+   *
+   * @return player as the current instance.
+   */
   public Player getPlayer() {
     return player;
   }
