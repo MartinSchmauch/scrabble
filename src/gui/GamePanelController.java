@@ -1066,9 +1066,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   public void removeJoinedPlayer(String playerToBeRemoved) {
     int indexRemoved = 5;
     int currentPlayerIndex = 5;
-    StackPane[] sP = {stackPlayer1, stackPlayer2, stackPlayer3, stackPlayer4};
+    StackPane[] stackPane = {stackPlayer1, stackPlayer2, stackPlayer3, stackPlayer4};
     for (int i = 0; i < players.size(); i++) {
-      if (sP[i].getBorder() != null) {
+      if (stackPane[i].getBorder() != null) {
         currentPlayerIndex = i;
       }
       if (players.get(i).getNickname().equals(playerToBeRemoved)) {
@@ -1077,7 +1077,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
         indexRemoved = i;
-        sP[i].setBorder(null);
+        stackPane[i].setBorder(null);
       }
       if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
         playerNameLabel[i - 1].setText(playerNameLabel[i].getText());
@@ -1091,7 +1091,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         avatarImageView[i].setImage(null);
         
         if (i == currentPlayerIndex) {
-          sP[i].setBorder(null);
+          stackPane[i].setBorder(null);
         }
       }
     }
@@ -1176,6 +1176,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * This method adds a tile at a location at the game panel either on the rack or on the game
    * board. For instance when a player draws new tiles after he has put some tiles on the game
    * board.
+   *
    * @author mschmauch
    * 
    */
