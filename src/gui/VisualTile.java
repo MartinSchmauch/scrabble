@@ -64,13 +64,9 @@ public class VisualTile extends StackPane {
       letterText.styleProperty()
           .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
 
-      if (letter.equals("Q")) {
-        valueText.styleProperty().bind(
-            Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
-      } else {
+
         valueText.styleProperty()
             .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
-      }
 
     } else {
       this.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
@@ -88,13 +84,10 @@ public class VisualTile extends StackPane {
 
       letterText.setFont(Font.font(26));
       valueText.setFont(Font.font(14));
-      if (letter.equals("Q")) {
-        valueText.styleProperty().bind(
-            Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
-      } else {
+
         valueText.styleProperty()
             .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
-      }
+      
     }
     shape.setArcHeight(10);
     shape.setArcWidth(10);
