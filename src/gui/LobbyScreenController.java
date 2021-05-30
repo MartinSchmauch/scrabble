@@ -354,8 +354,10 @@ public class LobbyScreenController implements EventHandler<ActionEvent> {
       stage.setOnCloseRequest(e -> close(controller));
       stage.setTitle("Scrabble3");
       stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
-//      stage.setMinHeight(800); // TODO
-//      stage.setMinWidth(1200); // TODO
+//      stage.setMinHeight(600); 
+//      stage.setMinWidth(1000);
+      stage.setMaximized(true);
+      
       // stage.setResizable(false);
       // stage.minWidthProperty().bind(stage.getScene().heightProperty().multiply(2)); // lock
       // Acpect-Ratio

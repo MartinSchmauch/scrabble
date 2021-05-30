@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="upperPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
+<StackPane fx:id="upperPane" onMouseDragged="#test0" prefHeight="850.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.GamePanelController">
 
    <children>
       <ImageView fx:id="background" fitHeight="850.0" fitWidth="1600.0" opacity="0.12" pickOnBounds="true" StackPane.alignment="TOP_LEFT">
@@ -77,10 +77,10 @@
                                                 <Image url="@creeper.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets left="10.0" right="10.0" top="8.0" />
+                                                <Insets />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0" prefWidth="70.0">
                                              <children>
                                                 <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                                    <font>
@@ -105,6 +105,9 @@
                                                    </children>
                                                 </HBox>
                                              </children>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
                                           </VBox>
                                        </children>
                                        <padding>
@@ -112,9 +115,6 @@
                                        </padding>
                                     </HBox>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
                               </StackPane>
                               <StackPane fx:id="stackPlayer2" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1">
                                  <children>
@@ -125,10 +125,10 @@
                                                 <Image url="@creeper.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets left="10.0" right="10.0" top="8.0" />
+                                                <Insets />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                                    <font>
@@ -153,6 +153,9 @@
                                                    </children>
                                                 </HBox>
                                              </children>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
                                           </VBox>
                                        </children>
                                        <StackPane.margin>
@@ -163,9 +166,6 @@
                                        </padding>
                                     </HBox>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </padding>
                               </StackPane>
                               <StackPane fx:id="stackPlayer3" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2">
                                  <children>
@@ -176,10 +176,10 @@
                                                 <Image url="@creeper.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets left="10.0" right="10.0" top="8.0" />
+                                                <Insets />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
                                                    <font>
@@ -204,6 +204,9 @@
                                                    </children>
                                                 </HBox>
                                              </children>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
                                           </VBox>
                                        </children>
                                        <StackPane.margin>
@@ -214,9 +217,6 @@
                                        </padding>
                                     </HBox>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </padding>
                               </StackPane>
                               <StackPane fx:id="stackPlayer4" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="3">
                                  <children>
@@ -227,10 +227,10 @@
                                                 <Image url="@creeper.png" />
                                              </image>
                                              <HBox.margin>
-                                                <Insets left="10.0" right="10.0" top="8.0" />
+                                                <Insets />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox minHeight="0.0">
+                                          <VBox alignment="CENTER_LEFT" minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
                                                    <font>
@@ -255,6 +255,9 @@
                                                    </children>
                                                 </HBox>
                                              </children>
+                                             <HBox.margin>
+                                                <Insets left="10.0" />
+                                             </HBox.margin>
                                           </VBox>
                                        </children>
                                        <padding>
@@ -262,9 +265,6 @@
                                        </padding>
                                     </HBox>
                                  </children>
-                                 <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
-                                 </padding>
                               </StackPane>
                               <Text fx:id="remaining" strokeType="OUTSIDE" strokeWidth="0.0" text="Remaining Letters" GridPane.halignment="LEFT" GridPane.rowIndex="4">
                                  <font>
@@ -363,16 +363,16 @@
                   </Text>
                   <GridPane fx:id="rack" alignment="CENTER" hgap="8.0" minWidth="0.0" vgap="8.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
                     <columnConstraints>
-                      <ColumnConstraints />
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                      <ColumnConstraints />
+                      <ColumnConstraints halignment="CENTER" />
+                        <ColumnConstraints halignment="CENTER" />
+                        <ColumnConstraints halignment="CENTER" />
+                        <ColumnConstraints halignment="CENTER" />
+                        <ColumnConstraints halignment="CENTER" />
+                      <ColumnConstraints halignment="CENTER" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints />
-                      <RowConstraints />
+                      <RowConstraints valignment="CENTER" />
+                      <RowConstraints valignment="CENTER" />
                     </rowConstraints>
                      <children>
                         <Rectangle fx:id="r1" fill="WHITE" height="60.0" onDragDetected="#rackDragStarted" onMouseClicked="#selectToExchange" onMouseDragEntered="#test2" onMouseDragExited="#test3" onMouseDragReleased="#rackDragReleased" onMouseDragged="#test0" stroke="BLACK" strokeType="INSIDE" width="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />

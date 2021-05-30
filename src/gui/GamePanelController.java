@@ -674,7 +674,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
             .bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
         t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
   
-        t.setManaged(true);
+//        t.setManaged(true);
         // System.out.println("Property set");
         p.setMinSize(0, 0);
   
@@ -925,9 +925,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.LIGHTGRAY);
         this.timeLabel.setFill(Color.LIGHTGRAY);
 
-        this.rackBox.setStroke(Color.DARKGREY);
-        this.chatBox.setStroke(Color.DARKGRAY);
-        this.playerBox.setStroke(Color.DARKGREY);
+//        this.rackBox.setStroke(Color.DARKGREY);
+//        this.chatBox.setStroke(Color.DARKGRAY);
+//        this.playerBox.setStroke(Color.DARKGREY);
         this.backgroundGamePanel.setStroke(Color.DARKGRAY);
 
         this.timeProgress.getStylesheets()
@@ -967,9 +967,9 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         this.timer.setFill(Color.BLACK);
         this.timeLabel.setFill(Color.BLACK);
 
-        this.rackBox.setStroke(Color.BLACK);
-        this.chatBox.setStroke(Color.BLACK);
-        this.playerBox.setStroke(Color.BLACK);
+//        this.rackBox.setStroke(Color.BLACK);
+//        this.chatBox.setStroke(Color.BLACK);
+//        this.playerBox.setStroke(Color.BLACK);
         this.backgroundGamePanel.setStroke(Color.BLACK);
 
         this.chat.getStylesheets()
@@ -1354,18 +1354,20 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       visualTile.setMouseTransparent(true);
       rack.add(visualTile, column, row);
-      GridPane.setHalignment(visualTile, HPos.CENTER);
-      GridPane.setValignment(visualTile, VPos.CENTER);
+//      GridPane.setHalignment(visualTile, HPos.CENTER);
+//      GridPane.setValignment(visualTile, VPos.CENTER);
+      
       // GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
       VisualTile visualTile = new VisualTile(Character.toString(letter), tileValue, false);
+      
 
       visualTile.setMouseTransparent(true);
       board.add(visualTile, column, row);
-      GridPane.setHalignment(visualTile, HPos.CENTER);
-      GridPane.setValignment(visualTile, VPos.CENTER);
+//      GridPane.setHalignment(visualTile, HPos.CENTER);
+//      GridPane.setValignment(visualTile, VPos.CENTER);
       // GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }

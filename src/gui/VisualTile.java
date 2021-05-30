@@ -6,6 +6,11 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -42,9 +47,17 @@ public class VisualTile extends Parent {
     letterText = new Text(letter);
     valueText = new Text(String.valueOf(value));
     
+    pane.setBorder(new Border(new BorderStroke(Color.BLACK, 
+        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+    
 
     
-    shape = new Rectangle(RACK_TILE_SIZE - 5, RACK_TILE_SIZE - 5);
+    shape = new Rectangle();
+//    shape.minHeight(0);
+//    shape.minWidth(0);
+//    shape.widthProperty().bind(pane.widthProperty().subtract(10));
+//    shape.heightProperty().bind(pane.heightProperty().subtract(10));
+    
 
     if (onRack) {
       
@@ -104,11 +117,11 @@ public class VisualTile extends Parent {
 
     pane.getChildren().addAll(shape, letterText, valueText);
 
-    StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
+//    StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
 
-    double rightMargin = 3;
-    double bottomMargin = 3;
-    StackPane.setMargin(valueText, new Insets(0, bottomMargin, rightMargin, 0));
+//    double rightMargin = 3;
+//    double bottomMargin = 3;
+//    StackPane.setMargin(valueText, new Insets(0, bottomMargin, rightMargin, 0));
 
     getChildren().add(pane);
   }
