@@ -101,6 +101,11 @@ public class UserStatisticsScreen extends Application {
     return instance;
   }
 
+  /**
+   * Get the current login instance.
+   *
+   * @return login the current login instance.
+   */
   public static boolean getLobby() {
     return login;
   }

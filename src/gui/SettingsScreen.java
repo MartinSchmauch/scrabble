@@ -71,6 +71,12 @@ public class SettingsScreen extends Application {
     }
 
   }
+  
+  /**
+   * indicates whether the buttons are diabled or not.
+   *
+   * @return disable is true if buttons are disabled, false otherwise.
+   */
 
   public static boolean getDisable() {
     return disable;

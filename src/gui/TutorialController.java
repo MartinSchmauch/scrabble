@@ -758,6 +758,11 @@ public class TutorialController extends GamePanelController
     new LoginScreen().start(new Stage());
   }
 
+  /**
+   * Gives the current game controller.
+   *
+   * @return gc as the current controller.
+   */
   public static GameController getController() {
     return gc;
   }
