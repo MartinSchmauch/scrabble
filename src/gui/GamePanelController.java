@@ -1068,15 +1068,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     int currentPlayerIndex = 5;
     StackPane[] sP = {stackPlayer1, stackPlayer2, stackPlayer3, stackPlayer4};
     for (int i = 0; i < players.size(); i++) {
+      if (sP[i].getBorder() != null) {
+        currentPlayerIndex = i;
+      }
       if (players.get(i).getNickname().equals(playerToBeRemoved)) {
         playerNameLabel[i].setText(null);
         pointsLabel[i].setText(null);
         playerLabel[i].setText(null);
         avatarImageView[i].setImage(null);
         indexRemoved = i;
-        if (sP[i].getBorder() != null) {
-          currentPlayerIndex = i;
-        }
+        sP[i].setBorder(null);
       }
       if (i > indexRemoved && !playerNameLabel[i].getText().equals(null)) {
         playerNameLabel[i - 1].setText(playerNameLabel[i].getText());
