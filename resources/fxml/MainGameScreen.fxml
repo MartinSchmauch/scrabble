@@ -40,8 +40,8 @@
          <children>
             <GridPane alignment="CENTER" hgap="7.0" minHeight="0.0" vgap="7.0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS">
                <columnConstraints>
-                  <ColumnConstraints percentWidth="50.0" />
-                  <ColumnConstraints percentWidth="50.0" />
+                  <ColumnConstraints minWidth="0.0" percentWidth="50.0" />
+                  <ColumnConstraints minWidth="0.0" percentWidth="50.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="30.0" prefHeight="30.0" />
@@ -54,21 +54,21 @@
                <children>
                   <StackPane fx:id="playerBoxStackPane" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <children>
-                        <GridPane alignment="CENTER" StackPane.alignment="CENTER">
+                        <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" vgap="5.0" StackPane.alignment="CENTER">
                            <columnConstraints>
                               <ColumnConstraints halignment="CENTER" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints />
-                              <RowConstraints minHeight="30.0" />
-                              <RowConstraints minHeight="30.0" />
-                              <RowConstraints minHeight="30.0" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" />
                            </rowConstraints>
                            <children>
-                              <StackPane fx:id="stackPlayer1" alignment="CENTER_LEFT">
+                              <StackPane fx:id="stackPlayer1" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0">
                                  <children>
                                     <HBox fx:id="player1Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -80,7 +80,7 @@
                                                 <Insets left="10.0" right="10.0" top="8.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox>
+                                          <VBox minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player1" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
                                                    <font>
@@ -113,10 +113,10 @@
                                     </HBox>
                                  </children>
                                  <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                               </StackPane>
-                              <StackPane fx:id="stackPlayer2" alignment="CENTER_LEFT" GridPane.rowIndex="1">
+                              <StackPane fx:id="stackPlayer2" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1">
                                  <children>
                                     <HBox fx:id="player2Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -128,7 +128,7 @@
                                                 <Insets left="10.0" right="10.0" top="8.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox>
+                                          <VBox minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player2" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
                                                    <font>
@@ -167,7 +167,7 @@
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </padding>
                               </StackPane>
-                              <StackPane fx:id="stackPlayer3" alignment="CENTER_LEFT" GridPane.rowIndex="2">
+                              <StackPane fx:id="stackPlayer3" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2">
                                  <children>
                                     <HBox fx:id="player3Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -179,7 +179,7 @@
                                                 <Insets left="10.0" right="10.0" top="8.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox>
+                                          <VBox minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player3" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
                                                    <font>
@@ -218,7 +218,7 @@
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </padding>
                               </StackPane>
-                              <StackPane fx:id="stackPlayer4" alignment="CENTER_LEFT" GridPane.rowIndex="3">
+                              <StackPane fx:id="stackPlayer4" alignment="CENTER_LEFT" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="3">
                                  <children>
                                     <HBox fx:id="player4Box" alignment="CENTER_LEFT" nodeOrientation="LEFT_TO_RIGHT">
                                        <children>
@@ -230,7 +230,7 @@
                                                 <Insets left="10.0" right="10.0" top="8.0" />
                                              </HBox.margin>
                                           </ImageView>
-                                          <VBox>
+                                          <VBox minHeight="0.0">
                                              <children>
                                                 <Text fx:id="player4" strokeType="OUTSIDE" strokeWidth="0.0" text="AI 1">
                                                    <font>
@@ -298,7 +298,7 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin>
                               </Text>
-                              <ProgressBar fx:id="timeProgress" minHeight="25.0" prefHeight="20.0" prefWidth="330.0" progress="0.35" style="-fx-accent: #8FB492;" GridPane.rowIndex="6">
+                              <ProgressBar fx:id="timeProgress" minHeight="25.0" minWidth="0.0" prefHeight="20.0" prefWidth="328.0" progress="0.35" style="-fx-accent: #8FB492;" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </GridPane.margin></ProgressBar>
@@ -317,28 +317,28 @@
                      <children>
                         <GridPane alignment="CENTER" vgap="10.0">
                            <columnConstraints>
-                              <ColumnConstraints />
+                              <ColumnConstraints minWidth="0.0" />
                               <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints />
+                              <RowConstraints vgrow="SOMETIMES" />
                               <RowConstraints />
                            </rowConstraints>
                            <children>
-                              <TextArea fx:id="chat" prefHeight="378.0" prefWidth="370.0" promptText="Welcome to the chat!" wrapText="true" GridPane.columnSpan="2" GridPane.hgrow="NEVER">
+                              <TextArea fx:id="chat" minHeight="0.0" minWidth="0.0" prefHeight="378.0" prefWidth="370.0" promptText="Welcome to the chat!" wrapText="true" GridPane.columnSpan="2" GridPane.hgrow="NEVER">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets />
                                  </GridPane.margin>
                               </TextArea>
-                              <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" onAction="#handle" prefHeight="74.0" prefWidth="246.0" promptText="Message..." GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
+                              <TextField fx:id="chatInput" alignment="BOTTOM_LEFT" minWidth="0.0" onAction="#handle" prefHeight="74.0" prefWidth="246.0" promptText="Message..." GridPane.hgrow="SOMETIMES" GridPane.rowIndex="1">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets />
                                  </GridPane.margin>
                               </TextField>
                               <Button fx:id="sendButton" alignment="CENTER" contentDisplay="CENTER" ellipsisString="Send" graphicTextGap="2.0" mnemonicParsing="false" onAction="#handle" stylesheets="@Buttons.css" text="Send" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
@@ -361,7 +361,7 @@
                         <Font name="System Bold" size="29.0" />
                      </font>
                   </Text>
-                  <GridPane fx:id="rack" alignment="CENTER" hgap="8.0" vgap="8.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                  <GridPane fx:id="rack" alignment="CENTER" hgap="8.0" minWidth="0.0" vgap="8.0" GridPane.columnSpan="2" GridPane.rowIndex="4">
                     <columnConstraints>
                       <ColumnConstraints />
                         <ColumnConstraints />

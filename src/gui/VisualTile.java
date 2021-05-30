@@ -49,8 +49,8 @@ public class VisualTile extends Parent {
     if (onRack) {
       
 //      pane.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
-// letterText.setFont(Font.font(32));
-// valueText.setFont(Font.font(16));
+       letterText.setFont(Font.font(32));
+       valueText.setFont(Font.font(16));
       
 //      shape.heightProperty().unbind();
 //      shape.widthProperty().unbind();
@@ -89,8 +89,8 @@ public class VisualTile extends Parent {
       
       letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
       
-//      letterText.setFont(Font.font(26));
-//      valueText.setFont(Font.font(14));
+      letterText.setFont(Font.font(26));
+      valueText.setFont(Font.font(14));
       if (letter.equals("Q")) {
         valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
       }
