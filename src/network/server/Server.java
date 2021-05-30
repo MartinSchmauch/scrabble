@@ -538,6 +538,7 @@ public class Server {
 
     this.gameState.leaveGame(player);
     this.clients.remove(player);
+    this.gameController.decreaseCurrentPlayerIndex();
     if (this.gameState.getGameRunning() && this.gameState.getAllPlayers().size() < 2) {
       Runnable r = new Runnable() {
         public void run() {
