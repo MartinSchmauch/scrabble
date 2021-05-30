@@ -198,7 +198,8 @@ public class ClientProtocol extends Thread {
                     // Audio output
                     if (trm.getWinner() != null) {
                       Sound.playEndGameSound();
-                    } else if (trm.getTurnInfo() != null && trm.getTurnInfo().equals("Time's up!")) {
+                    } else if (trm.getTurnInfo() != null && trm.getTurnInfo().equals("Time's "
+                        + "up!")) {
                       Sound.playUnsuccessfulTurnSound();
                     } else {
                       Sound.playSuccessfulTurnSound();

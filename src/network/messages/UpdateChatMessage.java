@@ -28,7 +28,7 @@ public class UpdateChatMessage extends Message {
   }
 
   /**
-   * gets the Text of the current instance
+   * gets the Text of the current instance.
    */
   public String getText() {
     return text;

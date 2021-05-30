@@ -118,6 +118,9 @@ public class GameController {
     return turns;
   }
 
+  /**
+   * This method generates a list of tiles from the parameter chars.
+   */
   public List<Tile> drawTutorial(char[] chars) {
     List<Tile> tiles = new ArrayList<Tile>();
     for (int i = 0; i < chars.length; i++) {

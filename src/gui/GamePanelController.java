@@ -499,7 +499,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       try {
         t = (Text) p.getChildren().get(1);
-        if (!t.getText().equals("★")) {
+        if (!t.getText().equals("â˜…")) {
           t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
           t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
           p.setMinSize(0, 0);

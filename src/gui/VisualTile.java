@@ -35,67 +35,69 @@ public class VisualTile extends StackPane {
    * This method creates an instance of the class.
    */
   public VisualTile(String letter, int value, boolean onRack) {
-    if(GamePanelController.getInstance()!=null) {
-    this.setAlignment(Pos.CENTER);
+    if (GamePanelController.getInstance() != null) {
+      this.setAlignment(Pos.CENTER);
     
-    letterText = new Text(letter);
-    valueText = new Text(String.valueOf(value));
+      letterText = new Text(letter);
+      valueText = new Text(String.valueOf(value));
 
-    StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
-    StackPane.setMargin(valueText, new Insets(0, 3, 3, 0));
+      StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
+      StackPane.setMargin(valueText, new Insets(0, 3, 3, 0));
     
-    shape = new Rectangle();
+      shape = new Rectangle();
 
-    if (onRack) {
+      if (onRack) {
 
-      this.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
-      letterText.setFont(Font.font(32));
-      valueText.setFont(Font.font(16));
+        this.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
+        letterText.setFont(Font.font(32));
+        valueText.setFont(Font.font(16));
       
 
-      shape.heightProperty().bind(GamePanelController.getInstance().referenceSizeForRack
-          .heightProperty().add(20).multiply(0.9));
-      shape.widthProperty().bind(GamePanelController.getInstance().referenceSizeForRack
-          .widthProperty().add(20).multiply(0.9));
+        shape.heightProperty().bind(GamePanelController.getInstance().referenceSizeForRack
+            .heightProperty().add(20).multiply(0.9));
+        shape.widthProperty().bind(GamePanelController.getInstance().referenceSizeForRack
+            .widthProperty().add(20).multiply(0.9));
 
 
-      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(30));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(50));
+        letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(30)
+        );
+        valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(50));
 
-      letterText.styleProperty()
-          .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
+        letterText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
 
 
         valueText.styleProperty()
             .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
 
+      } else {
+        this.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
+
+        shape.heightProperty().bind(
+            GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
+        shape.widthProperty().bind(
+            GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
+
+        letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(35)
+        );
+        valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(65));
+
+        letterText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
+
+        letterText.setFont(Font.font(26));
+        valueText.setFont(Font.font(14));
+
+        valueText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
+      
+      }
+      shape.setArcHeight(10);
+      shape.setArcWidth(10);
+      shape.setFill(Color.rgb(226, 189, 160));
+
+      this.getChildren().addAll(shape, letterText, valueText);
     } else {
-      this.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
-
-      shape.heightProperty().bind(
-          GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
-      shape.widthProperty().bind(
-          GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
-
-      letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(35));
-      valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(65));
-
-      letterText.styleProperty()
-          .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
-
-      letterText.setFont(Font.font(26));
-      valueText.setFont(Font.font(14));
-
-        valueText.styleProperty()
-            .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
-      
-    }
-    shape.setArcHeight(10);
-    shape.setArcWidth(10);
-    shape.setFill(Color.rgb(226, 189, 160));
-
-    this.getChildren().addAll(shape, letterText, valueText);
-    }else {
       StackPane pane = new StackPane();
       pane.setAlignment(Pos.CENTER);
 
@@ -135,9 +137,9 @@ public class VisualTile extends StackPane {
     }
   }
   
-/**
- * retruns the current rectangle.
- */
+  /**
+   * retuns the current rectangle.
+   */
 
   public Rectangle getMyShape() {
     return shape;
@@ -183,7 +185,7 @@ public class VisualTile extends StackPane {
   }
 
   /**
-   * Returns the Tile font size 
+   * Returns the Tile font size.
    *
    * @return the tileFontSize
    */

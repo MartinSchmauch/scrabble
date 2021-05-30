@@ -39,7 +39,6 @@ public class AiPlayer extends Player {
 
 
   /**
-   * 
    * Represent a combination of chars with a counter. The counter represents, how often this
    * combination of chars is present in the wordlist (i.e. dictionary)
    *
