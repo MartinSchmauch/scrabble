@@ -40,7 +40,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import mechanic.Player;
@@ -431,11 +433,17 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     remainingLetters.setText("");
     timer.setText("");
     timeProgress.setProgress(0.0);
-    this.dws16.setText("✧");
+    this.dws16.setText("★");
 
     /**
      * @author pkoenig
      */
+    
+    // Buuton-Font sizes
+    DoubleProperty buttonFontSize = new SimpleDoubleProperty(10);
+    buttonFontSize.bind(Bindings.min(board.widthProperty(), board.heightProperty()).divide(85));
+    
+//    leaveGameButton.fontProperty().bind(Bindings.concat("-fx-font-size: " + buttonFontSize.toString() + ";"));
 
 
     // RackFields
@@ -497,9 +505,17 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       try {
         t = (Text) p.getChildren().get(1);
-        t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
-        t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
-        p.setMinSize(0, 0);
+        if (!t.getText().equals("★")) {
+          t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
+          t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
+          p.setMinSize(0, 0);
+        }
+        else {
+          t.setFont(new Font("Arial", 30));
+          t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.add(20).asString(), ";"));
+          p.setMinSize(0, 0);
+          t.setTextAlignment(TextAlignment.CENTER);
+        }
 
       } catch (Exception e) {
       }

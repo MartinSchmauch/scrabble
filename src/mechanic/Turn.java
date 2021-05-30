@@ -313,7 +313,7 @@ public class Turn implements Serializable {
     for (Word w : this.words) {
       int localWordMultiplier = 1;
       int singleWordScore = 0;
-      this.stringRepresentation += "\n";
+      this.stringRepresentation += "\n\n";
 
       for (Tile t : w.getTiles()) {
         singleWordScore += t.getValue() * t.getField().getLetterMultiplier();
@@ -327,16 +327,15 @@ public class Turn implements Serializable {
           this.stringRepresentation += ("\nScore " + singleWordScore);
           break;
         case 2:
-          this.stringRepresentation += ("\nDouble word score\nScore " + singleWordScore);
+          this.stringRepresentation += ("\nDOUBLE-WORD-SCORE\nScore " + singleWordScore);
           break;
         case 3:
-          this.stringRepresentation += ("\nTriple word score\nScore" + singleWordScore);
+          this.stringRepresentation += ("\nTRIPLE-WORD-SCORE\nScore" + singleWordScore);
           break;
         default:
           System.out.println("Error in Turn, calculateTurnScoe()");
           break;
       }
-      this.stringRepresentation += "\n";
       this.turnScore = this.turnScore + singleWordScore;
     }
 
