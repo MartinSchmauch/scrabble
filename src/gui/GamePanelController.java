@@ -1540,7 +1540,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    * @author lurny
    */
   public void sendResetTurnForEveryPlayer(String nickName) {
-    System.out.println("Test1");
     Message m = new ResetTurnMessage(this.player.getNickname(), null);
     if (this.player.isHost()) {
       this.player.getServer().resetTurnForEveryPlayer((ResetTurnMessage) m);

@@ -79,6 +79,8 @@ public class Server {
   /**
    * Initializes Server with host and customGameSettings. If customGameSettings are null, the
    * default game settings are used.
+   *
+   * @author ldreyer
    */
 
   public Server(Player host, String customGameSettings) {
@@ -203,7 +205,6 @@ public class Server {
       t.setField(player.getFreeRackField());
       t.setOnGameBoard(false);
       t.setOnRack(true);
-      // gpc.addTile(t);
     }
     this.gameController.getTurn().setStringRepresentation("Tiles changed and turn skipped.");
     resetTurnForEveryPlayer(new ResetTurnMessage(aiplayer.getNickname(), null));
@@ -222,7 +223,6 @@ public class Server {
       this.sem = false;
       String from = this.gameState.getCurrentPlayer();
       List<Tile> tileList = this.gameController.getTurn().getLaydDownTiles();
-      System.out.println(from + "  " + tileList.size());
       this.sendToAll((Message) new ResetTurnMessage(from, tileList));
       if (!this.aiPlayers.containsKey(from)) {
         this.gameState.getGameStatisticsOfPlayer(from)
@@ -245,6 +245,8 @@ public class Server {
               gpc.addTile(t);
             }
           }
+          
+          gameController.addTurn(gameController.getTurn());
 
           // check end game criteria
           if (gameController.checkEndGame(true)) {
@@ -354,7 +356,6 @@ public class Server {
           }
         }
 
-
         // check end game criteria
         if (this.gameController.checkEndGame(m.getTilesLeftOnRack())) {
           Runnable r = new Runnable() {
@@ -399,7 +400,9 @@ public class Server {
   }
 
 
-  /*
+  /**
+   * This method checks if it's an AI players turn and calculates the AI turn if needed.
+   *
    * @author pkoenig
    */
   private void handleAi(String player) {
@@ -490,6 +493,8 @@ public class Server {
    * Check if a player with a given nickname already joined the lobby.
    *
    * @return true if nickname exists
+   * @author ldreyer
+   * @author pkoenig
    */
 
   public boolean checkNickname(String nickname) {
@@ -500,6 +505,8 @@ public class Server {
   /**
    * This method adds a client to the gamestate and registers it's server protocol in the clients
    * hashmap.
+   *
+   * @author ldreyer
    */
 
   public void handleJoinLobby(PlayerData player, ServerProtocol serverProtocol) {
@@ -513,7 +520,12 @@ public class Server {
   }
 
 
-  /** This method removes a client and ends the game is running and only the host is left. */
+  /** 
+   * This method removes a client and ends the game is running and only the host is left. 
+   *
+   * @author ldreyer
+   * @author lurny
+   */
 
   public void handleLeaveGame(String player) {
     Turn turn = gameController.getTurn();
@@ -564,7 +576,11 @@ public class Server {
     }
   }
 
-  /** Handles move from rack to gameBoard (with AddTileMessage). */
+  /** 
+   * Handles move from rack to gameBoard (with AddTileMessage). 
+   *
+   * @author ldreyer
+   */
 
   public void handleAddTileToGameBoard(AddTileMessage m) {
     Field f = m.getTile().getField();
@@ -598,7 +614,11 @@ public class Server {
     }
   }
 
-  /** Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). */
+  /** 
+   * Handles moves to rack from gameBoard and moves on gameboard (with MoveTileMessage). 
+   *
+   * @author ldreyer
+   */
 
   public void handleMoveTile(MoveTileMessage m) {
     Tile oldTile = this.gameState.getGameBoard()
@@ -734,8 +754,6 @@ public class Server {
               break;
             case GAME_STATISTIC:
               gpc.stopTimer();
-              System.out.println("check");
-
               try {
                 Thread.sleep(1000);
               } catch (InterruptedException e) {
@@ -780,7 +798,6 @@ public class Server {
               gpc.removeTile(rtm.getX(), rtm.getY(), (rtm.getY() == -1));
               break;
             case TURN_RESPONSE:
-              System.out.println("TurnResponseMessageReceived");
               TurnResponseMessage trm = (TurnResponseMessage) m;
               if (trm.getTurnInfo() != null) {
                 gpc.updateChat(trm.getTurnInfo(), null, "");
@@ -814,10 +831,14 @@ public class Server {
                 semaphoreCommit = true;
                 semaphoreReset = true;
                 sem = true;
-                if (trm.getCalculatedTurnScore() > 0) {
-                  Sound.playSuccessfulTurnSound();
-                } else {
+                
+                // Audio output
+                if (trm.getWinner() != null) {
+                  Sound.playEndGameSound();
+                } else if (trm.getTurnInfo().equals("Time's up!")) {
                   Sound.playUnsuccessfulTurnSound();
+                } else {
+                  Sound.playSuccessfulTurnSound();
                 }
               } else {
                 Sound.playUnsuccessfulTurnSound();
@@ -879,7 +900,6 @@ public class Server {
         this.gameController.getTileBag().getRemaining()
             - this.gameState.getAllPlayers().size() * GameSettings.getTilesOnRack(),
         this.gameState.getCurrentPlayer(), GameSettings.getTimePerPlayer()));
-    System.out.println("groeße: " + this.gameState.getAllPlayers().size());
     try {
       Thread.sleep(1000);
     } catch (InterruptedException e) {
@@ -917,7 +937,6 @@ public class Server {
    * @author ldreyer
    */
   public void endGame() {
-    System.out.println("Test1");
     Turn turn = this.gameController.getTurn();
     calculateGameStatistics();
 
@@ -925,7 +944,6 @@ public class Server {
         this.gameState.getScore(turn.getPlayer()), turn.toString(), null,
         this.gameController.getTileBag().getRemaining(),
         this.gameState.getGameStatistics().get(this.host).getWinner()));
-    System.out.println("Test3");
 
     try {
       Thread.sleep(8000);

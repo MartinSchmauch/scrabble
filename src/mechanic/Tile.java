@@ -129,23 +129,23 @@ public class Tile implements Serializable {
     }
   }
 
-  // ** @author lurny
+  /** @author lurny */
   public boolean isOnGameBoard() {
     return onGameBoard;
   }
 
-  // ** @author lurny
+  /** @author lurny */
   public void setOnGameBoard(boolean onGameBoard) {
     this.onGameBoard = onGameBoard;
     this.onRack = !onGameBoard; // TODO: check that this does not create errors
   }
 
-  // ** @author lurny
+  /** @author lurny */
   public boolean isOnRack() {
     return onRack;
   }
 
-  // ** @author lurny
+  /** @author lurny */
   public void setOnRack(boolean onRack) {
     this.onRack = onRack;
     this.onGameBoard = !onRack; // TODO: check that this does not create errors
@@ -218,11 +218,6 @@ public class Tile implements Serializable {
    * @author lurny
    */
   public Tile getRightTile() {
-
-    if (this.getField() == null) {
-      System.out.println("######### PROBLEM IN TILE LINE 213");
-    }
-
     Field f = this.getField().getRight();
     if (f == null) {
       return null;

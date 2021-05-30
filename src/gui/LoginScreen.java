@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
@@ -78,7 +79,6 @@ public class LoginScreen extends Application {
     Font.loadFont(getClass().getResourceAsStream("/Scrabble.ttf"), 14);
 
     if (new File(FileParameters.datadir + "playerProfile.json").exists()) {
-      System.out.println(FileParameters.datadir);
       currentPlayer = new JsonHandler()
           .loadPlayerProfile(new File(FileParameters.datadir + "playerProfile.json"));
       setFirstLaunch(true);
@@ -86,7 +86,7 @@ public class LoginScreen extends Application {
       currentPlayer = new JsonHandler()
           .loadPlayerProfile(new File(FileParameters.datadir + "defaultPlayerProfile.json"));
       if (!alreadyLaunched) {
-        System.out.println("already launched");
+
         CustomAlert alert = new CustomAlert(AlertType.CONFIRMATION);
 
         alert.setTitle("Create Player Profile");
@@ -123,6 +123,7 @@ public class LoginScreen extends Application {
     Scene scene = new Scene(root);
     stage.setScene(scene);
     stage.initStyle(StageStyle.UNDECORATED);
+    stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
 
     root.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override

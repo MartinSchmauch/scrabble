@@ -195,7 +195,7 @@ public class TurnTest {
   }
 
   /**
-   * calculateWordsTest2() and calculateWordScoreTest2() test the algorithm for turn 4 of
+   * calculateWordsTest2() test the algorithm for turn 4 of
    * https://boardgames.stackexchange.com/questions/44841/limits-on-using-new-words-in-scrabble
    * assuming every letter has the value one and special fields do not exist.
    */
@@ -208,6 +208,9 @@ public class TurnTest {
     System.out.println(turn2);
   }
 
+  
+  /** Testing calculateWords with joker tiles. */
+  
   @Test
   public void calculateWordsTest3() {
     assertEquals(true, turn3.calculateWords());

@@ -43,6 +43,7 @@ public class Turn implements Serializable {
     this.laydDownFields = new ArrayList<Field>();
     this.containedStarTiles = false;
     this.starTiles = new ArrayList<Tile>();
+    this.isValid = true;
   }
 
   /**
@@ -391,8 +392,8 @@ public class Turn implements Serializable {
     return isValid;
   }
 
-  public boolean setValid(boolean valid) {
-    return isValid;
+  public void setValid(boolean valid) {
+    this.isValid = valid;
   }
 
   /**

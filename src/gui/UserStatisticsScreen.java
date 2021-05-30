@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -56,6 +57,7 @@ public class UserStatisticsScreen extends Application {
       Scene scene = new Scene(root);
       stage.setScene(scene);
       stage.initStyle(StageStyle.UNDECORATED);
+      stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
 
       root.setOnMousePressed(new EventHandler<MouseEvent>() {
         @Override

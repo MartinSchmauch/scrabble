@@ -18,14 +18,14 @@ public class OpenExternalScreen {
   public static void open(String path) {
     File tutorial = new File(path);
     if (!Desktop.isDesktopSupported()) {
-      System.out.println("not supported");
+      CustomAlert.showWarningAlert("ERROR", "File could not open!");
       return;
     }
     try {
       Desktop.getDesktop().open(tutorial);
     } catch (IOException e) {
       e.printStackTrace();
-      System.out.println("File Could Not Open");
+      CustomAlert.showWarningAlert("ERROR", "File could not open!");
     }
   }
 }

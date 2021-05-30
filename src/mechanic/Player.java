@@ -13,6 +13,7 @@ import network.client.ClientProtocol;
 import network.messages.AddTileMessage;
 import network.messages.RemoveTileMessage;
 import network.server.Server;
+import util.Sound;
 
 /**
  * The Player Class includes PlayerData, containing nickname and avatar. Local GameSettings that
@@ -51,6 +52,8 @@ public class Player {
   /**
    * This constructor is used for initializing a Player Object with an ObjectMapper from a JSON
    * file.
+   *
+   * @author ldreyer
    */
   @JsonCreator
   public Player(@JsonProperty("nickname") String nickname, @JsonProperty("avatar") String avatar,
@@ -241,6 +244,7 @@ public class Player {
         removeRackTile(indexBefore);
         setRackTile(indexAfter, t);
         t.setField(rack[indexAfter]);
+        Sound.playMoveTileSound();
         gpc.moveToRack(t, indexBefore, -1);
       }
     });
@@ -283,6 +287,7 @@ public class Player {
       tile.setOnRack(true);
       tile.setOnGameBoard(false);
       gpc.addTile(tile);
+      Sound.playMoveTileSound();
     }
   }
 
@@ -310,7 +315,9 @@ public class Player {
 
   /**
    * Moves a tile t (which has to be currently on the rack, I.e. 
-   * has yCoordinate==1) to Field f by calling removeRackTile and setTile.
+   * has yCoordinate==-1) to Field f by calling removeRackTile and setTile.
+   *
+   * @author pkoenig
    */
   public void personalMoveToGameBoard(Tile t, Field f) {
     if (t.getField().getyCoordinate() != -1) {

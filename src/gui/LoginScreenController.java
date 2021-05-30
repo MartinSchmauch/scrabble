@@ -221,6 +221,7 @@ public class LoginScreenController extends LoginScreen implements EventHandler<A
             }
           });
 
+          stage.getIcons().add(new Image(getClass().getResourceAsStream("/ScrabbleIcon.png")));
           stage.initStyle(StageStyle.UNDECORATED);
           stage.setTitle("Lobby");
           stage.setOnCloseRequest(e -> controller.close());
