@@ -39,7 +39,6 @@ import mechanic.Tile;
 import mechanic.TileBag;
 import network.messages.DisconnectMessage;
 import network.messages.Message;
-import util.Sound;
 
 
 /**
@@ -660,7 +659,7 @@ public class TutorialController extends GamePanelController
    * accepted upon a drop action can be of any type, since there is only one type in the game.
    */
   @FXML
-  public void DragOverHandling(DragEvent event) {
+  public void dragOverHandling(DragEvent event) {
     event.acceptTransferModes(TransferMode.ANY);
   }
 

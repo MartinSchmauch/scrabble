@@ -81,11 +81,11 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
   @FXML
   private Button msUp;
   @FXML
-  private Button b;
+  private Button bnormal;
   @FXML
-  private Button bDown;
+  private Button bdown;
   @FXML
-  private Button bUp;
+  private Button bup;
   @FXML
   private Button dif;
   @FXML
@@ -174,17 +174,17 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
         labelTextfield(this.time, this.tpptf, tpp);
         break;
       case "msUp":
-        if (this.score.getText().equals("\u221e")) {
+        if (this.score.getText().equals("∞")) {
           this.score.setText("0");
         } else {
           updateLabel(this.score, Integer.parseInt(score.getText()) + 10);
         }
         break;
       case "msDown":
-        if (this.score.getText().equals("\u221e")) {
+        if (this.score.getText().equals("∞")) {
           break;
         } else if (Integer.parseInt(this.score.getText()) - 10 < 0) {
-          this.score.setText("\u221e");
+          this.score.setText("∞");
         } else {
           updateLabel(this.score, Integer.parseInt(score.getText()) - 10);
         }
@@ -193,15 +193,15 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       case"mstf":
         labelTextfield(this.score, this.mstf, ms);
         break;
-      case "bUp":
+      case "bup":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) + 1);
         break;
-      case "bDown":
+      case "bdown":
         updateLabel(this.bingo, Integer.parseInt(bingo.getText()) - 1);
         break;
-      case "b":
+      case "bnormal":
       case "btf":
-        labelTextfield(this.bingo, this.btf, this.b);
+        labelTextfield(this.bingo, this.btf, this.bnormal);
         break;
       case "letterUp":
         updateLetterLabel(this.letter.getText().charAt(0), true);
@@ -266,7 +266,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
    */
   public void saveSettings() {
     GameSettings.setTimePerPlayer(Integer.parseInt(time.getText()));
-    if (this.score.getText().equals("\u221e")) {
+    if (this.score.getText().equals("∞")) {
       GameSettings.setMaxScore(-1);
     } else {
       GameSettings.setMaxScore(Integer.parseInt(score.getText()));
@@ -331,7 +331,7 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
     this.time.setText(GameSettings.getTimePerPlayer() + "");
     this.tor.setText(GameSettings.getTilesOnRack() + "");
     if (GameSettings.getMaxScore() < 0) {
-      this.score.setText("\u221e");
+      this.score.setText("∞");
     } else {
       this.score.setText(GameSettings.getMaxScore() + "");
     }
@@ -364,9 +364,9 @@ public class SettingsScreenController implements EventHandler<ActionEvent> {
       ms.setDisable(true);
       msDown.setDisable(true);
       msUp.setDisable(true);
-      b.setDisable(true);
-      bDown.setDisable(true);
-      bUp.setDisable(true);
+      bnormal.setDisable(true);
+      bdown.setDisable(true);
+      bup.setDisable(true);
       dif.setDisable(true);
       dic1.setDisable(true);
       dic2.setDisable(true);
