@@ -44,18 +44,4 @@ public class GameBoard {
     return fields;
   }
 
-  /*
-   * @author pkoenig
-   */
-  public String[] getRowsAsStrings() {
-    String[] res = new String[15];
-    for (int j = 0; j < this.fields.length; j++) {
-      res[j] = "";
-      for (int i = 0; i < this.fields.length; i++) {
-        res[j] = res[j] + this.fields[i][j].getTile().getLetter().getCharacter();
-      }
-    }
-    return res;
-  }
-
 }

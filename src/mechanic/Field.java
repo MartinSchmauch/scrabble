@@ -48,6 +48,9 @@ public class Field implements Serializable {
     this.wordMultiplier = 1;
   }
 
+  /**
+   * gets the variable tile of the current instance.
+   */
   public Tile getTile() {
     return tile;
   }
@@ -90,31 +93,51 @@ public class Field implements Serializable {
     this.tile = tile;
   }
 
-
+  /**
+   * gets the variable xCoordinate of the current instance.
+   */
   public int getxCoordinate() {
     return x1;
   }
 
+  /**
+   * gets the variable yCoordinate of the current instance.
+   */
   public int getyCoordinate() {
     return y1;
   }
 
+  /**
+   * gets the variable letterMultiplier of the current instance.
+   */
   public int getLetterMultiplier() {
     return letterMultiplier;
   }
 
+  /**
+   * sets the variable letterMultiplier of the current instance.
+   */
   public void setLetterMultiplier(int letterMultiplier) {
     this.letterMultiplier = letterMultiplier;
   }
 
+  /**
+   * gets the variable wordMultiplier of the current instance.
+   */
   public int getWordMultiplier() {
     return wordMultiplier;
   }
 
+  /**
+   * sets the variable wordMultiplier of the current instance.
+   */
   public void setWordMultiplier(int wordMultiplier) {
     this.wordMultiplier = wordMultiplier;
   }
 
+  /**
+   * sets the variable gameboard of the current instance.
+   */
   public void setGameBoard(GameBoard gameBoard) {
     this.gameBoard = gameBoard;
   }

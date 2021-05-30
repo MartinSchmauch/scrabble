@@ -22,29 +22,43 @@ public class Letter implements Serializable {
   private int count;
 
   /** Creates letter instance. */
-
   public Letter(char letter, int letterValue, int count) {
     this.character = letter;
     this.value = letterValue;
     this.count = count;
   }
 
+  /**
+   * gets the variable character of the current instance.
+   */
   public char getCharacter() {
     return this.character;
   }
 
+  /**
+   * gets the variable letterValue of the current instance.
+   */
   public int getLetterValue() {
     return this.value;
   }
 
+  /**
+   * gets the variable count of the current instance.
+   */
   public int getCount() {
     return this.count;
   }
   
+  /**
+   * gets the variable jokerValue of the current instance.
+   */
   public int getJokerValue() {
     return this.jokerValue;
   }
 
+  /**
+   * sets the variable jokerValue of the current instance.
+   */
   public void setJokerValue(int jokerValue) {
     this.jokerValue = jokerValue;
   }
