@@ -10,6 +10,9 @@ To launch the Game simply run the jar. Make sure you have jdk-11 installed. Norm
 The app will create a .scrabble folder in your home directory, storing your userprofile, the dictionary and settings. Make sure there is no such folder before the first game launch. If you no longer want to play the game you can delete the folder, however this deletes your all of your settings and statistics.
 If you log in to the same local network e.g. via the Uni Mannheim VPN, you can join your friends and play together. Have fun!
 
+## Settings
+If you play against "hard" or "unbeatable" AI, please allow at least 2 min (120 sec) as time per player, to ensure maximum usability.
+
 
 ## Credits (Group3)
 A scrabble game developed by Nils Becker (nilbecke), Luis Dreyer (ldreyer), Paul König (pkoenig) and Leon Urny (lurny).
