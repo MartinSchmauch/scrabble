@@ -42,62 +42,64 @@ public class VisualTile extends StackPane {
    */
   public VisualTile(String letter, int value, boolean onRack) {
     this.setAlignment(Pos.CENTER);
-
+    
     letterText = new Text(letter);
     valueText = new Text(String.valueOf(value));
-    
-    this.setBorder(new Border(new BorderStroke(Color.BLACK, 
-        BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
-    
 
+    StackPane.setAlignment(valueText, Pos.BOTTOM_RIGHT);
+    StackPane.setMargin(valueText, new Insets(0, 3, 3, 0));
     
     shape = new Rectangle();
-    
 
     if (onRack) {
-      
+
       this.setMaxSize(RACK_TILE_SIZE, RACK_TILE_SIZE);
-       letterText.setFont(Font.font(32));
-       valueText.setFont(Font.font(16));
-
-      shape.heightProperty()
-          .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().add(20).multiply(0.9));
-      shape.widthProperty()
-          .bind(GamePanelController.getInstance().referenceSizeForRack.widthProperty().add(20).multiply(0.9));
-
+      letterText.setFont(Font.font(32));
+      valueText.setFont(Font.font(16));
       
+
+      shape.heightProperty().bind(GamePanelController.getInstance().referenceSizeForRack
+          .heightProperty().add(20).multiply(0.9));
+      shape.widthProperty().bind(GamePanelController.getInstance().referenceSizeForRack
+          .widthProperty().add(20).multiply(0.9));
+
+
       letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(20));
       valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(40));
-      
-      letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
-      
+
+      letterText.styleProperty()
+          .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
+
       if (letter.equals("Q")) {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
+        valueText.styleProperty().bind(
+            Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
+      } else {
+        valueText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
       }
-      else {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
-      }
-      
+
     } else {
       this.setMaxSize(BOARD_TILE_SIZE, BOARD_TILE_SIZE);
-      
-      shape.heightProperty()
-      .bind(GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
-      shape.widthProperty()
-          .bind(GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
-      
+
+      shape.heightProperty().bind(
+          GamePanelController.getInstance().referenceSizeForRack.heightProperty().multiply(0.9));
+      shape.widthProperty().bind(
+          GamePanelController.getInstance().referenceSizeForRack.widthProperty().multiply(0.9));
+
       letterTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(25));
       valueTextFontSize.bind(GamePanelController.getInstance().board.heightProperty().divide(45));
-      
-      letterText.styleProperty().bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
-      
+
+      letterText.styleProperty()
+          .bind(Bindings.concat("-fx-font-size: ", letterTextFontSize.asString(), ";"));
+
       letterText.setFont(Font.font(26));
       valueText.setFont(Font.font(14));
       if (letter.equals("Q")) {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
-      }
-      else {
-        valueText.styleProperty().bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
+        valueText.styleProperty().bind(
+            Bindings.concat("-fx-font-size: ", valueTextFontSize.subtract(4).asString(), ";"));
+      } else {
+        valueText.styleProperty()
+            .bind(Bindings.concat("-fx-font-size: ", valueTextFontSize.asString(), ";"));
       }
     }
     shape.setArcHeight(10);
