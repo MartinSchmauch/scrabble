@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import mechanic.AiPlayer.AIcombination;
+import mechanic.AiPlayer.AiCombination;
 import org.junit.Test;
 
 
@@ -42,7 +42,7 @@ public class AiPlayerTest {
 
     aiplayer.generateTileCombinations();
     int i = aiplayer.getTwoTilesCombinations().size();
-    for (AIcombination c : aiplayer.getTwoTilesCombinations()) {
+    for (AiCombination c : aiplayer.getTwoTilesCombinations()) {
       System.out.println("#" + i + " " + c);
       i--;
     }
@@ -226,7 +226,7 @@ public class AiPlayerTest {
 
     aiplayer.generateTileCombinations();
     int i = aiplayer.getTwoTilesCombinations().size();
-    for (AIcombination c : aiplayer.getTwoTilesCombinations()) {
+    for (AiCombination c : aiplayer.getTwoTilesCombinations()) {
       System.out.println("#" + i + " " + c);
       i--;
     }

@@ -435,11 +435,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     timeProgress.setProgress(0.0);
     this.dws16.setText("★");
 
-    /**
-     * @author pkoenig
-     */
-
-
+    // @author pkoenig
+    
     // RackFields
     Rectangle rackField;
     ObservableList<Node> rackTiles = rack.getChildren();
@@ -495,6 +492,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         p.setMinSize(0, 0);
 
       } catch (Exception e) {
+        System.out.println(".");
       }
 
       try {
@@ -503,15 +501,16 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
           t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
           t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
           p.setMinSize(0, 0);
-        }
-        else {
+        } else {
           t.setFont(new Font("Arial", 30));
-          t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.add(20).asString(), ";"));
+          t.styleProperty().bind(Bindings.concat("-fx-font-size: ", 
+              tileFontSize.add(20).asString(), ";"));
           p.setMinSize(0, 0);
           t.setTextAlignment(TextAlignment.CENTER);
         }
 
       } catch (Exception e) {
+        System.out.println(".");
       }
 
     }
@@ -677,7 +676,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
             if (result2.get() == ButtonType.OK) {
               // remove Tiles from GUI
               for (Tile t : this.tilesToExchange) {
-                               this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
+                this.removeTile(t.getField().getxCoordinate(), t.getField().getyCoordinate(), true);
                 this.player.removeRackTile(t.getField().getxCoordinate());
               }
               sendTileMessage(this.player.getNickname());
@@ -716,7 +715,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
   /**
    * This method switches the Theme from dark mode to light mode and vice versa.
-   * 
+
    * @author nilbecke
    */
 
