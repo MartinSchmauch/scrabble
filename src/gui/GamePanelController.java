@@ -11,6 +11,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -492,12 +493,12 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         p.setMinSize(0, 0);
 
       } catch (Exception e) {
-        System.out.println(".");
+        ;
       }
 
       try {
         t = (Text) p.getChildren().get(1);
-        if (!t.getText().equals("â˜…")) {
+        if (!t.getText().equals("★")) {
           t.styleProperty().bind(Bindings.concat("-fx-font-size: ", tileFontSize.asString(), ";"));
           t.wrappingWidthProperty().bind(board.widthProperty().divide(15).subtract(5));
           p.setMinSize(0, 0);
@@ -510,7 +511,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
         }
 
       } catch (Exception e) {
-        System.out.println(".");
+        ;
       }
 
     }
@@ -630,19 +631,7 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
-          // if (player.isHost()) {
-          // player.getServer().stopServer();
-          // // Message m = new ShutdownMessage(this.player.getNickname(), REGULAR_SHUTDOWN);
-          // // sendMessage(m);
-          // } else {
-          // sendGameInfoMessage("'" + this.player.getNickname() + "' left the game");
-          // Message m = new DisconnectMessage(this.player.getNickname());
-          // sendMessage(m);
-          // }
-          close(); 
-          // Button b = (Button) e.getSource();
-          // Stage st = (Stage) (b.getScene().getWindow());
-          // st.close();
+          close();
           new LoginScreen().start(new Stage());
         }
         break;
@@ -852,32 +841,28 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
     if (!exchangeTilesMode) {
       Node node = (Node) event.getSource();
       selectedCoordinates = getPos(node, true);
-      // Image image =
-      // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
-      // rulesButton.getScene().setCursor(new ImageCursor(image));
       rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
       node.startFullDrag();
-      // cursorTile = new VisualTile("H", 3, true);
-      // cursorTile.setId("cursorTileFromRack");
-      // upperPane.getChildren().add(cursorTile);
-      // cursorTile.setOnMouseDragged(new EventHandler<MouseEvent>() {
-      // public void handle(MouseEvent event) {
-      // cursorTile.relocate(event.getX(), event.getY());
-      // // cursorTile.setLayoutX(event.getX());
-      // // cursorTile.setLayoutY(event.getY());
-      // }
-      // });
     }
   }
-
+  
+  /**
+   * Method that is executed when the cursor enters a node during a drag and drop event.
+   */
   @FXML
-  public void test0(MouseEvent event) {
+  public void test0(Event event) {}
+  
+  /**
+   * Method that is executed when the cursor enters a node during a drag and drop event.
+   */
+  @FXML
+  public void test2(MouseDragEvent event) {}
 
-    // cursorTile.setTranslateX(event.getX());
-    // cursorTile.setTranslateY(event.getY());
-    // cursorTile.setLayoutX(event.getX());
-    // cursorTile.setLayoutX(event.getY());
-  }
+  /**
+   * Method that is executed when the cursor leaves a node during a drag and drop event.
+   */
+  @FXML
+  public void test3(MouseDragEvent event) {}
 
   /**
    * Listener method that is called, when a user starts a drag movement from a board field. The
@@ -893,33 +878,8 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       selectedCoordinates[0]++;
       selectedCoordinates[1]++;
       rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
-      // Image image =
-      // new Image("file:" + System.getProperty("user.dir") + "/resources/general/tile.png");
-      // rulesButton.getScene().setCursor(new ImageCursor(image));
       node.startFullDrag();
     }
-  }
-
-  /**
-   * Method that is executed when the cursor enters a node during a drag and drop event.
-   */
-  @FXML
-  public void test2(MouseDragEvent event) {
-    // rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
-    // Node node = (Node) event.getSource();
-    // selectedCoordinates = getPos(node, true);
-    // System.out.println("node entered: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
-  }
-
-  /**
-   * Method that is executed when the cursor leaves a node during a drag and drop event.
-   */
-  @FXML
-  public void test3(MouseDragEvent event) {
-    // rulesButton.getScene().setCursor(Cursor.CLOSED_HAND);
-    // Node node = (Node) event.getSource();
-    // selectedCoordinates = getPos(node, true);
-    // System.out.println("node exited: " + selectedCoordinates[0] + "/" + selectedCoordinates[1]);
   }
 
   /**
@@ -931,7 +891,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
   public void rackDragReleased(MouseDragEvent event) {
     Node node = (Node) event.getSource();
     targetCoordinates = getPos(node, true);
-    // cursorTile = null;
     rulesButton.getScene().setCursor(Cursor.DEFAULT);
     if (targetCoordinates[0] == selectedCoordinates[0]
         && targetCoordinates[1] == selectedCoordinates[1]) { // deselect tile
@@ -983,8 +942,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   @FXML
   public void mouseReleased(MouseEvent event) {
-    // Node node = (Node) event.getSource();
-    // node.setMouseTransparent(false);
     rulesButton.getScene().setCursor(Cursor.DEFAULT);
   }
 
@@ -1210,8 +1167,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
 
       GridPane.setHalignment(visualTile, HPos.CENTER);
       GridPane.setValignment(visualTile, VPos.CENTER);
-
-      // GridPane.setMargin(visualTile, new Insets(0, 0, 5, 0));
     } else {
       row -= 1;
       column -= 1;
@@ -1223,7 +1178,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
       board.add(visualTile, column, row);
       GridPane.setHalignment(visualTile, HPos.CENTER);
       GridPane.setValignment(visualTile, VPos.CENTER);
-      // GridPane.setMargin(visualTile, new Insets(0, 0, 3, 0));
     }
   }
 
@@ -1362,8 +1316,6 @@ public class GamePanelController implements EventHandler<ActionEvent>, Runnable 
    */
   public void updateScore(String nickName, int totalScore) {
     String newScore = String.valueOf(totalScore);
-    // Text playerPoints[] = {playerOnePoints, playerTwoPoints, playerThreePoints,
-    // playerFourPoints};
     for (int i = 0; i < players.size(); i++) {
       if (players.get(i).getNickname().equals(nickName)) {
         pointsLabel[i].setText(newScore);

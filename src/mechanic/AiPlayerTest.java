@@ -26,32 +26,11 @@ public class AiPlayerTest {
   AiPlayer aiplayer;
   ArrayList<Field[]> results = new ArrayList<Field[]>();
   GameBoard gb;
-
-  /**
-   * set´s up a junit testcase.
-   * 
-   */
-  // @Before
-  public void setUp() throws Exception {
-    PlayerData pd1 = new PlayerData("test1");
-    GameState gs1 = new GameState(pd1, null);
-    GameController gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    aiplayer = new AiPlayer("test", gc1, AiPlayer.AiLevel.UNBEATABLE);
-
-    aiplayer.generateTileCombinations();
-    int i = aiplayer.getTwoTilesCombinations().size();
-    for (AiCombination c : aiplayer.getTwoTilesCombinations()) {
-      System.out.println("#" + i + " " + c);
-      i--;
-    }
-  }
-
+  
   /**
    * Test method for 
    * mechanic.AIplayer_firstGeneration#getValidPositionsForWordLength(mechanic.Field[][], int).
-   * Code is not fully dynamic with size
+   *
    */
   // @Test
   public void testGetValidPositionsForWordLength() {
@@ -68,17 +47,17 @@ public class AiPlayerTest {
     gb.getField(8, 8).setTile(a);
     System.out.println("Current layed Down tile: " + a);
     System.out.println("######################## NUMOFTILES == 2 ########################");
-    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
+    for (Field[] flist : aiplayer.getValidTilePositionsForNumOfTiles(gb, 2)) {
       System.out.println("# GENERATED POSITION #");
-      for (Field f : f_list) {
+      for (Field f : flist) {
         System.out.println(f);
       }
       System.out.println();
     }
     System.out.println("######################## NUMOFTILES == 3 ########################");
-    for (Field[] f_list : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
+    for (Field[] flist : aiplayer.getValidTilePositionsForNumOfTiles(gb, 3)) {
       System.out.println("# GENERATED POSITION #");
-      for (Field f : f_list) {
+      for (Field f : flist) {
         System.out.println(f);
       }
       System.out.println();
@@ -231,29 +210,28 @@ public class AiPlayerTest {
       i--;
     }
   }
-
+  
+  /**
+   * Tests runAi. dynamicTestRunAi is recommended in most cases.
+   * If you want to use this, please uncomment "@ Test"
+   * 
+   */
   // @Test
-  public void testgenerateLayedDownTiles() {
+  public void staticRunAi(GameBoard gb) {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println();
     System.out.println("######### AI TEST WITH RACK VERSION 1 #########");
     System.out.println();
     System.out.println("-------------------------------------------------------------\n");
-    // JsonHandler jh = new JsonHandler();
-    // jh.loadGameSettings("resources/defaultGameSettings.json");
     PlayerData pd1 = new PlayerData("test1");
     GameState gs1 = new GameState(pd1, null);
     GameController gc1 = new GameController(gs1);
     gs1.setUpGameboard();
     gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-
-
-    // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
-    // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
-    // }
+    
     aiplayer = new AiPlayer("test", 7, 15, gc1);
+    setUpGameBoard1(gb);
+    
     char newRackChar;
     for (int ii = 0; ii < 7; ii++) {
       newRackChar = (char) ((Math.random() * (92 - 'A')) + 'A');
@@ -278,12 +256,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 20");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 20, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(20);
     gc1 = new GameController(gs1);
@@ -301,12 +273,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 35");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(35);
     gc1 = new GameController(gs1);
@@ -324,12 +290,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 42");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(42);
     gc1 = new GameController(gs1);
@@ -347,12 +307,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 49");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(49);
     gc1 = new GameController(gs1);
@@ -370,12 +324,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 15");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 15, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(15);
     aiplayer.setMaxNumOfTiles(6);
@@ -394,12 +342,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 20");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 20, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(20);
     gc1 = new GameController(gs1);
@@ -417,12 +359,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 35");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(35);
     gc1 = new GameController(gs1);
@@ -440,12 +376,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 42");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(42);
     gc1 = new GameController(gs1);
@@ -463,12 +393,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 49");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(49);
     gc1 = new GameController(gs1);
@@ -486,12 +410,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 15");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 15, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(15);
     aiplayer.setMaxNumOfTiles(4);
@@ -510,12 +428,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 20");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 20, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(20);
     gc1 = new GameController(gs1);
@@ -533,12 +445,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 35");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(35);
     gc1 = new GameController(gs1);
@@ -556,12 +462,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 42");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(42);
     gc1 = new GameController(gs1);
@@ -579,12 +479,6 @@ public class AiPlayerTest {
     System.out.println("\n-------------------------------------------------------------");
     System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 49");
     System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
     aiplayer.generateTileCombinations();
     aiplayer.setNumberOfCombinationsToUse(49);
     gc1 = new GameController(gs1);
@@ -599,376 +493,25 @@ public class AiPlayerTest {
       }
     }
   }
-
+  
+  /**
+   * Writes into a csv.
+   *
+   * @param stringArray to write
+   * @param file to write into
+   * @throws Exception exception
+   */
   public static void csvWriterAll(List<String[]> stringArray, File file) throws Exception {
     CSVWriter writer = new CSVWriter(new FileWriter(file, true));
     writer.writeAll(stringArray);
     writer.close();
   }
 
-  // @Test
-  public void testtRunAI_static() {
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println();
-    System.out.println("######### AI TEST WITH RACK VERSION 1 #########");
-    System.out.println();
-    System.out.println("-------------------------------------------------------------\n");
-    // JsonHandler jh = new JsonHandler();
-    // jh.loadGameSettings("resources/defaultGameSettings.json");
-    PlayerData pd1 = new PlayerData("test1");
-    GameState gs1 = new GameState(pd1, null);
-    GameController gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-
-
-    // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
-    // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
-    // }
-    aiplayer = new AiPlayer("test", 7, 150, gc1);
-    for (int ii = 0; ii < 7; ii++) {
-      aiplayer.addTileToRack(new Tile(
-          new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1), new Field(0, 0)));
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 150");
-    System.out.println("-------------------------------------------------------------");
-
-    Turn idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 200");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 200, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(200);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 350");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(350);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 500");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(500);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 1000");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(1000);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 150");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 150, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(150);
-    aiplayer.setMaxNumOfTiles(6);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 200");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 200, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(200);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 350");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(350);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 500");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(500);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 1000");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(1000);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 150");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 150, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(150);
-    aiplayer.setMaxNumOfTiles(4);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 200");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 200, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(200);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 350");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(350);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 500");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(500);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 1000");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 350, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(1000);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard1(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-  }
-
+  /**
+   * Sets up the gameboard with tiles in a static manner "Version 1".
+   *
+   * @param gb GameBoard
+   */
   public static void setUpGameBoard1(GameBoard gb) {
     // BIRTHDAY
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(4, 8));
@@ -1027,7 +570,12 @@ public class AiPlayerTest {
     Tile k = new Tile(new Letter('K', 1, 1), gb.getField(8, 11));
     gb.getField(8, 11).setTile(k);
   }
-
+  
+  /**
+   * Sets up the gameboard with tiles in a static manner "Version 2".
+   *
+   * @param gb GameBoard
+   */
   public static void setUpGameBoard2(GameBoard gb) {
     // BIRTH
     Tile b = new Tile(new Letter('B', 1, 1), gb.getField(6, 8));
@@ -1055,368 +603,6 @@ public class AiPlayerTest {
     gb.getField(6, 10).setTile(c);
     Tile k = new Tile(new Letter('K', 1, 1), gb.getField(6, 11));
     gb.getField(6, 11).setTile(k);
-  }
-
-  // @Test
-  public void testRunAI_static2() {
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println();
-    System.out.println("######### AI TEST WITH RACK VERSION 2 #########");
-    System.out.println();
-    System.out.println("-------------------------------------------------------------\n");
-    // JsonHandler jh = new JsonHandler();
-    // jh.loadGameSettings("resources/defaultGameSettings.json");
-    PlayerData pd1 = new PlayerData("test2");
-    GameState gs1 = new GameState(pd1, null);
-    GameController gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-
-    // for (char cOnRack = 'A'; cOnRack <= 'G'; cOnRack++) {
-    // aiplayer.addTileToRack(new Tile(new Letter(cOnRack, 1, 1), aiplayer.getFreeRackField()));
-    // }
-    aiplayer = new AiPlayer("test2", 7, 15, gc1);
-    for (int ii = 0; ii < 7; ii++) {
-      aiplayer.addTileToRack(new Tile(
-          new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1), new Field(0, 0)));
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 15");
-    System.out.println("-------------------------------------------------------------");
-
-    Turn idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 20");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 20, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(20);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 35");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(35);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 42");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(42);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 7, numberOfCombinationsToUse = 49");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(49);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 15");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 15, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(15);
-    aiplayer.setMaxNumOfTiles(6);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 20");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 20, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(20);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 35");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 6, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(35);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 42");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(42);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 6, numberOfCombinationsToUse = 49");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(49);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 15");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 15, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(15);
-    aiplayer.setMaxNumOfTiles(4);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 20");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 20, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(20);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 35");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 4, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(35);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 42");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(42);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
-    System.out.println("\n-------------------------------------------------------------");
-    System.out.println("PARAMETER: maxNumOfTilew = 4, numberOfCombinationsToUse = 49");
-    System.out.println("-------------------------------------------------------------");
-    // aiplayer = new AIplayer("test", 7, 35, gc1);
-    // for (int ii = 0; ii < 7; ii++) {
-    // aiplayer
-    // .addTileToRack(new Tile(new Letter((char) ((Math.random() * ('[' - 'A')) + 'A'), 1, 1),
-    // aiplayer.getFreeRackField()));
-    // }
-    aiplayer.generateTileCombinations();
-    aiplayer.setNumberOfCombinationsToUse(49);
-    gc1 = new GameController(gs1);
-    gs1.setUpGameboard();
-    gb = gs1.getGameBoard();
-    setUpGameBoard2(gb);
-
-    idealTurn = aiplayer.runAi(gb);
-    if (idealTurn != null) {
-      for (Tile result : idealTurn.getLaydDownTiles()) {
-        System.out.println(result.toString());
-      }
-    }
-
+  
   }
 }
