@@ -22,7 +22,7 @@ public class AiPlayer extends Player {
 
   private int maxNumOfTiles;
   private GameController gc;
-  private TreeSet<AIcombination> tileCombinations;
+  private TreeSet<AiCombination> tileCombinations;
   private AiLevel ailevel;
   private int numberOfCombinationsToUse; // use only the top x AIcombination (in regards to count)
 
@@ -30,7 +30,7 @@ public class AiPlayer extends Player {
   private boolean testmode = false;
 
   /**
-   * Sets the difficulty.
+   * Sets the difficulty of AI.
    *
    */
   public enum AiLevel {
@@ -45,29 +45,31 @@ public class AiPlayer extends Player {
    * @author pkoenig
    *
    */
-  class AIcombination implements Comparable<AIcombination> {
+  class AiCombination implements Comparable<AiCombination> {
 
     private char[] chars;
     private int count;
 
     /**
-     * Contructor
-     * 
-     * @param chars
+     * Contructor.
+     *
+     * @param chars Sequence
      */
-    public AIcombination(char[] chars) {
+    public AiCombination(char[] chars) {
       this.chars = chars;
       this.count = 1;
     }
 
     /**
-     * increase count
+     * increase count.
      */
     public void incCount() {
       this.count++;
     }
 
     /**
+     * Get Chars.
+     *
      * @return the tiles
      */
     public char[] getChars() {
@@ -75,6 +77,8 @@ public class AiPlayer extends Player {
     }
 
     /**
+     * Set Chars.
+     *
      * @param tiles the tiles to set
      */
     public void setChars(char[] chars) {
@@ -82,6 +86,8 @@ public class AiPlayer extends Player {
     }
 
     /**
+     * Get Count.
+     *
      * @return the count
      */
     public int getCount() {
@@ -89,6 +95,8 @@ public class AiPlayer extends Player {
     }
 
     /**
+     * Set Count.
+     *
      * @param count the count to set
      */
     public void setCount(int count) {
@@ -96,12 +104,12 @@ public class AiPlayer extends Player {
     }
 
     /**
-     * Overrinds compareTo from Comparable interface to enable sorting of AIcombinations
-     * 
-     * @param AIcombination o
+     * Overrinds compareTo from Comparable interface to enable sorting of AIcombinations.
+     *
+     * @param AiCombination o
      */
     @Override
-    public int compareTo(AIcombination o) {
+    public int compareTo(AiCombination o) {
       // equal chars
       if (this.chars.length == o.chars.length) {
         for (int i = 0; i <= this.chars.length; i++) {
@@ -130,19 +138,19 @@ public class AiPlayer extends Player {
     }
 
     /**
-     * Overrides equals
-     * 
+     * Overrides equals.
+     *
      * @param Object o
      */
     @Override
     public boolean equals(Object o) {
-      AIcombination oA = (AIcombination) o;
-      if (this.chars.length == oA.chars.length) {
+      AiCombination oa = (AiCombination) o;
+      if (this.chars.length == oa.chars.length) {
         for (int i = 0; i <= this.chars.length; i++) {
           if (i == this.chars.length) {
             return true;
           }
-          if (this.chars[i] != oA.chars[i]) {
+          if (this.chars[i] != oa.chars[i]) {
             break;
           }
         }
@@ -151,9 +159,8 @@ public class AiPlayer extends Player {
     }
 
     /**
-     * Overrinds toString from Object. Returns a String-representation of current instance
-     * 
-     * @param none
+     * Overrinds toString from Object. Returns a String-representation of current instance.
+     *
      */
     @Override
     public String toString() {
@@ -167,26 +174,25 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * 
    * Main Contructor used in game.
-   * 
-   * @param nickname
-   * @param gc
-   * @param level
+   *
+   * @param nickname NameOfPlayer
+   * @param gc GameController
+   * @param level Ailevel
    */
   public AiPlayer(String nickname, GameController gc, AiLevel level) {
     super(nickname);
     // this.gc = new GameController(new GameState(getPlayerInfo(), nickname));
     this.gc = gc;
     this.ailevel = level;
-    this.tileCombinations = new TreeSet<AIcombination>();
+    this.tileCombinations = new TreeSet<AiCombination>();
     switchAilevel(level);
   }
 
   /**
-   * maps AiLevel to Parameters
-   * 
-   * @param ailevel
+   * maps AiLevel to Parameters.
+   *
+   * @param ailevel Difficulty
    */
   private void switchAilevel(AiLevel ailevel) {
     switch (ailevel) {
@@ -217,13 +223,12 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * 
    * Contructor. Only used for testing-purposes.
-   * 
-   * @param nickname
-   * @param maxNumOfTiles
-   * @param numberOfCombinationsToUse
-   * @param gc
+   *
+   * @param nickname Name of AiPlayer
+   * @param maxNumOfTiles Number of Tiles to lay down at max
+   * @param numberOfCombinationsToUse max Number of AI combinations to use
+   * @param gc Game Controller
    * 
    */
   public AiPlayer(String nickname, int maxNumOfTiles, int numberOfCombinationsToUse,
@@ -231,17 +236,16 @@ public class AiPlayer extends Player {
     super(nickname);
     this.maxNumOfTiles = maxNumOfTiles;
     this.gc = gc;
-    this.tileCombinations = new TreeSet<AIcombination>();
+    this.tileCombinations = new TreeSet<AiCombination>();
     this.numberOfCombinationsToUse = numberOfCombinationsToUse;
   }
 
   /**
-   * 
-   * Constructor used for profilemanagemnt with JSON
-   * 
-   * @param nickname
-   * @param avatar
-   * @param volume
+   * Constructor used for profilemanagemnt with JSON.
+   *
+   * @param nickname Name of AiPlayer
+   * @param avatar Avatar of Player
+   * @param volume Volume of sounds
    * 
    */
   @JsonCreator
@@ -251,26 +255,25 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * Called once for each AIplayer at creation-time
-   * 
+   * Called once for each AIplayer at creation-time.
    * Creates a instance-HashMap of AIcombinations used by Method runAi
    * 
    */
   public void generateTileCombinations() {
-    this.tileCombinations = new TreeSet<AIcombination>();
-    AIcombination c;
-    HashMap<String, AIcombination> temp = new HashMap<String, AIcombination>();
-    String cChars;
+    this.tileCombinations = new TreeSet<AiCombination>();
+    AiCombination c;
+    HashMap<String, AiCombination> temp = new HashMap<String, AiCombination>();
+    String cchars;
     for (String w : gc.getDictionary()) {
       for (int currentNumOfTiles =
           1; currentNumOfTiles <= this.maxNumOfTiles; currentNumOfTiles++) {
         for (int i = 0; i <= w.length() - currentNumOfTiles; i++) {
-          cChars = w.substring(i, i + currentNumOfTiles);
-          if ((c = temp.get(cChars)) != null) {
+          cchars = w.substring(i, i + currentNumOfTiles);
+          if ((c = temp.get(cchars)) != null) {
             c.incCount();
           } else {
-            c = new AIcombination(cChars.toCharArray());
-            temp.put(cChars, c);
+            c = new AiCombination(cchars.toCharArray());
+            temp.put(cchars, c);
           }
         }
       }
@@ -279,11 +282,9 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * 
    * Main Method. Gets called from server, when AIplayer gets currentPlayer.
-   * 
-   * 
-   * @param gb
+   *
+   * @param gb Gameboard
    * @return Turn: ideal Turn (in Terms of AiLevel)
    * 
    */
@@ -293,8 +294,8 @@ public class AiPlayer extends Player {
     }
 
     // init
-    TreeSet<AIcombination> currentAiCombinations =
-        (TreeSet<AIcombination>) getFilteredCombinationList().descendingSet();
+    TreeSet<AiCombination> currentAiCombinations =
+        (TreeSet<AiCombination>) getFilteredCombinationList().descendingSet();
     Turn idealTurn = null;
     Turn currentTurn = null;
     ArrayList<HashSet<Field[]>> possibleLocations = new ArrayList<HashSet<Field[]>>();
@@ -308,7 +309,7 @@ public class AiPlayer extends Player {
     }
 
     // run
-    for (AIcombination currentAiCombination : currentAiCombinations) {
+    for (AiCombination currentAiCombination : currentAiCombinations) {
 
       // get Tiles from rack
       for (char c : currentAiCombination.getChars()) {
@@ -411,23 +412,22 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * 
-   * Will be called at the Beginn of everiy Turn (i.e. call of runAi() ) Filters the HashMap of
+   * Will be called at the Beginn of everiy Turn (i.e. call of runAi() ). Filters the HashMap of
    * AIcombinations for the rack.
-   * 
-   * @return TreeSet<AIcombination> AIcombination, which can be used with current rack
+   *
+   * @return TreeSet of AIcombinations, which can be used with current rack
    */
   @SuppressWarnings("unchecked")
-  private TreeSet<AIcombination> getFilteredCombinationList() {
+  private TreeSet<AiCombination> getFilteredCombinationList() {
     ArrayList<Character> charsOnRack = new ArrayList<Character>();
     ArrayList<Character> currentCharsOnRack;
-    TreeSet<AIcombination> currentTwoTilesCombinations = new TreeSet<AIcombination>();
-    currentTwoTilesCombinations = (TreeSet<AIcombination>) this.tileCombinations.clone();
+    TreeSet<AiCombination> currentTwoTilesCombinations = new TreeSet<AiCombination>();
+    currentTwoTilesCombinations = (TreeSet<AiCombination>) this.tileCombinations.clone();
     for (int i = 0; i < GameSettings.getTilesOnRack(); i++) {
       charsOnRack.add(this.getRackTile(i).getLetter().getCharacter());
     }
 
-    for (AIcombination a : this.tileCombinations) {
+    for (AiCombination a : this.tileCombinations) {
       currentCharsOnRack = (ArrayList<Character>) charsOnRack.clone();
       for (char c : a.getChars()) {
         if (!currentCharsOnRack.remove(Character.valueOf(c))) {
@@ -440,14 +440,13 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * 
-   * Used internally for getValidPositions
-   * 
-   * @param gb
-   * @param i
-   * @param j
-   * @param numOfTiles
-   * @param results
+   * Used internally for getValidPositions.
+   *
+   * @param gb Gameboard
+   * @param i x val
+   * @param j y val
+   * @param numOfTiles Number of tiles
+   * @param results Fields to return
    */
   private static void addParallelTilesHorizontally_getValidTilePositionsForNumOfTilesHelper(
       GameBoard gb, int i, int j, int numOfTiles, HashSet<Field[]> results) {
@@ -469,14 +468,13 @@ public class AiPlayer extends Player {
   }
 
   /**
-   * 
-   * Used internally for getValidTilePositionsForNumOfTiles
-   * 
-   * @param gb
-   * @param i
-   * @param j
-   * @param numOfTiles
-   * @param results
+   * Used internally for getValidTilePositionsForNumOfTiles.
+   *
+   * @param gb Gameboard
+   * @param i x val
+   * @param j y val
+   * @param numOfTiles Number of tiles
+   * @param results Fields to return
    */
   private static void addParallelTilesVertically_getValidTilePositionsForNumOfTilesHelper(
       GameBoard gb, int i, int j, int numOfTiles, HashSet<Field[]> results) {
@@ -499,13 +497,11 @@ public class AiPlayer extends Player {
 
 
   /**
-   * 
-   * Called at every runAi
-   * 
-   * 
-   * @param gb
-   * @param numOfTiles
-   * @return HashSet<Field[]> list of validTilePositions
+   * Called at every runAi.
+   *
+   * @param gb Gameboard
+   * @param numOfTiles numOfTiles to use
+   * @return HashSetField[] list of validTilePositions
    */
   public HashSet<Field[]> getValidTilePositionsForNumOfTiles(GameBoard gb, int numOfTiles) {
     if (numOfTiles < 1) {
@@ -624,6 +620,8 @@ public class AiPlayer extends Player {
 
 
   /**
+   * Get ailevel.
+   *
    * @return the ailevel
    */
   public AiLevel getAilevel() {
@@ -631,6 +629,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Set ailevel.
+   *
    * @param ailevel the ailevel to set
    */
   public void setAilevel(AiLevel ailevel) {
@@ -639,20 +639,26 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Get twoTileCombinations.
+   *
    * @return the twoTilesCombinations
    */
-  public TreeSet<AIcombination> getTwoTilesCombinations() {
+  public TreeSet<AiCombination> getTwoTilesCombinations() {
     return tileCombinations;
   }
 
   /**
+   * Set twoTileCombinations.
+   *
    * @param twoTilesCombinations the twoTilesCombinations to set
    */
-  public void setTwoTilesCombinations(TreeSet<AIcombination> twoTilesCombinations) {
+  public void setTwoTilesCombinations(TreeSet<AiCombination> twoTilesCombinations) {
     this.tileCombinations = twoTilesCombinations;
   }
 
   /**
+   * Get maxNumOfTiles.
+   *
    * @return the maxNumOfTiles
    */
   public int getMaxNumOfTiles() {
@@ -660,6 +666,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Set maxNumOfTiles.
+   *
    * @param maxNumOfTiles the maxNumOfTiles to set
    */
   public void setMaxNumOfTiles(int maxNumOfTiles) {
@@ -667,6 +675,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Get numberOfCombinationsToUse.
+   *
    * @return the numberOfCombinationsToUse
    */
   public int getNumberOfCombinationsToUse() {
@@ -674,6 +684,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Set numberOfCombinationsToUse.
+   *
    * @param numberOfCombinationsToUse the numberOfCombinationsToUse to set
    */
   public void setNumberOfCombinationsToUse(int numberOfCombinationsToUse) {
@@ -681,6 +693,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Get gc.
+   *
    * @return the gc
    */
   public GameController getGc() {
@@ -688,6 +702,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Set gc.
+   *
    * @param gc the gc to set
    */
   public void setGc(GameController gc) {
@@ -695,6 +711,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Get goodScore.
+   *
    * @return the goodScore
    */
   public int getGoodScore() {
@@ -702,6 +720,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Set goodScore.
+   *
    * @param goodScore the goodScore to set
    */
   public void setGoodScore(int goodScore) {
@@ -709,6 +729,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Get testmode.
+   *
    * @return the testmode
    */
   public boolean isTestmode() {
@@ -716,6 +738,8 @@ public class AiPlayer extends Player {
   }
 
   /**
+   * Set testmode.
+   *
    * @param testmode the testmode to set
    */
   public void setTestmode(boolean testmode) {
