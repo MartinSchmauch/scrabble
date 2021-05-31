@@ -74,11 +74,15 @@ public class Sound {
    * plays the wav file saved at url filepath.
    */
   public static void playMedia(String url) {
-    URL resource = Sound.class.getResource(url);
-    Media media = new Media(resource.toString());
-    MediaPlayer mediaPlayer = new MediaPlayer(media);
-    mediaPlayer.setVolume(volume);
-    mediaPlayer.play();
+    try {
+      URL resource = Sound.class.getResource(url);
+      Media media = new Media(resource.toString());
+      MediaPlayer mediaPlayer = new MediaPlayer(media);
+      mediaPlayer.setVolume(volume);
+      mediaPlayer.play();
+    } catch (Exception e) {
+      System.out.println("Sound disabled. Please check whether proper System Requirements are met.");
+    }
   }
 
   /**
