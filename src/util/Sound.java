@@ -81,7 +81,7 @@ public class Sound {
       mediaPlayer.setVolume(volume);
       mediaPlayer.play();
     } catch (Exception e) {
-      System.out.println("Sound disabled. Please check whether proper System Requirements are met.");
+      System.out.println("Sound disabled. Please check whether proper System Requirements are met");
     }
   }
 
