@@ -15,4 +15,4 @@ If you play against "hard" or "unbeatable" AI, please allow at least 2 min (120 
 
 
 ## Credits (Group3)
-A scrabble game developed by Nils Becker (nilbecke), Luis Dreyer (ldreyer), Paul König (pkoenig) and Leon Urny (lurny).
+A scrabble game developed by Nils Becker (nilbecke), Luis Dreyer (ldreyer), Paul König (pkoenig), Martin Schmauch (mschmauc) and Leon Urny (lurny).
